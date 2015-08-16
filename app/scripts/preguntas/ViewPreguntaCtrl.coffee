@@ -77,6 +77,7 @@ angular.module('WissenSystem')
 .filter('porIdioma', [ ->
 	(input, idioma) ->
 
+
 		if input
 			
 			resultado = []

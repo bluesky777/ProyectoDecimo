@@ -17,12 +17,22 @@ nav.site-nav.clearfix(role="navigation")
 		li(ng-class="{active: $state.is('panel') }")
 			a(href="" ui-sref="panel" md-ink-ripple="")
 				i.fa.fa-home
-				span.text Inicio
+				span.text {{ 'INICIO_MENU' | translate }}
+
+		li(ui-sref-active="active")
+			a(href="" ui-sref="panel.eventos" md-ink-ripple="")
+				i.fa.fa-laptop
+				span.text {{ 'EVENTS_MENU' | translate }}
+
+		li(ui-sref-active="active")
+			a(href="" ui-sref="panel.categorias" md-ink-ripple="")
+				i.fa.fa-map-marker
+				span.text {{ 'CATEGS_MENU' | translate }}
 
 		li(ui-sref-active="active")
 			a(href="" ui-sref="panel.usuarios" md-ink-ripple="")
 				i.fa.fa-users
-				span.text Usuarios
+				span.text {{ 'USERS_MENU' | translate }}
 
 		li(ui-sref-active="active")
 			a(href="" ui-sref="panel.preguntas" md-ink-ripple="")

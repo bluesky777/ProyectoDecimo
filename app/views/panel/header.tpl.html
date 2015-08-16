@@ -32,12 +32,12 @@
     </div>
   </li>
   <!-- Idiomas-->
-  <li dropdown="" class="notify-drop hidden-xs dropdown"><a href="" dropdown-toggle=""><i class="fa fa-flag-checkered"></i></a>
+  <li dropdown="" class="notify-drop hidden-xs dropdown"><a href="" dropdown-toggle=""><i class="fa fa-flag-checkered"></i>{{ 'IDIOMA_MENU' | translate }}</a>
     <div custom-scrollbar="" class="panel panel-default dropdown-menu">
-      <div class="panel-heading">Idioma</div>
+      <div class="panel-heading">{{ 'IDIOMA_MENU' | translate }}</div>
       <div class="panel-body">
         <ul class="list-unstyled">
-          <li ng-repeat="idioma in idiomas" class="clearfix"><a href=""><span class="fa fa-flag left bg-success"></span>
+          <li ng-repeat="idioma in idiomas" class="clearfix"><a href="" ng-click="cambiarIdioma(idioma.abrev)"><span class="fa fa-flag left bg-success"></span>
               <div class="desc"><strong>{{idioma.nombre}}</strong></div></a></li>
         </ul>
       </div>

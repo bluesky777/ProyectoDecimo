@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('WissenSystem')
-	.config ['$stateProvider', 'App', 'USER_ROLES', 'PERMISSIONS', ($state, App, USER_ROLES, PERMISSIONS) ->
+	.config ['$stateProvider', 'App', 'USER_ROLES', 'PERMISSIONS', '$translateProvider', ($state, App, USER_ROLES, PERMISSIONS, $translateProvider) ->
 
 		$state
 			.state('panel', { #- Estado admin.
@@ -19,6 +19,24 @@ angular.module('WissenSystem')
 					pageTitle: 'WissenSystem - Bienvenido'
 			})
 
+
+		$translateProvider.preferredLanguage('ES');
+
+
+		$translateProvider.translations('EN',
+			INICIO_MENU: 'Home'
+			USERS_MENU: 'Users'
+			EVENTS_MENU: 'Events'
+			CATEGS_MENU: 'Categs'
+			IDIOMA_MENU: 'Language'
+		)
+		.translations('ES',
+			INICIO_MENU: 'Inicio'
+			EVENTS_MENU: 'Eventos'
+			CATEGS_MENU: 'Categorías'
+			USERS_MENU: 'Usuarios'
+			IDIOMA_MENU: 'Idioma'
+		)
 
 
 		return

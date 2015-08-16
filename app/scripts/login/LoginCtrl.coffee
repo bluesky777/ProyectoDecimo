@@ -14,6 +14,9 @@ angular.module('WissenSystem')
 	#$scope.host = $location.host()
 
 	$scope.login = (credentials)->
+
+		$state.go 'panel'
+
 		user = AuthService.login_credentials(credentials)
 		
 		user.then((r)->

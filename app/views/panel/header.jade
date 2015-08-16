@@ -45,13 +45,14 @@ ul.list-unstyled.left-elems
 	li.notify-drop.hidden-xs.dropdown(dropdown="")
 		a(href="" dropdown-toggle="")
 			i.fa.fa-flag-checkered
+			{{ 'IDIOMA_MENU' | translate }}
 		
 		.panel.panel-default.dropdown-menu(custom-scrollbar="")
-			.panel-heading Idioma
+			.panel-heading {{ 'IDIOMA_MENU' | translate }}
 			.panel-body
 				ul.list-unstyled
 					li.clearfix(ng-repeat="idioma in idiomas")
-						a(href="")
+						a(href="" ng-click="cambiarIdioma(idioma.abrev)")
 							span.fa.fa-flag.left.bg-success
 							.desc
 								strong {{idioma.nombre}}

@@ -2,8 +2,8 @@
 
 angular.module('WissenSystem')
 
-.controller('PanelCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'AuthService', 'Perfil', 'App', 'resolved_user', 'toastr', 
-	($scope, $http, Restangular, $state, $cookies, $rootScope, AuthService, Perfil, App, resolved_user, toastr) ->
+.controller('PanelCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'AuthService', 'Perfil', 'App', 'resolved_user', 'toastr', '$translate', 
+	($scope, $http, Restangular, $state, $cookies, $rootScope, AuthService, Perfil, App, resolved_user, toastr, $translate) ->
 
 		$scope.conectar = ()->
 		
@@ -12,6 +12,9 @@ angular.module('WissenSystem')
 			, (r2)->
 				console.log 'Error conectando!', r2
 			)
+
+		$scope.cambiarIdioma = (idioma)->
+			$translate.use(idioma)
 			
 		return
 	]

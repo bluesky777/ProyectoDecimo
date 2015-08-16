@@ -1,0 +1,50 @@
+
+<div ng-repeat="disciplinaking in disciplinas_king">
+  <md-whiteframe layout ng-repeat="disciplina in disciplinaking.disciplinas_traducidas | porIdioma:idiomaPreg" ng-hide="disciplinaking.editando" style="padding: 10px" class="md-whiteframe-z2"><span flex="10">{{$parent.$index+1}}.</span><span flex="90">{{disciplina.nombre}}</span>
+    <div layout="row" class="btn-container-edit-preg">
+      <md-button aria-label="Editar" ng-click="editarDisciplina(disciplinaking)" class="md-fab md-primary md-mini">
+        <md-icon class="fa fa-pencil-square"></md-icon>
+        <md-tooltip>Editar disciplina</md-tooltip>
+      </md-button>
+      <md-button aria-label="Eliminar" ng-click="eliminarDisciplina(disciplinaking)" class="md-fab md-warn md-mini">
+        <md-icon class="fa fa-trash"></md-icon>
+        <md-tooltip>Eliminar disciplina</md-tooltip>
+      </md-button>
+    </div>
+  </md-whiteframe><br><br>
+  <div ng-show="disciplinaking.editando">
+    <div class="panel panel-default panel-hovered panel-stacked mb20">
+      <div class="panel-heading">Editar disciplina en idiomas:  
+        <md-select multiple="true" placeholder="Idioma" ng-model="idiomasDiscEdit">
+          <md-option ng-repeat="idioma in idiomas" value="{{idioma.id}}">{{idioma.original}}</md-option>
+        </md-select>
+      </div>
+      <div class="panel-body">
+        <form name="frm" role="form" class="form-horizontal">
+          <div ng-repeat="disciplina in disciplinaking.disciplinas_traducidas | porIdiomasEdit:idiomasDiscEdit"><a md-ink-ripple class="btn-tag btn-tag-info">Disciplina en {{disciplina.idioma}}</a>
+            <div style="padding-left: 50px; " class="row">
+              <div class="col-lg-7 col-sm-12 col-xs-12">
+                <div class="form-group">
+                  <label>Nombre disciplina:</label>
+                  <input type="text" ng-model="disciplina.nombre" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Descripción:</label>
+                  <input type="text" ng-model="disciplina.descripcion" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Traducido?</label>
+                  <md-checkbox ng-model="disciplina.traducido" ng-value="disciplina.traducido"></md-checkbox>
+                </div>
+                <div class="clearfix right">
+                  <md-button type="submit" ng-disabled="guardando(disciplinaking)" class="md-primary">Aplicar</md-button>
+                  <md-button ng-click="finalizar_edicion(disciplinaking)" class="md-default">Finalizar</md-button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

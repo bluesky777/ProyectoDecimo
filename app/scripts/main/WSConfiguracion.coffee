@@ -28,7 +28,7 @@ angular.module('WissenSystem')
 
 
 	#- Definimos los estados
-	$urlRouter.otherwise('/')
+	$urlRouter.otherwise('/login')
 
 	$state
 	.state('main', { #- Estado raiz que no necesita autenticación.
@@ -65,6 +65,9 @@ angular.module('WissenSystem')
 	#$locationProvider.html5Mode true
 
 	$rootScopeProvider.bigLoader = true
+
+
+
 
 	# Agrego la función findByValues a loDash.
 	_.mixin 

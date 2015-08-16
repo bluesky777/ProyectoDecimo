@@ -9,11 +9,11 @@
         <md-select placeholder="Categoría" ng-model="categoria"><span ng-repeat="cat in categorias">
             <md-option ng-repeat="cat_traduc in cat.categorias_traducidas | catsByIdioma:idiomaPreg" ng-show="cat_traduc.idioma_id==idiomaPreg" value="{{cat_traduc.categoria_id}}">{{cat_traduc.nombre}}</md-option></span></md-select>
         <!--md-checkbox(ng-model="showDetail" style="display:inline-block") Detalles-->
-        <input type="text" ng-model="preg_buscar" placeholder="Buscar" class="form-control ancho-200">
+        <input type="text" ng-model="preg_buscar" placeholder="{{ 'BUSCAR_PLACEHOLDER' | translate }}" class="form-control ancho-200">
       </div>
       <div class="panel-body">
         <div ng-repeat="pregunta_king in preguntas_king | filter:preg_buscar | pregsByCats:categoria"><br><br>
-          <view-pregunta preguntaking="pregunta_king" idiomapreg="idiomaPreg"></view-pregunta>
+          <view-pregunta preguntaking="pregunta_king" indice="$index" idiomapreg="idiomaPreg"></view-pregunta>
           <md-divider></md-divider>
         </div>
         <add-pregunta preguntasking="preguntas_king"></add-pregunta>

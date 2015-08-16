@@ -1,0 +1,21 @@
+
+md-select(placeholder="Idioma" ng-model="idiomaPreg")
+	md-option(ng-repeat="idioma in idiomas" value="{{idioma.id}}") {{idioma.original}}
+
+br
+br
+
+tabset
+	tab(heading="{{'CATEGORIAS_TITLE'| translate}}")
+		.row
+			.col-lg-7.col-sm-12.col-xs-12
+				.form-group
+					label Nombre categoria:
+	tab(heading="{{'NIVELES_TITLE'| translate}}")
+		.row
+			.col-lg-7.col-sm-12.col-xs-12
+				.form-group
+					label Nombre nivel:
+	tab(heading="{{'DISCIPLINA_TITLE'| translate}}")
+		disciplinas-dir
+

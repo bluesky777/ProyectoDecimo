@@ -1,21 +1,33 @@
 angular.module('WissenSystem')
 
-.config(['$urlRouterProvider', '$stateProvider', ($urlRouterProvider, $stateProvider)->
+.config(['App', '$stateProvider', '$translateProvider', (App, $stateProvider, $translateProvider)->
 		
 	$stateProvider
-		.state('eventos', 
-			url: '/eventos'
-			templateUrl: 'views/eventos/eventos.tpl.html'
-			controller: 'EventosCtrl'
+		.state('panel.eventos', 
+			url: '^/eventos'
+			views:
+					'contenido_panel':
+						templateUrl: "#{App.views}eventos/eventos.tpl.html"
+						controller: 'EventosCtrl'
+
+				data: 
+					pageTitle: 'Eventos'
 		)
 
 
-		.state('eventos_user', 
+		.state('panel.eventos_user', 
 			url: '/eventos_user'
 			templateUrl: 'views/eventos/eventos_user.tpl.html'
 			controller: 'EventosUserCtrl'
 		)
 
+
+	$translateProvider.translations('EN',
+		EVENTS_TITLE: 'Events'
+	)
+	.translations('ES',
+		EVENTS_TITLE: 'Eventos'
+	)
 
 
 

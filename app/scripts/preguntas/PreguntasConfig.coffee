@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.config(['$stateProvider', 'App', ($stateProvider, App)->
+.config(['$stateProvider', 'App', '$translateProvider', ($stateProvider, App, $translateProvider)->
 
 	$stateProvider
 
@@ -15,5 +15,16 @@ angular.module('WissenSystem')
 					pageTitle: 'Preguntas'
 			})
 
+
+	$translateProvider.translations('EN',
+		BUSCAR_PLACEHOLDER: 'Find'
+		TIP_BTN_NUEVA_PREGUNTA: 'Create a new question'
+		BTN_NUEVA_PREGUNTA: 'New question'
+	)
+	.translations('ES',
+		BUSCAR_PLACEHOLDER: 'Buscar'
+		TIP_BTN_NUEVA_PREGUNTA: 'Crear una nueva pregunta'
+		BTN_NUEVA_PREGUNTA: 'Nueva pregunta'
+	)
 
 ])
