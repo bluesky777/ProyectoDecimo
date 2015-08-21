@@ -7,18 +7,38 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 
 
 @import "base.scss";
+@import "select2.css";
 
 
 
 
 
 
+// Arreglando Select2
+ .select2 > .select2-choice.ui-select-match {
+  /* Because of the inclusion of Bootstrap */
+  height: 29px;
+}
+.selectize-control > .selectize-dropdown {
+  top: 36px;
+}
 
 
 
 
+// Arreglando tabs
+.md-select-menu-container {
+  z-index: 9999;
+}
+md-tabs{
+  border: 1px solid #e1e1e1;
+}
+md-tabs-wrapper{
+  border-width: 0 0 1px;
+  border-style: solid;
+}
 
-// Arreglando
+// Arreglando navegación
 .nav > li > a:hover, .nav > li > a:focus {
   background-color: transparent;
 }
@@ -26,6 +46,8 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
   background-color: #ffffff;
 }
 
+
+// Arreglando editores de texto
 md-input-container label.confroala {
   top: -65px !important;
 }
@@ -47,15 +69,15 @@ a:hover, a:focus {
 
 }
 .md-top {
-z-index: 999000;
-position: fixed;
-top: 66px; // size of my navbar + 16px
+  z-index: 999000;
+  position: fixed;
+  top: 66px; // size of my navbar + 16px
 }
 
 .md-right {
-z-index: 999000;
-position: fixed;
-right: 16px;
+  z-index: 999000;
+  position: fixed;
+  right: 16px;
 }
 
 
@@ -135,10 +157,17 @@ right: 16px;
   @include ayuda-preg();
 }
 
-.btn-container-edit-preg{
+.definicion-frame:hover .btn-container-edit{
+  opacity: 1;
+}
+
+.definicion-frame .btn-container-edit{
   position: absolute;
   margin-left: -170px;
   margin-top: -10px;
+
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
 

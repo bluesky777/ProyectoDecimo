@@ -1,0 +1,52 @@
+div(ng-repeat="nivelking in niveles_king" )
+
+	md-whiteframe.md-whiteframe-z2.definicion-frame(layout ng-repeat="nivel in nivelking.niveles_traducidos | porIdioma:idiomaPreg" ng-hide="nivelking.editando" style="padding: 10px")
+		span(flex="10") {{$parent.$index+1}}.
+		span(flex="90") {{nivel.nombre}}
+
+
+		div.btn-container-edit(layout="row")
+			
+			md-button.md-fab.md-primary.md-mini(aria-label="Editar" ng-click="editarNivel(nivelking)")
+				md-icon.fa.fa-pencil
+				md-tooltip Editar nivel
+
+			md-button.md-fab.md-warn.md-mini(aria-label="Eliminar" ng-click="eliminarNivel(nivelking)")
+				md-icon.fa.fa-trash
+				md-tooltip Eliminar nivel
+
+
+
+	div(ng-show="nivelking.editando" style="margin-top: 20px")
+		.panel.panel-default.panel-hovered.panel-stacked.mb20
+			.panel-heading Editar nivel en idiomas:  
+
+				md-select(multiple="true" placeholder="Idioma" ng-model="idiomasDiscEdit")
+					md-option(ng-repeat="idioma in idiomas" value="{{idioma.id}}") {{idioma.original}}
+
+			.panel-body
+				form.form-horizontal(name="frm" role="form")
+
+					div(ng-repeat="nivel in nivelking.niveles_traducidos | porIdiomasEdit:idiomasDiscEdit")
+									
+						a.btn-tag.btn-tag-info(md-ink-ripple)
+							| Nivel en {{nivel.idioma}}
+
+						.row(style="padding-left: 50px; ")
+							.col-lg-4.col-sm-5.col-xs-12
+								.form-group
+									label Nombre nivel:
+									input.form-control(type="text" ng-model="nivel.nombre")
+							.col-lg-4.col-sm-5.col-xs-12
+								.form-group
+									label Descripción:
+									input.form-control(type="text" ng-model="nivel.descripcion")
+							.col-lg-2.col-sm-2.col-xs-12
+								.form-group
+									md-checkbox(ng-model="nivel.traducido" aria-label="¿Traducido?")
+										| ¿Traducido?
+							
+					.clearfix.right
+						md-button.md-primary(type="submit" ng-disabled="guardando(nivelking)") Aplicar
+						md-button.md-default(ng-click="finalizar_edicion(nivelking)") Finalizar
+										

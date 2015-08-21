@@ -1,14 +1,14 @@
 div(ng-repeat="disciplinaking in disciplinas_king" )
 
-	md-whiteframe.md-whiteframe-z2(layout ng-repeat="disciplina in disciplinaking.disciplinas_traducidas | porIdioma:idiomaPreg" ng-hide="disciplinaking.editando" style="padding: 10px")
+	md-whiteframe.md-whiteframe-z2.definicion-frame(layout ng-repeat="disciplina in disciplinaking.disciplinas_traducidas | porIdioma:idiomaPreg" ng-hide="disciplinaking.editando" style="padding: 10px")
 		span(flex="10") {{$parent.$index+1}}.
 		span(flex="90") {{disciplina.nombre}}
 
 
-		div.btn-container-edit-preg(layout="row")
+		div.btn-container-edit(layout="row")
 			
 			md-button.md-fab.md-primary.md-mini(aria-label="Editar" ng-click="editarDisciplina(disciplinaking)")
-				md-icon.fa.fa-pencil-square
+				md-icon.fa.fa-pencil
 				md-tooltip Editar disciplina
 
 			md-button.md-fab.md-warn.md-mini(aria-label="Eliminar" ng-click="eliminarDisciplina(disciplinaking)")
@@ -16,10 +16,8 @@ div(ng-repeat="disciplinaking in disciplinas_king" )
 				md-tooltip Eliminar disciplina
 
 
-	br
-	br
 
-	div(ng-show="disciplinaking.editando")
+	div(ng-show="disciplinaking.editando" style="margin-top: 20px")
 		.panel.panel-default.panel-hovered.panel-stacked.mb20
 			.panel-heading Editar disciplina en idiomas:  
 
@@ -35,17 +33,20 @@ div(ng-repeat="disciplinaking in disciplinas_king" )
 							| Disciplina en {{disciplina.idioma}}
 
 						.row(style="padding-left: 50px; ")
-							.col-lg-7.col-sm-12.col-xs-12
+							.col-lg-4.col-sm-5.col-xs-12
 								.form-group
 									label Nombre disciplina:
 									input.form-control(type="text" ng-model="disciplina.nombre")
+							.col-lg-4.col-sm-5.col-xs-12
 								.form-group
 									label Descripción:
 									input.form-control(type="text" ng-model="disciplina.descripcion")
+							.col-lg-2.col-sm-2.col-xs-12
 								.form-group
-									label Traducido?
-									md-checkbox(ng-model="disciplina.traducido" ng-value="disciplina.traducido")
-								.clearfix.right
-									md-button.md-primary(type="submit" ng-disabled="guardando(disciplinaking)") Aplicar
-									md-button.md-default(ng-click="finalizar_edicion(disciplinaking)") Finalizar
+									md-checkbox(ng-model="disciplina.traducido" aria-label="¿Traducido?")
+										| ¿Traducido?
+							
+					.clearfix.right
+						md-button.md-primary(type="submit" ng-disabled="guardando(disciplinaking)") Aplicar
+						md-button.md-default(ng-click="finalizar_edicion(disciplinaking)") Finalizar
 										

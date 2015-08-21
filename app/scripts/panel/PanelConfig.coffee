@@ -27,13 +27,19 @@ angular.module('WissenSystem')
 			INICIO_MENU: 'Home'
 			USERS_MENU: 'Users'
 			EVENTS_MENU: 'Events'
-			CATEGS_MENU: 'Categs'
+			ENTIDADES_MENU: 'Entities'
+			CATEGS_MENU: 'Categories'
+			PREGUNTAS_MENU: 'Questions'
+			EVALUACIONES_MENU: 'Tests'
 			IDIOMA_MENU: 'Language'
 		)
 		.translations('ES',
 			INICIO_MENU: 'Inicio'
 			EVENTS_MENU: 'Eventos'
+			ENTIDADES_MENU: 'Entidades'
 			CATEGS_MENU: 'Categorías'
+			PREGUNTAS_MENU: 'Preguntas'
+			EVALUACIONES_MENU: 'Evaluaciones'
 			USERS_MENU: 'Usuarios'
 			IDIOMA_MENU: 'Idioma'
 		)

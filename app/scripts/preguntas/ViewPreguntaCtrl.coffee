@@ -13,6 +13,9 @@ angular.module('WissenSystem')
 			pregunta.mostrar_ayuda = !pregunta.mostrar_ayuda
 
 
+		$scope.asignarExamen = ()->
+			console.log "Asignando pregunta a un exámen"
+
 
 		$scope.indexChar = (index)->
 			return String.fromCharCode(65 + index)

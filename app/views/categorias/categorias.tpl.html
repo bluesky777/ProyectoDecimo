@@ -1,27 +1,28 @@
 
-<md-select placeholder="Idioma" ng-model="idiomaPreg">
-  <md-option ng-repeat="idioma in idiomas" value="{{idioma.id}}">{{idioma.original}}</md-option>
-</md-select><br><br>
-<tabset>
-  <tab heading="{{'CATEGORIAS_TITLE'| translate}}">
-    <div class="row">
-      <div class="col-lg-7 col-sm-12 col-xs-12">
-        <div class="form-group">
-          <label>Nombre categoria:</label>
+<div>
+  <md-content class="md-padding">
+    <md-input-container layout="row" layout-align="start center">
+      <label>Idioma: </label>
+      <md-select placeholder="Idioma" ng-model="idiomaPreg">
+        <md-option ng-repeat="idioma in idiomas" value="{{idioma.id}}">{{idioma.original}}</md-option>
+      </md-select>
+    </md-input-container>
+    <md-tabs class="md-dynamic-height md-border-bottom">
+      <md-tab label="{{'CATEGORIAS_TITLE'| translate}}">
+        <div style="padding: 25px;">
+          <categorias-dir></categorias-dir>
         </div>
-      </div>
-    </div>
-  </tab>
-  <tab heading="{{'NIVELES_TITLE'| translate}}">
-    <div class="row">
-      <div class="col-lg-7 col-sm-12 col-xs-12">
-        <div class="form-group">
-          <label>Nombre nivel:</label>
+      </md-tab>
+      <md-tab label="{{'NIVELES_TITLE'| translate}}">
+        <div style="padding: 25px;">
+          <niveles-dir></niveles-dir>
         </div>
-      </div>
-    </div>
-  </tab>
-  <tab heading="{{'DISCIPLINA_TITLE'| translate}}">
-    <disciplinas-dir></disciplinas-dir>
-  </tab>
-</tabset>
+      </md-tab>
+      <md-tab label="{{'DISCIPLINA_TITLE'| translate}}">
+        <div style="padding: 25px;">
+          <disciplinas-dir></disciplinas-dir>
+        </div>
+      </md-tab>
+    </md-tabs>
+  </md-content>
+</div>

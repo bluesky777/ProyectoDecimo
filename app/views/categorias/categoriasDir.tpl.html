@@ -1,0 +1,55 @@
+
+<div ng-repeat="categoriaking in categorias_king">
+  <md-whiteframe layout ng-repeat="categoria in categoriaking.categorias_traducidas | porIdioma:idiomaPreg" ng-hide="categoriaking.editando" style="padding: 10px" class="md-whiteframe-z2 definicion-frame"><span flex="10">{{$parent.$index+1}}.</span><span flex="90">{{categoria.nombre}}</span>
+    <div layout="row" class="btn-container-edit">
+      <md-button aria-label="Editar" ng-click="editarCategoria(categoriaking)" class="md-fab md-primary md-mini">
+        <md-icon class="fa fa-pencil"></md-icon>
+        <md-tooltip>Editar categoria</md-tooltip>
+      </md-button>
+      <md-button aria-label="Eliminar" ng-click="eliminarCategoria(categoriaking)" class="md-fab md-warn md-mini">
+        <md-icon class="fa fa-trash"></md-icon>
+        <md-tooltip>Eliminar categoria</md-tooltip>
+      </md-button>
+    </div>
+  </md-whiteframe>
+  <div ng-show="categoriaking.editando" style="margin-top: 20px">
+    <div class="panel panel-default panel-hovered panel-stacked mb20">
+      <div class="panel-heading"> 
+        <md-input-container layout="row" layout-align="start center">Editar categoria en idiomas:  
+          <md-select multiple="true" placeholder="Idioma" ng-model="idiomasDiscEdit">
+            <md-option ng-repeat="idioma in idiomas" value="{{idioma.id}}">{{idioma.original}}</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <div class="panel-body">
+        <form name="frm" role="form" class="form-horizontal">
+          <div ng-repeat="categoria in categoriaking.categorias_traducidas | porIdiomasEdit:idiomasDiscEdit"><a md-ink-ripple class="btn-tag btn-tag-info">Categoria en {{categoria.idioma}}</a>
+            <div layout layout-margin layout-wrap layout-padding style="padding-left: 50px; ">
+              <div flex="40" flex-gt-lg="20" flex-sm="100">
+                <label>Nombre:</label>
+                <input type="text" ng-model="categoria.nombre" class="form-control">
+              </div>
+              <div flex="40" flex-gt-lg="20" flex-sm="100">
+                <md-select placeholder="Nivel" ng-model="categoria.nivel_id">
+                  <md-option ng-repeat="nivelking in niveles_king" value="{{nivelking.id}}">{{nivelking.nombre}}</md-option>
+                </md-select>
+              </div>
+              <div flex="40" flex-gt-lg="20" flex-sm="100">
+                <md-select placeholder="Disciplina" ng-model="categoria.disciplina_id">
+                  <md-option ng-repeat="disciplinaking in disciplinas_king" value="{{disciplinaking.id}}">{{disciplinaking.nombre}}</md-option>
+                </md-select>
+              </div>
+              <div flex="40" flex-gt-lg="20" flex-sm="100">
+                <md-checkbox ng-model="categoria.traducido" aria-label="¿Traducido?">¿Traducido?</md-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix right">
+            <md-button type="submit" ng-disabled="guardando(categoriaking)" class="md-primary">Aplicar</md-button>
+            <md-button ng-click="finalizar_edicion(categoriaking)" class="md-default">Finalizar</md-button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

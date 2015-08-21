@@ -51,11 +51,11 @@ ul.list-unstyled.left-elems
 			.panel-heading {{ 'IDIOMA_MENU' | translate }}
 			.panel-body
 				ul.list-unstyled
-					li.clearfix(ng-repeat="idioma in idiomas")
+					li.clearfix(ng-repeat="idioma in idiomas" ng-if="idioma.used_by_system")
 						a(href="" ng-click="cambiarIdioma(idioma.abrev)")
 							span.fa.fa-flag.left.bg-success
 							.desc
-								strong {{idioma.nombre}}
+								strong {{idioma.original}} ({{idioma.abrev}}) - {{idioma.nombre}}
 
 
 ul.list-unstyled.right-elems.ng-scope

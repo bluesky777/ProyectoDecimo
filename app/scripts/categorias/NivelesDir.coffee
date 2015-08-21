@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.directive('NivelesDir',['App', (App)-> 
+.directive('nivelesDir',['App', (App)-> 
 
 	restrict: 'E'
 	templateUrl: "#{App.views}categorias/nivelesDir.tpl.html"

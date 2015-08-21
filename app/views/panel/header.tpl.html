@@ -37,8 +37,8 @@
       <div class="panel-heading">{{ 'IDIOMA_MENU' | translate }}</div>
       <div class="panel-body">
         <ul class="list-unstyled">
-          <li ng-repeat="idioma in idiomas" class="clearfix"><a href="" ng-click="cambiarIdioma(idioma.abrev)"><span class="fa fa-flag left bg-success"></span>
-              <div class="desc"><strong>{{idioma.nombre}}</strong></div></a></li>
+          <li ng-repeat="idioma in idiomas" ng-if="idioma.used_by_system" class="clearfix"><a href="" ng-click="cambiarIdioma(idioma.abrev)"><span class="fa fa-flag left bg-success"></span>
+              <div class="desc"><strong>{{idioma.original}} ({{idioma.abrev}}) - {{idioma.nombre}}</strong></div></a></li>
         </ul>
       </div>
     </div>

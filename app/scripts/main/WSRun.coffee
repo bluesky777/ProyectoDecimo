@@ -3,6 +3,7 @@ angular.module('WissenSystem')
 .run ['$rootScope', 'cfpLoadingBar', '$state', '$stateParams', '$translate', '$cookies', 'Restangular', 'Perfil', 'AuthService', 'AUTH_EVENTS', 'toastr', ($rootScope, cfpLoadingBar, $state, $stateParams, $translate, $cookies, Restangular, Perfil, AuthService, AUTH_EVENTS, toastr) ->
 
 
+
 	#- Asignamos la información de los estados actuales para poder manipularla en las vistas.
 	$rootScope.$state = $state
 	$rootScope.$stateParams = $stateParams;

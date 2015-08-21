@@ -6,9 +6,9 @@ angular.module('WissenSystem')
 		.state('panel.eventos', 
 			url: '^/eventos'
 			views:
-					'contenido_panel':
-						templateUrl: "#{App.views}eventos/eventos.tpl.html"
-						controller: 'EventosCtrl'
+				'contenido_panel':
+					templateUrl: "#{App.views}eventos/eventos.tpl.html"
+					controller: 'EventosCtrl'
 
 				data: 
 					pageTitle: 'Eventos'

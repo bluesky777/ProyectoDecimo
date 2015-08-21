@@ -30,14 +30,24 @@ nav.site-nav.clearfix(role="navigation")
 				span.text {{ 'CATEGS_MENU' | translate }}
 
 		li(ui-sref-active="active")
-			a(href="" ui-sref="panel.usuarios" md-ink-ripple="")
-				i.fa.fa-users
-				span.text {{ 'USERS_MENU' | translate }}
+			a(href="" ui-sref="panel.entidades" md-ink-ripple="")
+				i.fa.fa-bank
+				span.text {{ 'ENTIDADES_MENU' | translate }}
 
 		li(ui-sref-active="active")
 			a(href="" ui-sref="panel.preguntas" md-ink-ripple="")
+				i.fa.fa-question
+				span.text {{ 'PREGUNTAS_MENU' | translate }}
+
+		li(ui-sref-active="active")
+			a(href="" ui-sref="panel.evaluaciones" md-ink-ripple="")
 				i.fa.fa-clipboard
-				span.text Preguntas
+				span.text {{ 'EVALUACIONES_MENU' | translate }}
+
+		li(ui-sref-active="active")
+			a(href="" ui-sref="panel.usuarios" md-ink-ripple="")
+				i.fa.fa-users
+				span.text {{ 'USERS_MENU' | translate }}
 
 
 		li(ui-sref-active="active")

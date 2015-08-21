@@ -20,7 +20,7 @@ angular.module('WissenSystem')
 
 	$scope.update_evento = ()->
 
-		Restangular.one('eventos/update').customPUT($scope.currentEvento).then((r)->
+		Restangular.one('eventos/update').customPUT($scope.currentEvent).then((r)->
 			console.log 'Evento editado', r
 		(r2)->
 			console.log 'El Evento no se pudo editar', r2

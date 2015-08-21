@@ -1,0 +1,53 @@
+
+<div ng-repeat="nivelking in niveles_king">
+  <md-whiteframe layout ng-repeat="nivel in nivelking.niveles_traducidos | porIdioma:idiomaPreg" ng-hide="nivelking.editando" style="padding: 10px" class="md-whiteframe-z2 definicion-frame"><span flex="10">{{$parent.$index+1}}.</span><span flex="90">{{nivel.nombre}}</span>
+    <div layout="row" class="btn-container-edit">
+      <md-button aria-label="Editar" ng-click="editarNivel(nivelking)" class="md-fab md-primary md-mini">
+        <md-icon class="fa fa-pencil"></md-icon>
+        <md-tooltip>Editar nivel</md-tooltip>
+      </md-button>
+      <md-button aria-label="Eliminar" ng-click="eliminarNivel(nivelking)" class="md-fab md-warn md-mini">
+        <md-icon class="fa fa-trash"></md-icon>
+        <md-tooltip>Eliminar nivel</md-tooltip>
+      </md-button>
+    </div>
+  </md-whiteframe>
+  <div ng-show="nivelking.editando" style="margin-top: 20px">
+    <div class="panel panel-default panel-hovered panel-stacked mb20">
+      <div class="panel-heading">Editar nivel en idiomas:  
+        <md-select multiple="true" placeholder="Idioma" ng-model="idiomasDiscEdit">
+          <md-option ng-repeat="idioma in idiomas" value="{{idioma.id}}">{{idioma.original}}</md-option>
+        </md-select>
+      </div>
+      <div class="panel-body">
+        <form name="frm" role="form" class="form-horizontal">
+          <div ng-repeat="nivel in nivelking.niveles_traducidos | porIdiomasEdit:idiomasDiscEdit"><a md-ink-ripple class="btn-tag btn-tag-info">Nivel en {{nivel.idioma}}</a>
+            <div style="padding-left: 50px; " class="row">
+              <div class="col-lg-4 col-sm-5 col-xs-12">
+                <div class="form-group">
+                  <label>Nombre nivel:</label>
+                  <input type="text" ng-model="nivel.nombre" class="form-control">
+                </div>
+              </div>
+              <div class="col-lg-4 col-sm-5 col-xs-12">
+                <div class="form-group">
+                  <label>Descripción:</label>
+                  <input type="text" ng-model="nivel.descripcion" class="form-control">
+                </div>
+              </div>
+              <div class="col-lg-2 col-sm-2 col-xs-12">
+                <div class="form-group">
+                  <md-checkbox ng-model="nivel.traducido" aria-label="¿Traducido?">¿Traducido?</md-checkbox>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix right">
+            <md-button type="submit" ng-disabled="guardando(nivelking)" class="md-primary">Aplicar</md-button>
+            <md-button ng-click="finalizar_edicion(nivelking)" class="md-default">Finalizar</md-button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

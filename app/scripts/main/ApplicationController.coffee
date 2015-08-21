@@ -2,7 +2,7 @@
 
 angular.module('WissenSystem')
 
-.controller('ApplicationController', ['$scope', 'USER_ROLES', 'AuthService', 'toastr', '$state', '$rootScope', ($scope, USER_ROLES, AuthService, toastr, $state, $rootScope)->
+.controller('ApplicationController', ['$scope', 'USER_ROLES', 'AuthService', 'toastr', '$state', '$rootScope', 'Restangular', ($scope, USER_ROLES, AuthService, toastr, $state, $rootScope, Restangular)->
 
 	$scope.USER= {}
 
@@ -25,24 +25,16 @@ angular.module('WissenSystem')
 		$scope.floatingSidebar = if $scope.floatingSidebar then false else true
 
 
-	$scope.idiomas = [
-		{
-			id: 1
-			nombre: 'Español'
-			abrev: 'ES'
-			evento_id: 1
-			original: 'Español'
-			is_main: true
-		},
-		{
-			id: 2
-			nombre: 'Inglés'
-			abrev: 'EN'
-			evento_id: 1
-			original: 'English'
-			is_main: false
-		}
-	]
+
+	# Traemos los idiomas del sistema.
+	$scope.idiomas = []
+	Restangular.all('idiomas').getList().then((r)->
+		$scope.idiomas = r
+	(r2)->
+		console.log 'No se trajeron los idiomas del sistema.', r2
+	)
+	
+
 
 	$scope.eventos = [
 		{
