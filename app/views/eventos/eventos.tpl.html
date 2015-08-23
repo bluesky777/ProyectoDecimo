@@ -75,7 +75,7 @@
                       <md-option ng-repeat="idioma in idiomas" value="{{idioma.id}}">{{idioma.original}} ({{idioma.abrev}}) - {{idioma.nombre}}</md-option>
                     </md-select>
                     <label class="control-label">Idiomas extras:</label>
-                    <ui-select multiple="true" style="width: 100%" on-remove="quitandoIdiomas($item, $model)" ng-show="!newEvent.es_idioma_unico" ng-model="newEvent.imgUsuario" theme="select2" on-select="idiomasSelect($item, $model)">
+                    <ui-select multiple="true" style="width: 100%" ng-show="!newEvent.es_idioma_unico" ng-model="newEvent.idiomas_extras" theme="select2">
                       <ui-select-match allow-clear="true" placeholder="Idiomas a usar"> <small ng-bind-html=" $item.original + ' (' + $item.abrev+ ')' "></small></ui-select-match>
                       <ui-select-choices repeat=" idioma in idiomas | filter: {nombre: $select.search}"><small ng-bind-html=" idioma.original + ' ('+idioma.abrev+') - ' + idioma.nombre | highlight: $select.search"></small></ui-select-choices>
                     </ui-select>
@@ -84,7 +84,7 @@
               </div>
               <div class="clearfix right">
                 <md-button type="submit" ng-disabled="guardando" class="md-primary">Guardar</md-button>
-                <md-button ng-click="cancelar_newevento()" class="md-default">Cancelar</md-button>
+                <md-button type="button" ng-click="cancelar_newevento()" class="md-default">Cancelar</md-button>
               </div>
             </form>
           </div>
@@ -183,7 +183,7 @@
               </div>
               <div class="clearfix right">
                 <md-button type="submit" ng-disabled="guardando" class="md-primary">Guardar</md-button>
-                <md-button ng-click="cancelar_currentEvento()" class="md-default">Cancelar</md-button>
+                <md-button type="button" ng-click="cancelar_currentEvento()" class="md-default">Cancelar</md-button>
               </div>
             </form>
           </div>

@@ -35,7 +35,7 @@ angular.module('WissenSystem', [
   console.log 'Entra al dominio: ', location.hostname
   
   if(location.hostname.match('lalvirtual'))
-    dominio = 'http://lalvirtual.com/wissen/public'
+    dominio = 'http://lalvirtual.com/wissen/'
   
   server = dominio + 'wissenLaravel/public/'
   #server = ''
