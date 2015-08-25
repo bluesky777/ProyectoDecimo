@@ -25,6 +25,7 @@ angular.module('WissenSystem', [
   'FBAngular'
   'ngMaterial'
   'froala'
+  'ngCordova'
 ])
 #- Valores que usaremos para nuestro proyecto
 .constant('App', (()->

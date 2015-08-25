@@ -1,14 +1,15 @@
 angular.module('WissenSystem')
 
-.controller('AddPreguntaCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', '$mdToast', 
-	($scope, $http, Restangular, $state, $cookies, $rootScope, $mdToast) ->
+.controller('AddPreguntaCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', '$mdToast', 'preguntasServ'
+	($scope, $http, Restangular, $state, $cookies, $rootScope, $mdToast, preguntasServ) ->
 
 
 		$scope.creando = false
 
 		$scope.addNewPregunta = ()->
-			$scope.preguntasking.push {
-				id: 4
+			#$scope.preguntasking.push {
+			$scope.preguntaking = {
+				#id: 4
 				descripcion: 'Una pregunta para traducir'
 				tipo_pregunta: 'Test' # Test, Multiple, Texto, Lista
 				duracion: 20
@@ -72,6 +73,15 @@ angular.module('WissenSystem')
 					}
 				]
 			}
+
+
+			preguntasServ.savePregunta($scope.preguntaking).then((r)->
+				console.log 'Agregada la nueva ', r
+			(r2)->
+				console.log 'Rechazada la nueva ', r2
+			)
+
+			console.log 'Creando nueva...'
 
 
 

@@ -25,6 +25,12 @@
                     </div>
                   </div>
                   <div class="form-group">
+                    <label class="control-label col-md-3">Alias</label>
+                    <div class="col-md-9">
+                      <input ng-model="newEvent.alias" type="text" placeholder="Alias" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group">
                     <label class="control-label col-md-3">Descripción</label>
                     <div class="col-md-9">
                       <input ng-model="newEvent.descripcion" type="text" placeholder="Descripción" class="form-control">
@@ -62,6 +68,9 @@
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
+                    <md-checkbox ng-model="newEvent.actual" ng-value="newEvent.actual">Evento actual</md-checkbox>
+                  </div>
+                  <div class="form-group">
                     <md-checkbox ng-model="newEvent.enable_public_chat" ng-value="newEvent.enable_public_chat">Habilitar chat público</md-checkbox>
                   </div>
                   <div class="form-group">
@@ -83,7 +92,7 @@
                 </div>
               </div>
               <div class="clearfix right">
-                <md-button type="submit" ng-disabled="guardando" class="md-primary">Guardar</md-button>
+                <md-button type="submit" ng-disabled="guardando_nuevo" class="md-primary">Guardar</md-button>
                 <md-button ng-click="cancelar_newevento()" class="md-default">Cancelar</md-button>
               </div>
             </form>
@@ -119,6 +128,12 @@
                     <div class="col-md-9">
                       <input ng-model="currentEvent.nombre" type="text" placeholder="Nombre" class="form-control">
                       <p class="text-danger text-right xsmall">Campo obligatorio</p>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-md-3">Alias</label>
+                    <div class="col-md-9">
+                      <input ng-model="currentEvent.alias" type="text" placeholder="Alias" class="form-control">
                     </div>
                   </div>
                   <div class="form-group">
@@ -163,6 +178,9 @@
                   <!--	md-checkbox(ng-model="currentEvent.allow_cross_users" ng-value="currentEvent.allow_cross_users")-->
                   
                   <div class="form-group">
+                    <md-checkbox ng-model="currentEvent.actual" ng-value="currentEvent.actual">Evento actual</md-checkbox>
+                  </div>
+                  <div class="form-group">
                     <md-checkbox ng-model="currentEvent.enable_public_chat" ng-value="currentEvent.enable_public_chat">Habilitar chat público</md-checkbox>
                   </div>
                   <div class="form-group">
@@ -182,7 +200,7 @@
                 </div>
               </div>
               <div class="clearfix right">
-                <md-button type="submit" ng-disabled="guardando" class="md-primary">Guardar</md-button>
+                <md-button type="submit" ng-disabled="guardando_edit" class="md-primary">Guardar</md-button>
                 <md-button ng-click="cancelar_currentEvento()" class="md-default">Cancelar</md-button>
               </div>
             </form>

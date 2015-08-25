@@ -35,24 +35,35 @@ angular.module('WissenSystem')
 	)
 	
 
+	# Traemos los eventos.
+	$scope.idiomas = []
+	Restangular.all('eventos').getList().then((r)->
+		$scope.eventos = r
+	(r2)->
+		console.log 'No se trajeron los eventos.', r2
 
-	$scope.eventos = [
-		{
-			nombre: 'Olimpiadas 2014'
-			descripcion: 'Las hechas en Cúcuta'
-			with_pay: true
-		},
-		{
-			nombre: 'OAL 2015'
-			descripcion: 'Primeras de la unión'
-			with_pay: false
-		},
-		{
-			nombre: 'Olimpiadas 2016'
-			descripcion: 'Las hechas en Medellín'
-			with_pay: true
-		}
-	]
+		"""
+		$scope.eventos = [
+			{
+				nombre: 'Olimpiadas 2014'
+				descripcion: 'Las hechas en Cúcuta'
+				with_pay: true
+			},
+			{
+				nombre: 'OAL 2015'
+				descripcion: 'Primeras de la unión'
+				with_pay: false
+			},
+			{
+				nombre: 'Olimpiadas 2016'
+				descripcion: 'Las hechas en Medellín'
+				with_pay: true
+			}
+		]
+		"""
+	)
+	
+	
 
 
 
