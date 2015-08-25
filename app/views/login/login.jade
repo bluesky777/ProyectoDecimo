@@ -9,7 +9,7 @@
 
 
 		.form-container
-			form.form-horizontal
+			form.form-horizontal(ng-submit="login()")
 				md-input-container
 					label Email Id
 					input(type="text" ng-model="credentials.username" placeholder="Enter your email-id")

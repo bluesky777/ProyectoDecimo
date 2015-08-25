@@ -27,6 +27,10 @@
 											input.form-control(ng-model="newEvent.nombre" type="text" placeholder="Nombre")
 											p.text-danger.text-right.xsmall Campo obligatorio
 									.form-group
+										label.control-label.col-md-3 Alias
+										.col-md-9
+											input.form-control(ng-model="newEvent.alias" type="text" placeholder="Alias")
+									.form-group
 										label.control-label.col-md-3 Descripción
 										.col-md-9
 											input.form-control(ng-model="newEvent.descripcion" type="text" placeholder="Descripción")
@@ -58,6 +62,10 @@
 								.col-md-4
 									
 									.form-group
+										md-checkbox(ng-model="newEvent.actual" ng-value="newEvent.actual")
+											| Evento actual
+		
+									.form-group
 										md-checkbox(ng-model="newEvent.enable_public_chat" ng-value="newEvent.enable_public_chat")
 											| Habilitar chat público
 
@@ -85,8 +93,10 @@
 
 
 							.clearfix.right
-								md-button.md-primary(type="submit" ng-disabled="guardando") Guardar
+
+								md-button.md-primary(type="submit" ng-disabled="guardando_nuevo") Guardar
 								md-button.md-default(type="button" ng-click="cancelar_newevento()") Cancelar
+
 
 
 		md-whiteframe.md-whiteframe-z2.definicion-frame(layout ng-repeat="evento in eventos"  style="padding: 10px")
@@ -125,6 +135,10 @@
 											input.form-control(ng-model="currentEvent.nombre" type="text" placeholder="Nombre")
 											p.text-danger.text-right.xsmall Campo obligatorio
 									.form-group
+										label.control-label.col-md-3 Alias
+										.col-md-9
+											input.form-control(ng-model="currentEvent.alias" type="text" placeholder="Alias")
+									.form-group
 										label.control-label.col-md-3 Descripción
 										.col-md-9
 											input.form-control(ng-model="currentEvent.descripcion" type="text" placeholder="Descripción")
@@ -162,6 +176,10 @@
 
 
 									.form-group
+										md-checkbox(ng-model="currentEvent.actual" ng-value="currentEvent.actual")
+											| Evento actual
+
+									.form-group
 										md-checkbox(ng-model="currentEvent.enable_public_chat" ng-value="currentEvent.enable_public_chat")
 											| Habilitar chat público
 
@@ -188,8 +206,10 @@
 
 
 							.clearfix.right
-								md-button.md-primary(type="submit" ng-disabled="guardando") Guardar
+
+								md-button.md-primary(type="submit" ng-disabled="guardando_edit") Guardar
 								md-button.md-default(type="button" ng-click="cancelar_currentEvento()") Cancelar
+
 
 
 

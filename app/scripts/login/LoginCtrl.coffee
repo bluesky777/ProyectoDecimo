@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('WissenSystem')
-.controller('LoginCtrl', ['$scope', '$rootScope', 'AUTH_EVENTS', 'AuthService', '$location', 'Restangular', '$cookies', 'Perfil', 'App', ($scope, $rootScope, AUTH_EVENTS, AuthService, $location, Restangular, $cookies, Perfil, App)->
+.controller('LoginCtrl', ['$scope', '$rootScope', 'AUTH_EVENTS', 'AuthService', '$location', 'Restangular', '$cookies', 'Perfil', 'App', '$state', ($scope, $rootScope, AUTH_EVENTS, AuthService, $location, Restangular, $cookies, Perfil, App, $state)->
 	
 	
 	$scope.logoPath = 'images/MyVc-1.gif'

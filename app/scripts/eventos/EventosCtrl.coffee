@@ -10,24 +10,36 @@ angular.module('WissenSystem')
 	$scope.creando = false
 	$scope.editando = false
 
+	$scope.guardando_nuevo = false
+	$scope.guardando_edit = false
+
+
 	$scope.guardar_evento = ()->
+
+		$scope.guardando_nuevo = true
 
 		Restangular.one('eventos/store').customPOST($scope.newEvent).then((r)->
 			console.log('Evento guardado', r)
 			$scope.eventos.push r
-			$scope.creando = false
+			$scope.guardando_nuevo = false
 			toastr.success 'Evento guardado con éxito.', 'Creado'
 		, (r2)->
 			console.log('No se pudo guardar el evento', r2)
 			toastr.warning 'No se pudo crear evento.', 'Problema'
+			$scope.guardando_nuevo = false
 		)
+
 
 	$scope.update_evento = ()->
 
+		$scope.guardando_edit = true
+
 		Restangular.one('eventos/update').customPUT($scope.currentEvent).then((r)->
 			console.log 'Evento editado', r
+			$scope.guardando_edit = false
 		(r2)->
 			console.log 'El Evento no se pudo editar', r2
+			$scope.guardando_edit = false
 		)
 
 	$scope.crear_evento = ()->

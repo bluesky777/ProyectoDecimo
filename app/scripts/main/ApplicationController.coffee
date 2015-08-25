@@ -36,7 +36,6 @@ angular.module('WissenSystem')
 	
 
 
-
 	$scope.traerEventos = ()->
 		Restangular.all('eventos').getList().then((r)->
 			$scope.eventos = r
@@ -45,6 +44,7 @@ angular.module('WissenSystem')
 		)
 
 	$scope.traerEventos()
+
 
 
 

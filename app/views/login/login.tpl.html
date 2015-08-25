@@ -6,7 +6,7 @@
       <h5 class="text-normal h5 text-center">Sign In to Dashboard</h5>
     </div>
     <div class="form-container">
-      <form class="form-horizontal">
+      <form ng-submit="login()" class="form-horizontal">
         <md-input-container>
           <label>Email Id</label>
           <input type="text" ng-model="credentials.username" placeholder="Enter your email-id">
