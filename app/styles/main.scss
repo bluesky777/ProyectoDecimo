@@ -23,6 +23,16 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
   top: 36px;
 }
 
+// Anchar el menú de los eventos
+.site-head ul.left-elems > li.notify-drop .dropdown-menu{
+    min-width: 450px;
+}
+
+
+md-tooltip {
+  z-index: 99999;
+}
+
 
 
 

@@ -1,6 +1,6 @@
 div(ng-repeat="disciplinaking in disciplinas_king" )
 
-	md-whiteframe.md-whiteframe-z2.definicion-frame(layout ng-repeat="disciplina in disciplinaking.disciplinas_traducidas | porIdioma:idiomaPreg" ng-hide="disciplinaking.editando" style="padding: 10px")
+	md-whiteframe.md-whiteframe-z2.definicion-frame(layout ng-repeat="disciplina in disciplinaking.disciplinas_traducidas | porIdioma:idiomapreg.selected" ng-hide="disciplinaking.editando" style="padding: 10px")
 		span(flex="10") {{$parent.$index+1}}.
 		span(flex="90") {{disciplina.nombre}}
 
@@ -19,17 +19,20 @@ div(ng-repeat="disciplinaking in disciplinas_king" )
 
 	div(ng-show="disciplinaking.editando" style="margin-top: 20px")
 		.panel.panel-default.panel-hovered.panel-stacked.mb20
-			.panel-heading Editar disciplina en idiomas:  
+			.panel-heading(ng-show="!eventoactual.es_idioma_unico" layout style="height: 40px;") 
+				span
+					| Editar disciplina en idiomas: 
 
-				md-select(multiple="true" placeholder="Idioma" ng-model="idiomasDiscEdit")
-					md-option(ng-repeat="idioma in idiomas" value="{{idioma.id}}") {{idioma.original}}
+				md-input-container(layout="row" layout-align="start center" style="padding-bottom: 0px; margin-top: -10px;")
+					md-select(multiple="true" placeholder="Idioma" ng-model="disciplinaking.idiomasEdit" ng-init="disciplinaking.idiomasEdit=[eventoactual.idioma_principal_id]")
+						md-option(ng-repeat="idioma in eventoactual.idiomas" value="{{idioma.id}}") {{idioma.original}}
 
 			.panel-body
 				form.form-horizontal(name="frm" role="form")
 
-					div(ng-repeat="disciplina in disciplinaking.disciplinas_traducidas | porIdiomasEdit:idiomasDiscEdit")
+					div(ng-repeat="disciplina in disciplinaking.disciplinas_traducidas | porIdiomasEdit:disciplinaking.idiomasEdit")
 									
-						a.btn-tag.btn-tag-info(md-ink-ripple)
+						a.btn-tag.btn-tag-info(ng-if="!eventoactual.es_idioma_unico"  md-ink-ripple)
 							| Disciplina en {{disciplina.idioma}}
 
 						.row(style="padding-left: 50px; ")
@@ -41,12 +44,17 @@ div(ng-repeat="disciplinaking in disciplinas_king" )
 								.form-group
 									label Descripción:
 									input.form-control(type="text" ng-model="disciplina.descripcion")
-							.col-lg-2.col-sm-2.col-xs-12
+							.col-lg-2.col-sm-2.col-xs-12(ng-if="!eventoactual.es_idioma_unico")
 								.form-group
-									md-checkbox(ng-model="disciplina.traducido" aria-label="¿Traducido?")
+									md-checkbox(ng-model="disciplina.traducido" ng-true-value="1" ng-false-value="0" aria-label="¿Traducido?")
 										| ¿Traducido?
 							
 					.clearfix.right
-						md-button.md-primary(type="submit" ng-disabled="guardando(disciplinaking)") Aplicar
+						md-button.md-default(ng-click="cerrar_edicion(disciplinaking)") Cerrar
+						md-button.md-primary(type="submit" ng-click="guardando(disciplinaking)") Aplicar
 						md-button.md-default(ng-click="finalizar_edicion(disciplinaking)") Finalizar
-										
+
+	
+md-button.md-primary(type="button" ng-disabled="creando" ng-click="crear_disciplina()") Crear disciplina
+	
+

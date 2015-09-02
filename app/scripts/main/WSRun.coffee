@@ -19,7 +19,7 @@ angular.module('WissenSystem')
 	ingresar = ()->
 		#- Si lastState es null, quiere decir que hemos entrado directamente a login sin ser redireccionados.
 		if $rootScope.lastState == null or $rootScope.lastState == 'login' or $rootScope.lastState == '/' or $rootScope.lastState == 'main'
-			$state.transitionTo 'panel' #- Por lo tanto nos vamos a panel después de autenticarnos.
+			$state.go 'panel' #- Por lo tanto nos vamos a panel después de autenticarnos.
 		else
 			$state.transitionTo $rootScope.lastState, $rootScope.lastStateParam #- Si no es null ni login, Nos vamos al último estado.
 		#console.log 'Funcion ingresar. lastState: ', $rootScope.lastState
@@ -62,7 +62,8 @@ angular.module('WissenSystem')
 
 
 	$rootScope.$on AUTH_EVENTS.loginSuccess, ()->
-		@
+		#console.log 'Logueado con éxito!'
+		ingresar()
 
 	$rootScope.$on AUTH_EVENTS.loginFailed, (ev)->
 		toastr.error 'Datos incorrecto.', 'No se pudo loguear'
@@ -73,7 +74,7 @@ angular.module('WissenSystem')
 	$rootScope.$on AUTH_EVENTS.notAuthenticated, (ev)->
 		toastr.warning 'No está autorizado.', 'Acceso exclusivo'
 		console.log 'Evento notAuthenticated: ', ev
-		$state.transitionTo 'login'
+		#$state.go 'login'
 		
 
 

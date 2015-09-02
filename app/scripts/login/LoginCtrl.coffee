@@ -13,11 +13,9 @@ angular.module('WissenSystem')
 
 	#$scope.host = $location.host()
 
-	$scope.login = (credentials)->
+	$scope.login = ()->
 
-		$state.go 'panel'
-
-		user = AuthService.login_credentials(credentials)
+		user = AuthService.login_credentials($scope.credentials)
 		
 		user.then((r)->
 			#console.log 'Promise ganada', r

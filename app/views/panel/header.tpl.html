@@ -3,57 +3,70 @@
   <!-- nav trigger/collapse-->
   <li><a href="" ng-click="toggleNav()" class="nav-trigger fa fa-bars"></a></li>
   <!--  Search box -->
-  <li>
-    <div class="form-search hidden-xs">
-      <form id="site-search" action="na">
-        <input type="search" placeholder="Type here for search..." class="form-control">
-        <button type="submit" class="fa fa-searchf"></button>
-      </form>
-    </div>
-  </li>
+  <!-- li
+  .form-search.hidden-xs
+  	form#site-search(action="na")
+  		input.form-control(type="search" placeholder="Type here for search...")
+  		button.fa.fa-searchf(type="submit")
+  
+  
+  -->
   <!-- site-logo for mobile nav-->
   <li>
-    <div class="site-logo visible-xs"><a href="#/dashboard" class="text-uppercase h3"><span class="text">Materia</span></a></div>
+    <div class="site-logo visible-xs"><a ui-sref="panel" class="text-uppercase h3"><span class="text">Wissen</span></a></div>
   </li>
   <!-- fullscreen-->
   <li ng-click="goFullScreen()" class="fullscreen hidden-xs"><a href=""><i class="fa fa-arrows-alt"></i></a></li>
   <!-- notification drop-->
-  <li dropdown="" class="notify-drop hidden-xs dropdown"><a href="" dropdown-toggle=""><i class="fa fa-exclamation-triangle"></i><span class="badge badge-danger badge-xs circle">3</span></a>
+  <li dropdown="" class="notify-drop hidden-xs dropdown"><a href="" dropdown-toggle=""><i class="fa fa-laptop"></i><span ng-bind=" evento_actual.alias"></span>
+      <!--span.badge.badge-danger.badge-xs.circle {{ USER.eventos.length }}--></a>
     <div custom-scrollbar="" class="panel panel-default dropdown-menu">
-      <div class="panel-heading">You have 3 new notifications <a href="javascript:;" class="right btn btn-xs btn-pink mt-3">Show All</a></div>
+      <div class="panel-heading">Selecciona el evento que deseas<a ui-sref="panel.eventos" class="right btn btn-xs btn-pink mt-3">Eventos</a></div>
       <div class="panel-body">
         <ul class="list-unstyled">
-          <li class="clearfix"><a href=""><span class="fa fa-archive left bg-success"></span>
-              <div class="desc"><strong>App downloaded</strong>
-                <p class="small text-muted">1 min ago</p>
-              </div></a></li>
+          <li ng-repeat="evento in USER.eventos" class="clearfix">
+            <!--a(href="" ng-click="set_system_event(evento)")
+            span.fa.fa-laptop.left(ng-class="(evento.actual) ? 'bg-primary': 'bg-success' ")
+            .desc
+            	strong {{ evento.nombre }}
+            	p.small.text-muted(ng-show="evento.actual") Actual
+            
+            --><a href="" ng-click="set_system_event(evento)" style="color: #fff" ng-hide="evento.actual" class="right btn btn-xs btn-purple mt-3">Actual
+              <md-tooltip>Establecer como evento actual</md-tooltip></a><a href="" ng-click="set_user_event(evento)"><span ng-class="(evento.id==USER.evento_selected_id) ? 'bg-primary': 'bg-success' " class="fa fa-laptop left"></span>
+              <div class="desc"><strong>{{ evento.nombre }}</strong>
+                <p ng-show="evento.actual" class="small text-muted">Actual</p>
+              </div></a>
+          </li>
         </ul>
       </div>
     </div>
   </li>
   <!-- Idiomas-->
-  <li dropdown="" class="notify-drop hidden-xs dropdown"><a href="" dropdown-toggle=""><i class="fa fa-flag-checkered"></i>{{ 'IDIOMA_MENU' | translate }}</a>
+  <li dropdown="" class="notify-drop hidden-xs dropdown"><a href="" dropdown-toggle=""><i class="fa fa-flag-checkered"></i></a>
     <div custom-scrollbar="" class="panel panel-default dropdown-menu">
       <div class="panel-heading">{{ 'IDIOMA_MENU' | translate }}</div>
       <div class="panel-body">
         <ul class="list-unstyled">
-          <li ng-repeat="idioma in idiomas" ng-if="idioma.used_by_system" class="clearfix"><a href="" ng-click="cambiarIdioma(idioma.abrev)"><span class="fa fa-flag left bg-success"></span>
-              <div class="desc"><strong>{{idioma.original}} ({{idioma.abrev}}) - {{idioma.nombre}}</strong></div></a></li>
+          <li ng-repeat="idioma in idiomas_usados" class="clearfix"><a href="" ng-click="cambiarIdioma(idioma.abrev)"><span ng-class="(idioma.actual) ? 'bg-primary': 'bg-success' " class="fa fa-flag left"></span>
+              <div class="desc"><strong>{{idioma.original}} ({{idioma.abrev}}) - {{idioma.nombre}}</strong>
+                <p ng-show="idioma.actual" class="small text-muted">Actual</p>
+              </div></a></li>
         </ul>
       </div>
     </div>
   </li>
 </ul>
 <ul class="list-unstyled right-elems ng-scope">
-  <li dropdown="" class="profile-drop hidden-xs dropdown"><a href="" dropdown-toggle="" aria-haspopup="true" aria-expanded="false"><img src="images/perfil/pruebaadmin.jpg" alt="admin-pic"></a>
+  <li dropdown="" class="profile-drop hidden-xs dropdown"><a href="" dropdown-toggle="" aria-haspopup="true" aria-expanded="false"><img ng-src="{{imagesPath + USER.imagen_nombre}}" alt="{{USER.username}}"></a>
     <ul class="dropdown-menu dropdown-menu-right">
       <li><a href="javascript:;"><span class="ion ion-person"></span>Profile</a></li>
       <li><a href="javascript:;"><span class="ion ion-settings"> </span>Settings</a></li>
       <li class="divider"></li>
       <li><a href="javascript:;"><span class="ion ion-lock-combination"></span>Lock Screen</a></li>
-      <li><a href="javascript:;"><span class="ion ion-power"></span>Logout</a></li>
+      <li><a href="" ng-click="logout()"><span class="ion ion-power"></span>Salir</a></li>
     </ul>
   </li>
+  <li class="profile-drop hidden-xs dropdown"><a href="" ng-click="logout()" style="color: #fff"><i class="fa fa-sign-out"> </i> Salir</a></li>
   <!--li.floating-sidebar(ng-class="{'open': floatingSidebar}")-->
   <li ng-class="{'open': floatingSidebar}" class="floating-sidebar"><a href="" ng-click="toggleFloatingSidebar()"><i class="fa fa-th"></i></a>
     <div custom-scrollbar="" class="sidebar-wrap ps-container ps-active-y">

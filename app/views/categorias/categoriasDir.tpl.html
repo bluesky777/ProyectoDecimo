@@ -1,6 +1,6 @@
 
 <div ng-repeat="categoriaking in categorias_king">
-  <md-whiteframe layout ng-repeat="categoria in categoriaking.categorias_traducidas | porIdioma:idiomaPreg" ng-hide="categoriaking.editando" style="padding: 10px" class="md-whiteframe-z2 definicion-frame"><span flex="10">{{$parent.$index+1}}.</span><span flex="90">{{categoria.nombre}}</span>
+  <md-whiteframe layout ng-repeat="categoria in categoriaking.categorias_traducidas | porIdioma:idiomapreg.selected" ng-hide="categoriaking.editando" style="padding: 10px" class="md-whiteframe-z2 definicion-frame"><span flex="10">{{$parent.$index+1}}.</span><span flex="90">{{categoria.nombre}}</span>
     <div layout="row" class="btn-container-edit">
       <md-button aria-label="Editar" ng-click="editarCategoria(categoriaking)" class="md-fab md-primary md-mini">
         <md-icon class="fa fa-pencil"></md-icon>
@@ -14,38 +14,41 @@
   </md-whiteframe>
   <div ng-show="categoriaking.editando" style="margin-top: 20px">
     <div class="panel panel-default panel-hovered panel-stacked mb20">
-      <div class="panel-heading"> 
-        <md-input-container layout="row" layout-align="start center">Editar categoria en idiomas:  
-          <md-select multiple="true" placeholder="Idioma" ng-model="idiomasDiscEdit">
-            <md-option ng-repeat="idioma in idiomas" value="{{idioma.id}}">{{idioma.original}}</md-option>
+      <div ng-if="!evento_actual.es_idioma_unico" layout style="height: 40px;" class="panel-heading"><span> Editar categoria en idiomas:  </span>
+        <md-input-container layout="row" layout-align="start center" style="padding-bottom: 0px; margin-top: -10px;">
+          <md-select multiple="true" placeholder="Idioma" ng-model="categoriaking.idiomasEdit" ng-init="categoriaking.idiomasEdit=[eventoactual.idioma_principal_id]">
+            <md-option ng-repeat="idioma in eventoactual.idiomas" value="{{idioma.id}}">{{idioma.original}}</md-option>
           </md-select>
         </md-input-container>
       </div>
       <div class="panel-body">
         <form name="frm" role="form" class="form-horizontal">
-          <div ng-repeat="categoria in categoriaking.categorias_traducidas | porIdiomasEdit:idiomasDiscEdit"><a md-ink-ripple class="btn-tag btn-tag-info">Categoria en {{categoria.idioma}}</a>
+          <div ng-repeat="categoria in categoriaking.categorias_traducidas | porIdiomasEdit:categoriaking.idiomasEdit"><a ng-if="!evento_actual.es_idioma_unico" md-ink-ripple class="btn-tag btn-tag-info">Categoria en {{categoria.idioma}}</a>
             <div layout layout-margin layout-wrap layout-padding style="padding-left: 50px; ">
               <div flex="40" flex-gt-lg="20" flex-sm="100">
                 <label>Nombre:</label>
                 <input type="text" ng-model="categoria.nombre" class="form-control">
               </div>
               <div flex="40" flex-gt-lg="20" flex-sm="100">
+                <label>Nivel:</label>
                 <md-select placeholder="Nivel" ng-model="categoria.nivel_id">
                   <md-option ng-repeat="nivelking in niveles_king" value="{{nivelking.id}}">{{nivelking.nombre}}</md-option>
                 </md-select>
               </div>
               <div flex="40" flex-gt-lg="20" flex-sm="100">
+                <label>Disciplina:</label>
                 <md-select placeholder="Disciplina" ng-model="categoria.disciplina_id">
                   <md-option ng-repeat="disciplinaking in disciplinas_king" value="{{disciplinaking.id}}">{{disciplinaking.nombre}}</md-option>
                 </md-select>
               </div>
-              <div flex="40" flex-gt-lg="20" flex-sm="100">
+              <div ng-if="!evento_actual.es_idioma_unico" flex="40" flex-gt-lg="20" flex-sm="100">
                 <md-checkbox ng-model="categoria.traducido" aria-label="¿Traducido?">¿Traducido?</md-checkbox>
               </div>
             </div>
           </div>
           <div class="clearfix right">
-            <md-button type="submit" ng-disabled="guardando(categoriaking)" class="md-primary">Aplicar</md-button>
+            <md-button ng-click="cerrar_edicion(categoriaking)" class="md-default">Cerrar</md-button>
+            <md-button type="submit" ng-click="guardando(categoriaking)" class="md-primary">Aplicar</md-button>
             <md-button ng-click="finalizar_edicion(categoriaking)" class="md-default">Finalizar</md-button>
           </div>
         </form>
@@ -53,3 +56,4 @@
     </div>
   </div>
 </div>
+<md-button type="button" ng-disabled="creando" ng-click="crear_categoria()" class="md-primary">Crear categoria</md-button>

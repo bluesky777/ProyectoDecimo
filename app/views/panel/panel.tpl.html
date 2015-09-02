@@ -1,53 +1,5 @@
 
-<header id="site-head" ng-class="{'fixedHeader': fixedHeader}" ng-include=" 'views/panel/header.tpl.html' " class="site-head fixedHeader">
-  <ul class="list-unstyled left-elems">
-    <!-- nav trigger/collapse -->
-    <li><a href="" ng-click="toggleNav()" tabindex="0" class="nav-trigger ion ion-drag"></a>
-      <!-- <md-switch class="nav-trigger" ng-model="navHorizontal" style="margin: 0" ng-change="toggleNav()"> -->
-    </li><!-- Search box -->
-    <li>
-      <div class="form-search hidden-xs">
-        <form id="site-search" action="http://solutionportal.net/projects/materia/angular/#na" class="ng-pristine ng-valid">
-          <input type="search" placeholder="Type here for search..." class="form-control">
-          <button type="submit" class="ion ion-ios-search-strong"></button>
-        </form>
-      </div>
-    </li><!-- site-logo for mobile nav -->
-    <li>
-      <div class="site-logo visible-xs"><a href="materiales/Materia - Material Design Admin Template.html" class="text-uppercase h3"><span class="text">Materia</span></a></div>
-    </li><!-- fullscreen -->
-    <li ng-click="goFullScreen()" role="button" tabindex="0" class="fullscreen hidden-xs"><a href=""><i class="ion ion-qr-scanner"></i></a></li><!-- notification drop -->
-    <li dropdown="" class="notify-drop hidden-xs dropdown"><a href="" dropdown-toggle="" aria-haspopup="true" aria-expanded="false"><i class="ion ion-speakerphone"></i><span class="badge badge-danger badge-xs circle">3</span></a>
-      <div custom-scrollbar="" class="panel panel-default dropdown-menu ps-container">
-        <div class="panel-heading">You have 3 new notifications <a href="javascript:;" class="right btn btn-xs btn-pink mt-3">Show All</a></div>
-        <div class="panel-body">
-          <ul class="list-unstyled">
-            <li class="clearfix"><a href=""><span class="ion ion-archive left bg-success"></span>
-                <div class="desc">App downloaded
-                  <p class="small text-muted">1 min ago</p>
-                </div></a></li>
-          </ul>
-        </div>
-      </div>
-      <div style="left: 0px; bottom: 3px;" class="ps-scrollbar-x-rail"></div>
-      <div style="left: 0px; width: 0px;" class="ps-scrollbar-x"></div>
-      <div style="top: 0px; right: 0px;" class="ps-scrollbar-y-rail"></div>
-      <div style="top: 0px; height: 0px;" class="ps-scrollbar-y"></div>
-    </li>
-  </ul>
-  <ul class="list-unstyled right-elems">
-    <!-- profile drop-->
-    <li dropdown="" class="profile-drop hidden-xs dropdown"><a href="" dropdown-toggle="" aria-haspopup="true" aria-expanded="false"><img src="images/perfil/pruebaadmin.jpg" alt="admin-pic"></a>
-      <ul class="dropdown-menu dropdown-menu-right">
-        <li><a href="javascript:;"><span class="ion ion-person"> Profile</span></a></li>
-        <li><a href="javascript:;"><span class="ion ion-settings"> Settings</span></a></li>
-        <li class="divider"></li>
-        <li><a href="javascript:;"><span class="ion ion-lock-combination"> Lock Screen</span></a></li>
-        <li><a href="javascript:;"><span class="ion ion-power"> Logout</span></a></li>
-      </ul>
-    </li>
-  </ul>
-</header>
+<header id="site-head" ng-class="{'fixedHeader': fixedHeader}" ng-include=" 'views/panel/header.tpl.html' " class="site-head fixedHeader"></header>
 <!-- main-container-->
 <div ng-class="{'nav-expand': navFull, 'nav-horizontal': navHorizontal}" class="main-container clearfix nav-expand">
   <aside id="site-nav" ng-class="{'nav-expand': navFull, 'nav-offcanvas': navOffCanvas}" custom-scrollbar="" ng-include=" 'views/panel/nav.tpl.html' " class="nav-wrap ps-container nav-expand ps-active-y">

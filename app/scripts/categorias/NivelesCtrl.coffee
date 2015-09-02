@@ -1,68 +1,104 @@
 angular.module('WissenSystem')
 
-.controller('NivelesCtrl', ['$scope', 'Restangular',  ($scope, Restangular)->
-
-	$scope.idiomasDiscEdit = [$scope.idiomaPreg]
+.controller('NivelesCtrl', ['$scope', 'Restangular', 'toastr', '$modal', 'App', '$filter',  ($scope, Restangular, toastr, $modal, App, $filter)->
 
 
-	$scope.niveles_king = [
-		{
-			id: 1
-			nombre: 'Niños'
-			niveles_traducidos: [
-				{
-					nombre: 'Niños'
-					idioma_id: 1
-					idioma: 'Español'
-					nivel_id: 1
-					descripcion: 'Para menores'
-					traducido: false
-				},
-				{
-					nombre: 'Children'
-					idioma_id: 2
-					idioma: 'English'
-					nivel_id: 1
-					descripcion: 'For children'
-					traducido: true
-				}
-			]
-		},
-		{
-			id: 2
-			nombre: 'Adultos'
-			niveles_traducidos: [
-				{
-					nombre: 'Adultos'
-					idioma_id: 1
-					idioma: 'Español'
-					nivel_id: 2
-					descripcion: 'Para hombres mayores'
-					traducido: false
-				},
-				{
-					nombre: 'Adults'
-					idioma_id: 2
-					idioma: 'English'
-					nivel_id: 2
-					descripcion: 'For greater men'
-					traducido: true
-				}
-			]
-		}
-	]
+	$scope.creando = false
 
 
-	$scope.editarNivel = (nivel)->
-		nivel.editando = true
+	$scope.niveles_king = []
 
-	$scope.eliminarNivel = (nivel)->
-		#nivel.editando = true
+	$scope.traer_niveles = ()->
+		Restangular.all('niveles/niveles-usuario').getList().then((r)->
+			$scope.niveles_king = r
+			#console.log 'Niveles traídas: ', r
+		, (r2)->
+			toastr.warning 'No se trajeron las niveles', 'Problema'
+			console.log 'No se trajo niveles ', r2
+		)
+	$scope.traer_niveles()
 
-	$scope.finalizar_edicion = (nivel)->
-		nivel.editando = false
+	$scope.$on 'cambio_evento_user', ()->
+		$scope.traer_niveles()
 
+
+
+	$scope.crear_nivel = ()->
+		$scope.creando = true
+
+		Restangular.one('niveles/store').customPOST().then((r)->
+			r.editando = true
+			$scope.niveles_king.push r
+			$scope.creando = false
+			console.log 'Nivel creada', r
+		, (r2)->
+			toastr.warning 'No se creó el nivel', 'Problema'
+			console.log 'No se creó nivel ', r2
+			$scope.creando = false
+		)
+
+
+	$scope.cerrar_edicion = (nivelking)->
+		nivelking.editando = false
+			
+
+	$scope.editarNivel = (nivelking)->
+		nivelking.editando = true
+
+
+	$scope.eliminarNivel = (nivelking)->
+
+		modalInstance = $modal.open({
+			templateUrl: App.views + 'categorias/removeNivel.tpl.html'
+			controller: 'RemoveNivelCtrl'
+			resolve: 
+				elemento: ()->
+					nivelking
+		})
+		modalInstance.result.then( (elem)->
+			$scope.niveles_king = $filter('filter')($scope.niveles_king, {id: '!'+elem.id})
+			console.log 'Resultado del modal: ', elem
+		)
+
+
+	$scope.finalizar_edicion = (nivelking)->
+		$scope.guardando(nivelking)
+		nivelking.editando = false
+
+	$scope.guardando = (nivelking)->
+		Restangular.all('niveles/guardar').customPUT(nivelking).then((r)->
+			toastr.success 'Nivel guardada.'
+			console.log 'Nivel guardada: ', r
+		, (r2)->
+			toastr.warning 'No se pudo guardar el nivel', 'Problema'
+			console.log 'No se pudo guardar el nivel ', r2
+		)
 
 
 ])
+
+
+
+.controller('RemoveNivelCtrl', ['$scope', '$modalInstance', 'elemento', 'Restangular', 'toastr', ($scope, $modalInstance, elemento, Restangular, toastr)->
+	$scope.elemento = elemento
+	console.log 'elemento', elemento
+
+	$scope.ok = ()->
+
+		Restangular.all('niveles/destroy').customDELETE(elemento.id).then((r)->
+			toastr.success 'Nivel eliminado con éxito.', 'Eliminado'
+			$modalInstance.close(elemento)
+		, (r2)->
+			toastr.warning 'No se pudo eliminar al elemento.', 'Problema'
+			console.log 'Error eliminando elemento: ', r2
+			$modalInstance.dismiss('Error')
+		)
+		
+
+	$scope.cancel = ()->
+		$modalInstance.dismiss('cancel')
+
+])
+
+
 

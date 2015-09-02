@@ -1,171 +1,106 @@
 angular.module('WissenSystem')
 
-.controller('CategoriasDirCtrl', ['$scope', 'Restangular',  ($scope, Restangular)->
-
-	$scope.idiomasDiscEdit = [$scope.idiomaPreg]
-
-
-	$scope.categorias_king = [
-		{	
-			id: 1
-			nombre: 'MtNi'
-			nivel_id: 1
-			disciplina_id: 1
-			evento_id: 1
-			categorias_traducidas: [
-				{
-					id: 1
-					nombre: 'Matemáticas Niños'
-					abrev: 'MaNi'
-					categoria_id: 1
-					descripcion: ''
-					idioma_id: 1
-				},
-				{
-					id: 2
-					nombre: 'Mathematics Children'
-					abrev: 'MathCh'
-					categoria_id: 1
-					descripcion: ''
-					idioma_id: 2
-				}
-			]
-		},
-		{	
-			id: 2
-			nombre: 'MtAd'
-			nivel_id: 2
-			disciplina_id: 1
-			evento_id: 1
-			categorias_traducidas: [
-				{
-					id: 3
-					nombre: 'Matemáticas Adultos'
-					abrev: 'MatAd'
-					categoria_id: 2
-					descripcion: ''
-					idioma_id: 1
-				},
-				{
-					id: 4
-					nombre: 'Mathematics Adults'
-					abrev: 'MathAd'
-					categoria_id: 2
-					descripcion: ''
-					idioma_id: 2
-				}
-			]
-		}
-	]
-
-
-	$scope.disciplinas_king = [
-		{
-			id: 1
-			nombre: 'Matemáticas'
-			disciplinas_traducidas: [
-				{
-					nombre: 'Matemáticas'
-					idioma_id: 1
-					idioma: 'Español'
-					disciplina_id: 1
-					descripcion: 'Matemáticas'
-					traducido: false
-				},
-				{
-					nombre: 'Math'
-					idioma_id: 2
-					idioma: 'English'
-					disciplina_id: 1
-					descripcion: 'Math'
-					traducido: true
-				}
-			]
-		},
-		{
-			id: 2
-			nombre: 'Sociales'
-			disciplinas_traducidas: [
-				{
-					nombre: 'Sociales'
-					idioma_id: 1
-					idioma: 'Español'
-					disciplina_id: 2
-					descripcion: 'Sociales'
-					traducido: false
-				},
-				{
-					nombre: 'Geografy'
-					idioma_id: 2
-					idioma: 'English'
-					disciplina_id: 2
-					descripcion: 'Geografy'
-					traducido: true
-				}
-			]
-		}
-	]
-
-
-	$scope.niveles_king = [
-		{
-			id: 1
-			nombre: 'Niños'
-			niveles_traducidos: [
-				{
-					nombre: 'Niños'
-					idioma_id: 1
-					idioma: 'Español'
-					nivel_id: 1
-					descripcion: 'Para menores'
-					traducido: false
-				},
-				{
-					nombre: 'Children'
-					idioma_id: 2
-					idioma: 'English'
-					nivel_id: 1
-					descripcion: 'For children'
-					traducido: true
-				}
-			]
-		},
-		{
-			id: 2
-			nombre: 'Adultos'
-			niveles_traducidos: [
-				{
-					nombre: 'Adultos'
-					idioma_id: 1
-					idioma: 'Español'
-					nivel_id: 2
-					descripcion: 'Para hombres mayores'
-					traducido: false
-				},
-				{
-					nombre: 'Adults'
-					idioma_id: 2
-					idioma: 'English'
-					nivel_id: 2
-					descripcion: 'For greater men'
-					traducido: true
-				}
-			]
-		}
-	]
+.controller('CategoriasDirCtrl', ['$scope', 'Restangular', 'toastr', '$modal', 'App', '$filter',  ($scope, Restangular, toastr, $modal, App, $filter)->
 
 
 
-	$scope.editarCategoria = (categoria)->
-		categoria.editando = true
+	$scope.creando = false
 
-	$scope.eliminarCategoria = (categoria)->
-		#categoria.editando = true
 
-	$scope.finalizar_edicion = (categoria)->
-		categoria.editando = false
+	$scope.categorias_king = []
 
+	$scope.traer_categorias = ()->
+		Restangular.all('categorias/categorias-usuario').getList().then((r)->
+			$scope.categorias_king = r
+			#console.log 'Categorias traídas: ', r
+		, (r2)->
+			toastr.warning 'No se trajeron las categorias', 'Problema'
+			console.log 'No se trajo categorias ', r2
+		)
+	$scope.traer_categorias()
+
+	$scope.$on 'cambio_evento_user', ()->
+		$scope.traer_categorias()
+
+
+
+	$scope.crear_categoria = ()->
+		$scope.creando = true
+
+		Restangular.one('categorias/store').customPOST().then((r)->
+			r.editando = true
+			$scope.categorias_king.push r
+			$scope.creando = false
+			console.log 'Categorias creada', r
+		, (r2)->
+			toastr.warning 'No se creó la categoria', 'Problema'
+			console.log 'No se creó categoria ', r2
+			$scope.creando = false
+		)
+
+
+	$scope.cerrar_edicion = (categoriaking)->
+		categoriaking.editando = false
+			
+
+	$scope.editarCategoria = (categoriaking)->
+		categoriaking.editando = true
+
+
+	$scope.eliminarCategoria = (categoriaking)->
+
+		modalInstance = $modal.open({
+			templateUrl: App.views + 'categorias/removeCategoria.tpl.html'
+			controller: 'RemoveCategoriaCtrl'
+			resolve: 
+				elemento: ()->
+					categoriaking
+		})
+		modalInstance.result.then( (elem)->
+			$scope.categorias_king = $filter('filter')($scope.categorias_king, {id: '!'+elem.id})
+			console.log 'Resultado del modal: ', elem
+		)
+
+
+	$scope.finalizar_edicion = (categoriaking)->
+		$scope.guardando(categoriaking)
+		categoriaking.editando = false
+
+	$scope.guardando = (categoriaking)->
+		Restangular.all('categorias/guardar').customPUT(categoriaking).then((r)->
+			toastr.success 'Categoria guardada.'
+			console.log 'Categoria guardada: ', r
+		, (r2)->
+			toastr.warning 'No se pudo guardar la categoria', 'Problema'
+			console.log 'No se pudo guardar la categoria ', r2
+		)
 
 
 ])
+
+
+
+.controller('RemoveCategoriaCtrl', ['$scope', '$modalInstance', 'elemento', 'Restangular', 'toastr', ($scope, $modalInstance, elemento, Restangular, toastr)->
+	$scope.elemento = elemento
+	console.log 'elemento', elemento
+
+	$scope.ok = ()->
+
+		Restangular.all('categorias/destroy').customDELETE(elemento.id).then((r)->
+			toastr.success 'Categoria eliminada con éxito.', 'Eliminado'
+			$modalInstance.close(elemento)
+		, (r2)->
+			toastr.warning 'No se pudo eliminar al elemento.', 'Problema'
+			console.log 'Error eliminando elemento: ', r2
+			$modalInstance.dismiss('Error')
+		)
+		
+
+	$scope.cancel = ()->
+		$modalInstance.dismiss('cancel')
+
+])
+
+
+
 

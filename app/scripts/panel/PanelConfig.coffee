@@ -12,7 +12,7 @@ angular.module('WissenSystem')
 						controller: 'PanelCtrl'
 				resolve: { 
 					resolved_user: ['AuthService', (AuthService)->
-						#AuthService.verificar()
+						AuthService.verificar()
 					]
 				}
 				data: 

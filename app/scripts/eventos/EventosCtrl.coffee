@@ -20,9 +20,16 @@ angular.module('WissenSystem')
 
 		Restangular.one('eventos/store').customPOST($scope.newEvent).then((r)->
 			console.log('Evento guardado', r)
-			$scope.eventos.push r
+			r.idiomas_extras = $scope.newEvent.idiomas_extras
+			$scope.USER.eventos.push r
 			$scope.guardando_nuevo = false
+			$scope.creando = false
 			toastr.success 'Evento guardado con éxito.', 'Creado'
+
+			# Reiniciamos las variables del nuevo evento.
+			$scope.newEvent = {
+				with_pay: false
+			}
 		, (r2)->
 			console.log('No se pudo guardar el evento', r2)
 			toastr.warning 'No se pudo crear evento.', 'Problema'
@@ -37,8 +44,10 @@ angular.module('WissenSystem')
 		Restangular.one('eventos/update').customPUT($scope.currentEvent).then((r)->
 			console.log 'Evento editado', r
 			$scope.guardando_edit = false
+			toastr.success 'Evento actualizado con éxito.'
 		(r2)->
 			console.log 'El Evento no se pudo editar', r2
+			toastr.warning 'No se pudo editar evento.', 'Problema'
 			$scope.guardando_edit = false
 		)
 
@@ -68,7 +77,7 @@ angular.module('WissenSystem')
 	
 
 	$scope.idiomasSelect = (item, model)->
-		
+		console.log item, $scope.currentEvent.idiomas_extras
 		datos = 
 			evento_id: $scope.currentEvent.id
 			idioma_id: item.id
@@ -91,7 +100,7 @@ angular.module('WissenSystem')
 					evento
 		})
 		modalInstance.result.then( (elem)->
-			$scope.eventos = $filter('filter')($scope.eventos, {id: '!'+elem.id})
+			$scope.USER.eventos = $filter('filter')($scope.USER.eventos, {id: '!'+elem.id})
 			console.log 'Resultado del modal: ', elem
 		)
 
@@ -108,11 +117,13 @@ angular.module('WissenSystem')
 
 		Restangular.all('eventos/destroy').customDELETE(elemento.id).then((r)->
 			toastr.success 'Evento eliminado con éxito.', 'Eliminado'
+			$modalInstance.close(elemento)
 		, (r2)->
 			toastr.warning 'No se pudo eliminar al elemento.', 'Problema'
 			console.log 'Error eliminando elemento: ', r2
+			$modalInstance.dismiss('cancel')
 		)
-		$modalInstance.close(elemento)
+		
 
 	$scope.cancel = ()->
 		$modalInstance.dismiss('cancel')

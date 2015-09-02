@@ -4,10 +4,11 @@ angular.module('WissenSystem')
 
 	restrict: 'E'
 	templateUrl: "#{App.views}categorias/disciplinasDir.tpl.html"
-	###
+	
 	scope: 
-		preguntasking: "="
-	###
+		idiomapreg: "="
+		eventoactual: "="
+		
 	link: (scope, iElem, iAttrs)->
 		# Debo agregar la clase .loading-inactive para que desaparezca el loader de la pantalla.
 		# y eso lo puedo hacer con el ng-if

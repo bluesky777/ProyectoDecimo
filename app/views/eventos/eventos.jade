@@ -41,7 +41,7 @@
 											md-option(value="2") Para la final
 									.form-group
 										label.control-label.col-md-3 Con pago
-										md-checkbox(ng-model="newEvent.with_pay" ng-value="newEvent.with_pay")
+										md-checkbox(ng-model="newEvent.with_pay" ng-value="newEvent.with_pay" aria-label="Con pago")
 									
 									.form-group(ng-show="newEvent.with_pay")
 										label.control-label.col-md-3 Precio 1
@@ -83,12 +83,13 @@
 										md-select(placeholder="Seleccione idioma principal" ng-model="newEvent.idioma_principal_id")
 											md-option(ng-repeat="idioma in idiomas" value="{{idioma.id}}") {{idioma.original}} ({{idioma.abrev}}) - {{idioma.nombre}}
 									
-										label.control-label Idiomas extras:
-										ui-select(multiple="true" style="width: 100%" ng-show="!newEvent.es_idioma_unico" ng-model="newEvent.idiomas_extras" theme="select2")
-											ui-select-match(allow-clear="true" placeholder="Idiomas a usar") 
-												small(ng-bind-html=" $item.original + ' (' + $item.abrev+ ')' ")
-											ui-select-choices(repeat=" idioma in idiomas | filter: {nombre: $select.search}")
-												small(ng-bind-html=" idioma.original + ' ('+idioma.abrev+') - ' + idioma.nombre | highlight: $select.search")
+										div(ng-show="!newEvent.es_idioma_unico")
+											label.control-label Idiomas extras:
+											ui-select(multiple="true" style="width: 100%" ng-model="newEvent.idiomas_extras" theme="select2")
+												ui-select-match(allow-clear="true" placeholder="Idiomas a usar") 
+													small(ng-bind-html=" $item.original + ' (' + $item.abrev+ ')' ")
+												ui-select-choices(repeat=" idioma in idiomas | filter: {nombre: $select.search}")
+													small(ng-bind-html=" idioma.original + ' ('+idioma.abrev+') - ' + idioma.nombre | highlight: $select.search")
 									
 
 
@@ -99,7 +100,7 @@
 
 
 
-		md-whiteframe.md-whiteframe-z2.definicion-frame(layout ng-repeat="evento in eventos"  style="padding: 10px")
+		md-whiteframe.md-whiteframe-z2.definicion-frame(layout ng-repeat="evento in USER.eventos"  style="padding: 10px")
 			span(flex="10") {{$index+1}}.
 			span(flex="90") {{evento.nombre}}
 
@@ -195,12 +196,13 @@
 										md-select(placeholder="Seleccione idioma principal" ng-model="currentEvent.idioma_principal_id")
 											md-option(ng-repeat="idioma in idiomas" value="{{idioma.id}}") {{idioma.original}} - {{idioma.nombre}}
 									
-
-										ui-select(multiple="true" style="width: 100%" on-remove="quitandoIdiomas($item, $model)" ng-show="!currentEvent.es_idioma_unico" ng-model="currentEvent.imgUsuario" theme="select2" on-select="idiomasSelect($item, $model)" )
-											ui-select-match(allow-clear="true" placeholder="Idiomas a usar") 
-												small(ng-bind-html=" $item.nombre")
-											ui-select-choices(repeat=" idioma in idiomas | filter: {nombre: $select.search}")
-												small(ng-bind-html=" idioma.original + ' - ' + idioma.nombre | highlight: $select.search")
+										div(ng-show="!currentEvent.es_idioma_unico")
+											label.control-label Idiomas extras:
+											ui-select(multiple="true" style="width: 100%" on-remove="quitandoIdiomas($item, $model)" ng-model="currentEvent.idiomas_extras" theme="select2" on-select="idiomasSelect($item, $model)" )
+												ui-select-match(allow-clear="true" placeholder="Idiomas a usar") 
+													small(ng-bind-html=" $item.nombre")
+												ui-select-choices(repeat=" idioma in idiomas | filter: {nombre: $select.search}")
+													small(ng-bind-html=" idioma.original + ' - ' + idioma.nombre | highlight: $select.search")
 									
 
 

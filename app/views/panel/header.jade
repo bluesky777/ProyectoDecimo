@@ -4,7 +4,7 @@ ul.list-unstyled.left-elems
 		a.nav-trigger.fa.fa-bars(href="" ng-click="toggleNav()")
 
 	//  Search box 
-	li
+	// li
 		.form-search.hidden-xs
 			form#site-search(action="na")
 				input.form-control(type="search" placeholder="Type here for search...")
@@ -14,8 +14,8 @@ ul.list-unstyled.left-elems
 	// site-logo for mobile nav
 	li
 		.site-logo.visible-xs
-			a.text-uppercase.h3(href="#/dashboard")
-				span.text Materia
+			a.text-uppercase.h3(ui-sref="panel")
+				span.text Wissen
 
 	// fullscreen
 	li.fullscreen.hidden-xs(ng-click="goFullScreen()")
@@ -25,43 +25,58 @@ ul.list-unstyled.left-elems
 	// notification drop
 	li.notify-drop.hidden-xs.dropdown(dropdown="")
 		a(href="" dropdown-toggle="")
-			i.fa.fa-exclamation-triangle
-			span.badge.badge-danger.badge-xs.circle 3
+			i.fa.fa-laptop
+			span(ng-bind=" evento_actual.alias")
+			//span.badge.badge-danger.badge-xs.circle {{ USER.eventos.length }}
 		
 		.panel.panel-default.dropdown-menu(custom-scrollbar="")
-			.panel-heading You have 3 new notifications 
-				a.right.btn.btn-xs.btn-pink.mt-3(href="javascript:;") Show All
+			.panel-heading Selecciona el evento que deseas
+				a.right.btn.btn-xs.btn-pink.mt-3(ui-sref="panel.eventos") Eventos
 			.panel-body
 				ul.list-unstyled
-					li.clearfix
-						a(href="")
-							span.fa.fa-archive.left.bg-success
+					li.clearfix(ng-repeat="evento in USER.eventos")
+						
+
+						//a(href="" ng-click="set_system_event(evento)")
+							span.fa.fa-laptop.left(ng-class="(evento.actual) ? 'bg-primary': 'bg-success' ")
 							.desc
-								strong App downloaded
-								p.small.text-muted 1 min ago
+								strong {{ evento.nombre }}
+								p.small.text-muted(ng-show="evento.actual") Actual
+						
+						a.right.btn.btn-xs.btn-purple.mt-3(href="" ng-click="set_system_event(evento)" style="color: #fff" ng-hide="evento.actual")
+							| Actual
+							md-tooltip Establecer como evento actual
+
+						a(href="" ng-click="set_user_event(evento)")
+							span.fa.fa-laptop.left(ng-class="(evento.id==USER.evento_selected_id) ? 'bg-primary': 'bg-success' ")
+							.desc
+								strong {{ evento.nombre }}
+								p.small.text-muted(ng-show="evento.actual") Actual
+						
+
 
 
 	// Idiomas
 	li.notify-drop.hidden-xs.dropdown(dropdown="")
 		a(href="" dropdown-toggle="")
 			i.fa.fa-flag-checkered
-			{{ 'IDIOMA_MENU' | translate }}
 		
 		.panel.panel-default.dropdown-menu(custom-scrollbar="")
 			.panel-heading {{ 'IDIOMA_MENU' | translate }}
 			.panel-body
 				ul.list-unstyled
-					li.clearfix(ng-repeat="idioma in idiomas" ng-if="idioma.used_by_system")
+					li.clearfix(ng-repeat="idioma in idiomas_usados")
 						a(href="" ng-click="cambiarIdioma(idioma.abrev)")
-							span.fa.fa-flag.left.bg-success
+							span.fa.fa-flag.left(ng-class="(idioma.actual) ? 'bg-primary': 'bg-success' ")
 							.desc
 								strong {{idioma.original}} ({{idioma.abrev}}) - {{idioma.nombre}}
+								p.small.text-muted(ng-show="idioma.actual") Actual
 
 
 ul.list-unstyled.right-elems.ng-scope
 	li.profile-drop.hidden-xs.dropdown(dropdown='')
 		a(href='', dropdown-toggle='', aria-haspopup='true', aria-expanded='false')
-			img(src='images/perfil/pruebaadmin.jpg', alt='admin-pic')
+			img(ng-src="{{imagesPath + USER.imagen_nombre}}" alt="{{USER.username}}")
 		ul.dropdown-menu.dropdown-menu-right
 			li
 				a(href='javascript:;')
@@ -77,12 +92,16 @@ ul.list-unstyled.right-elems.ng-scope
 					span.ion.ion-lock-combination
 					| Lock Screen
 			li
-				a(href='javascript:;')
+				a(href='' ng-click="logout()")
 					span.ion.ion-power
-					| Logout
+					| Salir
 
 
-
+	li.profile-drop.hidden-xs.dropdown()
+		a(href='' ng-click="logout()" style="color: #fff")
+			i.fa.fa-sign-out 
+			|  Salir
+			
 	//li.floating-sidebar(ng-class="{'open': floatingSidebar}")
 	li.floating-sidebar(ng-class="{'open': floatingSidebar}")
 		a(href="" ng-click='toggleFloatingSidebar()')

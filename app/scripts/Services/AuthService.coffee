@@ -6,32 +6,36 @@ angular.module('WissenSystem')
 	authService.verificar = ()->
 		d = $q.defer();
 
-		if Perfil.User().user_id
+		# No necesitaría verificar si ya se ha logueado
+		if Perfil.User().id
 			d.resolve Perfil.User()
 		else
-			if $cookies.xtoken
-				if $cookies.xtoken != undefined and $cookies.xtoken != 'undefined'  and $cookies.xtoken != '[object Object]'
+			if $cookies.get('xtoken')
+				if $cookies.get('xtoken') != undefined and $cookies.get('xtoken') != 'undefined'  and $cookies.get('xtoken') != '[object Object]'
 					authService.login_from_token().then((usuario)->
 						Perfil.setUser usuario
 						d.resolve usuario
 					, (r2)->
 						console.log 'No se logueó from token'
 						d.reject r2
+						authService.borrarToken()
+						$rootScope.$broadcast(AUTH_EVENTS.notAuthenticated)
 					)
 				else
-					console.log 'Token mal estructurado: ', $cookies.xtoken
+					console.log 'Token mal estructurado: ', $cookies.get('xtoken')
 					authService.borrarToken()
+					$rootScope.$broadcast(AUTH_EVENTS.notAuthenticated)
 					d.reject 'Token mal estructurado.'
 			else
-				console.log 'No hay token'
-				d.resolve 'No hay token.'
-				#$state.go 'login'
+				console.log 'No hay cookie token.'
+				d.resolve 'No hay cookie token.'
+				$state.go 'login'
 				$rootScope.$broadcast(AUTH_EVENTS.notAuthenticated)
 		return d.promise
 
 
 	authService.verificar_acceso = ()->
-		if !Perfil.User().user_id
+		if !Perfil.User().id
 			$state.go 'login'
 
 		next = $state.current
@@ -64,16 +68,17 @@ angular.module('WissenSystem')
 
 		authService.borrarToken()
 
-		Restangular.one('login').post('', credentials).then((user)->
+		Restangular.one('login/login').customPOST(credentials).then((user)->
 			#debugger
 			if user.token
-				$cookies.xtoken = user.token
+				$cookies.put('xtoken', user.token)
 				
-				$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.xtoken
+				$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.get('xtoken')
 
 				Perfil.setUser user
 
-				console.log 'Usuario traido: ', user
+				#console.log 'Usuario traido: ', user
+
 				
 				$rootScope.$broadcast AUTH_EVENTS.loginSuccess
 				d.resolve user
@@ -105,18 +110,26 @@ angular.module('WissenSystem')
 
 		d = $q.defer();
 
-		$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.xtoken
+		#console.log Perfil.User().id 
 
-		login = Restangular.one('login').post().then((usuario)->
+		if Perfil.User().id or Perfil.User().id == undefined
 
-			$rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-			d.resolve usuario
+			$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.get('xtoken')
 
-		, (r2)->
-			console.log 'No se pudo loguear con token. ', r2
-			d.reject 'Error en login con token.'
-			#$rootScope.$broadcast AUTH_EVENTS.loginFailed
-		)
+			login = Restangular.one('login/verificar').post().then((usuario)->
+
+				$rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+				d.resolve usuario
+
+			, (r2)->
+				console.log 'No se pudo loguear con token. ', r2
+				d.reject 'Error en login con token.'
+				$rootScope.$broadcast AUTH_EVENTS.loginFailed
+			)
+		
+		else
+			d.resolve Perfil.User()
+
 		return d.promise
 
 
@@ -129,11 +142,11 @@ angular.module('WissenSystem')
 		$state.transitionTo 'login'
 
 	authService.borrarToken = ()->
-		delete $cookies.xtoken
+		$cookies.remove('xtoken')
 		delete $http.defaults.headers.common['Authorization']
 
 	authService.isAuthenticated = ()->
-		return !!Perfil.User().user_id;
+		return !!Perfil.User().id;
 
 	authService.isAuthorized = (neededPermissions)->
 

@@ -45,7 +45,7 @@
                   </div>
                   <div class="form-group">
                     <label class="control-label col-md-3">Con pago</label>
-                    <md-checkbox ng-model="newEvent.with_pay" ng-value="newEvent.with_pay"></md-checkbox>
+                    <md-checkbox ng-model="newEvent.with_pay" ng-value="newEvent.with_pay" aria-label="Con pago"></md-checkbox>
                   </div>
                   <div ng-show="newEvent.with_pay" class="form-group">
                     <label class="control-label col-md-3">Precio 1</label>
@@ -83,29 +83,26 @@
                     <md-select placeholder="Seleccione idioma principal" ng-model="newEvent.idioma_principal_id">
                       <md-option ng-repeat="idioma in idiomas" value="{{idioma.id}}">{{idioma.original}} ({{idioma.abrev}}) - {{idioma.nombre}}</md-option>
                     </md-select>
-                    <label class="control-label">Idiomas extras:</label>
-                    <ui-select multiple="true" style="width: 100%" ng-show="!newEvent.es_idioma_unico" ng-model="newEvent.idiomas_extras" theme="select2">
-                      <ui-select-match allow-clear="true" placeholder="Idiomas a usar"> <small ng-bind-html=" $item.original + ' (' + $item.abrev+ ')' "></small></ui-select-match>
-                      <ui-select-choices repeat=" idioma in idiomas | filter: {nombre: $select.search}"><small ng-bind-html=" idioma.original + ' ('+idioma.abrev+') - ' + idioma.nombre | highlight: $select.search"></small></ui-select-choices>
-                    </ui-select>
+                    <div ng-show="!newEvent.es_idioma_unico">
+                      <label class="control-label">Idiomas extras:</label>
+                      <ui-select multiple="true" style="width: 100%" ng-model="newEvent.idiomas_extras" theme="select2">
+                        <ui-select-match allow-clear="true" placeholder="Idiomas a usar"> <small ng-bind-html=" $item.original + ' (' + $item.abrev+ ')' "></small></ui-select-match>
+                        <ui-select-choices repeat=" idioma in idiomas | filter: {nombre: $select.search}"><small ng-bind-html=" idioma.original + ' ('+idioma.abrev+') - ' + idioma.nombre | highlight: $select.search"></small></ui-select-choices>
+                      </ui-select>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="clearfix right">
-<<<<<<< HEAD
-                <md-button type="submit" ng-disabled="guardando" class="md-primary">Guardar</md-button>
-                <md-button type="button" ng-click="cancelar_newevento()" class="md-default">Cancelar</md-button>
-=======
                 <md-button type="submit" ng-disabled="guardando_nuevo" class="md-primary">Guardar</md-button>
-                <md-button ng-click="cancelar_newevento()" class="md-default">Cancelar</md-button>
->>>>>>> nativo
+                <md-button type="button" ng-click="cancelar_newevento()" class="md-default">Cancelar</md-button>
               </div>
             </form>
           </div>
         </div>
       </div>
     </div>
-    <md-whiteframe layout ng-repeat="evento in eventos" style="padding: 10px" class="md-whiteframe-z2 definicion-frame"><span flex="10">{{$index+1}}.</span><span flex="90">{{evento.nombre}}</span>
+    <md-whiteframe layout ng-repeat="evento in USER.eventos" style="padding: 10px" class="md-whiteframe-z2 definicion-frame"><span flex="10">{{$index+1}}.</span><span flex="90">{{evento.nombre}}</span>
       <div layout="row" class="btn-container-edit">
         <md-button aria-label="Editar" ng-click="editarEvento(evento)" class="md-fab md-primary md-mini">
           <md-icon class="fa fa-pencil"></md-icon>
@@ -197,21 +194,19 @@
                     <md-select placeholder="Seleccione idioma principal" ng-model="currentEvent.idioma_principal_id">
                       <md-option ng-repeat="idioma in idiomas" value="{{idioma.id}}">{{idioma.original}} - {{idioma.nombre}}</md-option>
                     </md-select>
-                    <ui-select multiple="true" style="width: 100%" on-remove="quitandoIdiomas($item, $model)" ng-show="!currentEvent.es_idioma_unico" ng-model="currentEvent.imgUsuario" theme="select2" on-select="idiomasSelect($item, $model)">
-                      <ui-select-match allow-clear="true" placeholder="Idiomas a usar"> <small ng-bind-html=" $item.nombre"></small></ui-select-match>
-                      <ui-select-choices repeat=" idioma in idiomas | filter: {nombre: $select.search}"><small ng-bind-html=" idioma.original + ' - ' + idioma.nombre | highlight: $select.search"></small></ui-select-choices>
-                    </ui-select>
+                    <div ng-show="!currentEvent.es_idioma_unico">
+                      <label class="control-label">Idiomas extras:</label>
+                      <ui-select multiple="true" style="width: 100%" on-remove="quitandoIdiomas($item, $model)" ng-model="currentEvent.idiomas_extras" theme="select2" on-select="idiomasSelect($item, $model)">
+                        <ui-select-match allow-clear="true" placeholder="Idiomas a usar"> <small ng-bind-html=" $item.nombre"></small></ui-select-match>
+                        <ui-select-choices repeat=" idioma in idiomas | filter: {nombre: $select.search}"><small ng-bind-html=" idioma.original + ' - ' + idioma.nombre | highlight: $select.search"></small></ui-select-choices>
+                      </ui-select>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="clearfix right">
-<<<<<<< HEAD
-                <md-button type="submit" ng-disabled="guardando" class="md-primary">Guardar</md-button>
-                <md-button type="button" ng-click="cancelar_currentEvento()" class="md-default">Cancelar</md-button>
-=======
                 <md-button type="submit" ng-disabled="guardando_edit" class="md-primary">Guardar</md-button>
-                <md-button ng-click="cancelar_currentEvento()" class="md-default">Cancelar</md-button>
->>>>>>> nativo
+                <md-button type="button" ng-click="cancelar_currentEvento()" class="md-default">Cancelar</md-button>
               </div>
             </form>
           </div>

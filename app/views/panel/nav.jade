@@ -1,16 +1,16 @@
 .nav-head
 	// site logo
-	a.site-logo.text-uppercase(href="materiales/Materia.html")
+	a.site-logo.text-uppercase(ui-sref="panel")
 		i.fa.fa-globe
-		span.text Materia
+		span.text Wissen
 
 // Site nav (vertical) 
 nav.site-nav.clearfix(role="navigation")
 	.profile.clearfix.mb15
-		img(src="images/perfil/pruebaadmin.jpg" alt="admin")
+		img(ng-src="{{imagesPath + USER.imagen_nombre}}" alt="{{USER.username}}")
 		div.group
-			h5.name Robert Smith
-			small.desig.text-uppercase UX Designer
+			h5.name {{USER.nombres}}
+			small.desig {{USER.apellidos}}
 
 	// navigation
 	ul.list-unstyled.clearfix.nav-list.mb15(highlight-active="")
