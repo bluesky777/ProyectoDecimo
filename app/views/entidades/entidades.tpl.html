@@ -14,7 +14,7 @@
           </div>
           <!-- Formulario para crear-->
           <div flex-gt-md="40" flex-md="100" ng-show="creando">
-            <form layout="column" ng-submit="" layout-margin layout-wrap layout-padding>
+            <form layout="column" ng-submit="guardar_nuevo()" layout-margin layout-wrap layout-padding>
               <div flex>
                 <label>Nombre:</label>
                 <input type="text" ng-model="newEntidad.nombre" class="form-control">
@@ -47,13 +47,13 @@
               </div>
               <div class="clearfix right">
                 <md-button type="submit" ng-disabled="guardando" class="md-primary">Guardar</md-button>
-                <md-button ng-click="cancelarNuevo()" class="md-default">Cancelar</md-button>
+                <md-button type="button" ng-click="cancelarNuevo()" class="md-default">Cancelar</md-button>
               </div>
             </form>
           </div>
           <!-- Formulario para editar-->
-          <div flex-gt-md="40" flex-md="100" ng-show="creando">
-            <form layout="column" ng-submit="" layout-margin layout-wrap layout-padding>
+          <div flex-gt-md="40" flex-md="100" ng-show="editando">
+            <form layout="column" ng-submit="guardar_cambios()" layout-margin layout-wrap layout-padding>
               <div flex>
                 <label>Nombre:</label>
                 <input type="text" ng-model="currentEntidad.nombre" class="form-control">
@@ -86,7 +86,7 @@
               </div>
               <div class="clearfix right">
                 <md-button type="submit" ng-disabled="guardando" class="md-primary">Guardar</md-button>
-                <md-button ng-click="cancelarEdit()" class="md-default">Cancelar</md-button>
+                <md-button type="button" ng-click="cancelarEdit()" class="md-default">Cancelar</md-button>
               </div>
             </form>
           </div>

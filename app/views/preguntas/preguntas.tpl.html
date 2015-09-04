@@ -2,21 +2,30 @@
 <div class="row">
   <div class="col-sm-12 col-md-8">
     <div class="panel panel-default panel-hovered panel-stacked mb20">
-      <div class="panel-heading">
-        <md-select placeholder="Idioma" ng-model="idiomaPreg">
-          <md-option ng-repeat="idioma in idiomas" value="{{idioma.id}}">{{idioma.original}}</md-option>
-        </md-select>
-        <md-select placeholder="Categoría" ng-model="categoria"><span ng-repeat="cat in categorias">
-            <md-option ng-repeat="cat_traduc in cat.categorias_traducidas | catsByIdioma:idiomaPreg" ng-show="cat_traduc.idioma_id==idiomaPreg" value="{{cat_traduc.categoria_id}}">{{cat_traduc.nombre}}</md-option></span></md-select>
+      <div layout class="panel-heading">
+        <md-input-container layout="row" layout-align="start center" style="padding-bottom: 0px; margin-top: -10px;">
+          <md-select placeholder="Idioma" ng-model="idiomaPreg.selected">
+            <md-option ng-repeat="idioma in evento_actual.idiomas" value="{{idioma.id}}">{{idioma.original}}</md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container layout="row" layout-align="start center" style="padding-bottom: 0px; margin-top: -10px;">
+          <md-select placeholder="Categoría" ng-model="categoria"><span ng-repeat="catking in categorias">
+              <md-option ng-repeat="cat_traduc in catking.categorias_traducidas | catsByIdioma:idiomaPreg.selected" ng-show="cat_traduc.idioma_id==idiomaPreg.selected" value="{{cat_traduc.categoria_id}}">
+                 
+                 {{cat_traduc.nombre}}
+              </md-option></span></md-select>
+        </md-input-container>
         <!--md-checkbox(ng-model="showDetail" style="display:inline-block") Detalles-->
         <input type="text" ng-model="preg_buscar" placeholder="{{ 'BUSCAR_PLACEHOLDER' | translate }}" class="form-control ancho-200">
       </div>
       <div class="panel-body">
-        <div ng-repeat="pregunta_king in preguntas_king | filter:preg_buscar | pregsByCats:categoria"><br><br>
-          <view-pregunta preguntaking="pregunta_king" indice="$index" idiomapreg="idiomaPreg"></view-pregunta>
+        <div ng-repeat="pregunta_king in preguntas_king | filter:preg_buscar | pregsByCats:categoria">
+          <div ng-show="pregunta_king.editando"><br><br></div>
+          <view-pregunta preguntaking="pregunta_king" indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" eventoactualselec="idiomaPreg.selected"></view-pregunta>
           <md-divider></md-divider>
         </div>
-        <add-pregunta preguntasking="preguntas_king"></add-pregunta>
+        <add-pregunta preguntasking="preguntas_king" categoria="categoria" tipo="king" ng-show="inicializado"></add-pregunta>
+        <add-pregunta preguntasking="preguntas_king" categoria="categoria" tipo="grupo" ng-show="inicializado"></add-pregunta>
       </div>
     </div>
   </div>

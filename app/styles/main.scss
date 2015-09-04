@@ -167,6 +167,16 @@ a:hover, a:focus {
   @include ayuda-preg();
 }
 
+.fondo-odd{
+    background-color: #F1F9FF;
+}
+.fondo-even{
+    background-color: #FDEFFF;
+}
+.fondo-gris{
+    background-color: #eee;
+}
+
 .definicion-frame:hover .btn-container-edit{
   opacity: 1;
 }

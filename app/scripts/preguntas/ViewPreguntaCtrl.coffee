@@ -1,8 +1,8 @@
 angular.module('WissenSystem')
 
-.controller('ViewPreguntaCtrl', ['$scope', 'App', 'Restangular', '$state', '$cookies', '$rootScope', '$mdToast', '$modal',
-	($scope, App, Restangular, $state, $cookies, $rootScope, $mdToast, $modal) ->
-
+.controller('ViewPreguntaCtrl', ['$scope', 'App', 'Restangular', '$state', '$cookies', '$rootScope', '$mdToast', '$modal', '$filter',
+	($scope, App, Restangular, $state, $cookies, $rootScope, $mdToast, $modal, $filter) ->
+		
 		$scope.elegirOpcion = (pregunta, opcion)->
 			angular.forEach pregunta.opciones, (opt)->
 				opt.elegida = false
@@ -36,9 +36,9 @@ angular.module('WissenSystem')
 					pregunta: ()->
 						pregunta
 			})
-			modalInstance.result.then( (alum)->
-				$scope.gridOptions.data = $filter('filter')($scope.gridOptions.data, {alumno_id: '!'+alum.alumno_id})
-				console.log 'Resultado del modal: ', alum
+			modalInstance.result.then( (elem)->
+				$scope.$emit 'preguntaEliminada', elem
+				console.log 'Resultado del modal: ', elem
 			)
 
 
@@ -60,7 +60,7 @@ angular.module('WissenSystem')
 
 	$scope.ok = ()->
 
-		Restangular.all('preguntasking/destroy/'+pregunta.id).remove().then((r)->
+		Restangular.all('preguntas/destroy/'+pregunta.id).remove().then((r)->
 			toastr.success 'Pregunta eliminada con éxito.', 'Eliminada'
 		, (r2)->
 			toastr.warning 'No se pudo eliminar la pregunta.', 'Problema'

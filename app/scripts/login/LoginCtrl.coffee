@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('WissenSystem')
-.controller('LoginCtrl', ['$scope', '$rootScope', 'AUTH_EVENTS', 'AuthService', '$location', 'Restangular', '$cookies', 'Perfil', 'App', '$state', ($scope, $rootScope, AUTH_EVENTS, AuthService, $location, Restangular, $cookies, Perfil, App, $state)->
+.controller('LoginCtrl', ['$scope', '$rootScope', 'AUTH_EVENTS', 'AuthService', '$location', 'Restangular', '$cookies', 'Perfil', 'App', '$state', 'cfpLoadingBar', ($scope, $rootScope, AUTH_EVENTS, AuthService, $location, Restangular, $cookies, Perfil, App, $state, cfpLoadingBar)->
 	
 	
 	$scope.logoPath = 'images/MyVc-1.gif'
@@ -9,6 +9,9 @@ angular.module('WissenSystem')
 	$scope.credentials = 
 		username: ''
 		password: ''
+
+
+	cfpLoadingBar.complete()
 
 
 	#$scope.host = $location.host()

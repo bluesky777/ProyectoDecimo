@@ -19,7 +19,7 @@
 					// Formulario para crear
 					div(flex-gt-md="40" flex-md="100" ng-show="creando")
 							
-						form(layout="column" ng-submit="" layout-margin layout-wrap layout-padding)
+						form(layout="column" ng-submit="guardar_nuevo()" layout-margin layout-wrap layout-padding)
 							div(flex)
 								label Nombre:
 								input.form-control(type="text" ng-model="newEntidad.nombre")
@@ -51,14 +51,14 @@
 							
 							.clearfix.right
 								md-button.md-primary(type="submit" ng-disabled="guardando") Guardar
-								md-button.md-default(ng-click="cancelarNuevo()") Cancelar
+								md-button.md-default(type="button" ng-click="cancelarNuevo()") Cancelar
 
 
 
 					// Formulario para editar
-					div(flex-gt-md="40" flex-md="100" ng-show="creando")
+					div(flex-gt-md="40" flex-md="100" ng-show="editando")
 							
-						form(layout="column" ng-submit="" layout-margin layout-wrap layout-padding)
+						form(layout="column" ng-submit="guardar_cambios()" layout-margin layout-wrap layout-padding)
 							div(flex)
 								label Nombre:
 								input.form-control(type="text" ng-model="currentEntidad.nombre")
@@ -90,6 +90,6 @@
 							
 							.clearfix.right
 								md-button.md-primary(type="submit" ng-disabled="guardando") Guardar
-								md-button.md-default(ng-click="cancelarEdit()") Cancelar
+								md-button.md-default(type="button" ng-click="cancelarEdit()") Cancelar
 
 

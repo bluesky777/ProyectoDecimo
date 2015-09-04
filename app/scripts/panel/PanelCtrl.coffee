@@ -7,6 +7,7 @@ angular.module('WissenSystem')
 
 
 		$scope.USER = resolved_user
+		console.log '$scope.USER', $scope.USER
 		$scope.imagesPath = App.images
 
 		AuthService.verificar_acceso()

@@ -5,6 +5,9 @@ angular.module('WissenSystem')
 	$scope.newEvent = {
 		with_pay: false
 	}
+	$scope.currentEvent = {
+		idiomas_extras: []
+	}
 
 	
 	$scope.creando = false
@@ -35,6 +38,8 @@ angular.module('WissenSystem')
 			toastr.warning 'No se pudo crear evento.', 'Problema'
 			$scope.guardando_nuevo = false
 		)
+		# Actualizamos los datos por si es el evento actual
+		$scope.el_evento_actual()
 
 
 	$scope.update_evento = ()->
@@ -50,8 +55,13 @@ angular.module('WissenSystem')
 			toastr.warning 'No se pudo editar evento.', 'Problema'
 			$scope.guardando_edit = false
 		)
+		# Actualizamos los datos por si es el evento actual
+		$scope.el_evento_actual()
+
+
 
 	$scope.crear_evento = ()->
+		$scope.editando = false
 		$scope.creando = true
 
 	$scope.cancelar_newevento = ()->
@@ -64,17 +74,28 @@ angular.module('WissenSystem')
 	$scope.editarEvento = (evento)->
 		$scope.editando = true
 		$scope.currentEvent = evento
+		console.log 'currentEvent', evento
 	
 	
 
 	$scope.quitandoIdiomas = (item, model)->
-		Restangular.one('idiomas/destroy').customDELETE(item.id).then((r)->
+
+		console.log item
+		datos = 
+			evento_id: $scope.currentEvent.id
+			idioma_id: item.id
+
+		Restangular.one('idiomas/destroy').customDELETE('', datos).then((r)->
 			toastr.success 'Idioma quitado con éxito.', 'Eliminado'
 		, (r2)->
 			toastr.warning 'No se pudo eliminar idioma.', 'Problema'
 			console.log 'Error eliminando idioma: ', r2
 		)
+
+		# Actualizamos los datos por si es el evento actual
+		$scope.el_evento_actual()
 	
+
 
 	$scope.idiomasSelect = (item, model)->
 		console.log item, $scope.currentEvent.idiomas_extras
@@ -88,6 +109,8 @@ angular.module('WissenSystem')
 			toastr.warning 'No se pudo agregar idioma.', 'Problema'
 			console.log 'Error agregando idioma: ', r2
 		)
+		# Actualizamos los datos por si es el evento actual
+		$scope.el_evento_actual()
 	
 
 	$scope.eliminarEvento = (evento)->
@@ -103,6 +126,8 @@ angular.module('WissenSystem')
 			$scope.USER.eventos = $filter('filter')($scope.USER.eventos, {id: '!'+elem.id})
 			console.log 'Resultado del modal: ', elem
 		)
+		# Actualizamos los datos por si es el evento actual
+		$scope.el_evento_actual()
 
 
 	# Actualizo los eventos con la función del controlador ApplicationController

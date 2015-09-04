@@ -73,6 +73,20 @@ angular.module('WissenSystem')
 ])
 
 
+.filter('catsByIdioma', [ ->
+	(input, idioma) ->
+		
+		resultado = []
+
+		for cat in input
+
+			if cat.idioma_id == parseFloat(idioma)
+				resultado.push cat
+
+		return resultado
+])
+
+
 
 
 

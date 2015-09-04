@@ -28,7 +28,7 @@ angular.module('WissenSystem')
 					d.reject 'Token mal estructurado.'
 			else
 				console.log 'No hay cookie token.'
-				d.resolve 'No hay cookie token.'
+				d.reject 'No hay cookie token.'
 				$state.go 'login'
 				$rootScope.$broadcast(AUTH_EVENTS.notAuthenticated)
 		return d.promise
