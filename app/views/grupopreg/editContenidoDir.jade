@@ -1,0 +1,39 @@
+.panel.panel-default.panel-hovered.panel-stacked.mb20
+	.panel-heading( layout style="height: 40px;")
+		span
+			|  Editar en idiomas:  
+
+		md-input-container(layout="row" layout-align="start center" style="padding-bottom: 0px; margin-top: -10px;")
+			md-select(multiple="true" placeholder="Idioma" ng-model="idiomaPreg")
+				md-option(ng-repeat="idioma in eventoactual.idiomas" value="{{idioma.id}}") {{idioma.original}}
+
+
+	.panel-body
+		form.form-horizontal(name="frm" role="form" ng-submit="finalizarEdicion()")
+			
+
+			div(ng-repeat="contenido in grupoking.contenidos_traducidos | porIdiomasEdit:idiomaPreg" ng-class-odd="'fondo-odd'" ng-class-even="'fondo-even'")
+
+
+				a.btn-tag.btn-tag-info(md-ink-ripple)
+					| Contenido en {{contenido.idioma}}
+
+				.definicion-preg
+					textarea(froala="editorOptions" ng-model="contenido.definicion")
+
+
+				br
+
+			md-button.md-raised.md-primary.right(type="button" ng-click="finalizarEdicion()") 
+				md-tooltip Guardar y finalizar edición
+				| Finalizar
+			md-button.md-raised.md-default.right(type="button" ng-click="aplicarCambios()" aria-label="Aplicar")
+				md-tooltip Guardar y continuar editando
+				| Aplicar
+			md-button.md-raised.md-default.right(type="button" ng-click="cerrarEdicion()" aria-label="Cerrar")
+				md-tooltip Cerrar edición
+				| Cerrar
+
+
+
+

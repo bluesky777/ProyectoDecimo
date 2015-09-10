@@ -1,34 +1,26 @@
 angular.module('WissenSystem')
 
-.controller('EditPreguntaCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 
+.controller('PreguntaGrupoCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 
 	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr) ->
 
-		$scope.eventoactualselec = parseInt($scope.eventoactualselec)
 		
-		$scope.idiomaPreg = [$scope.eventoactualselec]
-
-
 		$scope.editorOptions = 
 			inlineMode: true
 			placeholder: ''
 
 
-		$scope.mostrarConfiguracion = false
-		$scope.mostrarConfig = ()->
-			$scope.mostrarConfiguracion = !$scope.mostrarConfiguracion
-			
-
 		$scope.cerrarEdicion = ()->
-			$scope.preguntaking.editando = false
+			$scope.grupoking.editando = false
 
 
 		$scope.finalizarEdicion = ()->
-			$scope.$emit 'finalizaEdicionPreg'
+			$scope.$emit 'finalizaEdicionContenido'
 			
+			$datos = {contenidos_traducidos: $scope.grupoking.contenidos_traducidos}
 
-			Restangular.one('preguntas/update').customPUT($scope.preguntaking).then((r)->
+			Restangular.one('contenido_traduc/update').customPUT($datos).then((r)->
 				console.log('Cambios guardados', r)
-				$scope.preguntaking.editando = false
+				$scope.grupoking.editando = false
 				toastr.success 'Cambios guardados con éxito'
 			, (r2)->
 				console.log('No se pudo guardar los cambios', r2)
@@ -38,7 +30,10 @@ angular.module('WissenSystem')
 
 
 		$scope.aplicarCambios = ()->
-			Restangular.one('preguntas/update').customPUT($scope.preguntaking).then((r)->
+		
+			$datos = {contenidos_traducidos: $scope.grupoking.contenidos_traducidos}
+
+			Restangular.one('contenido_traduc/update').customPUT($datos).then((r)->
 				console.log('Cambios guardados', r)
 				toastr.success 'Cambios guardados con éxito'
 			, (r2)->
@@ -50,11 +45,6 @@ angular.module('WissenSystem')
 
 		
 
-		$scope.cambiaTipoPregunta = ()->
-			console.log 'Cambia el tipo: ', $scope.preguntaking.tipo_pregunta
-
-			$scope.$broadcast 'cambiaTipoPregunta'
-			
 
 		return
 	]

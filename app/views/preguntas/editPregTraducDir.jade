@@ -21,10 +21,11 @@ a.btn-tag.btn-tag-info(md-ink-ripple)
 			input.form-control(type="text" ng-model="opcion.definicion" ng-class="{ 'textblue':opcion.is_correct, 'add-opcion':opcion.nueva }" ng-focus="addButtonNewOpcion(preguntatraduc, opcion)" ng-disable="opcion.creando")
 			span.input-group-btn(ng-show="!opcion.nueva")
 				
-				md-button.md-icon-button.md-warn(aria-label="Quitar" ng-click="deleteOption(preguntatraduc, opcion)")
+				md-button.md-icon-button.md-warn(type="button" aria-label="Quitar" ng-click="deleteOption(preguntatraduc, opcion)")
 					md-icon.fa.fa-times
 					md-tooltip Quitar opción
-				md-button.md-icon-button(ng-class="{ 1:'md-mini md-fab md-primary', 0:''}[opcion.is_correct]" 
+
+				md-button.md-icon-button(type="button" ng-class="{ 1:'md-mini md-fab md-primary', 0:''}[opcion.is_correct]" 
 					aria-label="Correcta" ng-click="setAsCorrect(preguntatraduc, opcion)")
 
 					md-icon.fa.fa-check

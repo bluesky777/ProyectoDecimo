@@ -1,7 +1,13 @@
 angular.module('WissenSystem')
 
-.controller('EditPregTraducDirCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', '$filter', 
-	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr, $filter) ->
+.controller('EditPreguntaAgrupCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 
+	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr) ->
+
+
+		$scope.editorOptions = 
+			inlineMode: true
+			placeholder: ''
+
 
 
 		txtNewOpcion = 'Agregar nueva opción'
@@ -9,7 +15,7 @@ angular.module('WissenSystem')
 		
 		$scope.inicializar = ()->
 
-			for opci in $scope.preguntatraduc.opciones
+			for opci in $scope.pregagrup.opciones
 				if opci.nueva
 					return
 
@@ -19,11 +25,12 @@ angular.module('WissenSystem')
 				nueva: true
 				is_correct: false
 			
-			$scope.preguntatraduc.opciones.push newOpcion
+			$scope.pregagrup.opciones.push newOpcion
 
 		$scope.inicializar()
 
-		
+
+
 		# Configuración para el sortable
 		$scope.sortableOptions =
 			'ui-floating': true
@@ -33,17 +40,17 @@ angular.module('WissenSystem')
 
 				sortHash = []
 
-				for opcion, index in $scope.preguntatraduc.opciones
+				for opcion, index in $scope.pregagrup.opciones
 					if opcion.id != -1
 						hashEntry = {}
 						hashEntry["" + opcion.id] = index
 						sortHash.push(hashEntry)
 				
 				datos = 
-					pregunta_traduc_id: $scope.preguntatraduc.id
+					pregunta_agrupada_id: $scope.pregagrup.id
 					sortHash: sortHash
 				
-				Restangular.one('opciones/update-orden').customPUT(datos).then((r)->
+				Restangular.one('opciones_agrupadas/update-orden').customPUT(datos).then((r)->
 					console.log('Orden guardado')
 				, (r2)->
 					console.log('No se pudo guardar el orden', r2)
@@ -51,8 +58,6 @@ angular.module('WissenSystem')
 				)
 
 
-
-		
 		$scope.addButtonNewOpcion = (preg, opt)->
 
 			opt.creando = true
@@ -60,14 +65,14 @@ angular.module('WissenSystem')
 			if opt.nueva
 
 				opt.definicion = 'Opción ' + preg.opciones.length
-				opt.preg_traduc_id = preg.id
+				opt.preg_agrupada_id = preg.id
 				opt.orden = preg.opciones.length - 1
 
 				if preg.opciones.length == 1
 					opt.is_correct = true
 			
 				
-				Restangular.one('opciones/store').customPOST(opt).then((r)->
+				Restangular.one('opciones_agrupadas/store').customPOST(opt).then((r)->
 					console.log('Opción guardada')
 					
 					opt.id = r.id
@@ -94,21 +99,20 @@ angular.module('WissenSystem')
 
 		
 		$scope.setAsCorrect = (preg, opt)->
-			if $scope.preguntaking.tipo_pregunta == 'Test'
+			if $scope.pregagrup.tipo_pregunta == 'Test'
 				angular.forEach preg.opciones, (opcion)->  # Solo puede haber una correcta, así que quitamos las otras.
 					opcion.is_correct = 0
 
 				opt.is_correct = 1
 
 
-			if $scope.preguntaking.tipo_pregunta == 'Multiple'
+			if $scope.pregagrup.tipo_pregunta == 'Multiple'
 				opt.is_correct = 1  # Pueden haber muchas correctas, así que simplemente la estrablecemos correcta sin importar si hay alguna otra como correcta.
 
 
 		$scope.deleteOption = (preg, opt, indice)->
 			
-			
-			Restangular.one('opciones/destroy', opt.id).customDELETE().then((r)->
+			Restangular.one('opciones_agrupadas/destroy', opt.id).customDELETE().then((r)->
 				console.log('Opción eliminada', r)
 				preg.opciones = $filter('filter')(preg.opciones, {id: "!" + opt.id})
 			, (r2)->
@@ -117,31 +121,63 @@ angular.module('WissenSystem')
 			)
 			
 
-			### Probando el mdToast
-			toast = $mdToast.simple()
-				.content('Opción eliminada!')
-				.action('OK')
-				.highlightAction(false)
-				.position('top right');
-			$mdToast.show(toast)
-			###
 
+
+		$scope.cerrarEdicion = ()->
+			$scope.pregagrup.editando = false
+
+		$scope.mostrarConfiguracion = false
+		$scope.mostrarConfig = ()->
+			$scope.mostrarConfiguracion = !$scope.mostrarConfiguracion
+
+
+		$scope.finalizarEdicion = ()->
+			$scope.$emit 'finalizaEdicionPregAgrup'
+
+			Restangular.one('preguntas_agrupadas/update').customPUT($scope.pregagrup).then((r)->
+				console.log('Cambios guardados', r)
+				$scope.pregagrup.editando = false
+				toastr.success 'Cambios guardados con éxito'
+			, (r2)->
+				console.log('No se pudo guardar los cambios', r2)
+				toastr.warning 'Cambios NO guardados', 'Problema'
+			)
+			console.log 'Guardando cambios...'
+
+
+		$scope.aplicarCambios = ()->
+
+			Restangular.one('preguntas_agrupadas/update').customPUT($scope.pregagrup).then((r)->
+				console.log('Cambios guardados', r)
+				toastr.success 'Cambios guardados con éxito'
+			, (r2)->
+				console.log('No se pudo guardar los cambios', r2)
+				toastr.warning 'Cambios NO guardados', 'Problema'
+
+			)
+			console.log 'Guardando cambios...'
+
+
+
+		$scope.cambiaTipoPregunta = ()->
+			console.log 'Cambia el tipo: ', $scope.pregagrup.tipo_pregunta
+
+			if $scope.pregagrup.tipo_pregunta == 'Test'
+				correctas = 0
+				for opcion in $scope.pregagrup.opciones  # Solo puede haber una correcta, así que quitamos todas menos una.
+					
+					if opcion.is_correct
+						if correctas > 0
+							opcion.is_correct = 0
+						else
+							correctas = correctas + 1
 			
-		$scope.$on 'cambiaTipoPregunta', ()->
 
-			if $scope.preguntaking.tipo_pregunta == 'Test'
 
-				for preg_trad in $scope.preguntaking.preguntas_traducidas  
-					correctas = 0
-					for opcion in preg_trad.opciones  # Solo puede haber una correcta, así que quitamos todas menos una.
-						
-						if opcion.is_correct
-							if correctas > 0
-								opcion.is_correct = 0
-							else
-								correctas = correctas + 1
+		return
 	]
 )
+
 
 
 

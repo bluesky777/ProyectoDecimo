@@ -28,7 +28,7 @@ angular.module('WissenSystem')
 
 			$scope.creando = true
 
-			Restangular.one('preguntas_agrupadas/store').customPOST({categoria_id: $scope.categoria}).then((r)->
+			Restangular.one('grupo_preguntas/store').customPOST({categoria_id: $scope.categoria}).then((r)->
 				r.editando = true
 				$scope.creando = false
 				$scope.preguntasking.push r

@@ -11,7 +11,7 @@
 		a(href="" ng-click="mostrarConfig()" ng-show="mostrarConfiguracion") Ocultar
 
 	.panel-body
-		form.form-horizontal(name="frm" role="form")
+		form.form-horizontal(name="frm" role="form" ng-submit="finalizarEdicion()")
 			
 			div(ng-show="mostrarConfiguracion" layout layout-margin layout-wrap layout-padding )
 				
@@ -19,18 +19,18 @@
 					label Descripción
 					input(type="text" ng-model="preguntaking.descripcion")
 
-				md-input-container(flex="40")
+				md-input-container(flex="20")
 					label Duración
 					input(type="number" ng-model="preguntaking.duracion")
 					md-tooltip En segundos. Solo para la gran final
 
-				md-input-container(flex="30")
-					label Puntaje
-					input(type="number" ng-model="preguntaking.puntaje")
+				md-input-container(flex="20")
+					label Puntos
+					input(type="number" ng-model="preguntaking.puntos")
 					md-tooltip Solo aplica si la evaluación es por puntos y no por promedio.
 
 				md-input-container(flex="30" layout="row" layout-align="start center")
-					md-select(placeholder="Tipo pregunta" ng-model="preguntaking.tipo_pregunta")
+					md-select(placeholder="Tipo pregunta" ng-model="preguntaking.tipo_pregunta" ng-change="cambiaTipoPregunta()")
 						md-option() Test
 						md-option() Multiple
 						md-option() Texto
@@ -54,13 +54,13 @@
 
 				br
 
-			md-button.md-raised.md-primary.right(ng-click="finalizarEdicion()") 
+			md-button.md-raised.md-primary.right(type="button" ng-click="finalizarEdicion()") 
 				md-tooltip Guardar y finalizar edición
 				| Finalizar
-			md-button.md-raised.md-default.right(ng-click="aplicarCambios()" aria-label="Aplicar")
+			md-button.md-raised.md-default.right(type="button" ng-click="aplicarCambios()" aria-label="Aplicar")
 				md-tooltip Guardar y continuar editando
 				| Aplicar
-			md-button.md-raised.md-default.right(ng-click="cerrarEdicion()" aria-label="Cerrar")
+			md-button.md-raised.md-default.right(type="button" ng-click="cerrarEdicion()" aria-label="Cerrar")
 				md-tooltip Cerrar edición
 				| Cerrar
 

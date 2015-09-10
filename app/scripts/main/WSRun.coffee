@@ -72,9 +72,9 @@ angular.module('WissenSystem')
 		
 
 	$rootScope.$on AUTH_EVENTS.notAuthenticated, (ev)->
+		$state.go 'login'
 		toastr.warning 'No está autorizado.', 'Acceso exclusivo'
 		console.log 'Evento notAuthenticated: ', ev
-		#$state.go 'login'
 		
 
 

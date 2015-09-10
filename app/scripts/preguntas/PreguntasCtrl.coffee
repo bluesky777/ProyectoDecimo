@@ -92,9 +92,20 @@ angular.module('WissenSystem')
 
 
 		$scope.$on 'preguntaEliminada', (e, elem)->
-			$scope.preguntas_king = $filter('filter')($scope.preguntas_king, {id: "!" + elem.id })
-			console.log 'Recibido eliminación', elem, $filter('filter')($scope.preguntas_king, {id: "!" + elem.id })
+			$scope.preguntas_king = $filter('filter')($scope.preguntas_king, {id: "!" + elem.id, tipo_pregunta: "!undefined" }, true)
+			console.log 'Recibido eliminación', elem, $filter('filter')($scope.preguntas_king, {id: "!" + elem.id, tipo_pregunta: "!undefined" })
 
+
+		$scope.$on 'grupoEliminado', (e, elem)->
+			$scope.preguntas_king = $filter('filter')($scope.preguntas_king, (pregunta_king, index)->
+
+				if pregunta_king.tipo_pregunta # No la eliminamos si es una preguntaking que tiene tipo_pregunta
+					return true
+				else if pregunta_king.id != elem.id
+					return true
+				else
+					return false
+			)
 
 	]
 )
