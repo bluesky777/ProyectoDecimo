@@ -1,173 +1,164 @@
 angular.module('WissenSystem')
 
-.controller('UsuariosCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', '$mdToast', 'uiGridConstants' 
-	($scope, $http, Restangular, $state, $cookies, $rootScope, $mdToast, uiGridConstants) ->
+.controller('UsuariosCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 'uiGridConstants', '$modal', '$filter', 'App' 
+	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr, uiGridConstants, $modal, $filter, App) ->
 
-
+		$scope.imagesPath = App.images
+		$scope.usuarios = []
+		$scope.currentUsers = []
 		$scope.newUsu = {
 			sexo: 'M'
 			niveles: []
+			inscripciones: []
 		}
 
-		$scope.niveles =  [
-			{
-				id: 1
-				nombre: 'A'
-				evento_id: 1
-				niveles_traducidos: [
-					{
-						id: 1
-						nombre: 'A'
-						descripcion: 'Grupos 6 y 7'
-						idioma_id: 1
-					},
-					{
-						id: 2
-						nombre: 'A'
-						descripcion: 'Groups 6 y 7'
-						idioma_id: 2
+		$scope.comprobar_evento_actual = ()->
+			if $scope.evento_actual
+
+				if $scope.evento_actual.idioma_principal_id
+
+					$scope.idiomaPreg = {
+						selected: $scope.evento_actual.idioma_principal_id
 					}
-				]
-			},
-			{
-				id: 2
-				nombre: 'B'
-				evento_id: 1
-				niveles_traducidos: [
-					{
-						id: 1
-						nombre: 'B'
-						descripcion: 'Grupos 8 y 9'
-						idioma_id: 1
-					},
-					{
-						id: 2
-						nombre: 'B'
-						descripcion: 'Groups 8 y 9'
-						idioma_id: 2
-					}
-				]
-			}
-		]
+			else
+				toastr.warning 'Pimero debes crear o seleccionar un evento actual'
+
+		$scope.comprobar_evento_actual()
+
+		$scope.$on 'cambio_evento_user', ()->
+			$scope.comprobar_evento_actual()
+			$scope.traer_niveles()
+			$scope.traer_disciplinas()
+			$scope.traer_categorias()
+
+		$scope.$on 'cambia_evento_actual', ()->
+			$scope.comprobar_evento_actual()
+
+		
+
+
+
+		$scope.niveles_king = []
+		$scope.traer_niveles = ()->
+			Restangular.all('niveles/niveles-usuario').getList().then((r)->
+				$scope.niveles_king = r
+				#console.log 'Niveles traídas: ', r
+			, (r2)->
+				toastr.warning 'No se trajeron las niveles', 'Problema'
+				console.log 'No se trajo niveles ', r2
+			)
+		$scope.traer_niveles()
+
+
+		$scope.disciplinas_king = []
+		$scope.traer_disciplinas = ()->
+			Restangular.all('disciplinas/disciplinas-usuario').getList().then((r)->
+				$scope.disciplinas_king = r
+				#console.log 'Disciplinas traídas: ', r
+			, (r2)->
+				toastr.warning 'No se trajeron las disciplinas', 'Problema'
+				console.log 'No se trajo disciplinas ', r2
+			)
+		$scope.traer_disciplinas()
+
+			
+		$scope.categorias_king1 = []
+		$scope.categorias_king2 = []
+		$scope.traer_categorias = ()->
+			Restangular.all('categorias/categorias-usuario').getList().then((r)->
+				$scope.categorias_king1 = r
+				angular.copy($scope.categorias_king1, $scope.categorias_king2)
+				#console.log 'Categorias traídas: ', r
+			, (r2)->
+				toastr.warning 'No se trajeron las categorias', 'Problema'
+				console.log 'No se trajo categorias ', r2
+			)
+		$scope.traer_categorias()
+
+
+
+
+			
+
+
 
 		$scope.avatar = {
 			masculino: {
 				abrev: 'M'
 				def: 'Masculino'
-				img: 'http://localhost:9000/images/system/avatars/male1.jpg'
+				img: $scope.imagesPath + 'system/avatars/male1.jpg'
 			},
 			femenino: {
 				abrev: 'F'
 				def: 'Femenino'
-				img: 'http://localhost:9000/images/system/avatars/female1.jpg'
+				img: $scope.imagesPath + 'system/avatars/female1.jpg'
 			}
 		}
 
-		$scope.categorias = [
-			{
-				id: 1
-				nombre: 'MatA'
-				nivel_id: 1
-				disciplina_id: 1
-				evento_id: 1
-				categorias_traducidas: [
-					{
-						id: 1
-						nombre: 'Matemáticas A'
-						abrev: 'MatA'
-						categoria_id: 1
-						descripcion: ''
-						idioma_id: 1
-						traducido_at: true
-					}
-				]
-			},
-			{
-				id: 1
-				nombre: 'MatB'
-				nivel_id: 1
-				disciplina_id: 1
-				evento_id: 1
-			},
-			{
-				id: 1
-				nombre: 'EspA'
-				nivel_id: 1
-				disciplina_id: 1
-				evento_id: 1
-			}
-		]
-
-		$scope.editar = (row)->
-			console.log 'Presionado para editar fila: ', row
-			$state.go('panel.usuarios.editar', {usuario_id: row.id})
-
-		$scope.eliminar = (row)->
-			console.log 'Presionado para eliminar fila: ', row
-
-			modalInstance = $modal.open({
-				templateUrl: App.views + 'usuarios/removeAlumno.tpl.html'
-				controller: 'RemoveUsuariosCtrl'
-				resolve: 
-					usuarios: ()->
-						row
-			})
-			modalInstance.result.then( (alum)->
-				$scope.gridOptions.data = $filter('filter')($scope.gridOptions.data, {alumno_id: '!'+alum.alumno_id})
-				console.log 'Resultado del modal: ', alum
-			)
-
-
-
-		btGrid1 = '<a tooltip="Editar" tooltip-placement="left" class="btn btn-default btn-xs shiny icon-only info" ng-click="grid.appScope.editar(row.entity)"><i class="fa fa-edit "></i></a>'
-		btGrid2 = '<a tooltip="X Eliminar" tooltip-placement="right" class="btn btn-default btn-xs shiny icon-only danger" ng-click="grid.appScope.eliminar(row.entity)"><i class="fa fa-trash "></i></a>'
-	
-
-		$scope.gridOptions = 
-			showGridFooter: true,
-			enableSorting: true,
-			enableFiltering: true,
-			enebleGridColumnMenu: false,
-			columnDefs: [
-				{ field: 'id', displayName:'Id', width: 50, enableCellEdit: false, enableColumnMenu: false}
-				{ name: 'edicion', displayName:'Edición', width: 60, enableSorting: false, enableFiltering: false, cellTemplate: btGrid1 + btGrid2, enableCellEdit: false, enableColumnMenu: false}
-				{ field: 'nombres', filter: {condition: uiGridConstants.filter.CONTAINS}, enableHiding: false }
-				{ field: 'apellidos', filter: { condition: uiGridConstants.filter.CONTAINS }}
-				{ field: 'sexo', width: 60 }
-				{ field: 'username', filter: { condition: uiGridConstants.filter.CONTAINS }, displayName: 'Usuario'}
-				{ field: 'email', enableCellEdit: false, filter: { condition: uiGridConstants.filter.CONTAINS }}
-				{ field: 'cell', displayName:'Celular', filter: { condition: uiGridConstants.filter.CONTAINS }}
-				{ field: 'edad' }
-			],
-			multiSelect: false,
-			#filterOptions: $scope.filterOptions,
-			onRegisterApi: ( gridApi ) ->
-				$scope.gridApi = gridApi
-				gridApi.edit.on.afterCellEdit($scope, (rowEntity, colDef, newValue, oldValue)->
-					console.log 'Fila editada, ', rowEntity, ' Column:', colDef, ' newValue:' + newValue + ' oldValue:' + oldValue ;
-					
-					if newValue != oldValue
-						Restangular.one('usuarios/update', rowEntity.id).customPUT(rowEntity).then((r)->
-							$scope.toastr.success 'Usuario actualizado con éxito', 'Actualizado'
-						, (r2)->
-							$scope.toastr.error 'Cambio no guardado', 'Error'
-							console.log 'Falló al intentar guardar: ', r2
-						)
-					$scope.$apply()
-				)
-
-
-		Restangular.all('usuarios').getList().then((data)->
-			$scope.gridOptions.data = data;
-		)
+		
+		
 
 		$scope.guardando = false
 		$scope.guardarNuevo = ()->
 			$scope.guardando = true
-			console.log('Usuario guardado')
-			$scope.guardando = false
+
+			Restangular.one('usuarios/store').customPOST($scope.newUsu).then((r)->
+				r.editando = true
+				$scope.usuarios.push r
+				$scope.guardando = false
+				console.log 'Usuario creado', r
+			, (r2)->
+				toastr.warning 'No se creó el usuario', 'Problema'
+				console.log 'No se creó usuario ', r2
+				$scope.guardando = false
+			)
+
+
+
+		$scope.cambiaInscripcion = (categoriaking, currentUser)->
+			
+			categoriaking.cambiando = true
+
+			datos = 
+				usuario_id: 	currentUser.id
+				categoria_id: 	categoriaking.id
+
+			if categoriaking.selected
+
+			
+				Restangular.one('inscripciones/inscribir').customPOST(datos).then((r)->
+					$scope.usuarios.push r
+					categoriaking.cambiando = false
+					console.log 'Usuario creado', r
+				, (r2)->
+					toastr.warning 'No se inscribó el usuario', 'Problema'
+					console.log 'No se inscribó el usuario ', r2
+					categoriaking.cambiando = false
+					categoriaking.selected = false
+				)
+
+			else
+
+				Restangular.one('inscripciones/desinscribir').customPOST(datos).then((r)->
+					$scope.usuarios.push r
+					categoriaking.cambiando = false
+					console.log 'Usuario creado', r
+				, (r2)->
+					toastr.warning 'No se quitó inscripción', 'Problema'
+					console.log 'No se quitó inscripción ', r2
+					categoriaking.cambiando = false
+					categoriaking.selected = true
+				)
+
+
 
 
 		return
 	]
 )
+
+
+
+
+
+

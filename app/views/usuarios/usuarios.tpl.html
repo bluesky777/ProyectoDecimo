@@ -13,14 +13,14 @@
               <div class="form-group">
                 <label class="control-label col-md-3">Nombre</label>
                 <div class="col-md-9">
-                  <input type="text" placeholder="Nombre" class="form-control">
+                  <input type="text" ng-model="newUsu.nombres" placeholder="Nombre" class="form-control">
                   <p class="text-danger text-right xsmall">Campo obligatorio</p>
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-md-3">Apellidos</label>
                 <div class="col-md-9">
-                  <input type="text" placeholder="Apellidos" class="form-control">
+                  <input type="text" ng-model="newUsu.apellidos" placeholder="Apellidos" class="form-control">
                 </div>
               </div>
               <div class="form-group">
@@ -39,19 +39,19 @@
               <div class="form-group">
                 <label class="control-label col-md-3">Username</label>
                 <div class="col-md-9">
-                  <input type="text" placeholder="Username" class="form-control">
+                  <input type="text" ng-model="newUsu.username" placeholder="Username" class="form-control">
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-md-3">Email</label>
                 <div class="col-md-9">
-                  <input type="text" placeholder="Email" class="form-control">
+                  <input type="text" ng-model="newUsu.email" placeholder="Email" class="form-control">
                 </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-md-3">Celular</label>
                 <div class="col-md-9">
-                  <input type="text" placeholder="Celular" class="form-control">
+                  <input type="text" ng-model="newUsu.cell" placeholder="Celular" class="form-control">
                 </div>
               </div>
               <div class="form-group">
@@ -71,30 +71,9 @@
               <md-content>
                 <md-list>
                   <md-subheader class="md-no-sticky">Inscribir en:</md-subheader>
-                  <md-list-item>
-                    <md-checkbox ng-model=""></md-checkbox>
-                    <p>Matemáticas A</p>
-                    <div ng-click="" class="fa fa-comments-o md-secondary"></div>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-checkbox ng-model=""></md-checkbox>
-                    <p>Matemáticas B</p>
-                    <div ng-click="" class="fa fa-comments-o md-secondary"></div>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-checkbox ng-model=""></md-checkbox>
-                    <p>Matemáticas C</p>
-                    <div ng-click="" class="fa fa-comments-o md-secondary"></div>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-checkbox ng-model=""></md-checkbox>
-                    <p>Español A</p>
-                    <div ng-click="" class="fa fa-comments-o md-secondary"></div>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-checkbox ng-model=""></md-checkbox>
-                    <p>Español B</p>
-                    <div ng-click="" class="fa fa-comments-o md-secondary"></div>
+                  <md-list-item ng-repeat="categoriaking in newUsu | categsInscritas:categorias_king1">
+                    <md-checkbox ng-model="categoriaking.selected"></md-checkbox>
+                    <p>{{categoriaking.nombre}}</p>
                   </md-list-item>
                 </md-list>
               </md-content>
@@ -102,7 +81,7 @@
           </div>
           <div class="clearfix right">
             <md-button type="submit" ng-disabled="guardando" class="md-primary">Guardar</md-button>
-            <md-button class="md-default">Cancelar</md-button>
+            <md-button type="button" class="md-default">Cancelar</md-button>
           </div>
         </form>
       </div>
@@ -111,50 +90,6 @@
 </div>
 <div class="row">
   <div class="col-sm-12 col-md-12">
-    <div class="panel panel-default panel-hovered panel-stacked mb20">
-      <div class="panel-heading">
-          
-        Usuarios
-      </div>
-      <div class="panel-body">
-        <div class="row">
-          <div class="col-md-9">
-            <div id="grid1" ui-grid="gridOptions" ui-grid-edit ui-grid-resize-columns style="height: 600px" class="grid"></div>
-          </div>
-          <div class="col-md-3">
-            <md-content>
-              <md-list>
-                <md-subheader class="md-no-sticky">Inscribir en:</md-subheader>
-                <md-list-item>
-                  <md-checkbox ng-model=""></md-checkbox>
-                  <p>Matemáticas A</p>
-                  <div ng-click="" class="fa fa-comments-o md-secondary"></div>
-                </md-list-item>
-                <md-list-item>
-                  <md-checkbox ng-model=""></md-checkbox>
-                  <p>Matemáticas B</p>
-                  <div ng-click="" class="fa fa-comments-o md-secondary"></div>
-                </md-list-item>
-                <md-list-item>
-                  <md-checkbox ng-model=""></md-checkbox>
-                  <p>Matemáticas C</p>
-                  <div ng-click="" class="fa fa-comments-o md-secondary"></div>
-                </md-list-item>
-                <md-list-item>
-                  <md-checkbox ng-model=""></md-checkbox>
-                  <p>Español A</p>
-                  <div ng-click="" class="fa fa-comments-o md-secondary"></div>
-                </md-list-item>
-                <md-list-item>
-                  <md-checkbox ng-model=""></md-checkbox>
-                  <p>Español B</p>
-                  <div ng-click="" class="fa fa-comments-o md-secondary"></div>
-                </md-list-item>
-              </md-list>
-            </md-content>
-          </div>
-        </div>
-      </div>
-    </div>
+    <grid-usuarios currentusers="currentUsers" usuarios="usuarios" categoriasking="categorias_king2"></grid-usuarios>
   </div>
 </div>

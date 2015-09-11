@@ -8,7 +8,7 @@ angular.module('WissenSystem')
 
 	$scope.disciplinas_king = []
 
-	$scope.traer_disciplina = ()->
+	$scope.traer_disciplinas = ()->
 		Restangular.all('disciplinas/disciplinas-usuario').getList().then((r)->
 			$scope.disciplinas_king = r
 			#console.log 'Disciplinas traídas: ', r
@@ -16,10 +16,10 @@ angular.module('WissenSystem')
 			toastr.warning 'No se trajeron las disciplinas', 'Problema'
 			console.log 'No se trajo disciplinas ', r2
 		)
-	$scope.traer_disciplina()
+	$scope.traer_disciplinas()
 
 	$scope.$on 'cambio_evento_user', ()->
-		$scope.traer_disciplina()
+		$scope.traer_disciplinas()
 
 
 

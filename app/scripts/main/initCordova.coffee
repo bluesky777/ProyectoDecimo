@@ -7,7 +7,7 @@ CordovaInit = ()->
 
 
     receivedEvent = (event)->
-        console.log('Start event received, bootstrapping application setup.');
+        #console.log('Start event received, bootstrapping application setup.');
         angular.bootstrap($('html'), ['WissenSystem']);
 
 
@@ -21,7 +21,7 @@ CordovaInit = ()->
         console.log('Cordova found, wating for device.');
         this.bindEvents();
     else
-        console.log('Cordova not found, booting application');
+        #console.log('Cordova not found, booting application');
         receivedEvent('manual')
 
 

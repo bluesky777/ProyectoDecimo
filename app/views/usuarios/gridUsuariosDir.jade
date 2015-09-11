@@ -1,0 +1,26 @@
+.panel.panel-default.panel-hovered.panel-stacked.mb20
+	.panel-heading   
+		| Usuarios
+
+	.panel-body
+
+
+		.row
+			.col-md-9
+
+
+				#grid1.grid(ui-grid="gridOptions" ui-grid-selection ui-grid-edit ui-grid-resize-columns style="height: 600px")
+
+
+			.col-md-3
+				md-content
+					md-list
+
+						md-subheader.md-no-sticky
+							| Inscripción rápida
+
+						md-list-item(ng-repeat="categoriaking in currentusers | categsInscritas:categoriasking")
+							md-checkbox(ng-model="categoriaking.selected" ng-change="cambiaInscripcion(categoriaking, currentusers)" ng-disabled="categoriaking.cambiando")
+							span(ng-show="categoriaking.algunos") *
+							span {{categoriaking.nombre }}
+							.fa.fa-comments-o.md-secondary(aria-label="Comentario inútil" ng-click="")

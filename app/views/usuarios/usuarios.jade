@@ -13,12 +13,12 @@
 							.form-group
 								label.control-label.col-md-3 Nombre
 								.col-md-9
-									input.form-control(type="text" placeholder="Nombre")
+									input.form-control(type="text" ng-model="newUsu.nombres" placeholder="Nombre")
 									p.text-danger.text-right.xsmall Campo obligatorio
 							.form-group
 								label.control-label.col-md-3 Apellidos
 								.col-md-9
-									input.form-control(type="text" placeholder="Apellidos")
+									input.form-control(type="text" ng-model="newUsu.apellidos" placeholder="Apellidos")
 							.form-group
 								label.control-label.col-md-3 Sexo
 								.col-md-9
@@ -34,16 +34,16 @@
 							.form-group
 								label.control-label.col-md-3 Username
 								.col-md-9
-									input.form-control(type="text" placeholder="Username")
+									input.form-control(type="text" ng-model="newUsu.username" placeholder="Username")
 
 							.form-group
 								label.control-label.col-md-3 Email
 								.col-md-9
-									input.form-control(type="text" placeholder="Email")
+									input.form-control(type="text" ng-model="newUsu.email" placeholder="Email")
 							.form-group
 								label.control-label.col-md-3 Celular
 								.col-md-9
-									input.form-control(type="text" placeholder="Celular")
+									input.form-control(type="text" ng-model="newUsu.cell" placeholder="Celular")
 							.form-group
 								label.control-label.col-md-3 Edad
 								.col-md-9
@@ -61,72 +61,23 @@
 								md-list
 									md-subheader.md-no-sticky
 										| Inscribir en:
-									md-list-item
-										md-checkbox(ng-model="")
-										p Matemáticas A
-										.fa.fa-comments-o.md-secondary(ng-click="")
-									md-list-item
-										md-checkbox(ng-model="")
-										p Matemáticas B
-										.fa.fa-comments-o.md-secondary(ng-click="")
-									md-list-item
-										md-checkbox(ng-model="")
-										p Matemáticas C
-										.fa.fa-comments-o.md-secondary(ng-click="")
-									md-list-item
-										md-checkbox(ng-model="")
-										p Español A
-										.fa.fa-comments-o.md-secondary(ng-click="")
-									md-list-item
-										md-checkbox(ng-model="")
-										p Español B
-										.fa.fa-comments-o.md-secondary(ng-click="")
+
+									md-list-item(ng-repeat="categoriaking in newUsu | categsInscritas:categorias_king1")
+										md-checkbox(ng-model="categoriaking.selected")
+										p {{categoriaking.nombre}}
 
 
 
 
 					.clearfix.right
 						md-button.md-primary(type="submit" ng-disabled="guardando") Guardar
-						md-button.md-default Cancelar
+						md-button.md-default(type="button") Cancelar
 
 
 .row
 	.col-sm-12.col-md-12
 		
-		.panel.panel-default.panel-hovered.panel-stacked.mb20
-			.panel-heading   
-				| Usuarios
-
-			.panel-body
-
-				.row
-					.col-md-9
-						#grid1.grid(ui-grid="gridOptions" ui-grid-edit ui-grid-resize-columns style="height: 600px")
-					.col-md-3
-						md-content
-							md-list
-								md-subheader.md-no-sticky
-									| Inscribir en:
-								md-list-item
-									md-checkbox(ng-model="")
-									p Matemáticas A
-									.fa.fa-comments-o.md-secondary(ng-click="")
-								md-list-item
-									md-checkbox(ng-model="")
-									p Matemáticas B
-									.fa.fa-comments-o.md-secondary(ng-click="")
-								md-list-item
-									md-checkbox(ng-model="")
-									p Matemáticas C
-									.fa.fa-comments-o.md-secondary(ng-click="")
-								md-list-item
-									md-checkbox(ng-model="")
-									p Español A
-									.fa.fa-comments-o.md-secondary(ng-click="")
-								md-list-item
-									md-checkbox(ng-model="")
-									p Español B
-									.fa.fa-comments-o.md-secondary(ng-click="")
+		grid-usuarios(currentusers="currentUsers" usuarios="usuarios" categoriasking="categorias_king2")
 
 
 
