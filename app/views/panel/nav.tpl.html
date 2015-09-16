@@ -12,13 +12,13 @@
   <!-- navigation-->
   <ul highlight-active="" class="list-unstyled clearfix nav-list mb15">
     <li ng-class="{active: $state.is('panel') }"><a href="" ui-sref="panel" md-ink-ripple=""><i class="fa fa-home"></i><span class="text">{{ 'INICIO_MENU' | translate }}</span></a></li>
-    <li ui-sref-active="active"><a href="" ui-sref="panel.eventos" md-ink-ripple=""><i class="fa fa-laptop"></i><span class="text">{{ 'EVENTS_MENU' | translate }}</span></a></li>
-    <li ui-sref-active="active"><a href="" ui-sref="panel.categorias" md-ink-ripple=""><i class="fa fa-map-marker"></i><span class="text">{{ 'CATEGS_MENU' | translate }}</span></a></li>
-    <li ui-sref-active="active"><a href="" ui-sref="panel.entidades" md-ink-ripple=""><i class="fa fa-bank"></i><span class="text">{{ 'ENTIDADES_MENU' | translate }}</span></a></li>
-    <li ui-sref-active="active"><a href="" ui-sref="panel.preguntas" md-ink-ripple=""><i class="fa fa-question"></i><span class="text">{{ 'PREGUNTAS_MENU' | translate }}</span></a></li>
-    <li ui-sref-active="active"><a href="" ui-sref="panel.evaluaciones" md-ink-ripple=""><i class="fa fa-clipboard"></i><span class="text">{{ 'EVALUACIONES_MENU' | translate }}</span></a></li>
-    <li ui-sref-active="active"><a href="" ui-sref="panel.usuarios" md-ink-ripple=""><i class="fa fa-users"></i><span class="text">{{ 'USERS_MENU' | translate }}</span></a></li>
-    <li ui-sref-active="active"><a href="" md-ink-ripple=""><i class="fa fa-asterisk"></i><span class="text">Construcción</span><i class="arrow fa fa-angle-left"></i><span class="badge badge-xs badge-primary">2</span></a>
+    <li ui-sref-active="active" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')"><a href="" ui-sref="panel.eventos" md-ink-ripple=""><i class="fa fa-laptop"></i><span class="text">{{ 'EVENTS_MENU' | translate }}</span></a></li>
+    <li ui-sref-active="active" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')"><a href="" ui-sref="panel.categorias" md-ink-ripple=""><i class="fa fa-map-marker"></i><span class="text">{{ 'CATEGS_MENU' | translate }}</span></a></li>
+    <li ui-sref-active="active" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')"><a href="" ui-sref="panel.entidades" md-ink-ripple=""><i class="fa fa-bank"></i><span class="text">{{ 'ENTIDADES_MENU' | translate }}</span></a></li>
+    <li ui-sref-active="active" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')"><a href="" ui-sref="panel.preguntas" md-ink-ripple=""><i class="fa fa-question"></i><span class="text">{{ 'PREGUNTAS_MENU' | translate }}</span></a></li>
+    <li ui-sref-active="active" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')"><a href="" ui-sref="panel.evaluaciones" md-ink-ripple=""><i class="fa fa-clipboard"></i><span class="text">{{ 'EVALUACIONES_MENU' | translate }}</span></a></li>
+    <li ui-sref-active="active" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')"><a href="" ui-sref="panel.usuarios" md-ink-ripple=""><i class="fa fa-users"></i><span class="text">{{ 'USERS_MENU' | translate }}</span></a></li>
+    <li ui-sref-active="active" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')"><a href="" md-ink-ripple=""><i class="fa fa-asterisk"></i><span class="text">Construcción</span><i class="arrow fa fa-angle-left"></i><span class="badge badge-xs badge-primary">2</span></a>
       <ul class="inner-drop nested list-unstyled">
         <li> <a href="" md-ink-ripple="">Font Awesome</a></li>
         <li> <a href="" md-ink-ripple="">Ionicons</a></li>

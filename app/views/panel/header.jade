@@ -23,7 +23,7 @@ ul.list-unstyled.left-elems
 			i.fa.fa-arrows-alt
 
 	// notification drop
-	li.notify-drop.hidden-xs.dropdown(dropdown="")
+	li.notify-drop.hidden-xs.dropdown(dropdown="" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')")
 		a(href="" dropdown-toggle="")
 			i.fa.fa-laptop
 			span(ng-bind=" evento_actual.alias")
@@ -81,16 +81,16 @@ ul.list-unstyled.right-elems.ng-scope
 			li
 				a(href='javascript:;')
 					span.ion.ion-person
-					| Profile
+					| Perfil
 			li
 				a(href='javascript:;')
 					span.ion.ion-settings 
-					| Settings
+					| Configuración
 			li.divider
 			li
 				a(href='javascript:;')
 					span.ion.ion-lock-combination
-					| Lock Screen
+					| Imágenes
 			li
 				a(href='' ng-click="logout()")
 					span.ion.ion-power

@@ -9,6 +9,8 @@ angular.module('WissenSystem')
 		usuarios: "="
 		categoriasking: "="
 		currentusers: "="
+		nivelesking: "="
+		idioma: "="
 
 	link: (scope, iElem, iAttrs)->
 		# Debo agregar la clase .loading-inactive para que desaparezca el loader de la pantalla.

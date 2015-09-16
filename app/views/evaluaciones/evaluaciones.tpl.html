@@ -5,86 +5,93 @@
     {{ 'EVALUACIONES_MENU' | translate }}
   </div>
   <div class="panel-body">
-    <md-button ng-show="!creando" ng-click="crearNuevo()" class="md-default">Crear evaluaciones</md-button>
+    <md-button ng-show="!creando" ng-click="crearNuevo()" class="md-default md-raised">Crear evaluación</md-button>
     <div layout layout-wrap layout-padding>
       <div flex-gt-md="60" flex-md="100">
-        <div id="grid1" ui-grid="gridOptions" ui-grid-edit ui-grid-resize-columns style="min-height: 400px" class="grid"></div>
+        <!-- Grilla con todas las evaluaciones-->
+        <grid-evaluaciones evaluaciones="evaluaciones" idioma="idioma.selected" currenteval="currentEvalua" categoriasking="categorias_king"></grid-evaluaciones>
       </div>
       <!-- Formulario para crear-->
       <div flex-gt-md="40" flex-md="100" ng-show="creando">
-        <form layout="column" ng-submit="" layout-margin layout-wrap layout-padding>
+        <h2>Nueva evaluación</h2>
+        <form layout="column" ng-submit="guardarNuevo()" layout-margin layout-wrap layout-padding>
           <div flex>
-            <label>Nombre:</label>
-            <input type="text" ng-model="newEvaluacion.nombre" class="form-control">
+            <label>Descripción:</label>
+            <input type="text" ng-model="newEvaluacion.descripcion" class="form-control">
+          </div>
+          <div flex>
+            <label>Categoría:</label>
+            <md-input-container layout="row" layout-align="start center" style="padding-bottom: 0px; margin-top: -10px;">
+              <md-select placeholder="Categoría" ng-model="newEvaluacion.categoria_id"><span ng-repeat="catking in categorias_king">
+                  <md-option ng-repeat="cat_traduc in catking.categorias_traducidas | catsByIdioma:idioma.selected" ng-show="cat_traduc.idioma_id==idioma.selected" value="{{cat_traduc.categoria_id}}">
+                     
+                     {{cat_traduc.nombre}}
+                  </md-option></span></md-select>
+            </md-input-container>
           </div>
           <div flex="40" flex-gt-lg="20" flex-sm="100">
-            <md-checkbox ng-model="seleccionar_lider" aria-label="¿Traducido?">Seleccionar lider</md-checkbox>
-          </div>
-          <div flex ng-show="seleccionar_lider">
-            <md-select placeholder="Seleccione Lider" ng-model="newEvaluacion.lider_id">
-              <md-option ng-repeat="usuario in usuarios" value="{{usuario.id}}">{{usuario.nombres}} {{usuario.apellidos}}</md-option>
-            </md-select>
-          </div>
-          <div flex ng-show="!seleccionar_lider">
-            <input placeholder="Escriba Nombre del lider" type="text" ng-model="newEvaluacion.lider_nombre" class="form-control">
+            <md-checkbox ng-model="newEvaluacion.actual" aria-label="Actual">Actual</md-checkbox>
+            <md-tooltip>Será la evaluación que los participantes resolverán</md-tooltip>
           </div>
           <div flex>
-            <div class="form-group">
-              <label>Logo</label>
-              <ui-select ng-model="newEvaluacion.imgUsuario" theme="select2" on-select="imagenSelect($item, $model)">
-                <ui-select-match placeholder="Logo de entidad"> <img ng-src="{{ $select.selected.public?imgSystemPath:perfilPath }}{{ $select.selected.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
-                <ui-select-choices repeat="imagen in imagenes | filter: {nombre: $select.search}"><img ng-src="{{ imagen.public?imgSystemPath:perfilPath }}{{ imagen.nombre }}" style="width:25px; height:25px;"><small ng-bind-html="' ' + imagen.nombre | highlight: $select.search"></small></ui-select-choices>
-              </ui-select>
-            </div>
+            <label>Duración por pregunta:</label>
+            <input placeholder="Duración pregunta" type="number" ng-model="newEvaluacion.duracion_preg" class="form-control">
+            <md-tooltip>Duración por pregunta cuando sea dirigido</md-tooltip>
           </div>
           <div flex>
-            <input placeholder="Teléfono" type="text" ng-model="newEvaluacion.telefono" class="form-control">
+            <label>Duración por examen:</label>
+            <input placeholder="Duración exámen" type="number" ng-model="newEvaluacion.duracion_exam" class="form-control">
+            <md-tooltip>Duración por pregunta cuando sea dirigido</md-tooltip>
           </div>
-          <div flex>
-            <input placeholder="Alias" type="text" ng-model="newEvaluacion.alias" class="form-control">
+          <div flex="40" flex-gt-lg="20" flex-sm="100">
+            <md-checkbox ng-model="newEvaluacion.dirigido" aria-label="Responder de una por una">Responder de una por una</md-checkbox>
+            <md-tooltip>Responder de una en una o todas las preguntas a la vez</md-tooltip>
           </div>
           <div class="clearfix right">
-            <md-button type="submit" ng-disabled="guardando" class="md-primary">Guardar</md-button>
-            <md-button ng-click="cancelarNuevo()" class="md-default">Cancelar</md-button>
+            <md-button type="button" ng-click="cancelarNuevo()" class="md-default md-raised">Cancelar</md-button>
+            <md-button type="submit" ng-disabled="guardando" class="md-primary md-raised">Guardar</md-button>
           </div>
         </form>
       </div>
       <!-- Formulario para editar-->
-      <div flex-gt-md="40" flex-md="100" ng-show="creando">
-        <form layout="column" ng-submit="" layout-margin layout-wrap layout-padding>
+      <div flex-gt-md="40" flex-md="100" ng-show="editando">
+        <h2>Editar evaluación</h2>
+        <form layout="column" ng-submit="guardarEdicion()" layout-margin layout-wrap layout-padding>
           <div flex>
-            <label>Nombre:</label>
-            <input type="text" ng-model="currentEvaluacion.nombre" class="form-control">
+            <label>Descripción:</label>
+            <input type="text" ng-model="currentEvalua.descripcion" class="form-control">
+          </div>
+          <div flex>
+            <label>Categoría:</label>
+            <md-input-container layout="row" layout-align="start center" style="padding-bottom: 0px; margin-top: -10px;">
+              <md-select placeholder="Categoría" ng-model="currentEvalua.categoria_id"><span ng-repeat="catking in categorias_king">
+                  <md-option ng-repeat="cat_traduc in catking.categorias_traducidas | catsByIdioma:idioma.selected" ng-show="cat_traduc.idioma_id==idioma.selected" value="{{cat_traduc.categoria_id}}">
+                     
+                     {{cat_traduc.nombre}}
+                  </md-option></span></md-select>
+            </md-input-container>
           </div>
           <div flex="40" flex-gt-lg="20" flex-sm="100">
-            <md-checkbox ng-model="seleccionar_lider" aria-label="¿Traducido?">Seleccionar lider</md-checkbox>
-          </div>
-          <div flex ng-show="seleccionar_lider">
-            <md-select placeholder="Seleccione Lider" ng-model="currentEvaluacion.lider_id">
-              <md-option ng-repeat="usuario in usuarios" value="{{usuario.id}}">{{usuario.nombres}} {{usuario.apellidos}}</md-option>
-            </md-select>
-          </div>
-          <div flex ng-show="!seleccionar_lider">
-            <input placeholder="Escriba Nombre del lider" type="text" ng-model="currentEvaluacion.lider_nombre" class="form-control">
+            <md-checkbox ng-model="currentEvalua.actual" aria-label="Actual">Actual</md-checkbox>
+            <md-tooltip>Será la evaluación que los participantes resolverán</md-tooltip>
           </div>
           <div flex>
-            <div class="form-group">
-              <label>Logo</label>
-              <ui-select ng-model="currentEvaluacion.imgUsuario" theme="select2" on-select="imagenSelect($item, $model)">
-                <ui-select-match placeholder="Logo de entidad"> <img ng-src="{{ $select.selected.public?imgSystemPath:perfilPath }}{{ $select.selected.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
-                <ui-select-choices repeat="imagen in imagenes | filter: {nombre: $select.search}"><img ng-src="{{ imagen.public?imgSystemPath:perfilPath }}{{ imagen.nombre }}" style="width:25px; height:25px;"><small ng-bind-html="' ' + imagen.nombre | highlight: $select.search"></small></ui-select-choices>
-              </ui-select>
-            </div>
+            <label>Duración por pregunta:</label>
+            <input placeholder="Duración pregunta" type="number" ng-model="currentEvalua.duracion_preg" class="form-control">
+            <md-tooltip>Duración por pregunta cuando sea dirigido</md-tooltip>
           </div>
           <div flex>
-            <input placeholder="Teléfono" type="text" ng-model="currentEvaluacion.telefono" class="form-control">
+            <label>Duración por examen:</label>
+            <input placeholder="Duración exámen" type="number" ng-model="currentEvalua.duracion_exam" class="form-control">
+            <md-tooltip>Duración por pregunta cuando sea dirigido</md-tooltip>
           </div>
-          <div flex>
-            <input placeholder="Alias" type="text" ng-model="currentEvaluacion.alias" class="form-control">
+          <div flex="40" flex-gt-lg="20" flex-sm="100">
+            <md-checkbox ng-model="currentEvalua.dirigido" aria-label="Responder de una por una">Responder de una por una</md-checkbox>
+            <md-tooltip>Responder de una en una o todas las preguntas a la vez</md-tooltip>
           </div>
           <div class="clearfix right">
-            <md-button type="submit" ng-disabled="guardando" class="md-primary">Guardar</md-button>
-            <md-button ng-click="cancelarEdit()" class="md-default">Cancelar</md-button>
+            <md-button type="button" ng-click="cancelarNuevo()" class="md-default md-raised">Cancelar</md-button>
+            <md-button type="submit" ng-disabled="guardando" class="md-primary md-raised">Guardar</md-button>
           </div>
         </form>
       </div>

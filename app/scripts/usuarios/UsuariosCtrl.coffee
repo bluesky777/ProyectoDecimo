@@ -6,11 +6,16 @@ angular.module('WissenSystem')
 		$scope.imagesPath = App.images
 		$scope.usuarios = []
 		$scope.currentUsers = []
-		$scope.newUsu = {
-			sexo: 'M'
-			niveles: []
+		$scope.currentUser = {
 			inscripciones: []
 		}
+		$scope.newUsu = {
+			sexo: 'M'
+			nivel: ""
+			inscripciones: []
+		}
+		$scope.editando = false
+		$scope.creando = false
 
 		$scope.comprobar_evento_actual = ()->
 			if $scope.evento_actual
@@ -28,7 +33,7 @@ angular.module('WissenSystem')
 		$scope.$on 'cambio_evento_user', ()->
 			$scope.comprobar_evento_actual()
 			$scope.traer_niveles()
-			$scope.traer_disciplinas()
+			$scope.traer_entidades()
 			$scope.traer_categorias()
 
 		$scope.$on 'cambia_evento_actual', ()->
@@ -50,16 +55,15 @@ angular.module('WissenSystem')
 		$scope.traer_niveles()
 
 
-		$scope.disciplinas_king = []
-		$scope.traer_disciplinas = ()->
-			Restangular.all('disciplinas/disciplinas-usuario').getList().then((r)->
-				$scope.disciplinas_king = r
-				#console.log 'Disciplinas traídas: ', r
+		$scope.entidades = []
+		$scope.traer_entidades = ()->
+			Restangular.all('entidades').getList().then((r)->
+				$scope.entidades = r
 			, (r2)->
-				toastr.warning 'No se trajeron las disciplinas', 'Problema'
-				console.log 'No se trajo disciplinas ', r2
+				toastr.warning 'No se trajeron las entidades', 'Problema'
+				console.log 'No se trajo entidades ', r2
 			)
-		$scope.traer_disciplinas()
+		$scope.traer_entidades()
 
 			
 		$scope.categorias_king1 = []
@@ -103,7 +107,7 @@ angular.module('WissenSystem')
 			$scope.guardando = true
 
 			Restangular.one('usuarios/store').customPOST($scope.newUsu).then((r)->
-				r.editando = true
+				toastr.success 'Usuario guardado con éxito.'
 				$scope.usuarios.push r
 				$scope.guardando = false
 				console.log 'Usuario creado', r
@@ -112,24 +116,75 @@ angular.module('WissenSystem')
 				console.log 'No se creó usuario ', r2
 				$scope.guardando = false
 			)
+		
 
+		$scope.guardando_edicion = false
+		$scope.guardarEdicion = ()->
+			$scope.guardando_edicion = true
 
-
-		$scope.cambiaInscripcion = (categoriaking, currentUser)->
+			Restangular.one('usuarios/update').customPUT($scope.currentUser).then((r)->
+				toastr.success 'Cambios guardados.'
+				$scope.guardando_edicion = false
+				console.log 'Cambios guardados', r
+			, (r2)->
+				toastr.warning 'No se guardó cambios del usuario', 'Problema'
+				console.log 'No se guardó cambios del usuario ', r2
+				$scope.guardando_edicion = false
+			)
 			
+
+
+		$scope.checkeandoCategorias = (item, list)->
+			return list.indexOf(item) > -1
+
+		$scope.toggle = (item, list)->
+			idx = list.indexOf(item);
+			if (idx > -1) then list.splice(idx, 1) else list.push(item)
+
+
+		$scope.checkeandoCategoriasEdit = (item, list)->
+			return list.indexOf(item) > -1
+
+		$scope.toggleEdit = (item, list)->
+			idx = list.indexOf(item);
+			if (idx > -1) then list.splice(idx, 1) else list.push(item)
+
+
+
+		$scope.cancelarNuevo = ()->
+			$scope.creando = false
+
+
+		$scope.cancelarEdicion = ()->
+			$scope.editando = false
+
+
+
+		$scope.cambiaInscripcion = (categoriaking, currentUsers)->
+			
+			currentUser = currentUsers[0]
+
 			categoriaking.cambiando = true
 
 			datos = 
 				usuario_id: 	currentUser.id
-				categoria_id: 	categoriaking.id
+				categoria_id: 	categoriaking.categoria_id
 
 			if categoriaking.selected
 
 			
-				Restangular.one('inscripciones/inscribir').customPOST(datos).then((r)->
-					$scope.usuarios.push r
+				Restangular.one('inscripciones/inscribir').customPUT(datos).then((r)->
 					categoriaking.cambiando = false
-					console.log 'Usuario creado', r
+					console.log 'Inscripción creada', r
+
+					inscrip = $filter('filter')(currentUser.inscripciones, {categoria_id: datos.categoria_id})
+					if inscrip.length == 0
+						currentUser.inscripciones.push r[0]
+					else
+						inscrip[0].id = r[0].id
+						inscrip[0].deleted_at = r[0].deleted_at
+
+
 				, (r2)->
 					toastr.warning 'No se inscribó el usuario', 'Problema'
 					console.log 'No se inscribó el usuario ', r2
@@ -139,10 +194,12 @@ angular.module('WissenSystem')
 
 			else
 
-				Restangular.one('inscripciones/desinscribir').customPOST(datos).then((r)->
-					$scope.usuarios.push r
+				Restangular.one('inscripciones/desinscribir').customPUT(datos).then((r)->
 					categoriaking.cambiando = false
-					console.log 'Usuario creado', r
+					console.log 'Inscripción creada', r
+					
+					currentUser.inscripciones = $filter('filter')(currentUser.inscripciones, {categoria_id: '!'+datos.categoria_id})
+
 				, (r2)->
 					toastr.warning 'No se quitó inscripción', 'Problema'
 					console.log 'No se quitó inscripción ', r2

@@ -34,9 +34,9 @@ div(ng-repeat="pregunta in preguntaking.preguntas_traducidas | porIdioma:idiomap
 
 
 						md-menu-item
-							md-button(disabled="disabled" ng-click="asignarExamen(preguntaking)")
-								md-icon.fa.fa-trash()
-								| Asignar a Examen
+							md-button(ng-click="asignarAEvaluacion(preguntaking)")
+								md-icon.fa.fa-clipboard()
+								| Asignar a Evaluación
 
 						md-menu-divider
 						md-menu-item

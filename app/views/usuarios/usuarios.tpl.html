@@ -1,5 +1,6 @@
 
-<div class="row">
+<md-button ng-click="creando=!creando" ng-show="!creando" class="md-raised md-primary">Nuevo usuario</md-button>
+<div ng-show="creando" class="row">
   <div class="col-sm-12 col-md-12">
     <div class="panel panel-default panel-hovered panel-stacked mb20">
       <div class="panel-heading">
@@ -10,70 +11,72 @@
         <form ng-submit="guardarNuevo()" name="frm" role="form" class="form-horizontal">
           <div class="row">
             <div class="col-md-8">
-              <div class="form-group">
-                <label class="control-label col-md-3">Nombre</label>
-                <div class="col-md-9">
-                  <input type="text" ng-model="newUsu.nombres" placeholder="Nombre" class="form-control">
-                  <p class="text-danger text-right xsmall">Campo obligatorio</p>
-                </div>
+              <div layout layout-sm="column">
+                <md-input-container flex>
+                  <label>Nombre</label>
+                  <input type="text" ng-model="newUsu.nombres" name="nombres" required>
+                </md-input-container>
+                <md-input-container flex>
+                  <label>Apellidos</label>
+                  <input type="text" ng-model="newUsu.apellidos">
+                </md-input-container>
               </div>
-              <div class="form-group">
-                <label class="control-label col-md-3">Apellidos</label>
-                <div class="col-md-9">
-                  <input type="text" ng-model="newUsu.apellidos" placeholder="Apellidos" class="form-control">
-                </div>
+              <div layout layout-sm="column">
+                <md-input-container flex>
+                  <label>Username</label>
+                  <input type="text" ng-model="newUsu.username" required>
+                </md-input-container>
+                <md-input-container flex>
+                  <label>Contraseña</label>
+                  <input type="text" ng-model="newUsu.password" required>
+                </md-input-container>
               </div>
-              <div class="form-group">
-                <label class="control-label col-md-3">Sexo</label>
-                <div class="col-md-9">
-                  <md-radio-group ng-model="newUsu.sexo">
-                    <md-radio-button ng-value="avatar.masculino.abrev" aria-label="{{avatar.masculino.def}}" class="rd-gender"><img ng-src="{{avatar.masculino.img}}" class="img-gender">
-                      <md-tooltip>Masculino</md-tooltip>
-                    </md-radio-button>
-                    <md-radio-button ng-value="avatar.femenino.abrev" aria-label="{{avatar.femenino.def}}" class="rd-gender"><img ng-src="{{avatar.femenino.img}}" class="img-gender">
-                      <md-tooltip>Femenino</md-tooltip>
-                    </md-radio-button>
-                  </md-radio-group>
-                </div>
+              <div layout layout-sm="column">
+                <md-input-container flex>
+                  <label>Email</label>
+                  <input type="text" ng-model="newUsu.email">
+                </md-input-container>
+                <md-input-container flex>
+                  <label>Celular</label>
+                  <input type="text" ng-model="newUsu.cell">
+                </md-input-container>
+                <md-input-container flex>
+                  <label>Edad</label>
+                  <input ng-model="newUsu.edad" type="text">
+                </md-input-container>
               </div>
-              <div class="form-group">
-                <label class="control-label col-md-3">Username</label>
-                <div class="col-md-9">
-                  <input type="text" ng-model="newUsu.username" placeholder="Username" class="form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-md-3">Email</label>
-                <div class="col-md-9">
-                  <input type="text" ng-model="newUsu.email" placeholder="Email" class="form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-md-3">Celular</label>
-                <div class="col-md-9">
-                  <input type="text" ng-model="newUsu.cell" placeholder="Celular" class="form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-md-3">Edad</label>
-                <div class="col-md-9">
-                  <input ng-model="newUsu.entidad" type="text" placeholder="Edad" class="form-control">
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="form-group">
+                    <label class="control-label col-md-3">Sexo</label>
+                    <div class="col-md-9">
+                      <md-radio-group ng-model="newUsu.sexo">
+                        <md-radio-button ng-value="avatar.masculino.abrev" aria-label="{{avatar.masculino.def}}" class="rd-gender"><img ng-src="{{avatar.masculino.img}}" class="img-gender">
+                          <md-tooltip>Masculino</md-tooltip>
+                        </md-radio-button>
+                        <md-radio-button ng-value="avatar.femenino.abrev" aria-label="{{avatar.femenino.def}}" class="rd-gender"><img ng-src="{{avatar.femenino.img}}" class="img-gender">
+                          <md-tooltip>Femenino</md-tooltip>
+                        </md-radio-button>
+                      </md-radio-group>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="col-md-4">
-              <md-select ng-model="newUsu.entidad" placeholder="Entidad">
-                <md-option value="">LAL</md-option>
+              <md-select ng-model="newUsu.entidad_id" placeholder="Entidad">
+                <md-option ng-repeat="entidad in entidades" value="{{entidad.id}}">{{entidad.nombre}}</md-option>
               </md-select>
-              <md-select multiple ng-model="newUsu.niveles" placeholder="Niveles">
-                <md-option value="nivel.id" ng-repeat="nivel in niveles">{{nivel.nombre}}</md-option>
+              <md-select ng-model="newUsu.nivel_id" placeholder="Niveles">
+                <md-option ng-value="nivel.nivel_king_id" ng-repeat="nivel in $parent.niveles_king | nivelesTraducidos:$parent.evento_actual.idioma_principal_id">{{nivel.nombre}}</md-option>
+                <md-option value="">Todos</md-option>
               </md-select>
               <md-content>
                 <md-list>
                   <md-subheader class="md-no-sticky">Inscribir en:</md-subheader>
-                  <md-list-item ng-repeat="categoriaking in newUsu | categsInscritas:categorias_king1">
-                    <md-checkbox ng-model="categoriaking.selected"></md-checkbox>
-                    <p>{{categoriaking.nombre}}</p>
+                  <md-list-item ng-repeat="categoria in categorias_king1 | categoriasTraducidas:$parent.evento_actual.idioma_principal_id:newUsu.nivel_id">
+                    <md-checkbox ng-checked="checkeandoCategorias(categoria, newUsu.inscripciones)" ng-click="toggle(categoria, newUsu.inscripciones)"></md-checkbox>
+                    <p>{{categoria.nombre}}</p>
                   </md-list-item>
                 </md-list>
               </md-content>
@@ -81,7 +84,99 @@
           </div>
           <div class="clearfix right">
             <md-button type="submit" ng-disabled="guardando" class="md-primary">Guardar</md-button>
-            <md-button type="button" class="md-default">Cancelar</md-button>
+            <md-button type="button" ng-click="cancelarNuevo()" class="md-default">Cancelar</md-button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div ng-show="editando" class="row">
+  <div class="col-sm-12 col-md-12">
+    <div class="panel panel-default panel-hovered panel-stacked mb20">
+      <div class="panel-heading">
+          
+        Editar a {{currentUser.nombres}}
+      </div>
+      <div class="panel-body">
+        <form ng-submit="guardarEdicion()" name="frmEdit" role="form" class="form-horizontal">
+          <div class="row">
+            <div class="col-md-8">
+              <div layout layout-sm="column">
+                <md-input-container flex>
+                  <label>Nombre</label>
+                  <input type="text" ng-model="currentUser.nombres" name="nombres" required>
+                </md-input-container>
+                <md-input-container flex>
+                  <label>Apellidos</label>
+                  <input type="text" ng-model="currentUser.apellidos">
+                </md-input-container>
+              </div>
+              <div layout layout-sm="column">
+                <md-input-container flex>
+                  <label>Username</label>
+                  <input type="text" ng-model="currentUser.username" required>
+                </md-input-container>
+                <md-input-container flex>
+                  <label>Contraseña</label>
+                  <input type="text" ng-model="currentUser.password" required>
+                </md-input-container>
+              </div>
+              <div layout layout-sm="column">
+                <md-input-container flex>
+                  <label>Email</label>
+                  <input type="text" ng-model="currentUser.email">
+                </md-input-container>
+                <md-input-container flex>
+                  <label>Celular</label>
+                  <input type="text" ng-model="currentUser.cell">
+                </md-input-container>
+                <md-input-container flex>
+                  <label>Edad</label>
+                  <input ng-model="currentUser.edad" type="text">
+                </md-input-container>
+              </div>
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="form-group">
+                    <label class="control-label col-md-3">Sexo</label>
+                    <div class="col-md-9">
+                      <md-radio-group ng-model="currentUser.sexo">
+                        <md-radio-button ng-value="avatar.masculino.abrev" aria-label="{{avatar.masculino.def}}" class="rd-gender"><img ng-src="{{avatar.masculino.img}}" class="img-gender">
+                          <md-tooltip>Masculino</md-tooltip>
+                        </md-radio-button>
+                        <md-radio-button ng-value="avatar.femenino.abrev" aria-label="{{avatar.femenino.def}}" class="rd-gender"><img ng-src="{{avatar.femenino.img}}" class="img-gender">
+                          <md-tooltip>Femenino</md-tooltip>
+                        </md-radio-button>
+                      </md-radio-group>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <md-select ng-model="currentUser.entidad_id" placeholder="Entidad">
+                <md-option ng-repeat="entidad in entidades" value="{{entidad.id}}">{{entidad.nombre}}</md-option>
+              </md-select>
+              <md-select ng-model="currentUser.nivel_id" placeholder="Niveles">
+                <md-option ng-value="nivel.nivel_king_id" ng-repeat="nivel in $parent.niveles_king | nivelesTraducidos:$parent.evento_actual.idioma_principal_id">{{nivel.nombre}}</md-option>
+                <md-option value="">Todos</md-option>
+              </md-select>
+              <md-content>
+                <md-list>
+                  <md-subheader class="md-no-sticky">Inscribir en:</md-subheader>
+                  <md-list-item ng-repeat="categoria in currentUsers | categsInscritas:categorias_king1:evento_actual.idioma_principal_id | filter: { nivel_id: currentUser.nivel_id } ">
+                    <md-checkbox ng-model="categoria.selected" ng-change="cambiaInscripcion(categoria, currentUsers)" aria-label="Categoria" ng-disabled="categoria.cambiando"></md-checkbox>
+                    <p>{{categoria.nombre}}</p>
+                    <div aria-label="Comentario inútil" ng-click="" class="fa fa-comments-o md-secondary"></div>
+                  </md-list-item>
+                </md-list>
+              </md-content>
+            </div>
+          </div>
+          <div class="clearfix right">
+            <md-button type="submit" ng-disabled="guardando" class="md-primary">Guardar</md-button>
+            <md-button type="button" ng-click="cancelarEdicion()" class="md-default">Cancelar</md-button>
           </div>
         </form>
       </div>
@@ -90,6 +185,6 @@
 </div>
 <div class="row">
   <div class="col-sm-12 col-md-12">
-    <grid-usuarios currentusers="currentUsers" usuarios="usuarios" categoriasking="categorias_king2"></grid-usuarios>
+    <grid-usuarios currentusers="currentUsers" nivelesking="niveles_king" usuarios="usuarios" categoriasking="categorias_king2" idioma="$parent.evento_actual.idioma_principal_id"></grid-usuarios>
   </div>
 </div>

@@ -1,14 +1,14 @@
 angular.module('WissenSystem')
 
 .filter('categsInscritas', ['$filter', ($filter)->
-	(currentUsers, categorias_king) ->
+	(currentUsers, categorias_king, idioma_id) ->
 
 		if currentUsers and categorias_king
 			
 			resultado = []
 
 			if currentUsers.length == 0 or currentUsers.length == undefined
-				return false
+				return []
 
 
 			else if currentUsers.length == 1
@@ -17,18 +17,25 @@ angular.module('WissenSystem')
 
 				for categoriaking in categorias_king
 
-					categoriaking.algunos = false # No aplica si solo hay uno
+					categ_traducida = $filter('porIdioma')(categoriaking.categorias_traducidas, idioma_id)
+					
+					if categ_traducida.length > 0
+						categ_traducida = categ_traducida[0]
+
+					categ_traducida.algunos = false # No aplica si solo hay uno
+					categ_traducida.nivel_id = categoriaking.nivel_id
 
 					res = $filter('filter')(usuario.inscripciones, { categoria_id: categoriaking.id })
 
 					if res.length > 0 
-						categoriaking.incripcion_id 	= res.id
-						categoriaking.selected 			= true
+						categ_traducida.incripcion_id 	= res.id
+						categ_traducida.selected 			= true
 					else 
-						categoriaking.incripcion_id 	= undefined
-						categoriaking.selected 			= false
+						categ_traducida.incripcion_id 	= undefined
+						categ_traducida.selected 			= false
 
-					resultado.push categoriaking
+
+					resultado.push categ_traducida
 
 
 			else if currentUsers.length > 1
@@ -36,7 +43,14 @@ angular.module('WissenSystem')
 
 				for categoriaking in categorias_king
 
-					categoriaking.incripcion_id = undefined # por ser varios, no habrá un código de inscripción
+					categ_traducida = $filter('porIdioma')(categoriaking.categorias_traducidas, idioma_id)
+					
+					if categ_traducida.length > 0
+						categ_traducida = categ_traducida[0]
+
+					categ_traducida.nivel_id = categoriaking.nivel_id
+					categ_traducida.incripcion_id = undefined # por ser varios, no habrá un código de inscripción
+					
 					cant = 0
 
 					for usuario in currentUsers
@@ -47,27 +61,25 @@ angular.module('WissenSystem')
 							cant++
 
 					if cant == 0
-						categoriaking.selected = false
-						categoriaking.algunos = false
+						categ_traducida.selected = false
+						categ_traducida.algunos = false
 
 					else if cant == currentUsers.length
-						categoriaking.selected = true
-						categoriaking.algunos = false
+						categ_traducida.selected = true
+						categ_traducida.algunos = false
 
 					else
-						categoriaking.selected = false
-						categoriaking.algunos = true
+						categ_traducida.selected = false
+						categ_traducida.algunos = true
 
 
-					resultado.push categoriaking
+					resultado.push categ_traducida
 
 
-
-				console.log 'resultado', resultado
 			return resultado
 
 		else
-			return false
+			return []
 ])
 
 

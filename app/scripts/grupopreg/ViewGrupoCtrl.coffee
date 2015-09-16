@@ -25,6 +25,22 @@ angular.module('WissenSystem')
 				toastr.warning 'No se creó pregunta', 'Problema'
 			)
 
+		$scope.asignarAEvaluacion = (grupoking)->
+			modalInstance = $modal.open({
+				templateUrl: App.views + 'grupopreg/asignarGrupo.tpl.html'
+				controller: 'AsignarGrupoCtrl'
+				resolve: 
+					pregunta: ()->
+						grupoking
+					evaluaciones: ()->
+						$scope.evaluaciones
+			})
+			modalInstance.result.then( (elem)->
+				#$scope.$emit 'preguntaAsignada', elem
+				console.log 'Resultado del modal: ', elem
+			)
+
+
 		
 		$scope.toggleMostrarAyuda = (pregunta)->
 			pregunta.mostrar_ayuda = !pregunta.mostrar_ayuda
@@ -121,6 +137,41 @@ angular.module('WissenSystem')
 		$modalInstance.dismiss('cancel')
 
 ])
+
+.controller('AsignarGrupoCtrl', ['$scope', '$modalInstance', 'pregunta', 'evaluaciones', 'Restangular', 'toastr', '$filter', ($scope, $modalInstance, pregunta, evaluaciones, Restangular, toastr, $filter)->
+	$scope.pregunta = pregunta
+	$scope.evaluaciones = evaluaciones
+	$scope.asignando = false
+	$scope.selected = false
+
+	$scope.ok = ()->
+
+		$scope.asignando = true
+
+		datos = 
+			grupo_pregs_id: pregunta.id
+			evaluacion_id: $scope.selected
+
+		Restangular.all('pregunta_evaluacion/asignar-grupo').customPUT(datos).then((r)->
+			toastr.success 'Grupo asignado con éxito.'
+			$scope.asignando = false
+
+			evalua = $filter('filter')(evaluaciones, {id: $scope.selected})[0]
+			evalua.preguntas_evaluacion.push r
+
+			$modalInstance.close(r)
+		, (r2)->
+			toastr.warning 'No se pudo asignar el grupo.', 'Problema'
+			console.log 'Error asignando el grupo: ', r2
+			$scope.asignando = false
+		)
+		
+
+	$scope.cancel = ()->
+		$modalInstance.dismiss('cancel')
+
+])
+
 
 
 

@@ -40,6 +40,17 @@ angular.module('WissenSystem')
 		data: 
 			pageTitle: 'En Construcción'
 	})
+
+	.state('landing', { #- Estado raiz que no necesita autenticación.
+		url: '/landing'
+		views: 
+			'principal':
+				templateUrl: App.views+'main/landing.tpl.html'
+				controller: 'LandingCtrl' # El controlador está en 'main.coffee'
+		data: 
+			pageTitle: 'Liceo Adventista Libertad'
+	})
+
 	.state('login', { 
 		url: '/login'
 		views:

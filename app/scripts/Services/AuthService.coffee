@@ -3,35 +3,50 @@ angular.module('WissenSystem')
 .factory('AuthService', ['Restangular', '$state', '$http', '$cookies', 'Perfil', '$rootScope', 'AUTH_EVENTS', '$q', '$filter', 'toastr', (Restangular, $state, $http, $cookies, Perfil, $rootScope, AUTH_EVENTS, $q, $filter, toastr)->
 	authService = {}
 
-	authService.verificar = ()->
-		d = $q.defer();
 
-		# No necesitaría verificar si ya se ha logueado
-		if Perfil.User().id
-			d.resolve Perfil.User()
+	authService.verificando = false
+	authService.promesa_de_verificacion = {}
+
+
+	authService.verificar = ()->
+
+		if authService.verificando
+
+			return authService.promesa_de_verificacion
+
 		else
-			if $cookies.get('xtoken')
-				if $cookies.get('xtoken') != undefined and $cookies.get('xtoken') != 'undefined'  and $cookies.get('xtoken') != '[object Object]'
-					authService.login_from_token().then((usuario)->
-						Perfil.setUser usuario
-						d.resolve usuario
-					, (r2)->
-						console.log 'No se logueó from token'
-						d.reject r2
+
+			d = $q.defer();
+
+			# No necesitaría verificar si ya se ha logueado
+			if Perfil.User().id
+				d.resolve Perfil.User()
+			else
+				if $cookies.get('xtoken')
+					if $cookies.get('xtoken') != undefined and $cookies.get('xtoken') != 'undefined'  and $cookies.get('xtoken') != '[object Object]'
+						authService.login_from_token().then((usuario)->
+							Perfil.setUser usuario
+							d.resolve usuario
+						, (r2)->
+							console.log 'No se logueó from token'
+							d.reject r2
+							#authService.borrarToken()
+							#$rootScope.$broadcast(AUTH_EVENTS.notAuthenticated)
+						)
+					else
+						console.log 'Token mal estructurado: ', $cookies.get('xtoken')
 						authService.borrarToken()
 						$rootScope.$broadcast(AUTH_EVENTS.notAuthenticated)
-					)
+						d.reject 'Token mal estructurado.'
 				else
-					console.log 'Token mal estructurado: ', $cookies.get('xtoken')
-					authService.borrarToken()
+					console.log 'No hay cookie token.'
+					d.reject 'No hay cookie token.'
+					$state.go 'login'
 					$rootScope.$broadcast(AUTH_EVENTS.notAuthenticated)
-					d.reject 'Token mal estructurado.'
-			else
-				console.log 'No hay cookie token.'
-				d.reject 'No hay cookie token.'
-				$state.go 'login'
-				$rootScope.$broadcast(AUTH_EVENTS.notAuthenticated)
-		return d.promise
+
+			authService.promesa_de_verificacion = d.promise
+
+			return authService.promesa_de_verificacion
 
 
 	authService.verificar_acceso = ()->

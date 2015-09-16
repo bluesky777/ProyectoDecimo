@@ -18,7 +18,7 @@
   <!-- fullscreen-->
   <li ng-click="goFullScreen()" class="fullscreen hidden-xs"><a href=""><i class="fa fa-arrows-alt"></i></a></li>
   <!-- notification drop-->
-  <li dropdown="" class="notify-drop hidden-xs dropdown"><a href="" dropdown-toggle=""><i class="fa fa-laptop"></i><span ng-bind=" evento_actual.alias"></span>
+  <li dropdown="" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')" class="notify-drop hidden-xs dropdown"><a href="" dropdown-toggle=""><i class="fa fa-laptop"></i><span ng-bind=" evento_actual.alias"></span>
       <!--span.badge.badge-danger.badge-xs.circle {{ USER.eventos.length }}--></a>
     <div custom-scrollbar="" class="panel panel-default dropdown-menu">
       <div class="panel-heading">Selecciona el evento que deseas<a ui-sref="panel.eventos" class="right btn btn-xs btn-pink mt-3">Eventos</a></div>
@@ -59,10 +59,10 @@
 <ul class="list-unstyled right-elems ng-scope">
   <li dropdown="" class="profile-drop hidden-xs dropdown"><a href="" dropdown-toggle="" aria-haspopup="true" aria-expanded="false"><img ng-src="{{imagesPath + USER.imagen_nombre}}" alt="{{USER.username}}"></a>
     <ul class="dropdown-menu dropdown-menu-right">
-      <li><a href="javascript:;"><span class="ion ion-person"></span>Profile</a></li>
-      <li><a href="javascript:;"><span class="ion ion-settings"> </span>Settings</a></li>
+      <li><a href="javascript:;"><span class="ion ion-person"></span>Perfil</a></li>
+      <li><a href="javascript:;"><span class="ion ion-settings"> </span>Configuración</a></li>
       <li class="divider"></li>
-      <li><a href="javascript:;"><span class="ion ion-lock-combination"></span>Lock Screen</a></li>
+      <li><a href="javascript:;"><span class="ion ion-lock-combination"></span>Imágenes</a></li>
       <li><a href="" ng-click="logout()"><span class="ion ion-power"></span>Salir</a></li>
     </ul>
   </li>

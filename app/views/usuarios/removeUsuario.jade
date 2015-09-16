@@ -3,9 +3,9 @@
 .modal-body
 	.row
 		.col-lg-12.col-xs-12
-			h4 Pregunta ({{pregunta.preguntas_traducidas[0].idioma}}): 
-			span(ng-bind-html="pregunta.preguntas_traducidas[0].enunciado" flex="90")
-			h5 Id: {{pregunta.id}}
+			h4(ng-bind-html="usuario.nombres + ' ' + usuario.apellidos" flex="90")
+			div(ng-bind-html="'Entidad: ' + (usuario.entidad_id|nombreEntidad:entidades)" flex="90")
+			h5 Id: {{usuario.id}}
 
 .modal-footer
 	button.btn.btn-labeled.btn-danger(ng-click="ok()") Eliminar

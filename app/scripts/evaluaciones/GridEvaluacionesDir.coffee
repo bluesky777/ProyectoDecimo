@@ -1,22 +1,21 @@
 angular.module('WissenSystem')
 
-.directive('viewPregunta',['App', (App)-> 
+.directive('gridEvaluaciones',['App', (App)-> 
 
 	restrict: 'E'
-	templateUrl: "#{App.views}preguntas/viewPreguntaDir.tpl.html"
+	templateUrl: "#{App.views}evaluaciones/gridEvaluacionesDir.tpl.html"
+
 	scope: 
-		idiomapreg: "="
-		preguntaking: "="
-		indice: "="
-		eventoactual: '='
-		eventoactualselec: "="
+		currenteval: "="
 		evaluaciones: "="
+		categoriasking: "="
+		idioma: "="
 
 	link: (scope, iElem, iAttrs)->
 		# Debo agregar la clase .loading-inactive para que desaparezca el loader de la pantalla.
 		# y eso lo puedo hacer con el ng-if
 
-	controller: 'ViewPreguntaCtrl'
+	controller: 'GridEvaluacionesCtrl'
 		
 
 ])
