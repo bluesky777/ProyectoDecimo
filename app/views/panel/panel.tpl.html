@@ -8,18 +8,7 @@
   <div ng-class="{'nav-expand': navFull, 'fixedHeader': fixedHeader}" id="content" class="content-container fixedHeader">
     <div class="page page-dashboard">
       <div ui-view="contenido_panel" class="page-wrap">
-        <div class="row">
-          <!-- dashboard header-->
-          <div class="col-md-12">
-            <div class="dash-head clearfix mt15 mb20">
-              <div class="left">
-                <h4 class="mb5 text-light">Bienvenido a las Olimpiadas</h4>
-                <p class="small"></p><strong>Libertad </strong>2015
-                <md-button ng-click="conectar()">Presioname</md-button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <iniciar-dir eventoactual="evento_actual" user="USER"></iniciar-dir>
       </div>
     </div>
   </div><!-- settings -->

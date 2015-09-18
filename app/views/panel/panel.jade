@@ -16,16 +16,8 @@ header.site-head.fixedHeader#site-head(ng-class="{'fixedHeader': fixedHeader}" n
 
 			.page-wrap(ui-view="contenido_panel")
 
-				.row
-					// dashboard header
-					.col-md-12
-						.dash-head.clearfix.mt15.mb20
-							.left
-								h4.mb5.text-light Bienvenido a las Olimpiadas
-								p.small
-								strong Libertad 
-								| 2015
-								md-button(ng-click="conectar()") Presioname
+				iniciar-dir(eventoactual="evento_actual" user="USER")
+
 
 
 	<!-- settings -->

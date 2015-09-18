@@ -1,7 +1,9 @@
 angular.module('WissenSystem')
 
-.controller('UsuariosCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 'uiGridConstants', '$modal', '$filter', 'App' 
-	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr, uiGridConstants, $modal, $filter, App) ->
+.controller('UsuariosCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 'uiGridConstants', '$modal', '$filter', 'App', 'AuthService' 
+	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr, uiGridConstants, $modal, $filter, App, AuthService) ->
+
+		AuthService.verificar_acceso()
 
 		$scope.imagesPath = App.images
 		$scope.usuarios = []

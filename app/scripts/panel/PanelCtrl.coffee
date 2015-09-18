@@ -2,8 +2,8 @@
 
 angular.module('WissenSystem')
 
-.controller('PanelCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'AuthService', 'Perfil', 'App', 'resolved_user', 'toastr', '$translate', '$filter', 
-	($scope, $http, Restangular, $state, $cookies, $rootScope, AuthService, Perfil, App, resolved_user, toastr, $translate, $filter) ->
+.controller('PanelCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'AuthService', 'Perfil', 'App', 'resolved_user', 'toastr', '$translate', '$filter', '$modal', 
+	($scope, $http, Restangular, $state, $cookies, $rootScope, AuthService, Perfil, App, resolved_user, toastr, $translate, $filter, $modal) ->
 
 
 		$scope.USER = resolved_user
@@ -46,14 +46,17 @@ angular.module('WissenSystem')
 		$scope.el_evento_actual = ()->
 
 			if $scope.USER
-				try
+				if AuthService.isAuthorized('can_work_like_admin')
+					try
 
-					$scope.evento_actual = $filter('filter')($scope.USER.eventos, {id: $scope.USER.evento_selected_id})[0]
+						$scope.evento_actual = $filter('filter')($scope.USER.eventos, {id: $scope.USER.evento_selected_id})[0]
 
-				catch
-					$scope.evento_actual = {}
-				finally
-					$rootScope.$broadcast 'cambia_evento_actual'
+					catch
+						$scope.evento_actual = {}
+					finally
+						$rootScope.$broadcast 'cambia_evento_actual'
+				else
+					$scope.evento_actual = $scope.USER.evento_actual
 
 		$scope.el_evento_actual()
 
@@ -76,13 +79,15 @@ angular.module('WissenSystem')
 			)
 
 		$scope.logout = ()->
-			Restangular.one('usuarios/logout').customPUT().then((r)->
+			AuthService.logout()
+
+			Restangular.one('login/logout').customPUT().then((r)->
 				console.log 'Desconectado con éxito: ', r
 			, (r2)->
 				console.log 'Error desconectando!', r2
 			)
 
-			$state.go 'login'
+			#$state.go 'login'
 
 
 
@@ -95,8 +100,8 @@ angular.module('WissenSystem')
 			(r2)->
 				console.log 'No se trajeron los eventos.'
 			)
-		$scope.traerEventos()
-			
+
+				
 		return
 	]
 )

@@ -1,0 +1,34 @@
+.row
+	.col-md-12
+		.titulo-3d(ng-bind-html=" eventoactual.nombre ")
+		div(ng-switch on="eventoactual.granfinal" style="margin-bottom: 50px; text-align: center;")
+			h3.text-light(ng-switch-when="true" ng-bind-html="'GRAN_FINAL' | translate") ¡Gran final!
+			h3.text-light(ng-switch-default ng-bind-html="'ELIMINATORIAS' | translate") Eliminatorias
+
+.row
+	.col-md-6
+		.panel.panel-default.panel-hovered.panel-stacked.mb20
+			.panel-heading 
+				div(ng-switch on="user.inscripciones.length == 0") 
+					div(ng-switch-when="true" ng-bind-html="('INSCRITO_EN' | translate)" ) 
+					div(ng-switch-default ng-bind-html="No estás inscrito en ninguna categoría." ) 
+
+			
+			.panel-body
+				
+				md-button.col-md-12(ng-click="iniciarExamen(categoriaking)" ng-repeat="categoriaking in user | categsInscritasDeUsuario:categorias_king:user.idioma_main_id ")
+					| {{categoriaking.nombre}}
+
+
+
+	.col-md-6
+		.panel.panel-default.panel-hovered.panel-stacked.mb20
+			.panel-heading 
+
+				div(ng-bind-html="('EXAM_HECHOS' | translate)" ) 
+			
+			.panel-body
+				
+				accordion(close-others="false")
+					accordion-group(heading="{{categoriaking.nombre + ' - ' + categoriaking.id }}" ng-repeat="categoriaking in user | categsInscritasDeUsuario:categorias_king:user.idioma_main_id ")
+						div(ng-repeat="examen in categoriaking.examenes") {{examen}}

@@ -1,0 +1,11 @@
+.container
+	.row
+		.col-sm-12.col-md-12
+			
+			.panel.panel-default.panel-hovered.panel-stacked.mb20
+
+				.panel-body()
+					div(ng-repeat="pregunta in examen_actual.preguntas | orderBy:'orden' ")
+						
+						view-pregunta-examen(ng-if="pregunta.tipo_pregunta" 
+							preguntaking="pregunta")

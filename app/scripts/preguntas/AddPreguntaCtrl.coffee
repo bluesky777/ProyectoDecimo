@@ -3,7 +3,7 @@ angular.module('WissenSystem')
 .controller('AddPreguntaCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', '$mdToast', 'toastr'
 	($scope, $http, Restangular, $state, $cookies, $rootScope, $mdToast, toastr) ->
 
-
+		console.log 'Add pregunta dir'
 		$scope.creando = false
 
 		$scope.addNewPregunta = ()->

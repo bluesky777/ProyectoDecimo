@@ -83,3 +83,37 @@ angular.module('WissenSystem')
 ])
 
 
+
+.filter('categsInscritasDeUsuario', ['$filter', ($filter)->
+	(usuario, categorias_king, idioma_id) ->
+
+		if usuario and categorias_king
+			
+			resultado = []
+
+
+			for categoriaking in categorias_king
+
+				categ_traducida = $filter('porIdioma')(categoriaking.categorias_traducidas, parseFloat(idioma_id))
+				
+				if categ_traducida.length > 0
+					categ_traducida = categ_traducida[0]
+
+					res = $filter('filter')(usuario.inscripciones, { categoria_id: categoriaking.id })
+
+					if res.length > 0 
+						res = res[0]
+						categ_traducida.allowed_to_answer = res.allowed_to_answer
+						categ_traducida.examenes = res.examenes
+						categ_traducida.inscripcion_id = res.id
+
+						resultado.push categ_traducida
+
+
+			return resultado
+
+		else
+			return []
+])
+
+

@@ -1,0 +1,39 @@
+
+<div class="row">
+  <div class="col-md-12">
+    <div ng-bind-html=" eventoactual.nombre " class="titulo-3d"></div>
+    <div ng-switch on="eventoactual.granfinal" style="margin-bottom: 50px; text-align: center;">
+      <h3 ng-switch-when="true" ng-bind-html="'GRAN_FINAL' | translate" class="text-light">¡Gran final!</h3>
+      <h3 ng-switch-default ng-bind-html="'ELIMINATORIAS' | translate" class="text-light">Eliminatorias</h3>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default panel-hovered panel-stacked mb20">
+      <div class="panel-heading"> 
+        <div ng-switch on="user.inscripciones.length == 0"> 
+          <div ng-switch-when="true" ng-bind-html="('INSCRITO_EN' | translate)"> </div>
+          <div ng-switch-default ng-bind-html="No estás inscrito en ninguna categoría."> </div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <md-button ng-click="iniciarExamen(categoriaking)" ng-repeat="categoriaking in user | categsInscritasDeUsuario:categorias_king:user.idioma_main_id " class="col-md-12">{{categoriaking.nombre}}</md-button>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default panel-hovered panel-stacked mb20">
+      <div class="panel-heading"> 
+        <div ng-bind-html="('EXAM_HECHOS' | translate)"> </div>
+      </div>
+      <div class="panel-body">
+        <accordion close-others="false">
+          <accordion-group heading="{{categoriaking.nombre + ' - ' + categoriaking.id }}" ng-repeat="categoriaking in user | categsInscritasDeUsuario:categorias_king:user.idioma_main_id ">
+            <div ng-repeat="examen in categoriaking.examenes">{{examen}}</div>
+          </accordion-group>
+        </accordion>
+      </div>
+    </div>
+  </div>
+</div>

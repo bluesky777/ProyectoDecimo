@@ -78,6 +78,7 @@ angular.module('WissenSystem')
 			Restangular.all('preguntas').getList({categoria_id: $scope.categoria}).then((r)->
 				$scope.preguntas_king = r
 				$scope.inicializado = true
+				console.log '$scope.inicializado', $scope.inicializado
 			, (r2)->
 				console.log 'Pailas la promesa de las preguntas ', r2
 				$scope.inicializado = true

@@ -42,6 +42,12 @@ angular.module('WissenSystem')
 			EVALUACIONES_MENU: 'Evaluaciones'
 			USERS_MENU: 'Usuarios'
 			IDIOMA_MENU: 'Idioma'
+
+			ELIMINATORIAS: 'Eliminatorias'
+			GRAN_FINAL: 'Gran final'
+			INSCRITO_EN: 'Estás inscrito en:'
+			EXAM_HECHOS: 'Exámenes hechos'
+
 		)
 
 

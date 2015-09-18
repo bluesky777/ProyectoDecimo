@@ -46,7 +46,12 @@
 					view-grupo(ng-if="!pregunta_king.tipo_pregunta" grupoking="pregunta_king" 
 						indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" 
 						idiomaactualselec="idiomaPreg.selected" evaluaciones="evaluaciones")
-					
+							
+							
+				add-pregunta(preguntasking="preguntas_king" categoria="categoria" tipo="king" ng-show="inicializado")
+				add-pregunta(preguntasking="preguntas_king" categoria="categoria" tipo="grupo" ng-show="inicializado")
+
+
 
 			.panel-body(ng-if="evaluacion_id=='sin_asignar'")
 
@@ -69,3 +74,5 @@
 
 				add-pregunta(preguntasking="preguntas_king" categoria="categoria" tipo="king" ng-show="inicializado")
 				add-pregunta(preguntasking="preguntas_king" categoria="categoria" tipo="grupo" ng-show="inicializado")
+
+

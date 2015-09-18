@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.config(['$stateProvider', 'App', ($stateProvider, App)->
+.config(['$stateProvider', 'App', 'PERMISSIONS', ($stateProvider, App, PERMISSIONS)->
 
 	$stateProvider
 
@@ -13,6 +13,7 @@ angular.module('WissenSystem')
 
 				data: 
 					pageTitle: 'Usuarios'
+					needed_permissions: [PERMISSIONS.can_edit_usuarios]
 			})
 
 

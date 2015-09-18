@@ -77,6 +77,7 @@ angular.module('WissenSystem', [
   can_work_like_teacher:          'can_work_like_teacher'
   can_work_like_participante:     'can_work_like_participante'
   can_work_like_tecnico:          'can_work_like_tecnico'
+  can_work_like_guest:            'can_work_like_guest'
   can_accept_images:              'can_accept_images'
   can_edit_participantes:         'can_edit_participantes'
   can_edit_usuarios:              'can_edit_usuarios'

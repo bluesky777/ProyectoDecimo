@@ -1,0 +1,14 @@
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <div class="panel panel-default panel-hovered panel-stacked mb20">
+        <div class="panel-body">
+          <div ng-repeat="pregunta in examen_actual.preguntas | orderBy:'orden' ">
+            <view-pregunta-examen ng-if="pregunta.tipo_pregunta" preguntaking="pregunta"></view-pregunta-examen>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

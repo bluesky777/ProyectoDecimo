@@ -19,4 +19,7 @@ angular.module('WissenSystem')
 		user.imagen_id = imagen_id
 		user.imagen_nombre = imagen_nombre
 
+	deleteUser: ()->
+		user = {}
+
 ])
