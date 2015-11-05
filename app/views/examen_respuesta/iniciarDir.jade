@@ -9,9 +9,9 @@
 	.col-md-6
 		.panel.panel-default.panel-hovered.panel-stacked.mb20
 			.panel-heading 
-				div(ng-switch on="user.inscripciones.length == 0") 
+				div(ng-switch on="user.inscripciones.length > 0") 
 					div(ng-switch-when="true" ng-bind-html="('INSCRITO_EN' | translate)" ) 
-					div(ng-switch-default ng-bind-html="No estás inscrito en ninguna categoría." ) 
+					div(ng-switch-default ng-bind-html="'No estás inscrito en ninguna categoría.'" ) 
 
 			
 			.panel-body

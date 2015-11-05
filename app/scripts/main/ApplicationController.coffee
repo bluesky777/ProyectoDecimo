@@ -12,9 +12,17 @@ angular.module('WissenSystem')
 
 	$scope.isLoginPage = false
 
+
 	$scope.navFull = true
 	$scope.toggleNav = ()->
 		$scope.navFull = !$scope.navFull
+
+
+	
+	$scope.tema = 'theme-zero'
+	$scope.cambiarTema = (actual)->
+		$scope.tema = actual
+
 
 	$scope.floatingSidebar = 0
 	$scope.toggleFloatingSidebar = ()->

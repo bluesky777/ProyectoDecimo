@@ -1,5 +1,5 @@
 
-<div ng-repeat="nivelking in niveles_king">
+<div ng-repeat="nivelking in nivelesking">
   <md-whiteframe layout ng-repeat="nivel in nivelking.niveles_traducidos | porIdioma:idiomapreg.selected" ng-hide="nivelking.editando" style="padding: 10px" class="md-whiteframe-z2 definicion-frame"><span flex="10">{{$parent.$index+1}}.</span><span flex="90">{{nivel.nombre}}</span>
     <div layout="row" class="btn-container-edit">
       <md-button aria-label="Editar" ng-click="editarNivel(nivelking)" class="md-fab md-primary md-mini">
@@ -39,7 +39,7 @@
               </div>
               <div ng-if="!evento_actual.es_idioma_unico" class="col-lg-2 col-sm-2 col-xs-12">
                 <div class="form-group">
-                  <md-checkbox ng-model="nivel.traducido" aria-label="¿Traducido?">¿Traducido?</md-checkbox>
+                  <md-checkbox ng-model="nivel.traducido" ng-false-value="0" ng-true-value="1" aria-label="¿Traducido?">¿Traducido?</md-checkbox>
                 </div>
               </div>
             </div>

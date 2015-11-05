@@ -7,11 +7,11 @@ angular.module('WissenSystem')
 	$scope.creando = false
 
 
-	$scope.categorias_king = []
+	
 
 	$scope.traer_categorias = ()->
 		Restangular.all('categorias/categorias-usuario').getList().then((r)->
-			$scope.categorias_king = r
+			$scope.categoriasking = r
 			#console.log 'Categorias traídas: ', r
 		, (r2)->
 			toastr.warning 'No se trajeron las categorias', 'Problema'
@@ -29,7 +29,7 @@ angular.module('WissenSystem')
 
 		Restangular.one('categorias/store').customPOST().then((r)->
 			r.editando = true
-			$scope.categorias_king.push r
+			$scope.categoriasking.push r
 			$scope.creando = false
 			console.log 'Categorias creada', r
 		, (r2)->
@@ -57,7 +57,7 @@ angular.module('WissenSystem')
 					categoriaking
 		})
 		modalInstance.result.then( (elem)->
-			$scope.categorias_king = $filter('filter')($scope.categorias_king, {id: '!'+elem.id})
+			$scope.categoriasking = $filter('filter')($scope.categoriasking, {id: '!'+elem.id})
 			console.log 'Resultado del modal: ', elem
 		)
 

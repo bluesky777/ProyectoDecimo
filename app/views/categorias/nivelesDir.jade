@@ -1,4 +1,4 @@
-div(ng-repeat="nivelking in niveles_king" )
+div(ng-repeat="nivelking in nivelesking" )
 
 	md-whiteframe.md-whiteframe-z2.definicion-frame(layout ng-repeat="nivel in nivelking.niveles_traducidos | porIdioma:idiomapreg.selected" ng-hide="nivelking.editando" style="padding: 10px")
 		span(flex="10") {{$parent.$index+1}}.
@@ -46,7 +46,7 @@ div(ng-repeat="nivelking in niveles_king" )
 									input.form-control(type="text" ng-model="nivel.descripcion")
 							.col-lg-2.col-sm-2.col-xs-12(ng-if="!evento_actual.es_idioma_unico")
 								.form-group
-									md-checkbox(ng-model="nivel.traducido" aria-label="¿Traducido?")
+									md-checkbox(ng-model="nivel.traducido" ng-false-value="0" ng-true-value="1" aria-label="¿Traducido?")
 										| ¿Traducido?
 							
 					.clearfix.right

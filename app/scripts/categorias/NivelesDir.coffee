@@ -8,6 +8,7 @@ angular.module('WissenSystem')
 	scope: 
 		idiomapreg: "="
 		eventoactual: "="
+		nivelesking: "="
 
 	link: (scope, iElem, iAttrs)->
 		# Debo agregar la clase .loading-inactive para que desaparezca el loader de la pantalla.

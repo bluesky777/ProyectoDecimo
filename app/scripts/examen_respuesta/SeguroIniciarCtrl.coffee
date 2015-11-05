@@ -12,7 +12,7 @@ angular.module('WissenSystem')
 		Restangular.all('examenes_respuesta/iniciar').customPOST(inscripcion).then((r)->
 			#toastr.success 'Iniciamos el examen.' 
 			$rootScope.examen_actual = r
-			$state.transitionTo 'examen_respuesta'
+			$state.transitionTo 'panel.examen_respuesta'
 			$modalInstance.close(r)
 		, (r2)->
 			toastr.warning 'No se pudo iniciar el examen.', 'Problema'

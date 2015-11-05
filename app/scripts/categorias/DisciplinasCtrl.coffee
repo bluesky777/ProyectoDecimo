@@ -6,11 +6,11 @@ angular.module('WissenSystem')
 	$scope.creando = false
 
 
-	$scope.disciplinas_king = []
+	
 
 	$scope.traer_disciplinas = ()->
 		Restangular.all('disciplinas/disciplinas-usuario').getList().then((r)->
-			$scope.disciplinas_king = r
+			$scope.disciplinasking = r
 			#console.log 'Disciplinas traídas: ', r
 		, (r2)->
 			toastr.warning 'No se trajeron las disciplinas', 'Problema'
@@ -28,7 +28,7 @@ angular.module('WissenSystem')
 
 		Restangular.one('disciplinas/store').customPOST().then((r)->
 			r.editando = true
-			$scope.disciplinas_king.push r
+			$scope.disciplinasking.push r
 			$scope.creando = false
 			console.log 'Disciplina creada', r
 		, (r2)->
@@ -56,7 +56,7 @@ angular.module('WissenSystem')
 					disciplinaking
 		})
 		modalInstance.result.then( (elem)->
-			$scope.disciplinas_king = $filter('filter')($scope.disciplinas_king, {id: '!'+elem.id})
+			$scope.disciplinasking = $filter('filter')($scope.disciplinasking, {id: '!'+elem.id})
 			console.log 'Resultado del modal: ', elem
 		)
 

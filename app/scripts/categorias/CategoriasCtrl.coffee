@@ -14,6 +14,13 @@ angular.module('WissenSystem')
 		else
 			toastr.warning 'Pimero debes crear o seleccionar un evento actual'
 
+
+	$scope.categorias_king = []
+	$scope.niveles_king = []
+	$scope.disciplinas_king = []
+
+
+
 	$scope.comprobar_evento_actual()
 
 	$scope.$on 'cambio_evento_user', ()->

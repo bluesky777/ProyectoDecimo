@@ -5,7 +5,10 @@ angular.module('WissenSystem')
 .controller('PreguntasCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 'preguntasServ', '$filter', 
 	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr, preguntasServ, $filter) ->
 
+
 		$scope.preguntas_king = []
+		$scope.evalu_seleccionada = {id: -1}
+
 
 		$scope.grupo = 'grupo'
 		$scope.king = 'king'
@@ -40,6 +43,7 @@ angular.module('WissenSystem')
 		$scope.evaluacion_id = 0
 
 		$scope.preguntas_king = []
+		$scope.preguntas_king2 = []
 		$scope.categorias = []
 
 		$scope.traerDatos = ()->
@@ -77,6 +81,7 @@ angular.module('WissenSystem')
 			# Las preguntas
 			Restangular.all('preguntas').getList({categoria_id: $scope.categoria}).then((r)->
 				$scope.preguntas_king = r
+				$scope.preguntas_king2 = r
 				$scope.inicializado = true
 				console.log '$scope.inicializado', $scope.inicializado
 			, (r2)->
@@ -114,6 +119,22 @@ angular.module('WissenSystem')
 
 
 
+		$scope.selectEvaluacion = (evalu, $event)->
+			
+			$scope.evalu_seleccionada = evalu
+
+			for evaluacion in $scope.evaluaciones
+				evaluacion.selected = false
+
+			evalu.selected = true
+
+			found = $filter('filter')($scope.evaluaciones, {id: evalu.id} )
+
+			if found.length > 0
+				$scope.preguntas_evaluacion2 = found[0].preguntas_evaluacion
+
+
+
 
 
 		$scope.$on 'finalizaEdicionPreg', (elem)->
@@ -123,6 +144,11 @@ angular.module('WissenSystem')
 		$scope.$on 'preguntaEliminada', (e, elem)->
 			$scope.preguntas_king = $filter('filter')($scope.preguntas_king, {id: "!" + elem.id, tipo_pregunta: "!undefined" }, true)
 			console.log 'Recibido eliminación', elem, $filter('filter')($scope.preguntas_king, {id: "!" + elem.id, tipo_pregunta: "!undefined" })
+
+
+		$scope.$on 'preguntaQuitada', (e, elem)->
+			$scope.preguntas_evaluacion2 = $filter('filter')($scope.preguntas_evaluacion2, {id: "!" + elem})
+			console.log 'Recibido quitada', elem, 
 
 
 		$scope.$on 'grupoEliminado', (e, elem)->
@@ -160,8 +186,10 @@ angular.module('WissenSystem')
 					else
 						found = $filter('filter')(preguntas_evaluacion, {grupo_pregs_id: preg.id})
 
-					if found.length > 0
-						resultado.push preg
+					if found
+						if found.length > 0
+							preg.pregunta_eval_id = found[0].id
+							resultado.push preg
 
 				else
 					resultado.push preg

@@ -13,6 +13,9 @@ angular.module('WissenSystem')
 		AuthService.verificar_acceso()
 
 
+		$rootScope.$on '$stateChangeSuccess', (event, toState, toParams, fromState, fromParams)->
+			$scope.cambiarTema('theme-zero')
+
 
 		$scope.cambiarIdioma = (idioma)->
 			$translate.use(idioma)

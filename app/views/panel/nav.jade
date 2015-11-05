@@ -6,11 +6,18 @@
 
 // Site nav (vertical) 
 nav.site-nav.clearfix(role="navigation")
+
+	.container-entidad.clearfix.mb15(ng-if="!hasRoleOrPerm('admin', 'tecnico', 'profesor')")
+		img.img-thumbnail.img-entidad(ng-src="{{ imagesPath + USER.entidad.logo}}" alt="{{USER.username}}")
+		md-tooltip {{USER.entidad.nombre}}
+
+
 	.profile.clearfix.mb15
 		img(ng-src="{{imagesPath + USER.imagen_nombre}}" alt="{{USER.username}}")
 		div.group
 			h5.name {{USER.nombres}}
 			small.desig {{USER.apellidos}}
+
 
 	// navigation
 	ul.list-unstyled.clearfix.nav-list.mb15(highlight-active="")

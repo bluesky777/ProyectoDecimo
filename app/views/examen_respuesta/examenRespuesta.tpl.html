@@ -2,12 +2,15 @@
 <div class="container">
   <div class="row">
     <div class="col-sm-12 col-md-12">
-      <div class="panel panel-default panel-hovered panel-stacked mb20">
-        <div class="panel-body">
+      <div class="panel panel-default panel-hovered panel-stacked">
+        <div style="height: 90vh; overflow: auto;" class="panel-body">
+          <div ng-bind-html=" categoria_traducida.nombre " style="font-size: 40px" class="titulo-3d"></div><br><br>
+          <md-divider></md-divider><br><br>
           <div ng-repeat="pregunta in examen_actual.preguntas | orderBy:'orden' ">
             <view-pregunta-examen ng-if="pregunta.tipo_pregunta" preguntaking="pregunta"></view-pregunta-examen>
           </div>
         </div>
+        <div class="panel-footer todo-foot clearfix">El pie del panel</div>
       </div>
     </div>
   </div>

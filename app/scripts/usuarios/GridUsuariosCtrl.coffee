@@ -198,9 +198,9 @@ angular.module('WissenSystem')
 			else
 				
 				Restangular.one('inscripciones/desinscribir-varios').customPUT(datos).then((r)->
-					$scope.usuarios.push r
+					#$scope.usuarios.push r
 					categoria.cambiando = false
-					console.log 'Usuario creado', r
+					#console.log 'Usuario creado', r
 
 					for usua in currentUsers
 						usua.inscripciones = $filter('filter')(usua.inscripciones, {categoria_id: '!'+categoria.categoria_id})

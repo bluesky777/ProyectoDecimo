@@ -6,11 +6,11 @@ angular.module('WissenSystem')
 	$scope.creando = false
 
 
-	$scope.niveles_king = []
+	
 
 	$scope.traer_niveles = ()->
 		Restangular.all('niveles/niveles-usuario').getList().then((r)->
-			$scope.niveles_king = r
+			$scope.nivelesking = r
 			#console.log 'Niveles traídas: ', r
 		, (r2)->
 			toastr.warning 'No se trajeron las niveles', 'Problema'
@@ -28,7 +28,7 @@ angular.module('WissenSystem')
 
 		Restangular.one('niveles/store').customPOST().then((r)->
 			r.editando = true
-			$scope.niveles_king.push r
+			$scope.nivelesking.push r
 			$scope.creando = false
 			console.log 'Nivel creada', r
 		, (r2)->
@@ -56,7 +56,7 @@ angular.module('WissenSystem')
 					nivelking
 		})
 		modalInstance.result.then( (elem)->
-			$scope.niveles_king = $filter('filter')($scope.niveles_king, {id: '!'+elem.id})
+			$scope.nivelesking = $filter('filter')($scope.nivelesking, {id: '!'+elem.id})
 			console.log 'Resultado del modal: ', elem
 		)
 

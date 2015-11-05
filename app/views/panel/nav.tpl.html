@@ -4,6 +4,9 @@
 </div>
 <!-- Site nav (vertical) -->
 <nav role="navigation" class="site-nav clearfix">
+  <div ng-if="!hasRoleOrPerm('admin', 'tecnico', 'profesor')" class="container-entidad clearfix mb15"><img ng-src="{{ imagesPath + USER.entidad.logo}}" alt="{{USER.username}}" class="img-thumbnail img-entidad">
+    <md-tooltip>{{USER.entidad.nombre}}</md-tooltip>
+  </div>
   <div class="profile clearfix mb15"><img ng-src="{{imagesPath + USER.imagen_nombre}}" alt="{{USER.username}}">
     <div class="group">
       <h5 class="name">{{USER.nombres}}</h5><small class="desig">{{USER.apellidos}}</small>

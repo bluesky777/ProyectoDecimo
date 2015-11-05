@@ -4,10 +4,10 @@ angular.module('WissenSystem')
 	.config ['$stateProvider', 'App', 'USER_ROLES', 'PERMISSIONS', '$translateProvider', ($state, App, USER_ROLES, PERMISSIONS, $translateProvider) ->
 
 		$state
-			.state('examen_respuesta', { #- Estado admin.
-				url: '/examen'
+			.state('panel.examen_respuesta', { #- Estado admin.
+				url: '^/examen'
 				views:
-					'principal':
+					'contenido_panel':
 						templateUrl: "#{App.views}examen_respuesta/examenRespuesta.tpl.html"
 						controller: 'ExamenRespuestaCtrl'
 				resolve: { 
@@ -18,10 +18,6 @@ angular.module('WissenSystem')
 				data: 
 					pageTitle: 'Examen'
 			})
-
-
-		$translateProvider.preferredLanguage('ES');
-
 
 		$translateProvider.translations('EN',
 			INICIO_MENU: 'Home'

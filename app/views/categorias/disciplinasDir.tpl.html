@@ -1,5 +1,5 @@
 
-<div ng-repeat="disciplinaking in disciplinas_king">
+<div ng-repeat="disciplinaking in disciplinasking">
   <md-whiteframe layout ng-repeat="disciplina in disciplinaking.disciplinas_traducidas | porIdioma:idiomapreg.selected" ng-hide="disciplinaking.editando" style="padding: 10px" class="md-whiteframe-z2 definicion-frame"><span flex="10">{{$parent.$index+1}}.</span><span flex="90">{{disciplina.nombre}}</span>
     <div layout="row" class="btn-container-edit">
       <md-button aria-label="Editar" ng-click="editarDisciplina(disciplinaking)" class="md-fab md-primary md-mini">

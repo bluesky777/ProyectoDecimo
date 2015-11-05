@@ -2,10 +2,26 @@
 	.row
 		.col-sm-12.col-md-12
 			
-			.panel.panel-default.panel-hovered.panel-stacked.mb20
+			.panel.panel-default.panel-hovered.panel-stacked
+				.panel-body(style="height: 90vh; overflow: auto;")
 
-				.panel-body()
+
+					.titulo-3d(ng-bind-html=" categoria_traducida.nombre " style="font-size: 40px")
+
+					
+
+					br
+					br
+					md-divider
+					br
+					br
+
 					div(ng-repeat="pregunta in examen_actual.preguntas | orderBy:'orden' ")
 						
 						view-pregunta-examen(ng-if="pregunta.tipo_pregunta" 
 							preguntaking="pregunta")
+
+
+
+				.panel-footer.todo-foot.clearfix
+					| El pie del panel

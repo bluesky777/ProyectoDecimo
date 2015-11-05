@@ -24,6 +24,7 @@ angular.module('WissenSystem')
 
 	$translateProvider.translations('EN',
 		EVENTS_TITLE: 'Events'
+		CREAR_EVENTO: 'Create event'
 	)
 	.translations('ES',
 		EVENTS_TITLE: 'Eventos'
