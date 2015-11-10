@@ -7,6 +7,10 @@
           <md-icon class="fa fa-pencil"></md-icon>
           <md-tooltip>Editar contenido</md-tooltip>
         </md-button>
+        <md-button ng-click="addNewPregunta(contenido)" aria-label="Nueva pregunta" ng-disabled="creando" class="md-fab md-success md-mini">
+          <md-icon class="fa fa-plus"></md-icon>
+          <md-tooltip>Nueva pregunta</md-tooltip>
+        </md-button>
         <md-menu style="padding:0; ">
           <md-button aria-label="Opciones del contenido" ng-click="$mdOpenMenu($event)" class="md-icon-button">
             <md-icon md-menu-origin class="fa fa-align-justify"></md-icon>
@@ -30,10 +34,6 @@
             </md-menu-item>
           </md-menu-content>
         </md-menu>
-        <md-button ng-click="addNewPregunta(contenido)" aria-label="Nueva pregunta" ng-disabled="creando" class="md-fab md-success md-mini">
-          <md-icon class="fa fa-plus"></md-icon>
-          <md-tooltip>Nueva pregunta</md-tooltip>
-        </md-button>
       </div>
       <div ng-repeat="pregunta_agrup in contenido.preguntas_agrupadas" flex="100">
         <div ng-show="!pregunta_agrup.editando">

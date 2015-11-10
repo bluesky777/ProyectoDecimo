@@ -38,6 +38,9 @@ angular.module('WissenSystem')
 				idiom.actual = true
 
 
+	
+
+
 
 
 	# Traemos los idiomas del sistema.

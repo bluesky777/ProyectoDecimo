@@ -5,7 +5,9 @@ angular.module('WissenSystem')
 
 		$state
 			.state('panel.examen_respuesta', { #- Estado admin.
-				url: '^/examen'
+				url: '^/examen/:examen_respuesta_id'
+				params:
+					examen_respuesta_id: { value: null }
 				views:
 					'contenido_panel':
 						templateUrl: "#{App.views}examen_respuesta/examenRespuesta.tpl.html"
@@ -26,6 +28,8 @@ angular.module('WissenSystem')
 			INICIO_MENU: 'Inicio'
 
 		)
+
+		
 
 
 		return

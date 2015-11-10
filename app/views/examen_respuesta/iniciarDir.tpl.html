@@ -28,8 +28,8 @@
         <div ng-bind-html="('EXAM_HECHOS' | translate)"> </div>
       </div>
       <div class="panel-body">
-        <accordion close-others="false">
-          <accordion-group heading="{{categoriaking.nombre + ' - ' + categoriaking.id }}" ng-repeat="categoriaking in user | categsInscritasDeUsuario:categorias_king:user.idioma_main_id ">
+        <accordion close-others="false" ng-repeat="categoriaking in user | categsInscritasDeUsuario:categorias_king:user.idioma_main_id ">
+          <accordion-group heading="{{categoriaking.nombre + ' - ' + categoriaking.id }}">
             <div ng-repeat="examen in categoriaking.examenes">{{examen}}</div>
           </accordion-group>
         </accordion>

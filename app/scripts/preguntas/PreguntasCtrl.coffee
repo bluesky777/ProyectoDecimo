@@ -188,7 +188,8 @@ angular.module('WissenSystem')
 
 					if found
 						if found.length > 0
-							preg.pregunta_eval_id = found[0].id
+							preg.pregunta_eval_id 	= found[0].id
+							preg.orden 				= found[0].orden
 							resultado.push preg
 
 				else

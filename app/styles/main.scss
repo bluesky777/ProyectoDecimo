@@ -236,7 +236,30 @@ a:hover, a:focus {
 
 }
 
+.timer-count{
+  position: absolute;
+  right: 0px;
+  margin-top: -10px;
+}
+.timer-progress{
+  position: absolute;
+  color: #999;
+  font-weight: 100;
+  line-height: 1;
+}
+.progress-wrapper {
+  position: relative;
+  font-size: 40px;
+}
 
+.progreso-preguntas{
+  position: relative;
+}
 
-
+.total-pregs{
+  right: 10px;
+  top: 2px;
+  position: absolute;
+  color: #aaa;
+}
 

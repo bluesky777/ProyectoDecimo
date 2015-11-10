@@ -26,6 +26,7 @@ angular.module('WissenSystem', [
   'ngMaterial'
   'froala'
   'ngCordova'
+  'angular-svg-round-progress'
 ])
 #- Valores que usaremos para nuestro proyecto
 .constant('App', (()->

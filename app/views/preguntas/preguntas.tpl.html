@@ -34,20 +34,20 @@
         <!--md-checkbox(ng-model="showDetail" style="display:inline-block") Detalles-->
         <input type="text" ng-model="preg_buscar" placeholder="{{ 'BUSCAR_PLACEHOLDER' | translate }}" class="form-control ancho-200">
       </div>
-      <div ng-if="evaluacion_id!='sin_asignar'" class="panel-body">
-        <div ng-repeat="pregunta_king in preguntas_king | filter:preg_buscar | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion:evaluacion_id | orderBy:'orden' ">
+      <div ng-show="evaluacion_id!='sin_asignar'" class="panel-body">
+        <div ng-repeat="pregunta_king in preguntas_king | filter:preg_buscar | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion:evaluacion_id ">
           <div ng-show="pregunta_king.editando"><br><br></div>
-          <view-pregunta ng-if="pregunta_king.tipo_pregunta" preguntaking="pregunta_king" indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" eventoactualselec="idiomaPreg.selected" evaluaciones="evaluaciones"></view-pregunta>
-          <view-grupo ng-if="!pregunta_king.tipo_pregunta" grupoking="pregunta_king" indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" idiomaactualselec="idiomaPreg.selected" evaluaciones="evaluaciones"></view-grupo>
+          <view-pregunta ng-show="pregunta_king.tipo_pregunta" preguntaking="pregunta_king" indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" eventoactualselec="idiomaPreg.selected" evaluaciones="evaluaciones"></view-pregunta>
+          <view-grupo ng-show="!pregunta_king.tipo_pregunta" grupoking="pregunta_king" indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" idiomaactualselec="idiomaPreg.selected" evaluaciones="evaluaciones"></view-grupo>
         </div>
         <add-pregunta preguntasking="preguntas_king" categoria="categoria" tipo="king" ng-show="inicializado"></add-pregunta>
         <add-pregunta preguntasking="preguntas_king" categoria="categoria" tipo="grupo" ng-show="inicializado"></add-pregunta>
       </div>
-      <div ng-if="evaluacion_id=='sin_asignar'" class="panel-body">
+      <div ng-show="evaluacion_id=='sin_asignar'" class="panel-body">
         <div ng-repeat="pregunta_king in preguntas_king | filter:preg_buscar | orderBy:'orden' ">
           <div ng-show="pregunta_king.editando"><br><br></div>
-          <view-pregunta ng-if="pregunta_king.tipo_pregunta" preguntaking="pregunta_king" indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" eventoactualselec="idiomaPreg.selected" evaluaciones="evaluaciones"></view-pregunta>
-          <view-grupo ng-if="!pregunta_king.tipo_pregunta" grupoking="pregunta_king" indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" idiomaactualselec="idiomaPreg.selected" evaluaciones="evaluaciones"></view-grupo>
+          <view-pregunta ng-show="pregunta_king.tipo_pregunta" preguntaking="pregunta_king" indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" eventoactualselec="idiomaPreg.selected" evaluaciones="evaluaciones"></view-pregunta>
+          <view-grupo ng-show="!pregunta_king.tipo_pregunta" grupoking="pregunta_king" indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" idiomaactualselec="idiomaPreg.selected" evaluaciones="evaluaciones"></view-grupo>
           <md-divider></md-divider>
         </div>
         <add-pregunta preguntasking="preguntas_king" categoria="categoria" tipo="king" ng-show="inicializado"></add-pregunta>
@@ -73,7 +73,7 @@
       <div class="panel-body">
         <div ng-repeat="pregunta_king in preguntas_king2 | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion2:evalu_seleccionada.id | orderBy:'orden' ">
           <view-pregunta-eval ng-if="pregunta_king.tipo_pregunta" preguntaking="pregunta_king" indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" eventoactualselec="idiomaPreg.selected" evaluaciones="evaluaciones" preguntasevaluacion2="preguntas_evaluacion2"></view-pregunta-eval>
-          <view-grupo ng-if="!pregunta_king.tipo_pregunta" grupoking="pregunta_king" indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" idiomaactualselec="idiomaPreg.selected" evaluaciones="evaluaciones"></view-grupo>
+          <view-grupo-eval ng-if="!pregunta_king.tipo_pregunta" grupoking="pregunta_king" indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" idiomaactualselec="idiomaPreg.selected" evaluaciones="evaluaciones" preguntasevaluacion2="preguntas_evaluacion2"></view-grupo-eval>
         </div>
       </div>
     </div>

@@ -15,6 +15,11 @@ div(ng-repeat="contenido in grupoking.contenidos_traducidos | porIdioma:idiomaac
 					md-tooltip Editar contenido
 
 
+				md-button.md-fab.md-success.md-mini(ng-click="addNewPregunta(contenido)" aria-label="Nueva pregunta"  ng-disabled="creando")
+					md-icon.fa.fa-plus
+					md-tooltip Nueva pregunta
+
+
 				md-menu(style="padding:0; " )
 					md-button.md-icon-button(aria-label="Opciones del contenido" ng-click="$mdOpenMenu($event)")
 						md-icon.fa.fa-align-justify(md-menu-origin)
@@ -37,9 +42,6 @@ div(ng-repeat="contenido in grupoking.contenidos_traducidos | porIdioma:idiomaac
 								md-icon.fa.fa-eye()
 								| notifications
 
-				md-button.md-fab.md-success.md-mini(ng-click="addNewPregunta(contenido)" aria-label="Nueva pregunta"  ng-disabled="creando")
-					md-icon.fa.fa-plus
-					md-tooltip Nueva pregunta
 
 
 			div(ng-repeat="pregunta_agrup in contenido.preguntas_agrupadas" flex="100")

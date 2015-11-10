@@ -18,10 +18,24 @@ angular.module('WissenSystem')
 
 
 		$scope.cambiarIdioma = (idioma)->
-			$translate.use(idioma)
+			
 
-			for idiom in $scope.idiomas_usados
-				idiom.actual = if idiom.abrev == idioma then true else false
+			Restangular.one('idiomas/cambiar-idioma').customPUT({idioma_id: idioma.id}).then((r)->
+				$translate.use(idioma.abrev)
+				$scope.USER.idioma_main_id = idioma.id
+
+				$scope.idiomas_del_sistema()
+
+				for idiom in $scope.idiomas_usados
+					idiom.actual = if idiom.abrev == idioma.abrev then true else false
+
+
+				toastr.success 'Idioma cambiado por ' + idioma.abrev
+			(r2)->
+				console.log 'No se pudo cambiar el idioma.', r2
+			)
+			
+
 
 			
 		$scope.set_system_event = (evento)->

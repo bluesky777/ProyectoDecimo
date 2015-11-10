@@ -66,7 +66,7 @@ ul.list-unstyled.left-elems
 			.panel-body
 				ul.list-unstyled
 					li.clearfix(ng-repeat="idioma in idiomas_usados")
-						a(href="" ng-click="cambiarIdioma(idioma.abrev)")
+						a(href="" ng-click="cambiarIdioma(idioma)")
 							span.fa.fa-flag.left(ng-class="(idioma.actual) ? 'bg-primary': 'bg-success' ")
 							.desc
 								strong {{idioma.original}} ({{idioma.abrev}}) - {{idioma.nombre}}
