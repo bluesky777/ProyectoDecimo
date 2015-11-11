@@ -86,7 +86,7 @@ angular.module('WissenSystem')
 .controller('SeguroRespuestaPregKingCtrl', ['$scope', '$modalInstance', 'opcion', 'Restangular', 'toastr', '$filter', 'examen_actual', 'preguntatop', 'pregunta_traduc', 'agrupada', '$rootScope', ($scope, $modalInstance, opcion, Restangular, toastr, $filter, examen_actual, preguntatop, pregunta_traduc, agrupada, $rootScope)->
 
 	$scope.opcion = opcion
-	console.log preguntatop, pregunta_traduc
+
 	$scope.examen_actual = examen_actual
 
 	datos = 

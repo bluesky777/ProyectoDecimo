@@ -39,6 +39,7 @@ angular.module('WissenSystem')
 			})
 			modalInstance.result.then( (option)->
 				opcion.respondida = true
+				$scope.$emit 'respuesta_elegida', indice
 				toastr.success 'Respuestuesta guardada'
 			)
 			

@@ -9,6 +9,8 @@ angular.module('WissenSystem')
 	$scope.total_preguntas = 0
 	$scope.cambiarTema('theme-one')
 
+	AuthService.verificar_acceso()
+
 
 
 	$scope.incializar = ()->
@@ -38,9 +40,11 @@ angular.module('WissenSystem')
 		# *************************************************
 
 		$scope.$on 'respuesta_elegida', (event, indice)->
-			$scope.pregunta_actual = $scope.pregunta_actual + 1
+			$scope.pregunta_actual = $filter('noPregActual')($scope.examen_actual.preguntas)
 			$scope.pregunta_actual_porc = $scope.pregunta_actual / $scope.total_preguntas * 100
-			console.log 'pregunta_actual_porc', $scope.pregunta_actual_porc
+
+			$scope.check_por_terminado()
+
 
 
 		$scope.$on 'tiempo_preg_terminado', (event)->
@@ -48,6 +52,7 @@ angular.module('WissenSystem')
 
 		$scope.$on 'tiempo_exam_terminado', (event)->
 			console.log 'Tiempo examen terminado'
+			$state.go 'panel'
 
 
 
@@ -60,6 +65,7 @@ angular.module('WissenSystem')
 		$scope.tiempo_max = if $scope.USER.gran_final then $rootScope.examen_actual.duracion_preg else $rootScope.examen_actual.duracion_exam
 		$scope.tiempo_max = $scope.tiempo_max * 60
 		#console.log '$scope.tiempo_max', $scope.tiempo_max, $rootScope.examen_actual
+
 
 
 		$scope.pregunta_actual = $filter('noPregActual')($scope.examen_actual.preguntas)
@@ -76,9 +82,12 @@ angular.module('WissenSystem')
 			exa_resp_id: $state.params.examen_respuesta_id
 
 		Restangular.all('examenes_respuesta/continuar').customPUT(dato).then((r)->
-			toastr.success 'Continuamos el examen.' 
 			$rootScope.examen_actual = r
-			$scope.incializar()
+			terminado = $scope.check_por_terminado()
+
+			if not terminado
+				toastr.success 'Continuamos el examen.'
+				$scope.incializar()
 		, (r2)->
 			toastr.warning 'No se pudo continuar el examen.', 'Problema'
 			console.log 'Error continuando el examen: ', r2
@@ -88,9 +97,16 @@ angular.module('WissenSystem')
 
 
 
-	$scope.guardando = ()->
+	$scope.check_por_terminado = ()->
 
-		console.log 'Guardando'
+		preg_check = $filter('preguntaActual')($scope.examen_actual.preguntas)
+		if preg_check.length == 1
+			if preg_check[0].terminado
+				console.log 'Todas las respuestas contestadas', preg_check
+				toastr.success 'Examen terminado'
+				$state.go 'panel'
+				return true
+		return false
 
 
 

@@ -263,3 +263,8 @@ a:hover, a:focus {
   color: #aaa;
 }
 
+
+// Para quitar el mensaje de Unlicensed Froala Editor que sabe online.
+.froala-wrapper + div{
+  display: none !important;
+}
