@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.controller('ViewGrupoEvalCtrl', ['$scope', 'App', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', '$modal', '$filter',
+.controller('ViewGrupoEvalCtrl', ['$scope', 'App', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', '$uibModal', '$filter',
 	($scope, App, Restangular, $state, $cookies, $rootScope, toastr, $modal, $filter) ->
 		
 		$scope.quitando = false

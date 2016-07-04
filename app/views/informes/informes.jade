@@ -1,0 +1,57 @@
+.row.hidden-print
+	.col-lg-12
+		.panel.panel-default.panel-hovered.mb20
+			.panel-heading Informes
+
+			.panel-body
+				md-content(style="overflow: visible;")
+					md-tabs(md-selected="config.informe_tab_actual" md-dynamic-height md-border-bottom)
+						md-tab(label="Pacientes" md-on-select="tabSeleccionado(0)")
+							md-content.md-padding(style="overflow-y: visible; height: 300px")
+								//h1.md-display-2 Tab One	
+
+
+								.form-group.col-lg-4.col-sm-12.col-xs-12
+								
+									ui-select(ng-model="seleccion.paciente" style="margin: 0!important;width: 100%; padding-bottom: 0!important")
+										ui-select-match(placeholder="Pacientes" allow-clear="true") {{$select.selected.nombres + ' ' + $select.selected.apellidos}}
+										ui-select-choices(repeat="paciente in pacientes | filter: $select.search")
+											div(ng-bind-html="paciente.nombres + ' ' + paciente.apellidos | highlight: $select.search")
+
+
+								
+								md-button(ng-click="verPacientes()") Pacientes
+								md-button(ng-click="verExamenIngreso()") Examen de ingreso
+
+						md-tab(label="Usuarios" md-on-select="tabSeleccionado(1)")
+							md-content.md-padding
+								md-button(ng-click="verUsuarios()") Usuarios
+
+
+
+				hr.wide
+				h5 Orientación de la página:
+				.control-group
+					.radio
+						label
+							input(type="radio" ng-model="config.orientacion" value="oficio_horizontal")
+							.text Oficio Horizontal
+					.radio
+						label
+							input(type="radio" ng-model="config.orientacion" value="carta_horizontal")
+							.text Carta horizontal
+					.radio
+						label
+							input(type="radio" ng-model="config.orientacion" value="vertical")
+							.text Vertical
+
+
+				hr.wide
+				h5 {{descripcion_informe}}
+
+
+
+.informes-pages.page-wrap.margen0(ui-view="report_content")
+	h5(style="text-align: center") Aquí saldrán tus reportes
+
+

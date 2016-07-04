@@ -1,0 +1,54 @@
+h1 Conectando...
+
+.panel.panel-default.panel-hovered.panel-stacked.mb20
+	.panel-heading   
+		| Mensaje
+
+	.panel-body
+		md-button(aria-label="Crear Servidor" ng-click="crearservidor()")
+			| Crear Servidor
+		
+		md-button(aria-label="Cerrar Servidor" ng-click="CerrarServidor()")
+			| Cerrar Servidor
+		
+		md-button(aria-label="Conectar" ng-click="Conectar()")
+			| Conectar
+		
+		md-button(aria-label="Scanner" ng-click="qrScanear()")
+			| QR Scanner
+
+		input.form-control(ng-model="newMensaje" type="text" placeholder="Mensaje...")
+			
+		md-button(aria-label="Enviar" ng-click="enviarMensaje()")
+			| Enviar mensaje
+
+.panel.panel-default.panel-hovered.panel-stacked.mb20
+	.panel-heading   
+		| Mensaje
+
+	.panel-body
+
+		md-content(style="height: 200px;")
+			section
+				md-subheader.md-primary Unread Messages
+				md-list Ni idea
+					md-list-item.md-3-line(ng-repeat="mensaje in mensajes track by $index")
+
+						.md-list-item-text
+							h3 Alguien
+							h4 {{$index+1}}
+							p {{mensaje}}
+
+
+			section
+				md-subheader.md-primary Leídos
+				md-list No sé para qué
+					md-list-item.md-3-line(ng-repeat="mensaje in mensajes track by $index")
+
+						.md-list-item-text
+							h3 Alguien
+							h4 {{$index+1}}
+							p {{mensaje}}
+
+
+

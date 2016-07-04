@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.controller('CategoriasDirCtrl', ['$scope', 'Restangular', 'toastr', '$modal', 'App', '$filter',  ($scope, Restangular, toastr, $modal, App, $filter)->
+.controller('CategoriasDirCtrl', ['$scope', 'Restangular', 'toastr', '$uibModal', 'App', '$filter',  ($scope, Restangular, toastr, $modal, App, $filter)->
 
 
 
@@ -80,7 +80,7 @@ angular.module('WissenSystem')
 
 
 
-.controller('RemoveCategoriaCtrl', ['$scope', '$modalInstance', 'elemento', 'Restangular', 'toastr', ($scope, $modalInstance, elemento, Restangular, toastr)->
+.controller('RemoveCategoriaCtrl', ['$scope', '$uibModalInstance', 'elemento', 'Restangular', 'toastr', ($scope, $modalInstance, elemento, Restangular, toastr)->
 	$scope.elemento = elemento
 	console.log 'elemento', elemento
 

@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.controller('UsuariosCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 'uiGridConstants', '$modal', '$filter', 'App', 'AuthService' 
+.controller('UsuariosCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 'uiGridConstants', '$uibModal', '$filter', 'App', 'AuthService' 
 	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr, uiGridConstants, $modal, $filter, App, AuthService) ->
 
 		AuthService.verificar_acceso()

@@ -14,13 +14,15 @@ angular.module('angular-svg-round-progress')
                     rounded:        "=",
                     clockwise:      "=",
                     responsive:     "=",
+                    onRender:       "=",
                     radius:         "@",
                     color:          "@",
                     bgcolor:        "@",
                     stroke:         "@",
                     duration:       "@",
                     animation:      "@",
-                    offset:         "@"
+                    offset:         "@",
+                    animationDelay: "@"
                 }
             };
 
@@ -38,7 +40,8 @@ angular.module('angular-svg-round-progress')
                     var ring        = svg.find('path').eq(0);
                     var background  = svg.find('circle').eq(0);
                     var options     = angular.copy(roundProgressConfig);
-                    var lastAnimationId;
+                    var lastAnimationId = 0;
+                    var lastTimeoutId;
                     var parentChangedListener;
 
                     scope.getOptions = function(){
@@ -110,7 +113,6 @@ angular.module('angular-svg-round-progress')
                         var changeInValue       = end - start;
 
                         var easingAnimation     = service.animations[options.animation];
-                        var startTime           = new $window.Date();
                         var duration            = +options.duration || 0;
                         var preventAnimation    = preventAnimationOverride || (newValue > max && oldValue > max) || (newValue < 0 && oldValue < 0) || duration < 25;
 
@@ -119,27 +121,40 @@ angular.module('angular-svg-round-progress')
                         var elementSize         = radius*2;
                         var isSemicircle        = options.semi;
 
-                        // stops some expensive animating if the value is above the max or under 0
-                        if(preventAnimation){
-                            service.updateState(end, max, circleSize, ring, elementSize, isSemicircle);
-                        }else{
-                            $window.cancelAnimationFrame(lastAnimationId);
+                        var doAnimation = function(){
+                            // stops some expensive animating if the value is above the max or under 0
+                            if(preventAnimation){
+                                service.updateState(end, max, circleSize, ring, elementSize, isSemicircle);
 
-                            (function animation(){
-                                var currentTime = $window.Math.min(new Date() - startTime, duration);
-
-                                service.updateState(
-                                    easingAnimation(currentTime, start, changeInValue, duration),
-                                    max,
-                                    circleSize,
-                                    ring,
-                                    elementSize,
-                                    isSemicircle);
-
-                                if(currentTime < duration){
-                                    lastAnimationId = $window.requestAnimationFrame(animation);
+                                if(options.onRender){
+                                    options.onRender(end, options, element);
                                 }
-                            })();
+                            }else{
+                                var startTime = new $window.Date();
+                                var id = ++lastAnimationId;
+
+                                (function animation(){
+                                    var currentTime = $window.Math.min(new Date() - startTime, duration);
+                                    var animateTo = easingAnimation(currentTime, start, changeInValue, duration);
+
+                                    service.updateState(animateTo, max, circleSize, ring, elementSize, isSemicircle);
+
+                                    if(options.onRender){
+                                        options.onRender(animateTo, options, element);
+                                    }
+
+                                    if(id === lastAnimationId && currentTime < duration){
+                                        $window.requestAnimationFrame(animation);
+                                    }
+                                })();
+                            }
+                        };
+
+                        if(options.animationDelay > 0){
+                            $window.clearTimeout(lastTimeoutId);
+                            $window.setTimeout(doAnimation, options.animationDelay);
+                        }else{
+                            doAnimation();
                         }
                     };
 
@@ -171,7 +186,7 @@ angular.module('angular-svg-round-progress')
 
                     // properties that are used during animation. some of these overlap with
                     // the ones that are used for presentation
-                    scope.$watchGroup(['current', 'max', 'animation', 'duration', 'radius', 'stroke', 'semi', 'offset'], function(newValue, oldValue){
+                    scope.$watchGroup(['current', 'max', 'radius', 'stroke', 'semi', 'offset'], function(newValue, oldValue){
                         renderState(service.toNumber(newValue[0]), service.toNumber(oldValue[0]));
                     });
                 },

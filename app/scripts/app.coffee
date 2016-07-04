@@ -6,11 +6,9 @@ angular.module('WissenSystem', [
   'ngResource'
   'ngRoute'
   'ngSanitize'
-  'ngTouch'
   'ui.router'
   'ui.bootstrap'
   'ui.select'
-  'ui.sortable'
   'pascalprecht.translate'
   'angular-loading-bar'
   'restangular'
@@ -21,19 +19,38 @@ angular.module('WissenSystem', [
   'ui.grid.resizeColumns'
   'ui.grid.exporter'
   'ui.grid.selection'
-  'angularFileUpload'
+  'ngFileUpload'
   'FBAngular'
   'ngMaterial'
   'froala'
-  'ngCordova'
   'angular-svg-round-progress'
+  'qrScanner'
+  'ja.qr'
+  'ngWebSocket'
 ])
+
 #- Valores que usaremos para nuestro proyecto
 .constant('App', (()->
 
-  #dominio = 'http://lalvirtual.com/wissen/' 
-  dominio = 'http://localhost/' # Pruebas en mi localhost
-  #dominio = 'http://olimpiadaslibertad.com/'
+  dominio = ''
+
+  if (typeof(Storage) != "undefined")
+
+    if localStorage.getItem("dominio") == null
+      console.log 'No hay dominio almacenado'
+      #dominio = 'http://lalvirtual.com/wissen/' 
+      dominio = 'http://192.168.1.31/' # Pruebas en mi localhost
+      #dominio = 'http://olimpiadaslibertad.com/'
+      #dominio = 'http://192.168.1.100/'
+    else
+      dominio = 'http://' + localStorage.getItem('dominio') + '/'
+  else
+    dominio = 'http://192.168.1.31/'
+    alert 'El navegador no soporta LocalStorage'
+
+  
+
+  
   
   console.log 'Entra al dominio: ', location.hostname
   
@@ -57,6 +74,7 @@ angular.module('WissenSystem', [
     images: server + 'images/'
     perfilPath: server + 'images/perfil/'
     imgSystemPath: server + 'images/eventos/'
+    dominio: dominio
   }
 )())
 

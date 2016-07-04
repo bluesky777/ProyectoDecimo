@@ -11,7 +11,7 @@
 			.panel-heading 
 				div(ng-switch on="user.inscripciones.length > 0") 
 					div(ng-switch-when="true" ng-bind-html="('INSCRITO_EN' | translate)" ) 
-					div(ng-switch-default ng-bind-html="'No estás inscrito en ninguna categoría.'" ) 
+					div(ng-switch-default ng-bind-html="('NO_ESTAS_INSCRITO' | translate)" ) 
 
 			
 			.panel-body
@@ -29,6 +29,15 @@
 			
 			.panel-body
 				
-				accordion(close-others="false" ng-repeat="categoriaking in user | categsInscritasDeUsuario:categorias_king:user.idioma_main_id ")
-					accordion-group(heading="{{categoriaking.nombre + ' - ' + categoriaking.id }}")
-						div(ng-repeat="examen in categoriaking.examenes") {{examen}}
+				accordion(close-others="false" ng-repeat="examen in examenes_puntajes | orderBy:'-id'")
+					accordion-group(heading="{{examen.categoria.nombre + ' - (Cod:' + examen.id + ') ' }}" 
+						ng-init="status.open = $first" is-open="status.open"
+						tooltip="{{examen.evaluacion.descripcion}}")
+						div() Preguntas: {{examen.cantidad_pregs}} 
+						div() Correctas: {{examen.correctas}} 
+						div() Incorrectas: {{examen.cantidad_pregs-examen.correctas}} 
+						div() Terminado: {{examen.terminado}} 
+						div() Promedio: {{examen.promedio | number:1}}% 
+
+						div(style="text-align:right")
+							a(ui-sref="panel.examen_respuesta({examen_respuesta_id: examen.id})" href="") Continuar

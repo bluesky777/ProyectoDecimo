@@ -57,16 +57,25 @@
   </li>
 </ul>
 <ul class="list-unstyled right-elems ng-scope">
-  <li dropdown="" class="profile-drop hidden-xs dropdown"><a href="" dropdown-toggle="" aria-haspopup="true" aria-expanded="false"><img ng-src="{{imagesPath + USER.imagen_nombre}}" alt="{{USER.username}}"></a>
-    <ul class="dropdown-menu dropdown-menu-right">
-      <li><a href="javascript:;"><span class="ion ion-person"></span>Perfil</a></li>
-      <li><a href="javascript:;"><span class="ion ion-settings"> </span>Configuración</a></li>
-      <li class="divider"></li>
-      <li><a href="javascript:;"><span class="ion ion-lock-combination"></span>Imágenes</a></li>
-      <li><a href="" ng-click="logout()"><span class="ion ion-power"></span>Salir</a></li>
-    </ul>
+  <li dropdown="" style="padding-right: 8px" class="profile-drop hidden-xs dropdown">
+    <md-menu> <a href="" ng-click="openMenu($mdOpenMenu, $event)"><img ng-src="{{imagesPath + USER.imagen_nombre}}" alt="{{USER.username}}" class="imagen-perfil"></a>
+      <md-menu-content style="margin-top: 40px;" width="3">
+        <md-menu-item>
+          <md-button ng-click="ctrl.redial($event)"><i style="font-size: 16px; margin-right: 8px;" class="fa fa-user"></i>Perfil</md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button>
+            <!--md-icon.fa(md-font-icon="fa-image" )--><a ui-sref="panel.filemanager()" style="color: currentColor;"><i style="font-size: 16px; margin-right: 8px;" class="fa fa-image"></i>Imágenes</a>
+          </md-button>
+        </md-menu-item>
+        <md-menu-divider></md-menu-divider>
+        <md-menu-item>
+          <md-button ng-click="logout()"><i style="font-size: 16px; margin-right: 8px;" class="fa fa-sign-out"></i>Salir</md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
   </li>
-  <li class="profile-drop hidden-xs dropdown"><a href="" ng-click="logout()" style="color: #fff"><i class="fa fa-sign-out"> </i> Salir</a></li>
+  <li class="profile-drop hidden-xs dropdown"><a href="" ng-click="logout()" style="color: #fff"><i ng-bind-html="('SALIR' | translate)" class="fa fa-sign-out"> </i></a></li>
   <!--li.floating-sidebar(ng-class="{'open': floatingSidebar}")-->
   <li ng-class="{'open': floatingSidebar}" class="floating-sidebar"><a href="" ng-click="toggleFloatingSidebar()"><i class="fa fa-th"></i></a>
     <div custom-scrollbar="" class="sidebar-wrap ps-container ps-active-y">

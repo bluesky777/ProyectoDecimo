@@ -1,0 +1,15 @@
+.page.page-auth
+
+	.auth-container(style="max-width: 450px;")
+
+		.form-head.mb20
+			h1.site-logo.h2.mb5.mt5.text-center.text-uppercase.text-bold
+				a(href="") QR Scanner 
+			h5.text-normal.h5.text-center Coloca el código frente a la cámara
+
+
+		.form-container
+
+			qr-scanner(width="400" height="300" 
+				ng-success="onSuccess(data)" ng-error="onError(error)")
+

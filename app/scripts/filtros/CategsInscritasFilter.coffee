@@ -3,6 +3,8 @@ angular.module('WissenSystem')
 .filter('categsInscritas', ['$filter', ($filter)->
 	(currentUsers, categorias_king, idioma_id) ->
 
+		idioma_id = parseInt(idioma_id)
+
 		if currentUsers and categorias_king
 			
 			resultado = []

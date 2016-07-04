@@ -2,7 +2,7 @@
 
 angular.module('WissenSystem')
 
-.controller('ApplicationController', ['$scope', 'USER_ROLES', 'AuthService', 'toastr', '$state', '$rootScope', 'Restangular', '$filter', ($scope, USER_ROLES, AuthService, toastr, $state, $rootScope, Restangular, $filter)->
+.controller('ApplicationController', ['$scope', 'USER_ROLES', 'AuthService', 'toastr', '$state', '$rootScope', 'Restangular', '$filter', '$timeout', ($scope, USER_ROLES, AuthService, toastr, $state, $rs, Restangular, $filter, $timeout)->
 
 
 	$scope.isAuthorized = AuthService.isAuthorized
@@ -16,6 +16,11 @@ angular.module('WissenSystem')
 	$scope.navFull = true
 	$scope.toggleNav = ()->
 		$scope.navFull = !$scope.navFull
+		$rs.navOffCanvas = !$rs.navOffCanvas
+		console.log("navOffCanvas: "+$scope.navOffCanvas)
+		$timeout(()->
+			$rs.$broadcast("c3.resize")
+		, 260)
 
 
 	
@@ -50,6 +55,21 @@ angular.module('WissenSystem')
 		$scope.idiomas_del_sistema()
 	(r2)->
 		console.log 'No se trajeron los idiomas del sistema.', r2
+	)
+	
+
+	
+	
+	# Traemos evento actual.
+	$scope.in_evento_actual = {qr: ''}
+	Restangular.one('welcome').customGET().then((r)->
+		$scope.in_evento_actual = r
+
+		
+		$scope.in_evento_actual.ip = if localStorage.getItem('nombre_punto') then localStorage.getItem('nombre_punto') else $scope.in_evento_actual.ip
+
+	, (r2)->
+		toastr.warning 'No se trae el evento principal'
 	)
 	
 

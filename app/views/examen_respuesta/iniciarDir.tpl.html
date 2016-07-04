@@ -14,7 +14,7 @@
       <div class="panel-heading"> 
         <div ng-switch on="user.inscripciones.length &gt; 0"> 
           <div ng-switch-when="true" ng-bind-html="('INSCRITO_EN' | translate)"> </div>
-          <div ng-switch-default ng-bind-html="'No estás inscrito en ninguna categoría.'"> </div>
+          <div ng-switch-default ng-bind-html="('NO_ESTAS_INSCRITO' | translate)"> </div>
         </div>
       </div>
       <div class="panel-body">
@@ -28,9 +28,14 @@
         <div ng-bind-html="('EXAM_HECHOS' | translate)"> </div>
       </div>
       <div class="panel-body">
-        <accordion close-others="false" ng-repeat="categoriaking in user | categsInscritasDeUsuario:categorias_king:user.idioma_main_id ">
-          <accordion-group heading="{{categoriaking.nombre + ' - ' + categoriaking.id }}">
-            <div ng-repeat="examen in categoriaking.examenes">{{examen}}</div>
+        <accordion close-others="false" ng-repeat="examen in examenes_puntajes | orderBy:'-id'">
+          <accordion-group heading="{{examen.categoria.nombre + ' - (Cod:' + examen.id + ') ' }}" ng-init="status.open = $first" is-open="status.open" tooltip="{{examen.evaluacion.descripcion}}">
+            <div>Preguntas: {{examen.cantidad_pregs}} </div>
+            <div>Correctas: {{examen.correctas}} </div>
+            <div>Incorrectas: {{examen.cantidad_pregs-examen.correctas}} </div>
+            <div>Terminado: {{examen.terminado}} </div>
+            <div>Promedio: {{examen.promedio | number:1}}% </div>
+            <div style="text-align:right"><a ui-sref="panel.examen_respuesta({examen_respuesta_id: examen.id})" href="">Continuar</a></div>
           </accordion-group>
         </accordion>
       </div>

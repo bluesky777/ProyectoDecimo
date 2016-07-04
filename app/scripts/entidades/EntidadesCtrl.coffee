@@ -1,5 +1,5 @@
 angular.module('WissenSystem')
-.controller('EntidadesCtrl', ['$scope', 'Restangular', 'uiGridConstants', 'App', '$filter', '$modal', 'toastr', ($scope, Restangular, uiGridConstants, App, $filter, $modal, toastr)->
+.controller('EntidadesCtrl', ['$scope', 'Restangular', 'uiGridConstants', 'App', '$filter', '$uibModal', 'toastr', ($scope, Restangular, uiGridConstants, App, $filter, $modal, toastr)->
 	
 
 	$scope.imgSystemPath = App.imgSystemPath
@@ -143,7 +143,7 @@ angular.module('WissenSystem')
 
 
 
-.controller('RemoveEntidadCtrl', ['$scope', '$modalInstance', 'elemento', 'Restangular', 'toastr', ($scope, $modalInstance, elemento, Restangular, toastr)->
+.controller('RemoveEntidadCtrl', ['$scope', '$uibModalInstance', 'elemento', 'Restangular', 'toastr', ($scope, $modalInstance, elemento, Restangular, toastr)->
 	$scope.elemento = elemento
 
 	$scope.ok = ()->

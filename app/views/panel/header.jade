@@ -74,33 +74,35 @@ ul.list-unstyled.left-elems
 
 
 ul.list-unstyled.right-elems.ng-scope
-	li.profile-drop.hidden-xs.dropdown(dropdown='')
-		a(href='', dropdown-toggle='', aria-haspopup='true', aria-expanded='false')
-			img(ng-src="{{imagesPath + USER.imagen_nombre}}" alt="{{USER.username}}")
-		ul.dropdown-menu.dropdown-menu-right
-			li
-				a(href='javascript:;')
-					span.ion.ion-person
-					| Perfil
-			li
-				a(href='javascript:;')
-					span.ion.ion-settings 
-					| Configuración
-			li.divider
-			li
-				a(href='javascript:;')
-					span.ion.ion-lock-combination
-					| Imágenes
-			li
-				a(href='' ng-click="logout()")
-					span.ion.ion-power
-					| Salir
+	li.profile-drop.hidden-xs.dropdown(dropdown='' style="padding-right: 8px")
+
+		md-menu 
+			a(href='' ng-click="openMenu($mdOpenMenu, $event)" )
+				img.imagen-perfil(ng-src="{{imagesPath + USER.imagen_nombre}}" alt="{{USER.username}}")
+				
+
+			md-menu-content(style="margin-top: 40px;" width="3")
+				md-menu-item
+					md-button(ng-click="ctrl.redial($event)")
+						i.fa.fa-user(style="font-size: 16px; margin-right: 8px;" )
+						| Perfil
+				md-menu-item
+					md-button
+						//md-icon.fa(md-font-icon="fa-image" )
+						a(ui-sref="panel.filemanager()" style="color: currentColor;")
+							i.fa.fa-image(style="font-size: 16px; margin-right: 8px;" )
+							| Imágenes
+
+				md-menu-divider
+				md-menu-item
+					md-button(ng-click="logout()")
+						i.fa.fa-sign-out(style="font-size: 16px; margin-right: 8px;" )
+						| Salir
 
 
 	li.profile-drop.hidden-xs.dropdown()
 		a(href='' ng-click="logout()" style="color: #fff")
-			i.fa.fa-sign-out 
-			|  Salir
+			i.fa.fa-sign-out(ng-bind-html="('SALIR' | translate)") 
 			
 	//li.floating-sidebar(ng-class="{'open': floatingSidebar}")
 	li.floating-sidebar(ng-class="{'open': floatingSidebar}")

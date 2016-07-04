@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.controller('GridUsuariosCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$interval', 'toastr', 'uiGridConstants', '$modal', '$filter', 'App' 
+.controller('GridUsuariosCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$interval', 'toastr', 'uiGridConstants', '$uibModal', '$filter', 'App' 
 	($scope, $http, Restangular, $state, $cookies, $interval, toastr, uiGridConstants, $modal, $filter, App) ->
 
 		$scope.currentusers = []
@@ -227,7 +227,7 @@ angular.module('WissenSystem')
 
 
 
-.controller('RemoveUsuarioCtrl', ['$scope', '$modalInstance', 'usuario', 'entidades', 'Restangular', 'toastr', ($scope, $modalInstance, usuario, entidades, Restangular, toastr)->
+.controller('RemoveUsuarioCtrl', ['$scope', '$uibModalInstance', 'usuario', 'entidades', 'Restangular', 'toastr', ($scope, $modalInstance, usuario, entidades, Restangular, toastr)->
 	$scope.usuario = usuario
 	$scope.entidades = entidades
 	console.log 'elemento', usuario, entidades
@@ -250,7 +250,7 @@ angular.module('WissenSystem')
 ])
 
 
-.controller('SelectEntidadCtrl', ['$scope', '$modalInstance', 'usuario', 'entidades', 'Restangular', 'toastr', '$filter', ($scope, $modalInstance, usuario, entidades, Restangular, toastr, $filter)->
+.controller('SelectEntidadCtrl', ['$scope', '$uibModalInstance', 'usuario', 'entidades', 'Restangular', 'toastr', '$filter', ($scope, $modalInstance, usuario, entidades, Restangular, toastr, $filter)->
 	$scope.usuario = usuario
 	$scope.entidades = entidades
 	$scope.entidades_extras = $filter('filter')(entidades, {id: '!'+usuario.entidad_id})
@@ -281,7 +281,7 @@ angular.module('WissenSystem')
 
 
 
-.controller('VerRolesCtrl', ['$scope', '$modalInstance', 'usuario', 'roles', 'Restangular', 'toastr', ($scope, $modalInstance, usuario, roles, Restangular, toastr)->
+.controller('VerRolesCtrl', ['$scope', '$uibModalInstance', 'usuario', 'roles', 'Restangular', 'toastr', ($scope, $modalInstance, usuario, roles, Restangular, toastr)->
 	$scope.usuario = usuario
 	$scope.roles = roles
 

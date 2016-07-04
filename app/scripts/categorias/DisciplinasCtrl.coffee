@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.controller('DisciplinasCtrl', ['$scope', 'Restangular', 'toastr', '$modal', 'App', '$filter',  ($scope, Restangular, toastr, $modal, App, $filter)->
+.controller('DisciplinasCtrl', ['$scope', 'Restangular', 'toastr', '$uibModal', 'App', '$filter',  ($scope, Restangular, toastr, $modal, App, $filter)->
 
 
 	$scope.creando = false
@@ -79,7 +79,7 @@ angular.module('WissenSystem')
 
 
 
-.controller('RemoveDisciplinaCtrl', ['$scope', '$modalInstance', 'elemento', 'Restangular', 'toastr', ($scope, $modalInstance, elemento, Restangular, toastr)->
+.controller('RemoveDisciplinaCtrl', ['$scope', '$uibModalInstance', 'elemento', 'Restangular', 'toastr', ($scope, $modalInstance, elemento, Restangular, toastr)->
 	$scope.elemento = elemento
 	console.log 'elemento', elemento
 

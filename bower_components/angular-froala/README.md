@@ -1,11 +1,17 @@
 # angular-froala
-angular-froala provides AngularJS bindings to the froala WYSIWYG editor.
+>angular-froala provides AngularJS bindings to the froala WYSIWYG editor VERSION 2.
+
+##Version 2
+This repository contains bindings for the latest version of the Froala Editor (version 2). Checkout the `V1` branch for support of Version 1 of the editor.
+
 
 ## Installation
 
 1. Clone this repo or download the zip.
-2. Run `bower install` or Download the editor from [http://froala.com/wysiwyg-editor/](http://froala.com/wysiwyg-editor/) and jQuery
-3. Load Froala WYSIWYG editor, jQuery and the angular-froala files into your project
+
+2. Run `bower install` or Download the editor from [https://www.froala.com/wysiwyg-editor/](https://www.froala.com/wysiwyg-editor/) and jQuery
+
+3. Load Froala WYSIWYG editor (and all desired plugins), jQuery and the angular-froala files into your project
 	- src/angular-froala.js
 	- src/froala-sanitize.js
 
@@ -14,7 +20,7 @@ angular-froala provides AngularJS bindings to the froala WYSIWYG editor.
 1. Add the `froala` dependency to your Angular project. example:
 	* `angular.module('myApp', ['froala'])`
 2. Create a textarea with the froala directive in your view and give it a model, where `myHtml` is a variable on `$scope`.
-	* `<textarea froala ng-model="myHtml"><textarea> `
+	* `<textarea froala ng-model="myHtml"></textarea> `
 
 ###Options
 
@@ -22,8 +28,8 @@ angular-froala provides AngularJS bindings to the froala WYSIWYG editor.
 ```javascript
 angular.module('myApp', ['froala']).
 	value('froalaConfig', {
-		inlineMode: false,
-		placeholder: 'Enter Text Here'
+		toolbarInline: false,
+		placeholderText: 'Enter Text Here'
 	});
 ```
 
@@ -35,7 +41,7 @@ _app.js_
 function myCtrl($scope){
 	$scope.myHtml = "<h1>Hello World</h1>"
 	$scope.froalaOptions = {
-		buttons : ["bold", "italic", "underline", "sep", "align", "insertOrderedList", "insertUnorderedList"]
+		toolbarButtons : ["bold", "italic", "underline", "|", "align", "formatOL", "formatUL"]
 	}
 }
 ```
@@ -44,59 +50,44 @@ _view.html_
 ```html
 <textarea froala="froalaOptions" ngModel="myHtml"></textarea>
 ```
-View a list of all the options available in the [docs](http://froala.com/wysiwyg-editor/docs/options)
+View a list of all the options available in the [docs](https://www.froala.com/wysiwyg-editor/docs/options)
 
 ###Methods
 
-To use the methods available, access the editor instance from your froalaOptions object `$scope.options.froala(method)` and use it as described in the [method docs](http://froala.com/wysiwyg-editor/docs/methods). example:
+To use the methods available, access the editor instance from your froalaOptions object `$scope.options.froalaEditor(method)` and use it as described in the [method docs](http://froala.com/wysiwyg-editor/docs/methods). example:
 
 ```javascript
 function myCtrl($scope){
 	$scope.myHtml = "";
 	$scope.froalaOptions = {
-		buttons : ["bold", "italic", "underline", "sep", "align", "insertOrderedList", "insertUnorderedList"]
+		toolbarButtons : ["bold", "italic", "underline", "|", "align", "formatOL", "formatUL"]
 	}
 
 //Use the methods like this
-$scope.froalaOptions.froala("getSelection");
+$scope.froalaOptions.froalaEditor("selection.get");
 ```
 ###Events
- Events can be used one of two ways as an attribute on the directive, or passed in with the options.
+ Events can be passed in with the options, with a key events and object where the key is the event name and the value is the callback function.
 ####Attribute
 _app.js_
-
-```js
-$scope.editorOnFocus = function(e, editor){
-	//Do Something
-}
-```
-_view.html_
-
-```html
-<textarea froala="froalaOptions" ngModel="myHtml" froala-event-focus="editorOnFocus"></textarea>
-```
-###options
-_app.js_
-
 ```js
 $scope.froalaOptions = {
-	inlineMode: false,
 	placeholder: "Edit Me",
 	events : {
-		focus : function(e, editor) {/* ... */}
+		'froalaEditor.focus' : function(e, editor) {/* ... */}
 	}
 ```
 
 
 ###Displaying Html
 
-Using `ng-bind-html` will render your html on the page but the default angular-sanitize.js will strip out all style tags. Remedy this by including `froala-sanitize.js` instead. example: `<div ng-bind-html="myHtml"></div>`
+Using `ng-bind-html` will render your html on the page but the default angular-sanitize.js will strip out all style tags. Remedy this by including `froala-sanitize.js` instead. example: `<div class="fr-view" ng-bind-html="myHtml"></div>`
 
 Congrats all is done!
 
 ## License
 
-The `angular-froala` project is under MIT license.
+The `angular-froala` project is under MIT license. However, in order to use Froala WYSIWYG HTML Editor plugin you should purchase a license for it.
 
 Froala Editor has [3 different licenses](http://froala.com/wysiwyg-editor/pricing) for commercial use.
 For details please see [License Agreement](http://froala.com/wysiwyg-editor/terms).

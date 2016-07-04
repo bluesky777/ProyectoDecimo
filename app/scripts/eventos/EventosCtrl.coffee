@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.controller('EventosCtrl', ['$scope', 'Restangular', '$modal', '$filter', 'App', 'toastr',  ($scope, Restangular, $modal, $filter, App, toastr)->
+.controller('EventosCtrl', ['$scope', 'Restangular', '$uibModal', '$filter', 'App', 'toastr',  ($scope, Restangular, $modal, $filter, App, toastr)->
 
 	$scope.newEvent = {
 		with_pay: false
@@ -135,7 +135,7 @@ angular.module('WissenSystem')
 
 ])
 
-.controller('RemoveEventoCtrl', ['$scope', '$modalInstance', 'elemento', 'Restangular', 'toastr', ($scope, $modalInstance, elemento, Restangular, toastr)->
+.controller('RemoveEventoCtrl', ['$scope', '$uibModalInstance', 'elemento', 'Restangular', 'toastr', ($scope, $modalInstance, elemento, Restangular, toastr)->
 	$scope.elemento = elemento
 
 	$scope.ok = ()->

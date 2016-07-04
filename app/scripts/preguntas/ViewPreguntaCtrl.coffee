@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.controller('ViewPreguntaCtrl', ['$scope', 'App', 'Restangular', '$state', '$cookies', '$rootScope', '$mdToast', '$modal', '$filter',
+.controller('ViewPreguntaCtrl', ['$scope', 'App', 'Restangular', '$state', '$cookies', '$rootScope', '$mdToast', '$uibModal', '$filter',
 	($scope, App, Restangular, $state, $cookies, $rootScope, $mdToast, $modal, $filter) ->
 		
 		$scope.elegirOpcion = (pregunta, opcion)->
@@ -66,7 +66,7 @@ angular.module('WissenSystem')
 )
 
 
-.controller('RemovePreguntaCtrl', ['$scope', '$modalInstance', 'pregunta', 'Restangular', 'toastr', ($scope, $modalInstance, pregunta, Restangular, toastr)->
+.controller('RemovePreguntaCtrl', ['$scope', '$uibModalInstance', 'pregunta', 'Restangular', 'toastr', ($scope, $modalInstance, pregunta, Restangular, toastr)->
 	$scope.pregunta = pregunta
 
 	$scope.ok = ()->
@@ -84,7 +84,7 @@ angular.module('WissenSystem')
 
 ])
 
-.controller('AsignarPreguntaCtrl', ['$scope', '$modalInstance', 'pregunta', 'evaluaciones', 'Restangular', 'toastr', '$filter', ($scope, $modalInstance, pregunta, evaluaciones, Restangular, toastr, $filter)->
+.controller('AsignarPreguntaCtrl', ['$scope', '$uibModalInstance', 'pregunta', 'evaluaciones', 'Restangular', 'toastr', '$filter', ($scope, $modalInstance, pregunta, evaluaciones, Restangular, toastr, $filter)->
 	$scope.pregunta = pregunta
 	$scope.evaluaciones = evaluaciones
 	$scope.asignando = false

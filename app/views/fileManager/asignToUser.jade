@@ -1,0 +1,27 @@
+md-dialog(aria-label="Asignar imagen a usuario" ng-cloak)
+  form
+
+    md-dialog-content(style="min-width: 400px;")
+      div.md-dialog-content
+        h4 Asignar imagen a usuario
+        md-input-container.md-block(flex-gt-sm style=" margin-bottom: -21px; padding-bottom: 0px;")
+          label Buscar usuario
+          input(type="text" ng-model="busqueda")
+          md-tooltip  Buscar usuario
+    
+        md-content(style="height: 400px;")
+          section
+            md-subheader.md-primary Usuarios:
+            md-list
+              md-list-item(ng-click="asignar(usuario)" ng-repeat="usuario in usuarios | orderBy:'nombres' | filter:busqueda track by usuario.id" style="margin: 0px;")
+
+                .md-list-item-text
+                  p {{$index+1}}. 
+                    img(ng-src="{{perfilPath + usuario.imagen_nombre}}" style="width:40px;height:40px")
+                    |  {{usuario.nombres}} {{usuario.apellidos}}
+
+
+    md-dialog-actions(layout="row")
+
+      md-button(ng-click="cancelar()") Cancelar
+

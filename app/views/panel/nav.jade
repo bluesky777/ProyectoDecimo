@@ -56,8 +56,18 @@ nav.site-nav.clearfix(role="navigation")
 				i.fa.fa-users
 				span.text {{ 'USERS_MENU' | translate }}
 
+		li(ui-sref-active="active" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')")
+			a(href="" ui-sref="panel.control" md-ink-ripple="")
+				i.fa.fa-desktop
+				span.text {{ 'CONTROL_MENU' | translate }}
 
 		li(ui-sref-active="active" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')")
+			a(href="" ui-sref="panel.informes" md-ink-ripple="")
+				i.fa.fa-print
+				span.text {{ 'INFORMES_MENU' | translate }}
+
+
+		li(ui-sref-active="active" ng-if="false")
 			a(href="" md-ink-ripple="")
 				i.fa.fa-asterisk
 				span.text Construcción

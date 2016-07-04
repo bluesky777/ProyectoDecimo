@@ -1,5 +1,5 @@
 angular.module('WissenSystem')
-.controller('GridEvaluacionesCtrl', ['$scope', 'Restangular', 'uiGridConstants', '$modal', '$filter', 'App', 'toastr', ($scope, Restangular, uiGridConstants, $modal, $filter, App, toastr)->
+.controller('GridEvaluacionesCtrl', ['$scope', 'Restangular', 'uiGridConstants', '$uibModal', '$filter', 'App', 'toastr', ($scope, Restangular, uiGridConstants, $modal, $filter, App, toastr)->
 
 
 
@@ -92,7 +92,7 @@ angular.module('WissenSystem')
 ])
 
 
-.controller('RemoveEvaluacionCtrl', ['$scope', '$modalInstance', 'elemento', 'categoriasking', 'Restangular', 'toastr', ($scope, $modalInstance, elemento, categoriasking, Restangular, toastr)->
+.controller('RemoveEvaluacionCtrl', ['$scope', '$uibModalInstance', 'elemento', 'categoriasking', 'Restangular', 'toastr', ($scope, $modalInstance, elemento, categoriasking, Restangular, toastr)->
 	$scope.elemento = elemento
 	$scope.categoriasking = categoriasking
 	console.log 'elemento', elemento, categoriasking

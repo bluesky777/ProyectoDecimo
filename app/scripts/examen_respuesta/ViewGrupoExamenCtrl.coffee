@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.controller('ViewGrupoExamenCtrl', ['$scope', 'Restangular', 'toastr', '$filter', '$rootScope', '$state', '$modal', 'App', ($scope, Restangular, toastr, $filter, $rootScope, $state, $modal, App)->
+.controller('ViewGrupoExamenCtrl', ['$scope', 'Restangular', 'toastr', '$filter', '$rootScope', '$state', '$uibModal', 'App', ($scope, Restangular, toastr, $filter, $rootScope, $state, $modal, App)->
 
 	
 	$scope.USER = $scope.$parent.USER

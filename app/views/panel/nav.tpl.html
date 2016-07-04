@@ -21,7 +21,9 @@
     <li ui-sref-active="active" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')"><a href="" ui-sref="panel.preguntas" md-ink-ripple=""><i class="fa fa-question"></i><span class="text">{{ 'PREGUNTAS_MENU' | translate }}</span></a></li>
     <li ui-sref-active="active" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')"><a href="" ui-sref="panel.evaluaciones" md-ink-ripple=""><i class="fa fa-clipboard"></i><span class="text">{{ 'EVALUACIONES_MENU' | translate }}</span></a></li>
     <li ui-sref-active="active" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')"><a href="" ui-sref="panel.usuarios" md-ink-ripple=""><i class="fa fa-users"></i><span class="text">{{ 'USERS_MENU' | translate }}</span></a></li>
-    <li ui-sref-active="active" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')"><a href="" md-ink-ripple=""><i class="fa fa-asterisk"></i><span class="text">Construcción</span><i class="arrow fa fa-angle-left"></i><span class="badge badge-xs badge-primary">2</span></a>
+    <li ui-sref-active="active" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')"><a href="" ui-sref="panel.control" md-ink-ripple=""><i class="fa fa-desktop"></i><span class="text">{{ 'CONTROL_MENU' | translate }}</span></a></li>
+    <li ui-sref-active="active" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')"><a href="" ui-sref="panel.informes" md-ink-ripple=""><i class="fa fa-print"></i><span class="text">{{ 'INFORMES_MENU' | translate }}</span></a></li>
+    <li ui-sref-active="active" ng-if="false"><a href="" md-ink-ripple=""><i class="fa fa-asterisk"></i><span class="text">Construcción</span><i class="arrow fa fa-angle-left"></i><span class="badge badge-xs badge-primary">2</span></a>
       <ul class="inner-drop nested list-unstyled">
         <li> <a href="" md-ink-ripple="">Font Awesome</a></li>
         <li> <a href="" md-ink-ripple="">Ionicons</a></li>

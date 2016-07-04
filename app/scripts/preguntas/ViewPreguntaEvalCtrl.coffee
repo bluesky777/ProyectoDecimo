@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.controller('ViewPreguntaEvalCtrl', ['$scope', 'App', 'Restangular', '$state', '$cookies', '$rootScope', '$mdToast', '$modal', '$filter', 'toastr',
+.controller('ViewPreguntaEvalCtrl', ['$scope', 'App', 'Restangular', '$state', '$cookies', '$rootScope', '$mdToast', '$uibModal', '$filter', 'toastr',
 	($scope, App, Restangular, $state, $cookies, $rootScope, $mdToast, $modal, $filter, toastr) ->
 		
 

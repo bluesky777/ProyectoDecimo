@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.controller('SeguroIniciarCtrl', ['$scope', '$modalInstance', 'inscripcion', 'Restangular', 'toastr', '$filter', '$state', '$rootScope', ($scope, $modalInstance, inscripcion, Restangular, toastr, $filter, $state, $rootScope)->
+.controller('SeguroIniciarCtrl', ['$scope', '$uibModalInstance', 'inscripcion', 'Restangular', 'toastr', '$filter', '$state', '$rootScope', ($scope, $modalInstance, inscripcion, Restangular, toastr, $filter, $state, $rootScope)->
 
 	$scope.inscripcion = inscripcion
 

@@ -35,7 +35,7 @@ div(ng-repeat="categoriaking in categoriasking" )
 						div(flex="40" flex-gt-lg="20" flex-sm="100")
 							label Nivel:
 							md-select(placeholder="Nivel" ng-model="categoriaking.nivel_id")
-								md-option(ng-repeat="nivelking in nivelesking" value="{{nivelking.id}}") {{nivelking.nombre}}
+								md-option(ng-repeat="nivelking in nivelesking" value="{{nivelking.id}}") {{nivelking.niveles_traducidos[0].nombre}}
 						div(flex="40" flex-gt-lg="20" flex-sm="100")
 							label Disciplina:
 							md-select(placeholder="Disciplina" ng-model="categoriaking.disciplina_id")

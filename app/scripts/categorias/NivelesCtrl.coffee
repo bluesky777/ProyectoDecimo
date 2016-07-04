@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.controller('NivelesCtrl', ['$scope', 'Restangular', 'toastr', '$modal', 'App', '$filter',  ($scope, Restangular, toastr, $modal, App, $filter)->
+.controller('NivelesCtrl', ['$scope', 'Restangular', 'toastr', '$uibModal', 'App', '$filter',  ($scope, Restangular, toastr, $modal, App, $filter)->
 
 
 	$scope.creando = false
@@ -79,7 +79,7 @@ angular.module('WissenSystem')
 
 
 
-.controller('RemoveNivelCtrl', ['$scope', '$modalInstance', 'elemento', 'Restangular', 'toastr', ($scope, $modalInstance, elemento, Restangular, toastr)->
+.controller('RemoveNivelCtrl', ['$scope', '$uibModalInstance', 'elemento', 'Restangular', 'toastr', ($scope, $modalInstance, elemento, Restangular, toastr)->
 	$scope.elemento = elemento
 	console.log 'elemento', elemento
 

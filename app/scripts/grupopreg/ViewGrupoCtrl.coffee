@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.controller('ViewGrupoCtrl', ['$scope', 'App', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', '$modal', '$filter',
+.controller('ViewGrupoCtrl', ['$scope', 'App', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', '$uibModal', '$filter',
 	($scope, App, Restangular, $state, $cookies, $rootScope, toastr, $modal, $filter) ->
 		"""
 		$scope.idiomaactualselec = parseInt($scope.idiomaactualselec)
@@ -100,7 +100,7 @@ angular.module('WissenSystem')
 
 
 
-.controller('RemoveGrupoCtrl', ['$scope', '$modalInstance', 'grupoking', 'Restangular', 'toastr', ($scope, $modalInstance, grupoking, Restangular, toastr)->
+.controller('RemoveGrupoCtrl', ['$scope', '$uibModalInstance', 'grupoking', 'Restangular', 'toastr', ($scope, $modalInstance, grupoking, Restangular, toastr)->
 	$scope.grupoking = grupoking
 
 	$scope.ok = ()->
@@ -120,7 +120,7 @@ angular.module('WissenSystem')
 
 
 
-.controller('RemovePreguntaAgrupCtrl', ['$scope', '$modalInstance', 'preg_agrup', 'Restangular', 'toastr', ($scope, $modalInstance, preg_agrup, Restangular, toastr)->
+.controller('RemovePreguntaAgrupCtrl', ['$scope', '$uibModalInstance', 'preg_agrup', 'Restangular', 'toastr', ($scope, $modalInstance, preg_agrup, Restangular, toastr)->
 	$scope.preg_agrup = preg_agrup
 
 	$scope.ok = ()->
@@ -138,7 +138,7 @@ angular.module('WissenSystem')
 
 ])
 
-.controller('AsignarGrupoCtrl', ['$scope', '$modalInstance', 'pregunta', 'evaluaciones', 'Restangular', 'toastr', '$filter', ($scope, $modalInstance, pregunta, evaluaciones, Restangular, toastr, $filter)->
+.controller('AsignarGrupoCtrl', ['$scope', '$uibModalInstance', 'pregunta', 'evaluaciones', 'Restangular', 'toastr', '$filter', ($scope, $modalInstance, pregunta, evaluaciones, Restangular, toastr, $filter)->
 	$scope.pregunta = pregunta
 	$scope.evaluaciones = evaluaciones
 	$scope.asignando = false

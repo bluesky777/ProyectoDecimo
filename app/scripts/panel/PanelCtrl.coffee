@@ -2,7 +2,7 @@
 
 angular.module('WissenSystem')
 
-.controller('PanelCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'AuthService', 'Perfil', 'App', 'resolved_user', 'toastr', '$translate', '$filter', '$modal', 
+.controller('PanelCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'AuthService', 'Perfil', 'App', 'resolved_user', 'toastr', '$translate', '$filter', '$uibModal', 
 	($scope, $http, Restangular, $state, $cookies, $rootScope, AuthService, Perfil, App, resolved_user, toastr, $translate, $filter, $modal) ->
 
 
@@ -16,6 +16,10 @@ angular.module('WissenSystem')
 		$rootScope.$on '$stateChangeSuccess', (event, toState, toParams, fromState, fromParams)->
 			$scope.cambiarTema('theme-zero')
 
+			
+		$scope.openMenu = ($mdOpenMenu, ev)->
+			originatorEv = ev
+			$mdOpenMenu(ev)
 
 		$scope.cambiarIdioma = (idioma)->
 			

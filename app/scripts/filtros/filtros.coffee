@@ -51,8 +51,9 @@ angular.module('WissenSystem')
 	(input, idiomas) ->
 
 		if input
-			if input[0].uncodigo_id
-				console.log input, idiomas
+			if input.length > 0
+				if input[0].uncodigo_id
+					console.log input, idiomas
 		
 		resultado = []
 		

@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.controller('ViewPreguntaExamenCtrl', ['$scope', 'Restangular', 'toastr', '$filter', '$rootScope', '$state', '$modal', 'App', ($scope, Restangular, toastr, $filter, $rootScope, $state, $modal, App)->
+.controller('ViewPreguntaExamenCtrl', ['$scope', 'Restangular', 'toastr', '$filter', '$rootScope', '$state', '$uibModal', 'App', ($scope, Restangular, toastr, $filter, $rootScope, $state, $modal, App)->
 
 	
 	$scope.USER = $scope.$parent.USER
@@ -83,7 +83,7 @@ angular.module('WissenSystem')
 
 
 
-.controller('SeguroRespuestaPregKingCtrl', ['$scope', '$modalInstance', 'opcion', 'Restangular', 'toastr', '$filter', 'examen_actual', 'preguntatop', 'pregunta_traduc', 'agrupada', '$rootScope', ($scope, $modalInstance, opcion, Restangular, toastr, $filter, examen_actual, preguntatop, pregunta_traduc, agrupada, $rootScope)->
+.controller('SeguroRespuestaPregKingCtrl', ['$scope', '$uibModalInstance', 'opcion', 'Restangular', 'toastr', '$filter', 'examen_actual', 'preguntatop', 'pregunta_traduc', 'agrupada', '$rootScope', ($scope, $modalInstance, opcion, Restangular, toastr, $filter, examen_actual, preguntatop, pregunta_traduc, agrupada, $rootScope)->
 
 	$scope.opcion = opcion
 
