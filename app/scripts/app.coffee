@@ -33,13 +33,16 @@ angular.module('WissenSystem', [
 .constant('App', (()->
 
   dominio = ''
+  ip = ''
 
   if (typeof(Storage) != "undefined")
 
     if localStorage.getItem("dominio") == null
       console.log 'No hay dominio almacenado'
+      ip = '192.168.1.31'
+      localStorage.setItem('dominio', ip)
       #dominio = 'http://lalvirtual.com/wissen/' 
-      dominio = 'http://192.168.1.31/' # Pruebas en mi localhost
+      dominio = 'http://' + '192.168.1.31' + '/' # Pruebas en mi localhost
       #dominio = 'http://olimpiadaslibertad.com/'
       #dominio = 'http://192.168.1.100/'
     else

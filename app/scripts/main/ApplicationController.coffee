@@ -2,7 +2,7 @@
 
 angular.module('WissenSystem')
 
-.controller('ApplicationController', ['$scope', 'USER_ROLES', 'AuthService', 'toastr', '$state', '$rootScope', 'Restangular', '$filter', '$timeout', ($scope, USER_ROLES, AuthService, toastr, $state, $rs, Restangular, $filter, $timeout)->
+.controller('ApplicationController', ['$scope', 'USER_ROLES', 'AuthService', 'toastr', '$state', '$rootScope', 'Restangular', '$filter', '$timeout', 'MySocket', ($scope, USER_ROLES, AuthService, toastr, $state, $rs, Restangular, $filter, $timeout, MySocket)->
 
 
 	$scope.isAuthorized = AuthService.isAuthorized
@@ -67,6 +67,8 @@ angular.module('WissenSystem')
 
 		
 		$scope.in_evento_actual.ip = if localStorage.getItem('nombre_punto') then localStorage.getItem('nombre_punto') else $scope.in_evento_actual.ip
+
+		MySocket.get()
 
 	, (r2)->
 		toastr.warning 'No se trae el evento principal'
