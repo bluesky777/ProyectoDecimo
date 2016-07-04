@@ -109,6 +109,16 @@ ul.list-unstyled.right-elems.ng-scope
 		a(href="" ng-click='toggleFloatingSidebar()')
 			i.fa.fa-th
 		.sidebar-wrap.ps-container.ps-active-y(custom-scrollbar='')
+			md-content
+				md-list.md-dense
+					md-subheader.md-no-sticky 3 line item
+					md-list-item.md-3-line(ng-repeat="item in todos")
+						img.md-avatar(ng-src="{{item.face}}?{{$index}}" alt="{{item.who}}")
+						div.md-list-item-text(layout="column")
+						h3 {{ item.who }}
+						h4 {{ item.what }}
+						p {{ item.notes }}
+
 			
 			tabset(justified="true")
 				tab(heading="CHAT")

@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.factory('AuthService', ['Restangular', '$state', '$http', '$cookies', 'Perfil', '$rootScope', 'AUTH_EVENTS', '$q', '$filter', 'toastr', (Restangular, $state, $http, $cookies, Perfil, $rootScope, AUTH_EVENTS, $q, $filter, toastr)->
+.factory('AuthService', ['Restangular', '$state', '$http', '$cookies', 'Perfil', '$rootScope', 'AUTH_EVENTS', '$q', '$filter', 'toastr', 'MySocket', (Restangular, $state, $http, $cookies, Perfil, $rootScope, AUTH_EVENTS, $q, $filter, toastr, MySocket)->
 	authService = {}
 
 
@@ -133,6 +133,7 @@ angular.module('WissenSystem')
 
 			login = Restangular.one('login/verificar').post().then((usuario)->
 
+				MySocket.registrar(usuario)
 				$rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
 				d.resolve usuario
 

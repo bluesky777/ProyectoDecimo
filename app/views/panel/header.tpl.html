@@ -79,6 +79,17 @@
   <!--li.floating-sidebar(ng-class="{'open': floatingSidebar}")-->
   <li ng-class="{'open': floatingSidebar}" class="floating-sidebar"><a href="" ng-click="toggleFloatingSidebar()"><i class="fa fa-th"></i></a>
     <div custom-scrollbar="" class="sidebar-wrap ps-container ps-active-y">
+      <md-content>
+        <md-list class="md-dense">
+          <md-subheader class="md-no-sticky">3 line item</md-subheader>
+          <md-list-item ng-repeat="item in todos" class="md-3-line"><img ng-src="{{item.face}}?{{$index}}" alt="{{item.who}}" class="md-avatar">
+            <div layout="column" class="md-list-item-text"></div>
+            <h3>{{ item.who }}</h3>
+            <h4>{{ item.what }}</h4>
+            <p>{{ item.notes }}</p>
+          </md-list-item>
+        </md-list>
+      </md-content>
       <tabset justified="true">
         <tab heading="CHAT">
           <div class="chat-tab clearfix">
