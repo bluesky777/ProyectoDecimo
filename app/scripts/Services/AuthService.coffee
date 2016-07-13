@@ -91,6 +91,7 @@ angular.module('WissenSystem')
 				$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.get('xtoken')
 
 				Perfil.setUser user
+				MySocket.registrar(user)
 
 				#console.log 'Usuario traido: ', user
 
@@ -125,9 +126,9 @@ angular.module('WissenSystem')
 
 		d = $q.defer();
 
-		#console.log Perfil.User().id 
+		if !Perfil.User().id #or Perfil.User().id == undefined
 
-		if Perfil.User().id or Perfil.User().id == undefined
+			#Perfil.setUser {id: 99999}
 
 			$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.get('xtoken')
 
@@ -135,6 +136,7 @@ angular.module('WissenSystem')
 
 				MySocket.registrar(usuario)
 				$rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+				Perfil.setUser usuario
 				d.resolve usuario
 
 			, (r2)->

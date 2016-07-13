@@ -1,6 +1,6 @@
 .page.page-auth
 
-	.auth-container(style="max-width: 450px;")
+	.auth-container(style="max-width: 450px;padding-left: 0px;padding-right: 0px")
 
 		.form-head.mb20
 			h1.site-logo.h2.mb5.mt5.text-center.text-uppercase.text-bold
@@ -8,7 +8,26 @@
 			h5.text-normal.h5.text-center Coloca el código frente a la cámara
 
 
-		.form-container
+		.form-container(style="text-align: center;")
+
+			section
+				md-subheader.md-primary Usuarios
+					md-input-container.filtrarusuario(flex )
+						label Filtrar
+						input(type="text" ng-model="filtro" )
+
+				md-list.md-dense(style="max-height: 500px; overflow-y: auto;") 
+
+					md-list-item.md-2-line(ng-repeat="usuario in usuarios | filter:filtro | orderBy:'nombres' " ng-click="seleccionarUsu(usuario)")
+						img.md-avatar(ng-src="{{imagesPath + usuario.imagen_nombre}}" alt="{{usuario.username}}")
+						.md-list-item-text
+							h3 {{ ($index+1) + '. ' + usuario.nombres + ' ' + usuario.apellidos}}
+							h4 {{ usuario.nombre_entidad }}
+						md-checkbox.md-secondary(ng-model="usuario.seleccionado" ng-click="seleccionarCkUsu(usuario)" aria-label="Seleccionado")
+
+
+			md-divider
+
 
 			qr-scanner(width="400" height="300" 
 				ng-success="onSuccess(data)" ng-error="onError(error)")

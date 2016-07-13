@@ -3,4 +3,6 @@
 
 	.row()
 		.col-md-12(ng-click="mostrarMensaje()")
-			.titulo-3d(ng-bind-html=" counter ")
+			.titulo-3d(ng-show="counter") Espera: {{counter}} segundos
+			.titulo-3d(ng-hide="counter") {{diagnostico}}
+			

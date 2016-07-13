@@ -32,30 +32,24 @@ angular.module('WissenSystem', [
 #- Valores que usaremos para nuestro proyecto
 .constant('App', (()->
 
-  dominio = ''
-  ip = ''
+  ip = location.hostname
+  dominio = ip + '/' 
 
   if (typeof(Storage) != "undefined")
 
     if localStorage.getItem("dominio") == null
       console.log 'No hay dominio almacenado'
-      ip = '192.168.1.31'
+
       localStorage.setItem('dominio', ip)
-      #dominio = 'http://lalvirtual.com/wissen/' 
-      dominio = 'http://' + '192.168.1.31' + '/' # Pruebas en mi localhost
-      #dominio = 'http://olimpiadaslibertad.com/'
-      #dominio = 'http://192.168.1.100/'
+
     else
-      dominio = 'http://' + localStorage.getItem('dominio') + '/'
+      dominio = localStorage.getItem('dominio') + '/'
   else
-    dominio = 'http://192.168.1.31/'
     alert 'El navegador no soporta LocalStorage'
 
-  
 
   
-  
-  console.log 'Entra al dominio: ', location.hostname
+  console.log 'hostname: ', location.hostname
   
   if(location.hostname.match('lalvirtual'))
     dominio = 'http://lalvirtual.com/wissen/'
@@ -63,7 +57,7 @@ angular.module('WissenSystem', [
   if(location.hostname.match('olimpiadaslibertad'))
     dominio = 'http://olimpiadaslibertad.com/'
   
-  server = dominio + 'wissenLaravel/public/'
+  server = 'http://' + dominio + 'wissenLaravel/public/'
   #server = ''
   frontapp = dominio + 'ProyectoDecimo/'
 

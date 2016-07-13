@@ -6,12 +6,18 @@ angular.module('WissenSystem')
 		.state('qrscanner', 
 			url: '/qrscanner'
 			views:
-					'principal':
-						templateUrl: "#{App.views}qrcode/qrScanner.tpl.html"
-						controller: 'QrScannerCtrl'
+				'principal':
+					templateUrl: "#{App.views}qrcode/qrScanner.tpl.html"
+					controller: 'QrScannerCtrl'
 
-				data: 
-					pageTitle: 'QR Scanner'
+			resolve: { 
+				resolved_user: ['AuthService', (AuthService)->
+					AuthService.verificar()
+				]
+			}
+				
+			data: 
+				pageTitle: 'QR Scanner'
 		)
 
 

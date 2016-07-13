@@ -101,6 +101,7 @@ angular.module('WissenSystem')
 
 		$scope.logout = ()->
 			AuthService.logout()
+			$scope.in_evento_actual = {}
 
 			Restangular.one('login/logout').customPUT().then((r)->
 				console.log 'Desconectado con éxito: ', r

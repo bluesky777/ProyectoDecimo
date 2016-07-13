@@ -1,12 +1,31 @@
 'use strict'
 
 angular.module('WissenSystem')
-.controller('LoginCtrl', ['$scope', '$state', '$mdDialog', 'AUTH_EVENTS', 'AuthService', '$stateParams', 'Restangular', '$cookies', 'Perfil', 'App', 'cfpLoadingBar', 'toastr', ($scope, $state, $mdDialog, AUTH_EVENTS, AuthService, $stateParams, Restangular, $cookies, Perfil, App, cfpLoadingBar, toastr)->
+.controller('LoginCtrl', ['$scope', '$state', '$mdDialog', 'AUTH_EVENTS', 'AuthService', '$stateParams', 'Restangular', '$cookies', 'Perfil', 'App', 'cfpLoadingBar', 'toastr', 'MySocket', '$rootScope', '$http', ($scope, $state, $mdDialog, AUTH_EVENTS, AuthService, $stateParams, Restangular, $cookies, Perfil, App, cfpLoadingBar, toastr, MySocket, $rootScope, $http)->
 	
 	
 	$scope.logoPath = 'images/MyVc-1.gif'
+	$scope.imagesPath = App.images 
 	$scope.modificando_servidor = false
 	$scope.editando_nombre_punto = false
+	$scope.dominio = localStorage.getItem('dominio')
+	$scope.MySocket = MySocket
+	$scope.usuarios_all = []
+	$scope.selectedUser = {}
+	$scope.token_auth = ''
+
+
+	# Traemos evento actual.
+	$scope.in_evento_actual.qr = ''
+	if !$scope.in_evento_actual.nombre
+		Restangular.one('welcome').customGET().then((r)->
+			$scope.in_evento_actual = r
+			$scope.in_evento_actual.ip = if localStorage.getItem('nombre_punto') then localStorage.getItem('nombre_punto') else $scope.in_evento_actual.ip
+			MySocket.conectar(r.qr)
+
+		, (r2)->
+			toastr.warning 'No se trae el evento principal'
+		)
 
 
 	$scope.credentials = 
@@ -64,15 +83,46 @@ angular.module('WissenSystem')
 			$scope.status = 'You didn\'t name your dog.';
 		)
 		
-		###
-		f = prompt('Contraseña', 'Necesitas permisos para editar este nombre de equipo:')
-		if f != "" and f != null and f == $scope.in_evento_actual.password
-			$scope.editando_nombre_punto = true
-		###
+
+	$scope.seleccionarUsu = (usuario)->
+		usuario.seleccionado = !usuario.seleccionado
+		if usuario.seleccionado 
+			$scope.selectedUser = usuario
+
+			for user in $scope.usuarios_all
+				if user.id != usuario.id
+					user.seleccionado = false
+
+	$scope.seleccionarCkUsu = (usuario)->
+		if usuario.seleccionado 
+			$scope.selectedUser = usuario
+
+			for user in $scope.usuarios_all
+				if user.id != usuario.id
+					user.seleccionado = false
+
+	$scope.ingresar_seleccionado = ()->
+		if $scope.selectedUser.id
+			Restangular.one('qr/validar-usuario').customPUT({user_id: $scope.selectedUser.id, token_auth: $scope.token_auth }).then((r)->
+				if r.token
+					$cookies.put('xtoken', r.token)
+					$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.get('xtoken')
+					$state.go 'panel'
+			, (r2)->
+				toastr.warning 'No se pudo ingresar'
+				console.log 'No se pudo ingresar ', r2
+			)
+		else 
+			toastr.warning 'Selecciona el usuario correspondiente'
 	
 	$scope.guardarNombrePunto = ()->
 		localStorage.setItem('nombre_punto', $scope.in_evento_actual.ip)
 		$scope.editando_nombre_punto = false
+
+
+	$rootScope.$on 'lleganUsuarios', (event, datos)->
+		$scope.usuarios_all = datos.usuarios_all
+		$scope.token_auth = datos.token
 		
 
 

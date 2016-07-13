@@ -13,13 +13,14 @@ angular.module('WissenSystem')
 
 
 	$scope.CerrarServidor = ()->
-
-		Restangular.one('chat/cerrar-servidor').customPUT().then((r)->
-			toastr.success 'Cerrado', r
-		, (r2)->
-			toastr.warning 'No se cerró servidor'
-			console.log 'No se cerró servidor ', r2
-		)
+		res = confirm "¿Seguro que desea cerrar servidor?"
+		if res 
+			Restangular.one('chat/cerrar-servidor').customPUT().then((r)->
+				toastr.success 'Cerrado', r
+			, (r2)->
+				toastr.warning 'No se cerró servidor'
+				console.log 'No se cerró servidor ', r2
+			)
 		
 
 	$scope.Conectar = ()->

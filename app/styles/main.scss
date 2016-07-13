@@ -537,6 +537,13 @@ a:hover, a:focus {
 .negrita{
   font-weight: bold
 }
+.filtrarusuario{
+    margin: 0px;
+    padding: 0px;
 
+    .md-errors-spacer{
+        display: none;
+    }
+}
 
 

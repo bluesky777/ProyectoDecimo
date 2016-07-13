@@ -57,22 +57,9 @@ angular.module('WissenSystem')
 		console.log 'No se trajeron los idiomas del sistema.', r2
 	)
 	
-
-	
-	
 	# Traemos evento actual.
-	$scope.in_evento_actual = {qr: ''}
-	Restangular.one('welcome').customGET().then((r)->
-		$scope.in_evento_actual = r
-
-		
-		$scope.in_evento_actual.ip = if localStorage.getItem('nombre_punto') then localStorage.getItem('nombre_punto') else $scope.in_evento_actual.ip
-
-		MySocket.get()
-
-	, (r2)->
-		toastr.warning 'No se trae el evento principal'
-	)
+	$scope.in_evento_actual = {}
+	
 	
 
 

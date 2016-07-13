@@ -18,7 +18,11 @@
     </div></span>
   <div class="auth-container">
     <div class="form-head mb20">
-      <h1 class="site-logo h2 mb5 mt5 text-center text-uppercase text-bold"><a href="">Wissen</a></h1>
+      <h1 class="site-logo h2 mb5 mt5 text-center text-uppercase text-bold"><a href="">Wissen <span ng-show="MySocket.readyState() == 3 &amp;&amp; in_evento_actual.gran_final" style="color: red;">
+            <icon style="font-size: 30px;" class="fa fa-warning"></icon>
+            <md-tooltip>Desconectado del chat...</md-tooltip></span><span ng-show="MySocket.readyState() == 1">
+            <icon style="font-size: 30px;" class="fa fa-fighter-jet"></icon>
+            <md-tooltip>Conectado al chat</md-tooltip></span></a></h1>
       <h5 class="text-normal h5 text-center">Pon a prueba tu conocimiento</h5>
     </div>
     <div class="form-container">
@@ -70,13 +74,30 @@
       </div>
     </div>
   </div>
-  <div style="margin-top: 150px; max-width: 450px;" class="auth-container">
-    <div class="form-head mb20">
-      <h1 class="site-logo h2 mb5 mt5 text-center text-uppercase text-bold"><a href="">Código QR</a></h1>
-      <h5 class="text-normal h5 text-center">Escanea este código desde un dispositivo con provilegios:</h5>
-    </div>
-    <div style="text-align: center;" class="form-container">
-      <qr text="in_evento_actual.qr" size="300" ng-if="in_evento_actual.qr"></qr>
-    </div>
-  </div>
+  <div style="margin-top: 150px; max-width: 450px;padding-left: 0px;padding-right: 0px" class="auth-container"><span ng-show="usuarios_all.length == 0">
+      <div class="form-head mb20">
+        <h1 class="site-logo h2 mb5 mt5 text-center text-uppercase text-bold"><a href="">Código QR</a></h1>
+        <h5 class="text-normal h5 text-center">Escanea este código desde un dispositivo con privilegios:</h5>
+      </div>
+      <div style="text-align: center;" class="form-container">
+        <qr text="in_evento_actual.qr" size="300" ng-if="in_evento_actual.qr"></qr>
+      </div></span><span ng-show="usuarios_all.length &gt; 0">
+      <section>
+        <md-subheader class="md-primary">Usuarios
+          <md-input-container flex class="filtrarusuario">
+            <label>Filtrar</label>
+            <input type="text" ng-model="filtro">
+          </md-input-container>
+          <button type="button" ng-click="ingresar_seleccionado()" class="btn btn-primary">Ingresar</button>
+        </md-subheader>
+        <md-list class="md-dense"> 
+          <md-list-item ng-repeat="usuario in usuarios_all | filter:filtro | orderBy:'nombres' " ng-click="seleccionarUsu(usuario)" class="md-2-line"><img ng-src="{{imagesPath + usuario.imagen_nombre}}" alt="{{usuario.username}}" class="md-avatar">
+            <div class="md-list-item-text">
+              <h3>{{ ($index+1) + '. ' + usuario.nombres + ' ' + usuario.apellidos}}</h3>
+              <h4>{{ usuario.nombre_entidad }}</h4>
+            </div>
+            <md-checkbox ng-model="usuario.seleccionado" ng-click="seleccionarCkUsu(usuario)" aria-label="Seleccionado" class="md-secondary"></md-checkbox>
+          </md-list-item>
+        </md-list>
+      </section></span></div>
 </div>
