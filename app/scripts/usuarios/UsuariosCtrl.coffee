@@ -92,12 +92,12 @@ angular.module('WissenSystem')
 			masculino: {
 				abrev: 'M'
 				def: 'Masculino'
-				img: $scope.imagesPath + 'system/avatars/male1.jpg'
+				img: $scope.imagesPath + 'perfil/system/avatars/male1.jpg'
 			},
 			femenino: {
 				abrev: 'F'
 				def: 'Femenino'
-				img: $scope.imagesPath + 'system/avatars/female1.jpg'
+				img: $scope.imagesPath + 'perfil/system/avatars/female1.jpg'
 			}
 		}
 

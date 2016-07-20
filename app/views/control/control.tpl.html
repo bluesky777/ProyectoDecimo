@@ -1,50 +1,42 @@
 
-<h1>Conectando...</h1>
 <div class="panel panel-default panel-hovered panel-stacked mb20">
   <div class="panel-heading">
       
-    Mensaje
+    Servidor
+    <md-menu>
+      <button aria-label="Abrir menú" md-ink-ripple="" ng-click="openMenu($mdOpenMenu, $event)" class="btn btn-pink btn-xs right">Conectar
+        <div class="md-ripple-container"></div>
+      </button>
+      <md-menu-content width="4">
+        <md-menu-item>
+          <md-button ng-click="crearservidor($event)">Crear Servidor</md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button ng-click="CerrarServidor($event)">Cerrar Servidor</md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button ng-click="Conectar($event)">Conectar</md-button>
+        </md-menu-item>
+        <md-menu-divider></md-menu-divider>
+        <md-menu-item>
+          <md-button ng-click="qrScanear()">QR Scanner</md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
   </div>
   <div class="panel-body">
     <md-button aria-label="Crear Servidor" ng-click="crearservidor()">Crear Servidor</md-button>
     <md-button aria-label="Cerrar Servidor" ng-click="CerrarServidor()">Cerrar Servidor</md-button>
     <md-button aria-label="Conectar" ng-click="Conectar()">Conectar</md-button>
     <md-button aria-label="Scanner" ng-click="qrScanear()">QR Scanner</md-button>
-    <input ng-model="newMensaje" type="text" placeholder="Mensaje..." class="form-control">
-    <md-button aria-label="Enviar" ng-click="enviarMensaje()">Enviar mensaje</md-button>
   </div>
 </div>
 <div class="panel panel-default panel-hovered panel-stacked mb20">
   <div class="panel-heading">
       
-    Mensaje
+    Chat público
   </div>
   <div class="panel-body">
-    <md-content style="height: 200px;">
-      <section>
-        <md-subheader class="md-primary">Unread Messages</md-subheader>
-        <md-list>Ni idea
-          <md-list-item ng-repeat="mensaje in mensajes track by $index" class="md-3-line">
-            <div class="md-list-item-text">
-              <h3>Alguien</h3>
-              <h4>{{$index+1}}</h4>
-              <p>{{mensaje}}</p>
-            </div>
-          </md-list-item>
-        </md-list>
-      </section>
-      <section>
-        <md-subheader class="md-primary">Leídos</md-subheader>
-        <md-list>No sé para qué
-          <md-list-item ng-repeat="mensaje in mensajes track by $index" class="md-3-line">
-            <div class="md-list-item-text">
-              <h3>Alguien</h3>
-              <h4>{{$index+1}}</h4>
-              <p>{{mensaje}}</p>
-            </div>
-          </md-list-item>
-        </md-list>
-      </section>
-    </md-content>
+    <chat-container-dir></chat-container-dir>
   </div>
 </div>

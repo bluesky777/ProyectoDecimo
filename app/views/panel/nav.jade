@@ -66,6 +66,17 @@ nav.site-nav.clearfix(role="navigation")
 				i.fa.fa-print
 				span.text {{ 'INFORMES_MENU' | translate }}
 
+		li(ui-sref-active="active" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')")
+			a(href="" ui-sref="qrscanner" md-ink-ripple="")
+				i.fa.fa-print
+				span.text {{ 'SCANNER_MENU' | translate }}
+
+
+		li
+			a(href="" ng-click="logout()" md-ink-ripple="")
+				i.fa.fa-print
+				span.text {{ 'SALIR' | translate }}
+
 
 		li(ui-sref-active="active" ng-if="false")
 			a(href="" md-ink-ripple="")

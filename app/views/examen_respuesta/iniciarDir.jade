@@ -1,9 +1,11 @@
 .row
 	.col-md-12
-		.titulo-3d(ng-bind-html=" eventoactual.nombre ")
-		div(ng-switch on="eventoactual.granfinal" style="margin-bottom: 50px; text-align: center;")
-			h3.text-light(ng-switch-when="true" ng-bind-html="'GRAN_FINAL' | translate") ¡Gran final!
-			h3.text-light(ng-switch-default ng-bind-html="'ELIMINATORIAS' | translate") Eliminatorias
+		.panel.panel-default.panel-hovered.panel-stacked.mb20
+			.panel-body
+				.titulo-3d(ng-bind-html=" eventoactual.nombre ")
+				div(ng-switch on="eventoactual.granfinal" style="text-align: center;")
+					h3.text-light(ng-switch-when="true" ng-bind-html="'GRAN_FINAL' | translate") ¡Gran final!
+					h3.text-light(ng-switch-default ng-bind-html="'ELIMINATORIAS' | translate") Eliminatorias
 
 .row
 	.col-md-6

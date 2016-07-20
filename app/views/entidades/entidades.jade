@@ -11,13 +11,13 @@
 
 				div(layout layout-wrap layout-padding)
 					
-					div(flex-gt-md="60" flex-md="100")
+					div(flex-gt-md="60" flex-gt-xs="100" flex-md="100")
 						#grid1.grid(ui-grid="gridOptions" ui-grid-edit ui-grid-resize-columns style="min-height: 400px")
 					
 
 
 					// Formulario para crear
-					div(flex-gt-md="40" flex-md="100" ng-show="creando")
+					div(flex-gt-md="40" flex-gt-xs="100" flex-md="100" ng-show="creando")
 							
 						form(layout="column" ng-submit="guardar_nuevo()" layout-margin layout-wrap layout-padding)
 							div(flex)
@@ -36,7 +36,7 @@
 							div(flex)
 								.form-group
 									label Logo
-									ui-select(ng-model="newEntidad.imgUsuario" theme="select2" on-select="imagenSelect($item, $model)" )
+									ui-select(ng-model="newEntidad.imgUsuario" on-select="imagenSelect($item, $model)" style="width:100%" )
 										ui-select-match(placeholder="Logo de entidad") 
 											img(ng-src="{{ $select.selected.public?imgSystemPath:perfilPath }}{{ $select.selected.nombre}}" style="width:25px; height:25px;")
 											small(ng-bind-html="' ' + $select.selected.nombre")
@@ -56,7 +56,7 @@
 
 
 					// Formulario para editar
-					div(flex-gt-md="40" flex-md="100" ng-show="editando")
+					div(flex-gt-md="40" flex-gt-xs="100" flex-md="100" ng-show="editando")
 							
 						form(layout="column" ng-submit="guardar_cambios()" layout-margin layout-wrap layout-padding)
 							div(flex)
@@ -75,7 +75,7 @@
 							div(flex)
 								.form-group
 									label Logo
-									ui-select(ng-model="currentEntidad.imgUsuario" theme="select2" on-select="imagenSelect($item, $model)" )
+									ui-select(ng-model="currentEntidad.imgUsuario"  style="width:100%" on-select="imagenSelect($item, $model)" )
 										ui-select-match(placeholder="Logo de entidad") 
 											img(ng-src="{{ $select.selected.public?imgSystemPath:perfilPath }}{{ $select.selected.nombre}}" style="width:25px; height:25px;")
 											small(ng-bind-html="' ' + $select.selected.nombre")

@@ -1,10 +1,14 @@
 
 <div class="row">
   <div class="col-md-12">
-    <div ng-bind-html=" eventoactual.nombre " class="titulo-3d"></div>
-    <div ng-switch on="eventoactual.granfinal" style="margin-bottom: 50px; text-align: center;">
-      <h3 ng-switch-when="true" ng-bind-html="'GRAN_FINAL' | translate" class="text-light">¡Gran final!</h3>
-      <h3 ng-switch-default ng-bind-html="'ELIMINATORIAS' | translate" class="text-light">Eliminatorias</h3>
+    <div class="panel panel-default panel-hovered panel-stacked mb20">
+      <div class="panel-body">
+        <div ng-bind-html=" eventoactual.nombre " class="titulo-3d"></div>
+        <div ng-switch on="eventoactual.granfinal" style="text-align: center;">
+          <h3 ng-switch-when="true" ng-bind-html="'GRAN_FINAL' | translate" class="text-light">¡Gran final!</h3>
+          <h3 ng-switch-default ng-bind-html="'ELIMINATORIAS' | translate" class="text-light">Eliminatorias</h3>
+        </div>
+      </div>
     </div>
   </div>
 </div>

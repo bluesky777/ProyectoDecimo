@@ -9,6 +9,7 @@ angular.module('WissenSystem')
 	clientes = []
 	@usuarios_all = []
 	datos = {}
+	@mensajes = []
 
 
 	registrar = (usuario)->
@@ -47,19 +48,23 @@ angular.module('WissenSystem')
 					$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.get('xtoken')
 					$state.go 'panel'
 
-		
+			when "correspondencia"
+				@mensajes = if @mensajes is undefined then [] else @mensajes
+
+				message.mensaje.from = JSON.parse(message.mensaje.from)
+				@mensajes.push message.mensaje
+				
+				$rootScope.$emit 'llegaCorrespondencia', {mensajes: @mensajes }
 	)
+
 
 	dataStream.onOpen((datos)->
 		if Perfil.User().id
 			registrar(Perfil.User())
 	)
-
-
 	dataStream.onClose((datos)->
 		console.log 'Desconectado', datos
 	)
-
 	dataStream.onError((datos)->
 		console.log 'Error de Socket', datos
 	)
@@ -89,19 +94,28 @@ angular.module('WissenSystem')
 
 
 
+		
+	enviar_correspondencia = (mensaje)->
+		dataStream.send({ comando: 'correspondencia',  mensaje: mensaje })
+
+
+
 
 	############################################
 	# Metodos externos
 	methods = {
-		clientes: 		clientes,
-		usuarios_all: 	@usuarios_all,
-		conectar: 		conectar,
+		clientes: 					clientes,
+		usuarios_all: 				@usuarios_all,
+		mensajes: ()->
+			@mensajes
+		conectar: 					conectar,
 		readyState: ()->
 			dataStream.readyState
 		getClts: ()->
 			dataStream.send({ comando: 'get_clts' })
-		registrar: 	registrar
-		got_qr: 	got_qr
+		registrar: 					registrar
+		got_qr: 					got_qr
+		enviar_correspondencia: 	enviar_correspondencia
 	}
 
 	return methods

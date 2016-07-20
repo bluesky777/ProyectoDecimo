@@ -7,18 +7,7 @@ angular.module('WissenSystem')
 	$scope.creando = false
 	$scope.editando = false
 
-	$scope.imagenes = [
-		{
-			id: 1
-			nombre: 'gato-dormido-ordenador.jpg'
-			public: true
-		}
-		{
-			id: 2
-			nombre: 'gato-dormido-ordenador.jpg'
-			public: true
-		}
-	]
+
 
 
 	btGrid1 = '<a tooltip="Editar" tooltip-placement="left" class="btn btn-default btn-xs shiny icon-only info" ng-click="grid.appScope.editar(row.entity)"><i class="fa fa-edit "></i></a>'
@@ -59,12 +48,15 @@ angular.module('WissenSystem')
 		$scope.gridOptions.data = data;
 	)
 
+	Restangular.all('imagenes').getList().then((data)->
+		$scope.imagenes = data;
+	)
+
 
 	$scope.editar = (entidad)->
 		$scope.creando = false
 		$scope.editando = true
 		$scope.currentEntidad = entidad
-		console.log entidad, $scope.guardando, $scope.editando
 
 	$scope.eliminar = (entidad)->
 		modalInstance = $modal.open({
@@ -117,6 +109,8 @@ angular.module('WissenSystem')
 	$scope.guardando_cambios = false
 	$scope.guardar_cambios = ()->
 		$scope.guardando_cambios = true
+		console.log $scope.currentEntidad.imgUsuario
+		$scope.currentEntidad.logo_id = $scope.currentEntidad.imgUsuario.id
 
 		Restangular.one('entidades/update').customPUT($scope.currentEntidad).then((r)->
 

@@ -34,6 +34,7 @@ angular.module('WissenSystem')
 			IDIOMA_MENU: 'Language'
 			INFORMES_MENU: 'Reports'
 			CONTROL_MENU: 'Monitoring'
+			SCANNER_MENU: 'QR Scanner'
 			SALIR: 'Sign out'
 
 			ELIMINATORIAS: 'Playoffs'
@@ -53,6 +54,7 @@ angular.module('WissenSystem')
 			IDIOMA_MENU: 'Idioma'
 			INFORMES_MENU: 'Informes'
 			CONTROL_MENU: 'Control'
+			SCANNER_MENU: 'Escaner QR'
 			SALIR: 'Salir'
 
 			ELIMINATORIAS: 'Eliminatorias'
@@ -73,6 +75,7 @@ angular.module('WissenSystem')
 			IDIOMA_MENU: 'Língua'
 			INFORMES_MENU: 'Informação'
 			CONTROL_MENU: 'Controle'
+			SCANNER_MENU: 'QR Scanner'
 			SALIR: 'Deixar'
 
 			ELIMINATORIAS: 'Playoffs'
@@ -93,6 +96,7 @@ angular.module('WissenSystem')
 			IDIOMA_MENU: 'Langue'
 			INFORMES_MENU: 'Rapports'
 			CONTROL_MENU: 'Contrôle'
+			SCANNER_MENU: 'QR Scanner'
 			SALIR: 'Laisser'
 
 			ELIMINATORIAS: 'Playoffs'

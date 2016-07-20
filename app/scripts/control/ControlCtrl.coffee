@@ -1,16 +1,6 @@
 angular.module('WissenSystem')
 
-.controller('ControlCtrl', ['$scope', 'Restangular', 'toastr', '$state', '$window',  ($scope, Restangular, toastr, $state, $window)->
-
-	$scope.mensajes = []
-	
-	$scope.enviarMensaje = ()->
-
-		$scope.conn.send($scope.newMensaje)
-		$scope.mensajes.push $scope.newMensaje
-
-		$scope.newMensaje = ""
-
+.controller('ControlCtrl', ['$scope', 'Restangular', 'toastr', '$state', '$window', 'MySocket',  ($scope, Restangular, toastr, $state, $window, MySocket)->
 
 	$scope.CerrarServidor = ()->
 		res = confirm "¿Seguro que desea cerrar servidor?"
@@ -21,23 +11,14 @@ angular.module('WissenSystem')
 				toastr.warning 'No se cerró servidor'
 				console.log 'No se cerró servidor ', r2
 			)
-		
+	
+	$scope.openMenu = ($mdOpenMenu, ev)->
+		$mdOpenMenu(ev);
+
 
 	$scope.Conectar = ()->
+		MySocket.conectar()
 
-		$scope.conn = new WebSocket('ws://192.168.1.31:8787');
-			
-		$scope.conn.onopen = (e)->
-			console.log("Connection established!");
-
-
-		$scope.conn.onmessage = (e)->
-			toastr.success 'Recibiendo...'
-			console.log(e);
-			$scope.mensajes.push e.data
-
-		$scope.conn.onerror = (e)->
-			console.log(e);
 		
 	$scope.qrScanear = ()->
 		url = $state.href('qrscanner')
