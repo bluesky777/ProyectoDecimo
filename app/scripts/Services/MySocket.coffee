@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.factory('MySocket', ['$websocket', 'App', '$q', '$rootScope', 'Perfil', '$interval', '$cookies', '$http', '$state', ($websocket, App, $q, $rootScope, Perfil, $interval, $cookies, $http, $state) ->
+.factory('MySocket', ['$websocket', 'App', '$q', '$rootScope', 'Perfil', '$interval', '$cookies', '$http', '$state', 'SocketData', ($websocket, App, $q, $rootScope, Perfil, $interval, $cookies, $http, $state, SocketData) ->
 
 	#Open a WebSocket connection
 	url = 'ws://' + localStorage.getItem('dominio') + ':8787'
@@ -13,8 +13,13 @@ angular.module('WissenSystem')
 
 
 	registrar = (usuario)->
-		console.log "Entra para registrar"
-		dataStream.send({ comando: 'registrar',  usuario: usuario })
+		nombre_p = if localStorage.getItem('nombre_punto') == null then false else localStorage.getItem('nombre_punto')
+		dataStream.send({ comando: 'registrar',  usuario: usuario, nombre_punto: nombre_p })
+
+
+	unregister = ()->
+		console.log "Entra para unregistrar"
+		dataStream.send({ comando: 'unregister' })
 
 
 
@@ -30,18 +35,24 @@ angular.module('WissenSystem')
 				datos = message.cliente
 
 			when "validado"
-				console.log 'validado'
+				Perfil.setResourceId message.yo.resourceId
+				SocketData.clientes.push(message.yo)
+
+			when "desconectado"
+				SocketData.desconectar message.clt
 
 			when "registrado"
-				clientes.push(message.clt)
+				SocketData.clientes.push(message.clt)
+				$rootScope.$emit 'clt_registrado', {clientes: SocketData.clientes }
 
 			when "take_clts"
-				clientes = message.clts
+				SocketData.clientes = message.clts
+				$rootScope.$emit 'take_clts', {clientes: SocketData.clientes }
 
 			when "got_your_qr"
 				if message.seleccionar
-					@usuarios_all = message.usuarios
-					$rootScope.$emit 'lleganUsuarios', {usuarios_all: @usuarios_all, token: message.token }
+					SocketData.usuarios_all = message.usuarios
+					SocketData.token_auth = message.token
 
 				else if message.token
 					$cookies.put('xtoken', message.token)
@@ -55,6 +66,20 @@ angular.module('WissenSystem')
 				@mensajes.push message.mensaje
 				
 				$rootScope.$emit 'llegaCorrespondencia', {mensajes: @mensajes }
+
+			when "sesion_closed"
+				if message.clt.resourceId == Perfil.getResourceId()
+					unregister()
+					$rootScope.lastState = null
+					$rootScope.lastStateParam = null
+					Perfil.deleteUser()
+					$state.transitionTo 'login'
+					$cookies.remove('xtoken')
+					delete $http.defaults.headers.common['Authorization']
+				
+
+
+					
 	)
 
 
@@ -76,27 +101,40 @@ angular.module('WissenSystem')
 
 		
 	conectar = (qr)->
+		nombre_p = if localStorage.getItem('nombre_punto') == null then false else localStorage.getItem('nombre_punto') 
 		if qr
-			dataStream.send({ comando: 'conectar',  qr: qr })
+			dataStream.send({ comando: 'conectar',  qr: qr, nombre_punto: nombre_p })
 		else
-			dataStream.send({ comando: 'conectar' })
+			dataStream.send({ comando: 'conectar', nombre_punto: nombre_p })
 
 
 		
 	got_qr = (qr, usuario_id)->
 		if usuario_id
-			datos = { comando: 'got_qr',  qr: qr, 'usuario_id': usuario_id }
+			datos = { comando: 'got_qr',  qr: qr, 'usuario_id': usuario_id, from_token: $cookies.get('xtoken') }
 			console.log 'enviando', datos
 			dataStream.send(datos)
 		else
 			console.log 'Enviando por aquíiiiiii'
-			dataStream.send({ comando: 'got_qr',  qr: qr })
+			dataStream.send({ comando: 'got_qr',  qr: qr, from_token: $cookies.get('xtoken') })
 
+
+
+	get_clts = ()->
+		datos = { comando: 'get_clts' }
+		dataStream.send(datos)
 
 
 		
-	enviar_correspondencia = (mensaje)->
+	send_email = (mensaje)->
 		dataStream.send({ comando: 'correspondencia',  mensaje: mensaje })
+
+
+	send_email_to = (mensaje, clt)->
+		dataStream.send({ comando: 'correspondencia',  mensaje: mensaje, to: clt.resourceId })
+
+	cerrar_sesion = (resourceId)->
+		dataStream.send({ comando: 'cerrar_sesion',  resourceId: resourceId })
 
 
 
@@ -114,10 +152,42 @@ angular.module('WissenSystem')
 		getClts: ()->
 			dataStream.send({ comando: 'get_clts' })
 		registrar: 					registrar
+		unregister:					unregister
 		got_qr: 					got_qr
-		enviar_correspondencia: 	enviar_correspondencia
+		send_email: 				send_email
+		send_email_to: 				send_email_to
+		get_clts: 					get_clts
+		cerrar_sesion: 				cerrar_sesion
 	}
 
 	return methods
+
+])
+
+
+.factory('SocketData', ['$websocket', 'App', '$rootScope', '$filter', ($websocket, App, $rootScope, $filter) ->
+	
+	@clientes		= []
+	usuarios_all	= []
+	mensajes		= []
+	token_auth		= ''
+
+
+	desconectar = (clt)->
+		console.log  clt, @clientes, $filter('filter')(@clientes, {resourceId: '!'+clt.resourceId})
+		@clientes = $filter('filter')(@clientes, {resourceId: '!'+clt.resourceId})
+
+
+
+	methods = {
+		clientes: 					@clientes,
+		usuarios_all: 				usuarios_all,
+		mensajes: 					mensajes
+		desconectar: 				desconectar
+		token_auth:					token_auth
+	}
+
+	return methods
+
 
 ])

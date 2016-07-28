@@ -29,12 +29,12 @@
       <form ng-submit="login()" class="form-horizontal">
         <md-input-container flex-gt-sm style="padding-bottom: 0px" class="md-block">
           <label>Nombre de usuario</label>
-          <input type="text" ng-model="credentials.username">
+          <input type="text" ng-model="credentials.username" name="usuario">
           <md-tooltip> Ingresa tu nombre de usuario</md-tooltip>
         </md-input-container>
         <md-input-container flex-gt-sm style="margin-bottom: 0px" class="md-block">
           <label>Password</label>
-          <input type="password" ng-model="credentials.password">
+          <input type="password" ng-model="credentials.password" name="password">
           <md-tooltip> Ingresa tu password</md-tooltip>
         </md-input-container>
         <div ng-if="false" class="clearfix">
@@ -74,14 +74,14 @@
       </div>
     </div>
   </div>
-  <div style="margin-top: 150px; max-width: 450px;padding-left: 0px;padding-right: 0px" class="auth-container"><span ng-show="usuarios_all.length == 0">
+  <div style="margin-top: 150px; max-width: 450px;padding-left: 0px;padding-right: 0px" class="auth-container"><span ng-show="SocketData.usuarios_all.length == 0">
       <div class="form-head mb20">
         <h1 class="site-logo h2 mb5 mt5 text-center text-uppercase text-bold"><a href="">Código QR</a></h1>
         <h5 class="text-normal h5 text-center">Escanea este código desde un dispositivo con privilegios:</h5>
       </div>
       <div style="text-align: center;" class="form-container">
         <qr text="in_evento_actual.qr" size="300" ng-if="in_evento_actual.qr"></qr>
-      </div></span><span ng-show="usuarios_all.length &gt; 0">
+      </div></span><span ng-show="SocketData.usuarios_all.length &gt; 0">
       <section>
         <md-subheader class="md-primary">Usuarios
           <md-input-container flex class="filtrarusuario">
@@ -91,7 +91,7 @@
           <button type="button" ng-click="ingresar_seleccionado()" class="btn btn-primary">Ingresar</button>
         </md-subheader>
         <md-list class="md-dense"> 
-          <md-list-item ng-repeat="usuario in usuarios_all | filter:filtro | orderBy:'nombres' " ng-click="seleccionarUsu(usuario)" class="md-2-line"><img ng-src="{{imagesPath + usuario.imagen_nombre}}" alt="{{usuario.username}}" class="md-avatar">
+          <md-list-item ng-repeat="usuario in SocketData.usuarios_all | filter:filtro | orderBy:'nombres' " ng-click="seleccionarUsu(usuario)" class="md-2-line"><img ng-src="{{imagesPath + usuario.imagen_nombre}}" alt="{{usuario.username}}" class="md-avatar">
             <div class="md-list-item-text">
               <h3>{{ ($index+1) + '. ' + usuario.nombres + ' ' + usuario.apellidos}}</h3>
               <h4>{{ usuario.nombre_entidad }}</h4>

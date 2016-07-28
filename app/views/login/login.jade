@@ -35,13 +35,13 @@
 			form.form-horizontal(ng-submit="login()")
 				md-input-container.md-block(flex-gt-sm style="padding-bottom: 0px")
 					label Nombre de usuario
-					input(type="text" ng-model="credentials.username")
+					input(type="text" ng-model="credentials.username" name="usuario")
 					md-tooltip  Ingresa tu nombre de usuario
 				
 
 				md-input-container.md-block(flex-gt-sm style="margin-bottom: 0px")
 					label Password
-					input(type="password" ng-model="credentials.password")
+					input(type="password" ng-model="credentials.password" name="password")
 					md-tooltip  Ingresa tu password
 				
 
@@ -87,7 +87,7 @@
 
 
 	.auth-container(style="margin-top: 150px; max-width: 450px;padding-left: 0px;padding-right: 0px")
-		span(ng-show="usuarios_all.length == 0")
+		span(ng-show="SocketData.usuarios_all.length == 0")
 			.form-head.mb20
 				h1.site-logo.h2.mb5.mt5.text-center.text-uppercase.text-bold
 					a(href="") Código QR
@@ -97,7 +97,7 @@
 			.form-container(style="text-align: center;")
 				qr(text="in_evento_actual.qr" size="300" ng-if="in_evento_actual.qr")
 		
-		span(ng-show="usuarios_all.length > 0")
+		span(ng-show="SocketData.usuarios_all.length > 0")
 
 			section
 				md-subheader.md-primary Usuarios
@@ -107,7 +107,7 @@
 					button.btn.btn-primary(type="button" ng-click="ingresar_seleccionado()") Ingresar
 				md-list.md-dense 
 
-					md-list-item.md-2-line(ng-repeat="usuario in usuarios_all | filter:filtro | orderBy:'nombres' " ng-click="seleccionarUsu(usuario)")
+					md-list-item.md-2-line(ng-repeat="usuario in SocketData.usuarios_all | filter:filtro | orderBy:'nombres' " ng-click="seleccionarUsu(usuario)")
 						img.md-avatar(ng-src="{{imagesPath + usuario.imagen_nombre}}" alt="{{usuario.username}}")
 						.md-list-item-text
 							h3 {{ ($index+1) + '. ' + usuario.nombres + ' ' + usuario.apellidos}}

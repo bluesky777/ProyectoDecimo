@@ -690,3 +690,138 @@ img.message-entilogo{
   background-repeat: repeat repeat;
 }
 
+
+
+
+
+
+.clt-pc-container{
+  box-shadow: inset 1px 0px 10px 0px #ABABAB;
+  padding: 5px;
+  min-height: 200px;
+  max-height: 500px;
+  overflow-y: auto;
+
+  ul{
+    padding: 0px;
+    margin: 0px;
+  }
+  h4{
+    border-bottom: solid 1px #ccc;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 11pt;
+    text-align: center;
+  }
+  &:hover .options-clts{
+    opacity: 1;
+    left: 10px;
+  }
+}
+.clt-pc{
+  padding: 10px; 
+  margin: 5px; 
+  display: inline-block;
+  width: 150px;
+  cursor: pointer;
+  position: relative;
+
+  header{
+    position: relative;
+    height: 100px;
+    margin-right: 14px;
+    display: block;
+    border-left: 2px solid #fb6e52;
+    width: 120px;
+    overflow: hidden;
+    &:hover .img-perfil{
+      left: -120px; 
+    }
+  }
+  
+  .img-entidad, .img-perfil{
+    width: 100%; /* or any custom size */
+    height: 100%; 
+    object-fit: cover;
+    transition: 0.5s;
+    position: absolute;
+    left: 0px;
+  }
+  .img-entidad{
+    //left: 20px;
+    z-index: 10;
+
+  }
+  .img-perfil{
+    z-index: 20;
+  }
+
+  &:hover .opts-clt{
+    opacity: 1;
+    top: -20px;
+  }
+
+
+}
+.info{
+  font-size: 9pt;
+}
+.nombresellipsis{
+  white-space: nowrap;
+  //width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+.text-center{
+  text-align: center;
+}
+
+.clt-pc-container .seleccionado{
+  background: #EEEEEE;
+  background: linear-gradient(to bottom, #F1F1F1 0%, #F1F1F1 20%, #DFDFDF 100%);
+}
+.clt-pc-container .ui-selecting {
+  background-color: rgba(214, 214, 250, 0.65);;
+}
+
+.unselectable{
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+}
+
+.nodrag{
+  user-drag: none; 
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.cursor-unselect{
+  cursor: ne-resize;
+}
+.options-clts{
+  opacity: 0;
+  left: -50px;
+  transition: all 0.5s;
+  position: absolute;
+  z-index: 100;
+}
+.opts-clt{
+  opacity: 0;
+  position: absolute;
+  transition: all 0.5s;
+  top: 0px;
+  right: 0px;
+}
+md-sidenav md-input-container{
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+
+

@@ -68,13 +68,13 @@ nav.site-nav.clearfix(role="navigation")
 
 		li(ui-sref-active="active" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')")
 			a(href="" ui-sref="qrscanner" md-ink-ripple="")
-				i.fa.fa-print
+				i.fa.fa-camera
 				span.text {{ 'SCANNER_MENU' | translate }}
 
 
 		li
 			a(href="" ng-click="logout()" md-ink-ripple="")
-				i.fa.fa-print
+				i.fa.fa-sign-out
 				span.text {{ 'SALIR' | translate }}
 
 

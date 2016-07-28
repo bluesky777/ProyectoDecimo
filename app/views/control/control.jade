@@ -4,7 +4,8 @@
 
 		md-menu
 			button.btn.btn-pink.btn-xs.right(aria-label="Abrir menú" md-ink-ripple="" ng-click="openMenu($mdOpenMenu, $event)")
-				| Conectar
+				| Conexión  
+				.fa.fa-chevron-right
 				.md-ripple-container
 			md-menu-content(width="4")
 				md-menu-item
@@ -23,19 +24,92 @@
 
 
 	.panel-body
-		md-button(aria-label="Crear Servidor" ng-click="crearservidor()")
-			| Crear Servidor
-		
-		md-button(aria-label="Cerrar Servidor" ng-click="CerrarServidor()")
-			| Cerrar Servidor
-		
-		md-button(aria-label="Conectar" ng-click="Conectar()")
-			| Conectar
-		
-		md-button(aria-label="Scanner" ng-click="qrScanear()")
-			| QR Scanner
+
+		.clt-pc-container(ng-class="{'cursor-unselect':deseleccionar}")
+
+			.options-clts.btn-group
+				button.btn.btn-default.btn-xs.deseleccionador(type="button" ng-model="deseleccionar" uib-btn-checkbox)
+					icon.fa.fa-eye-slash
+					md-tooltip Deseleccionar
+				button.btn.btn-default.btn-xs.deseleccionador(type="button" ng-click="deseleccionarTodo()")
+					| A
+					icon.fa.fa-eye-slash
+					md-tooltip Deseleccionar todo
+
+				button.btn.btn-default.btn-xs.deseleccionador(type="button" ng-click="seleccionarTodo()")
+					| A
+					icon.fa.fa-eye
+					md-tooltip Seleccionar todo
+
+			h4 Registrados
+
+			ul
+				li.md-whiteframe-1dp.clt-pc.unselectable(ng-repeat="cliente in SocketData.clientes | filter:{'registrado':true}" ng-click="clickedClt($event, cliente)"  
+					ng-dblclick="showSidenavEditUsu(cliente)" ng-mouseover="sobreClt($event, cliente)" ng-class="{'seleccionado': cliente.seleccionado, 'cursor-unselect':deseleccionar }")
+					header
+						
+						img.img-perfil.nodrag(ng-src="{{imagesPath + cliente.usuario.imagen_nombre}}" alt="{{cliente.usuario.username}}")
+
+						
+						img.img-entidad.nodrag(ng-src="{{ imagesPath + cliente.usuario.entidad.logo}}" alt="{{cliente.usuario.username}}")
+						md-tooltip {{cliente.usuario.entidad.nombre}}
+				
+					.info 
+						h5.name.text-center.nombresellipsis {{cliente.usuario.nombres}} {{cliente.usuario.apellidos}}
+							md-tooltip {{cliente.usuario.username}}
+						.alias-enti {{cliente.usuario.entidad.alias}}
+						h6(style="margin: 0px;") {{ cliente.nombre_punto }}
+
+					.opts-clt.btn-group
+						button.btn.btn-default.btn-xs.deseleccionador(type="button" ng-click="cerrarSesion(cliente)")
+							icon.fa.fa-sign-out
+							md-tooltip Cerrar sesión
+						button.btn.btn-default.btn-xs.deseleccionador(type="button" ng-click="showSidenavEditUsu(cliente)")
+							icon.fa.fa-pencil
+							md-tooltip Editar
 
 
+			.disponibles-title
+				h4 Disponibles
+
+				ul
+					li.md-whiteframe-1dp.clt-pc.unselectable(ng-repeat="cliente in SocketData.clientes | filter:{'registrado':false} " ng-click="clickedClt($event, cliente)" 
+						ng-dblclick="showSidenavSelectUsu(cliente)" ng-mouseover="sobreClt($event, cliente)" ng-class="{'seleccionado': cliente.seleccionado, 'cursor-unselect':deseleccionar }")
+						header(ng-show="cliente.registrado")
+							
+						.info 
+							h5(contenteditable="true") {{ cliente.nombre_punto }}
+								md-tooltip Nombre de punto
+
+						.opts-clt.btn-group
+							button.btn.btn-default.btn-xs.deseleccionador(type="button" ng-click="showSidenavSelectUsu(cliente)")
+								icon.fa.fa-users
+								md-tooltip Seleccionar un usuario
+							button.btn.btn-default.btn-xs.deseleccionador(type="button" ng-click="showSidenavSelectUsu(cliente)")
+								icon.fa.fa-save
+								md-tooltip Guardar nombre de punto
+
+
+
+
+
+		.message-form
+			form(ng-submit="enviarMensaje()")
+				.row
+					.col-lg-10.col-md-9.col-sm-9.col-xs-12
+						md-input-container.md-block(flex-gt-sm style="margin-bottom: -20px; padding-bottom: 0px")
+							label Mensaje
+							input(type="text" ng-model="newMensaje")
+							md-tooltip  Envía un mensaje
+
+					.col-lg-1.col-md-2.col-sm-2.col-xs-12
+						md-button.md-raised(aria-label="Enviar" type="submit" style="min-width:95%;  top: 7px;")
+							| Enviar
+
+
+
+sidenav-select-usu-dir
+sidenav-edit-usu-dir
 
 
 .panel.panel-default.panel-hovered.panel-stacked.mb20

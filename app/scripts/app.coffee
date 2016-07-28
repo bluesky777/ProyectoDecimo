@@ -63,7 +63,6 @@ angular.module('WissenSystem', [
 
 
 
-
   return {
     Server: server
     views: 'views/'

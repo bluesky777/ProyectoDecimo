@@ -23,8 +23,8 @@
     <li ui-sref-active="active" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')"><a href="" ui-sref="panel.usuarios" md-ink-ripple=""><i class="fa fa-users"></i><span class="text">{{ 'USERS_MENU' | translate }}</span></a></li>
     <li ui-sref-active="active" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')"><a href="" ui-sref="panel.control" md-ink-ripple=""><i class="fa fa-desktop"></i><span class="text">{{ 'CONTROL_MENU' | translate }}</span></a></li>
     <li ui-sref-active="active" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')"><a href="" ui-sref="panel.informes" md-ink-ripple=""><i class="fa fa-print"></i><span class="text">{{ 'INFORMES_MENU' | translate }}</span></a></li>
-    <li ui-sref-active="active" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')"><a href="" ui-sref="qrscanner" md-ink-ripple=""><i class="fa fa-print"></i><span class="text">{{ 'SCANNER_MENU' | translate }}</span></a></li>
-    <li><a href="" ng-click="logout()" md-ink-ripple=""><i class="fa fa-print"></i><span class="text">{{ 'SALIR' | translate }}</span></a></li>
+    <li ui-sref-active="active" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')"><a href="" ui-sref="qrscanner" md-ink-ripple=""><i class="fa fa-camera"></i><span class="text">{{ 'SCANNER_MENU' | translate }}</span></a></li>
+    <li><a href="" ng-click="logout()" md-ink-ripple=""><i class="fa fa-sign-out"></i><span class="text">{{ 'SALIR' | translate }}</span></a></li>
     <li ui-sref-active="active" ng-if="false"><a href="" md-ink-ripple=""><i class="fa fa-asterisk"></i><span class="text">Construcción</span><i class="arrow fa fa-angle-left"></i><span class="badge badge-xs badge-primary">2</span></a>
       <ul class="inner-drop nested list-unstyled">
         <li> <a href="" md-ink-ripple="">Font Awesome</a></li>

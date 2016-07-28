@@ -1,18 +1,18 @@
 'use strict'
 
 angular.module('WissenSystem')
-.controller('LoginCtrl', ['$scope', '$state', '$mdDialog', 'AUTH_EVENTS', 'AuthService', '$stateParams', 'Restangular', '$cookies', 'Perfil', 'App', 'cfpLoadingBar', 'toastr', 'MySocket', '$rootScope', '$http', ($scope, $state, $mdDialog, AUTH_EVENTS, AuthService, $stateParams, Restangular, $cookies, Perfil, App, cfpLoadingBar, toastr, MySocket, $rootScope, $http)->
+.controller('LoginCtrl', ['$scope', '$state', '$mdDialog', 'AUTH_EVENTS', 'AuthService', '$stateParams', 'Restangular', '$cookies', 'Perfil', 'App', 'cfpLoadingBar', 'toastr', 'MySocket', 'SocketData', '$rootScope', '$http', ($scope, $state, $mdDialog, AUTH_EVENTS, AuthService, $stateParams, Restangular, $cookies, Perfil, App, cfpLoadingBar, toastr, MySocket, SocketData, $rootScope, $http)->
 	
 	
-	$scope.logoPath = 'images/MyVc-1.gif'
-	$scope.imagesPath = App.images 
+	$scope.logoPath 			= 'images/MyVc-1.gif'
+	$scope.imagesPath 			= App.images 
 	$scope.modificando_servidor = false
 	$scope.editando_nombre_punto = false
-	$scope.dominio = localStorage.getItem('dominio')
-	$scope.MySocket = MySocket
-	$scope.usuarios_all = []
-	$scope.selectedUser = {}
-	$scope.token_auth = ''
+	$scope.dominio 				= localStorage.getItem('dominio')
+	$scope.MySocket 			= MySocket
+	$scope.SocketData 			= SocketData
+	$scope.usuarios_all 		= []
+	$scope.selectedUser 		= {}
 
 
 	# Traemos evento actual.
@@ -103,7 +103,7 @@ angular.module('WissenSystem')
 
 	$scope.ingresar_seleccionado = ()->
 		if $scope.selectedUser.id
-			Restangular.one('qr/validar-usuario').customPUT({user_id: $scope.selectedUser.id, token_auth: $scope.token_auth }).then((r)->
+			Restangular.one('qr/validar-usuario').customPUT({user_id: $scope.selectedUser.id, token_auth: SocketData.token_auth }).then((r)->
 				if r.token
 					$cookies.put('xtoken', r.token)
 					$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.get('xtoken')
@@ -120,10 +120,6 @@ angular.module('WissenSystem')
 		$scope.editando_nombre_punto = false
 
 
-	$rootScope.$on 'lleganUsuarios', (event, datos)->
-		$scope.usuarios_all = datos.usuarios_all
-		$scope.token_auth = datos.token
-		
 
 
 	return

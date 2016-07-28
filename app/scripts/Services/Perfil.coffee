@@ -3,6 +3,7 @@ angular.module('WissenSystem')
 .factory('Perfil', ['Restangular', 'App', '$q', '$cookies', '$rootScope', 'AUTH_EVENTS', '$http', (Restangular, App, $q, $cookies, $rootScope, AUTH_EVENTS, $http) ->
 
 	user = {}
+	resourceId = 0
 
 	setUser: (usuario) ->
 		user = usuario
@@ -18,6 +19,12 @@ angular.module('WissenSystem')
 	setImagen: (imagen_id, imagen_nombre)->
 		user.imagen_id = imagen_id
 		user.imagen_nombre = imagen_nombre
+
+	setResourceId: (resourceI)->
+		resourceId = resourceI
+
+	getResourceId: ()->
+		resourceId
 
 	deleteUser: ()->
 		user = {}

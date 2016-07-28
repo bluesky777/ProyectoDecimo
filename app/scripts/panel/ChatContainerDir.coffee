@@ -18,7 +18,7 @@ angular.module('WissenSystem')
 
 		if $scope.newMensaje != ""
 
-			MySocket.enviar_correspondencia $scope.newMensaje
+			MySocket.send_email $scope.newMensaje
 			$scope.newMensaje = ""
 
 
