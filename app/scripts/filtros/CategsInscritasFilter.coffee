@@ -8,8 +8,8 @@ angular.module('WissenSystem')
 		if currentUsers and categorias_king
 			
 			resultado = []
-
-			if currentUsers.length == 0 or currentUsers.length == undefined
+			
+			if currentUsers[0] == undefined or currentUsers.length == 0 or currentUsers.length == undefined
 				return []
 
 
@@ -111,7 +111,7 @@ angular.module('WissenSystem')
 
 						resultado.push categ_traducida
 
-
+			
 			return resultado
 
 		else

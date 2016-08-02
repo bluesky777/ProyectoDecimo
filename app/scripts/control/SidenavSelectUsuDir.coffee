@@ -10,43 +10,7 @@ angular.module('WissenSystem')
 
 ])
 .controller('SidenavSelectUsuCtrl', ['$scope', 'Restangular', 'toastr', 'MySocket', 'SocketData', '$mdSidenav',  ($scope, Restangular, toastr, MySocket, SocketData, $mdSidenav)->
-
-	$scope.niveles_king = []
-	$scope.traer_niveles = ()->
-		Restangular.all('niveles/niveles-usuario').getList().then((r)->
-			$scope.niveles_king = r
-			#console.log 'Niveles traídas: ', r
-		, (r2)->
-			toastr.warning 'No se trajeron las niveles', 'Problema'
-			console.log 'No se trajo niveles ', r2
-		)
-	$scope.traer_niveles()
-
-
-	$scope.entidades = []
-	$scope.traer_entidades = ()->
-		Restangular.all('entidades').getList().then((r)->
-			$scope.entidades = r
-		, (r2)->
-			toastr.warning 'No se trajeron las entidades', 'Problema'
-			console.log 'No se trajo entidades ', r2
-		)
-	$scope.traer_entidades()
-
-		
-	$scope.categorias_king1 = []
-	$scope.categorias_king2 = []
-	$scope.traer_categorias = ()->
-		Restangular.all('categorias/categorias-usuario').getList().then((r)->
-			$scope.categorias_king1 = r
-			angular.copy($scope.categorias_king1, $scope.categorias_king2)
-			#console.log 'Categorias traídas: ', r
-		, (r2)->
-			toastr.warning 'No se trajeron las categorias', 'Problema'
-			console.log 'No se trajo categorias ', r2
-		)
-	$scope.traer_categorias()
-
+	$scope.selectedUser 		= {}
 
 
 
@@ -64,24 +28,33 @@ angular.module('WissenSystem')
 	}
 
 	
+	$scope.seleccionarUsu = (usuario)->
+		usuario.seleccionado = !usuario.seleccionado
+		if usuario.seleccionado 
+			$scope.selectedUser = usuario
+
+			for user in SocketData.usuarios_all
+				if user.id != usuario.id
+					user.seleccionado = false
+
+	$scope.seleccionarCkUsu = (usuario)->
+		if usuario.seleccionado 
+			$scope.selectedUser = usuario
+
+			for user in SocketData.usuarios_all
+				if user.id != usuario.id
+					user.seleccionado = false
+
+	$scope.ingresar_seleccionado = ()->
+		if $scope.selectedUser.id
+			MySocket.let_him_enter($scope.selectedUser.id, $scope.cltdisponible_selected.resourceId)
+			$scope.cerrar_sidenav()
+		else 
+			toastr.warning 'Selecciona un usuario'
 	
-
-	$scope.guardando_edicion = false
-	$scope.guardar = ()->
-		$scope.guardando_edicion = true
-
-		Restangular.one('usuarios/update').customPUT($scope.currentUser).then((r)->
-			toastr.success 'Cambios guardados.'
-			$scope.guardando_edicion = false
-			console.log 'Cambios guardados', r
-		, (r2)->
-			toastr.warning 'No se guardó cambios del usuario', 'Problema'
-			console.log 'No se guardó cambios del usuario ', r2
-			$scope.guardando_edicion = false
-		)
+	
 		
-	$scope.cancelar = ()->
-		$scope.guardando_edicion = false
+	$scope.cerrar_sidenav = ()->
 		$mdSidenav('sidenavSelectusu').close()
 		
 

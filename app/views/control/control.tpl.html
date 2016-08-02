@@ -26,7 +26,7 @@
     </md-menu>
   </div>
   <div class="panel-body">
-    <div ng-class="{'cursor-unselect':deseleccionar}" class="clt-pc-container">
+    <div ng-class="{'cursor-unselect':deseleccionar}" class="clt-pc-container clt-pc-container">
       <div class="options-clts btn-group">
         <button type="button" ng-model="deseleccionar" uib-btn-checkbox class="btn btn-default btn-xs deseleccionador">
           <icon class="fa fa-eye-slash"></icon>
@@ -39,6 +39,10 @@
         <button type="button" ng-click="seleccionarTodo()" class="btn btn-default btn-xs deseleccionador">A
           <icon class="fa fa-eye"></icon>
           <md-tooltip>Seleccionar todo</md-tooltip>
+        </button>
+        <button type="button" ng-click="actualizarClts()" class="btn btn-default btn-xs deseleccionador">
+          <icon class="fa fa-refresh"></icon>
+          <md-tooltip>Actualizar</md-tooltip>
         </button>
       </div>
       <h4>Registrados</h4>
@@ -53,6 +57,21 @@
             </h5>
             <div class="alias-enti">{{cliente.usuario.entidad.alias}}</div>
             <h6 style="margin: 0px;">{{ cliente.nombre_punto }}</h6>
+            <md-menu>
+              <button aria-label="Abrir menú" ng-repeat="categoriaking in cliente | categsInscritasDeUsuario:categorias_king:USER.idioma_main_id | filter:{selected:true} " ng-click="openMenuCateg($mdOpenMenu, $event)" class="btn btn-pink btn-xs right">{{categoriaking.nombre}} 
+                <div class="fa fa-chevron-right"></div>
+                <div class="md-ripple-container"></div>
+              </button>
+              <md-menu-content width="4">
+                <md-menu-item>
+                  <md-button ng-click="crearservidor($event)">Crear Servidor</md-button>
+                </md-menu-item>
+                <md-menu-divider></md-menu-divider>
+                <md-menu-item>
+                  <md-button ng-click="qrScanear()">QR Scanner</md-button>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
           </div>
           <div class="opts-clt btn-group">
             <button type="button" ng-click="cerrarSesion(cliente)" class="btn btn-default btn-xs deseleccionador">
@@ -72,7 +91,7 @@
           <li ng-repeat="cliente in SocketData.clientes | filter:{'registrado':false} " ng-click="clickedClt($event, cliente)" ng-dblclick="showSidenavSelectUsu(cliente)" ng-mouseover="sobreClt($event, cliente)" ng-class="{'seleccionado': cliente.seleccionado, 'cursor-unselect':deseleccionar }" class="md-whiteframe-1dp clt-pc unselectable">
             <header ng-show="cliente.registrado"></header>
             <div class="info"> 
-              <h5 contenteditable="true">{{ cliente.nombre_punto }}
+              <h5 ng-model="cliente.nombre_punto" contenteditable guardar-nombre-punto="guardarNombrePunto">{{ cliente.nombre_punto }}
                 <md-tooltip>Nombre de punto</md-tooltip>
               </h5>
             </div>
@@ -81,7 +100,7 @@
                 <icon class="fa fa-users"></icon>
                 <md-tooltip>Seleccionar un usuario</md-tooltip>
               </button>
-              <button type="button" ng-click="showSidenavSelectUsu(cliente)" class="btn btn-default btn-xs deseleccionador">
+              <button type="button" ng-click="guardarNombrePunto(cliente)" class="btn btn-default btn-xs deseleccionador">
                 <icon class="fa fa-save"></icon>
                 <md-tooltip>Guardar nombre de punto</md-tooltip>
               </button>
@@ -96,7 +115,7 @@
           <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12">
             <md-input-container flex-gt-sm style="margin-bottom: -20px; padding-bottom: 0px" class="md-block">
               <label>Mensaje</label>
-              <input type="text" ng-model="newMensaje">
+              <input id="msg-especifico" type="text" ng-model="newMensaje">
               <md-tooltip> Envía un mensaje</md-tooltip>
             </md-input-container>
           </div>

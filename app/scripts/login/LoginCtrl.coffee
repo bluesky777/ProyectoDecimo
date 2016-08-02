@@ -97,7 +97,7 @@ angular.module('WissenSystem')
 		if usuario.seleccionado 
 			$scope.selectedUser = usuario
 
-			for user in $scope.usuarios_all
+			for user in SocketData.usuarios_all
 				if user.id != usuario.id
 					user.seleccionado = false
 
@@ -119,6 +119,12 @@ angular.module('WissenSystem')
 		localStorage.setItem('nombre_punto', $scope.in_evento_actual.ip)
 		$scope.editando_nombre_punto = false
 
+
+
+
+	$rootScope.$on 'nombre_punto_cambiado', (ev, datos)->
+		localStorage.setItem('nombre_punto', datos.nombre)
+		$scope.in_evento_actual.ip = datos.nombre
 
 
 

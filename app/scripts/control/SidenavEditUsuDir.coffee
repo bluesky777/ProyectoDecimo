@@ -9,7 +9,7 @@ angular.module('WissenSystem')
 		
 
 ])
-.controller('SidenavEditUsuCtrl', ['$scope', 'Restangular', 'toastr', 'MySocket', 'SocketData', '$mdSidenav',  ($scope, Restangular, toastr, MySocket, SocketData, $mdSidenav)->
+.controller('SidenavEditUsuCtrl', ['$scope', 'Restangular', 'toastr', 'MySocket', 'SocketData', '$mdSidenav', '$mdDialog', '$filter',  ($scope, Restangular, toastr, MySocket, SocketData, $mdSidenav, $mdDialog, $filter)->
 
 	$scope.niveles_king = []
 	$scope.traer_niveles = ()->
@@ -70,7 +70,7 @@ angular.module('WissenSystem')
 	$scope.guardar = ()->
 		$scope.guardando_edicion = true
 
-		Restangular.one('usuarios/update').customPUT($scope.currentUser).then((r)->
+		Restangular.one('usuarios/update').customPUT($scope.clt_to_edit).then((r)->
 			toastr.success 'Cambios guardados.'
 			$scope.guardando_edicion = false
 			console.log 'Cambios guardados', r
@@ -84,6 +84,78 @@ angular.module('WissenSystem')
 		$scope.guardando_edicion = false
 		$mdSidenav('sidenavEditusu').close()
 		
+
+	$scope.cambiarPass = (ev)->
+		confirm = $mdDialog.prompt()
+			.title('Contraseña')
+			.textContent('Escribe nueva contraseña')
+			.placeholder('Contraseña')
+			.ariaLabel('Contraseña')
+			.targetEvent(ev)
+			.ok('Cambiar')
+			.cancel('Cancelar');
+		$mdDialog.show(confirm).then((result)->
+			datos = {usu_id: $scope.clt_to_edit.id, password: result }
+			Restangular.one('usuarios/cambiar-pass').customPUT(datos).then((r)->
+				toastr.success 'Contraseña cambiada.'
+			, (r2)->
+				toastr.warning 'No se cambió la contraseña', 'Problema'
+				console.log 'No se guardó cambios del usuario ', r2
+			)
+		, ()->
+			console.log "Canceló cambio de pass"
+		)
+		
+
+
+
+	$scope.cambiaInscripcion = (categoriaking, currentUser)->
+		
+		categoriaking.cambiando = true
+
+		datos = 
+			usuario_id: 	currentUser.id
+			categoria_id: 	categoriaking.categoria_id
+
+		if categoriaking.selected
+
+		
+			Restangular.one('inscripciones/inscribir').customPUT(datos).then((r)->
+				categoriaking.cambiando = false
+				console.log 'Inscripción creada', r
+
+				inscrip = $filter('filter')(currentUser.inscripciones, {categoria_id: datos.categoria_id})
+				if inscrip.length == 0
+					currentUser.inscripciones.push r[0]
+				else
+					inscrip[0].id = r[0].id
+					inscrip[0].deleted_at = r[0].deleted_at
+
+
+			, (r2)->
+				toastr.warning 'No se inscribó el usuario', 'Problema'
+				console.log 'No se inscribó el usuario ', r2
+				categoriaking.cambiando = false
+				categoriaking.selected = false
+			)
+
+		else
+
+			Restangular.one('inscripciones/desinscribir').customPUT(datos).then((r)->
+				categoriaking.cambiando = false
+				console.log 'Inscripción creada', r
+				
+				currentUser.inscripciones = $filter('filter')(currentUser.inscripciones, {categoria_id: '!'+datos.categoria_id})
+
+			, (r2)->
+				toastr.warning 'No se quitó inscripción', 'Problema'
+				console.log 'No se quitó inscripción ', r2
+				categoriaking.cambiando = false
+				categoriaking.selected = true
+			)
+
+
+
 
 
 ])

@@ -8,6 +8,7 @@ angular.module('WissenSystem')
 	$scope.examenes_puntajes = []
 
 	$scope.traer_categorias_evento = ()->
+		console.log 'entra'
 		Restangular.all('categorias/categorias-evento').getList().then((r)->
 			$scope.categorias_king = r
 			#console.log 'Categorias traídas: ', r
@@ -32,18 +33,25 @@ angular.module('WissenSystem')
 
 
 	$scope.iniciarExamen = (categoria)->
-		modalInstance = $modal.open({
-			templateUrl: App.views + 'examen_respuesta/seguroIniciarCtrl.tpl.html'
-			controller: 'SeguroIniciarCtrl'
-			resolve: 
-				inscripcion: ()->
-					categoria
-				entidades: ()->
-					$scope.$parent.entidades
-		})
-		modalInstance.result.then( (examen)->
-			console.log 'Resultado del modal: ', examen
-		)
+		if $scope.eventoactual.gran_final
+			categorias_king = $filter('categsInscritasDeUsuario')($scope.user, $scope.categorias_king, $scope.user.idioma_main_id) 
+			for cat in categorias_king
+				cat.selected = false
+			categoria.selected = true
+
+		else
+			modalInstance = $modal.open({
+				templateUrl: App.views + 'examen_respuesta/seguroIniciarCtrl.tpl.html'
+				controller: 'SeguroIniciarCtrl'
+				resolve: 
+					inscripcion: ()->
+						categoria
+					entidades: ()->
+						$scope.$parent.entidades
+			})
+			modalInstance.result.then( (examen)->
+				console.log 'Resultado del modal: ', examen
+			)
 		
 
 

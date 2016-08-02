@@ -20,10 +20,7 @@
           <label>Username</label>
           <input type="text" ng-model="clt_to_edit.username" required>
         </md-input-container>
-        <md-input-container class="col-sm-6 col-xs-12">
-          <label>Contraseña</label>
-          <input type="text" ng-model="clt_to_edit.password" required>
-        </md-input-container>
+        <md-button type="button" ng-click="cambiarPass($event)" class="md-raised">Contraseña</md-button>
       </div>
       <div class="row">
         <md-input-container class="col-sm-4 col-xs-4">
@@ -81,9 +78,9 @@
         <md-content>
           <md-list>
             <md-subheader class="md-no-sticky">Inscribir en:</md-subheader>
-            <md-list-item ng-repeat="categoria in categorias_king1 | categoriasTraducidas:$parent.evento_actual.idioma_principal_id:clt_to_edit.nivel_id">
-              <md-checkbox ng-checked="checkeandoCategorias(categoria, clt_to_edit.inscripciones)" ng-click="toggle(categoria, clt_to_edit.inscripciones)"></md-checkbox>
-              <p>{{categoria.nombre}}</p>
+            <md-list-item ng-repeat="categoria in [clt_to_edit] | categsInscritas:categorias_king1:$parent.evento_actual.idioma_principal_id | filter: { nivel_id: clt_to_edit.nivel_id } ">
+              <md-checkbox ng-model="categoria.selected" ng-change="cambiaInscripcion(categoria, clt_to_edit)" aria-label="Categoria" ng-disabled="categoria.cambiando"></md-checkbox>
+              <p>{{categoria.nombre}} </p>
             </md-list-item>
           </md-list>
         </md-content>

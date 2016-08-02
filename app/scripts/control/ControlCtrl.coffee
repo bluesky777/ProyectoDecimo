@@ -1,22 +1,33 @@
 angular.module('WissenSystem')
 
-.controller('ControlCtrl', ['$scope', 'Restangular', 'toastr', '$state', '$window', 'MySocket', 'SocketData', '$rootScope', '$mdSidenav',  ($scope, Restangular, toastr, $state, $window, MySocket, SocketData, $rootScope, $mdSidenav)->
+.controller('ControlCtrl', ['$scope', 'Restangular', 'toastr', '$state', '$window', 'MySocket', 'SocketData', '$rootScope', '$mdSidenav', '$filter',  ($scope, Restangular, toastr, $state, $window, MySocket, SocketData, $rootScope, $mdSidenav, $filter)->
 
 
 	$scope.SocketData = SocketData
+	$scope.cltdisponible_selected = {}
+	$scope.categorias_king = []
 
+
+	Restangular.all('categorias/categorias-evento').getList().then((r)->
+		$scope.categorias_king = r
+	, (r2)->
+		toastr.warning 'No se trajeron las categorias del evento', 'Problema'
+	)
 
 	$scope.CerrarServidor = ()->
-		res = confirm "¿Seguro que desea cerrar servidor?"
-		if res 
-			Restangular.one('chat/cerrar-servidor').customPUT().then((r)->
-				toastr.success 'Cerrado', r
-			, (r2)->
-				toastr.warning 'No se cerró servidor'
-				console.log 'No se cerró servidor ', r2
-			)
+		#res = confirm "¿Seguro que desea cerrar servidor?"
+		#if res 
+		Restangular.one('chat/cerrar-servidor').customPUT().then((r)->
+			toastr.success 'Cerrado', r
+		, (r2)->
+			toastr.warning 'No se cerró servidor'
+			console.log 'No se cerró servidor ', r2
+		)
 	
 	$scope.openMenu = ($mdOpenMenu, ev)->
+		$mdOpenMenu(ev);
+
+	$scope.openMenuCateg = ($mdOpenMenu, ev)->
 		$mdOpenMenu(ev);
 
 	$scope.showSidenavEditUsu = (cliente)->
@@ -27,10 +38,12 @@ angular.module('WissenSystem')
 			)
 
 	$scope.showSidenavSelectUsu = (cliente)->
+		$scope.cltdisponible_selected = cliente
+		MySocket.get_usuarios()
 		$scope.clt_to_edit = cliente.usuario
 		$mdSidenav('sidenavSelectusu').toggle()
 			.then( ()->
-				console.log("toggle  is done");
+				#console.log("toggle  is done");
 			)
 
 	$scope.Conectar = ()->
@@ -65,6 +78,14 @@ angular.module('WissenSystem')
 			if !cliente.seleccionado
 				cliente.seleccionado = true
 
+	$scope.actualizarClts = ()->
+		MySocket.get_clts()
+
+	$scope.guardarNombrePunto = (cliente)->
+		nombre = $filter('clearhtml')(cliente.nombre_punto)
+		MySocket.guardar_nombre_punto(cliente.resourceId, nombre)
+
+
 
 	$scope.clickedClt = (event, cliente)->
 		if $scope.deseleccionar
@@ -78,7 +99,6 @@ angular.module('WissenSystem')
 				cliente.seleccionado = false
 			else
 				cliente.seleccionado = true
-				console.log cliente
 
 
 	$scope.cerrarSesion = (cliente)->
@@ -87,7 +107,10 @@ angular.module('WissenSystem')
 			MySocket.cerrar_sesion(cliente.resourceId)
 
 	MySocket.get_clts()
-		
+
+
+
+
 
 
 ])

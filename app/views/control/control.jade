@@ -25,7 +25,7 @@
 
 	.panel-body
 
-		.clt-pc-container(ng-class="{'cursor-unselect':deseleccionar}")
+		.clt-pc-container.clt-pc-container(ng-class="{'cursor-unselect':deseleccionar}")
 
 			.options-clts.btn-group
 				button.btn.btn-default.btn-xs.deseleccionador(type="button" ng-model="deseleccionar" uib-btn-checkbox)
@@ -40,6 +40,10 @@
 					| A
 					icon.fa.fa-eye
 					md-tooltip Seleccionar todo
+
+				button.btn.btn-default.btn-xs.deseleccionador(type="button" ng-click="actualizarClts()")
+					icon.fa.fa-refresh
+					md-tooltip Actualizar
 
 			h4 Registrados
 
@@ -60,6 +64,20 @@
 						.alias-enti {{cliente.usuario.entidad.alias}}
 						h6(style="margin: 0px;") {{ cliente.nombre_punto }}
 
+						md-menu
+							button.btn.btn-pink.btn-xs.right(aria-label="Abrir menú" ng-repeat="categoriaking in cliente | categsInscritasDeUsuario:categorias_king:USER.idioma_main_id | filter:{selected:true} " ng-click="openMenuCateg($mdOpenMenu, $event)")
+								| {{categoriaking.nombre}} 
+								.fa.fa-chevron-right
+								.md-ripple-container
+							md-menu-content(width="4")
+								md-menu-item
+									md-button(ng-click="crearservidor($event)")
+										| Crear Servidor
+								md-menu-divider
+								md-menu-item
+									md-button(ng-click="qrScanear()")
+										| QR Scanner
+
 					.opts-clt.btn-group
 						button.btn.btn-default.btn-xs.deseleccionador(type="button" ng-click="cerrarSesion(cliente)")
 							icon.fa.fa-sign-out
@@ -78,14 +96,14 @@
 						header(ng-show="cliente.registrado")
 							
 						.info 
-							h5(contenteditable="true") {{ cliente.nombre_punto }}
+							h5(ng-model="cliente.nombre_punto" contenteditable guardar-nombre-punto="guardarNombrePunto") {{ cliente.nombre_punto }}
 								md-tooltip Nombre de punto
 
 						.opts-clt.btn-group
 							button.btn.btn-default.btn-xs.deseleccionador(type="button" ng-click="showSidenavSelectUsu(cliente)")
 								icon.fa.fa-users
 								md-tooltip Seleccionar un usuario
-							button.btn.btn-default.btn-xs.deseleccionador(type="button" ng-click="showSidenavSelectUsu(cliente)")
+							button.btn.btn-default.btn-xs.deseleccionador(type="button" ng-click="guardarNombrePunto(cliente)")
 								icon.fa.fa-save
 								md-tooltip Guardar nombre de punto
 
@@ -99,7 +117,7 @@
 					.col-lg-10.col-md-9.col-sm-9.col-xs-12
 						md-input-container.md-block(flex-gt-sm style="margin-bottom: -20px; padding-bottom: 0px")
 							label Mensaje
-							input(type="text" ng-model="newMensaje")
+							input#msg-especifico(type="text" ng-model="newMensaje")
 							md-tooltip  Envía un mensaje
 
 					.col-lg-1.col-md-2.col-sm-2.col-xs-12

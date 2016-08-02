@@ -4,8 +4,11 @@
     <div class="panel panel-default panel-hovered panel-stacked mb20">
       <div class="panel-body">
         <div ng-bind-html=" eventoactual.nombre " class="titulo-3d"></div>
-        <div ng-switch on="eventoactual.granfinal" style="text-align: center;">
-          <h3 ng-switch-when="true" ng-bind-html="'GRAN_FINAL' | translate" class="text-light">¡Gran final!</h3>
+        <div ng-switch on="eventoactual.gran_final" style="text-align: center;"><span ng-switch-when="1">
+            <h3 ng-bind-html="'GRAN_FINAL' | translate" class="text-light">¡Gran final!</h3>
+            <md-whiteframe layout layout-align="center center" class="md-whiteframe-z2">
+              <h2 ng-repeat="categoriaking in user | categsInscritasDeUsuario:categorias_king:user.idioma_main_id | filter:{selected:true} " style="margin-bottom: 20px;">{{categoriaking.nombre}} </h2>
+            </md-whiteframe></span>
           <h3 ng-switch-default ng-bind-html="'ELIMINATORIAS' | translate" class="text-light">Eliminatorias</h3>
         </div>
       </div>
@@ -22,7 +25,7 @@
         </div>
       </div>
       <div class="panel-body">
-        <md-button ng-click="iniciarExamen(categoriaking)" ng-repeat="categoriaking in user | categsInscritasDeUsuario:categorias_king:user.idioma_main_id " class="col-md-12">{{categoriaking.nombre}}</md-button>
+        <md-button ng-click="iniciarExamen(categoriaking)" ng-repeat="categoriaking in user | categsInscritasDeUsuario:categorias_king:user.idioma_main_id " ng-class="{'md-primary': categoriaking.selected }" style="width: 100%;" class="md-raised col-md-12">{{categoriaking.nombre}}</md-button>
       </div>
     </div>
   </div>
