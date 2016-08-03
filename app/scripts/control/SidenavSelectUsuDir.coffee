@@ -45,12 +45,16 @@ angular.module('WissenSystem')
 				if user.id != usuario.id
 					user.seleccionado = false
 
-	$scope.ingresar_seleccionado = ()->
-		if $scope.selectedUser.id
-			MySocket.let_him_enter($scope.selectedUser.id, $scope.cltdisponible_selected.resourceId)
+	$scope.ingresar_seleccionado = (usuario)->
+		if usuario
+			MySocket.let_him_enter(usuario.id, $scope.cltdisponible_selected.resourceId)
 			$scope.cerrar_sidenav()
-		else 
-			toastr.warning 'Selecciona un usuario'
+		else
+			if $scope.selectedUser.id
+				MySocket.let_him_enter($scope.selectedUser.id, $scope.cltdisponible_selected.resourceId)
+				$scope.cerrar_sidenav()
+			else 
+				toastr.warning 'Selecciona un usuario'
 	
 	
 		

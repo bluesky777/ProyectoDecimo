@@ -6,10 +6,12 @@ angular.module('WissenSystem')
 	$scope.SocketData = SocketData
 	$scope.cltdisponible_selected = {}
 	$scope.categorias_king = []
+	$scope.cateorias_traducidas = []
 
 
 	Restangular.all('categorias/categorias-evento').getList().then((r)->
 		$scope.categorias_king = r
+		$scope.cateorias_traducidas = $filter('categoriasTraducidas')($scope.categorias_king, $scope.USER.idioma_main_id)
 	, (r2)->
 		toastr.warning 'No se trajeron las categorias del evento', 'Problema'
 	)
@@ -105,6 +107,28 @@ angular.module('WissenSystem')
 		res = confirm "¿Cerrar sesión a " + cliente.usuario.nombres + "?"
 		if res 
 			MySocket.cerrar_sesion(cliente.resourceId)
+
+
+	$scope.categoriaSelect = (cliente)->
+		categorias = $filter('categSelectedDeUsuario')(cliente.usuario, $scope.categorias_king, $scope.USER.idioma_main_id, cliente.categsel)
+		if categorias.length > 0
+			return categorias[0]
+		else
+			return {}
+
+	$scope.cambiarCategSel = (cliente, categoria)->
+		MySocket.change_a_categ_selected(cliente.resourceId, categoria.categoria_id)
+
+
+	$scope.empezarExamen = (cliente)->
+		MySocket.empezar_examen()
+		toastr.info "Examen empezado"
+
+
+	$scope.empezarExamenCliente = (cliente)->
+		MySocket.empezar_examen_cliente(cliente.resourceId)
+
+
 
 	MySocket.get_clts()
 

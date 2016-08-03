@@ -830,5 +830,18 @@ md-sidenav md-input-container{
 .info h5.name{
   margin-bottom: 0;
 }
-
+.proyector-head{
+  width: 100%!important;
+  margin-left: 0px!important;
+  z-index: 1030;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  background: #3f51b5;
+  transition: 0.25s ease-in;
+  position: relative;
+  height: 55px;
+  top: -57px;
+}
+.container-proyector:hover .proyector-head{
+  top: 0px;
+}
 

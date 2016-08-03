@@ -13,7 +13,8 @@ md-sidenav.md-sidenav-right.md-whiteframe-4dp(md-component-id="sidenavSelectusu"
 				button.btn.btn-primary(type="button" ng-click="ingresar_seleccionado()") Ingresar
 			md-list.md-dense 
 
-				md-list-item.md-2-line(ng-repeat="usuario in SocketData.usuarios_all | filter:filtro | orderBy:'nombres' " ng-click="seleccionarUsu(usuario)")
+				md-list-item.md-2-line(ng-repeat="usuario in SocketData.usuarios_all | filter:filtro | orderBy:'nombres' " 
+					ng-click="seleccionarUsu(usuario)" ng-dblclick="ingresar_seleccionado(usuario)")
 					img.md-avatar(ng-src="{{imagesPath + usuario.imagen_nombre}}" alt="{{usuario.username}}")
 					.md-list-item-text
 						h3 {{ ($index+1) + '. ' + usuario.nombres + ' ' + usuario.apellidos}}

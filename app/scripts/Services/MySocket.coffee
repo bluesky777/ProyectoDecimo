@@ -12,21 +12,24 @@ angular.module('WissenSystem')
 	@mensajes = []
 
 
-	registrar = (usuario)->
-		nombre_p = if localStorage.getItem('nombre_punto') == null then false else localStorage.getItem('nombre_punto')
-		dataStream.send({ comando: 'registrar',  usuario: usuario, nombre_punto: nombre_p })
-
-
-	unregister = ()->
-		console.log "Entra para unregistrar"
-		dataStream.send({ comando: 'unregister' })
-
-
-
-
 
 	############################################
 	# Eventos del Socket
+
+
+	dataStream.onOpen((datos)->
+		if Perfil.User().id
+			registrar(Perfil.User())
+		else
+			conectar()
+	)
+	dataStream.onClose((datos)->
+		SocketData.clientes = []
+	)
+	dataStream.onError((datos)->
+		console.log 'Error de Socket', datos
+	)
+
 	dataStream.onMessage((message)->
 		message = JSON.parse(message.data)
 		#console.log "Llegó msg: ", message
@@ -36,7 +39,12 @@ angular.module('WissenSystem')
 
 			when "validado"
 				Perfil.setResourceId message.yo.resourceId
-				SocketData.clientes.push(message.yo)
+				client = SocketData.cliente message.yo.resourceId
+				if client
+					SocketData.cambiar_registro message.yo
+				else
+					SocketData.clientes.push(message.yo)
+				
 
 			when "desconectado"
 				SocketData.desconectar message.clt
@@ -96,25 +104,25 @@ angular.module('WissenSystem')
 					$cookies.put('xtoken', message.token)
 					$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.get('xtoken')
 					$state.go 'panel'
+
+			when "change_the_categ_selected"
+				client = SocketData.cliente Perfil.getResourceId()
+				client.categsel = message.categsel
+				SocketData.cambiar_categsel client, message.categsel
+				
+			when "a_categ_selected_change"
+				client = SocketData.cliente message.resourceId
+				client.categsel = message.categsel
+				SocketData.cambiar_categsel client
+				
+			when "empezar_examen"
+				$rootScope.$emit 'empezar_examen'
 				
 
 
 					
 	)
 
-
-	dataStream.onOpen((datos)->
-		if Perfil.User().id
-			registrar(Perfil.User())
-		else
-			conectar()
-	)
-	dataStream.onClose((datos)->
-		SocketData.clientes = []
-	)
-	dataStream.onError((datos)->
-		console.log 'Error de Socket', datos
-	)
 	#  / Eventos del Socket 
 	############################################
 
@@ -122,6 +130,16 @@ angular.module('WissenSystem')
 
 
 		
+	registrar = (usuario)->
+		nombre_p = if localStorage.getItem('nombre_punto') == null then false else localStorage.getItem('nombre_punto')
+		dataStream.send({ comando: 'registrar',  usuario: usuario, nombre_punto: nombre_p })
+
+
+	unregister = ()->
+		console.log "Entra para unregistrar"
+		dataStream.send({ comando: 'unregister' })
+
+
 	conectar = (qr)->
 		nombre_p = if localStorage.getItem('nombre_punto') == null then false else localStorage.getItem('nombre_punto') 
 		if qr
@@ -169,6 +187,23 @@ angular.module('WissenSystem')
 			xtoken = $cookies.get('xtoken')
 			dataStream.send({ comando: 'get_usuarios',  from_token: xtoken })
 
+	change_a_categ_selected = (resourceId, categoria_id)->
+		client = SocketData.cliente resourceId
+		client.categsel = categoria_id
+		SocketData.cambiar_categsel client, categoria_id
+		dataStream.send({ comando: 'change_a_categ_selected',  resourceId: resourceId, categsel: categoria_id })
+
+	change_my_categ_selected = (categoria_id)->
+		client = SocketData.cliente Perfil.getResourceId()
+		client.categsel = categoria_id
+		SocketData.cambiar_categsel client, categoria_id
+		dataStream.send({ comando: 'warn_my_categ_selected', categsel: categoria_id })
+
+	empezar_examen = ()->
+		dataStream.send({ comando: 'empezar_examen' })
+
+	empezar_examen_cliente = (resourceId)->
+		dataStream.send({ comando: 'empezar_examen_cliente', resourceId: resourceId })
 
 
 
@@ -195,6 +230,10 @@ angular.module('WissenSystem')
 		guardar_nombre_punto:		guardar_nombre_punto
 		get_usuarios:				get_usuarios
 		let_him_enter:				let_him_enter
+		change_a_categ_selected:	change_a_categ_selected
+		change_my_categ_selected:	change_my_categ_selected
+		empezar_examen:				empezar_examen
+		empezar_examen_cliente:		empezar_examen_cliente
 	}
 
 	return methods
@@ -211,7 +250,6 @@ angular.module('WissenSystem')
 
 
 	desconectar = (clt)->
-		console.log  clt, @clientes, $filter('filter')(@clientes, {resourceId: '!'+clt.resourceId})
 		@clientes = $filter('filter')(@clientes, {resourceId: '!'+clt.resourceId})
 
 
@@ -226,8 +264,15 @@ angular.module('WissenSystem')
 		for clt, indice in @clientes
 			if clt.resourceId == client.resourceId
 				@clientes.splice indice, 1
-				@clientes.push client
-		console.log @clientes
+				@clientes.splice indice, 0, client
+		return false
+
+	cambiar_categsel = (cliente_new)->
+		for clt, indice in @clientes
+			if clt.resourceId == cliente_new.resourceId
+				@clientes.splice indice, 1
+				@clientes.splice indice, 0, cliente_new
+
 		return false
 
 
@@ -255,6 +300,7 @@ angular.module('WissenSystem')
 		cliente:					cliente
 		cambiar_registro:			cambiar_registro
 		conectado:					conectado
+		cambiar_categsel:			cambiar_categsel
 	}
 
 	return methods

@@ -1,5 +1,5 @@
 
-<div class="row">
+<div ng-if="$state.is('panel')" class="row">
   <div class="col-md-12">
     <div class="panel panel-default panel-hovered panel-stacked mb20">
       <div class="panel-body">
@@ -7,7 +7,9 @@
         <div ng-switch on="eventoactual.gran_final" style="text-align: center;"><span ng-switch-when="1">
             <h3 ng-bind-html="'GRAN_FINAL' | translate" class="text-light">¡Gran final!</h3>
             <md-whiteframe layout layout-align="center center" class="md-whiteframe-z2">
-              <h2 ng-repeat="categoriaking in user | categsInscritasDeUsuario:categorias_king:user.idioma_main_id | filter:{selected:true} " style="margin-bottom: 20px;">{{categoriaking.nombre}} </h2>
+              <!--h2(ng-repeat="categoriaking in user | categsInscritasDeUsuario:categorias_king:user.idioma_main_id | filter:{selected:true} " style="margin-bottom: 20px;")| {{categoriaking.nombre}} 
+              -->
+              <h2 ng-bind-html="categoriaSelect().nombre" style="margin-bottom: 20px;"></h2>
             </md-whiteframe></span>
           <h3 ng-switch-default ng-bind-html="'ELIMINATORIAS' | translate" class="text-light">Eliminatorias</h3>
         </div>
@@ -15,7 +17,20 @@
     </div>
   </div>
 </div>
-<div class="row">
+<div ng-if="hasRoleOrPerm('Pantalla')" class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default panel-hovered panel-stacked mb20">
+      <div class="panel-heading">
+         
+        Proyectar
+      </div>
+      <div class="panel-body">
+        <md-button ng-click="iniciarProyeccion()" style="width: 100%;" class="md-raised md-primary col-md-12">Iniciar proyección</md-button>
+      </div>
+    </div>
+  </div>
+</div>
+<div ng-if="!hasRoleOrPerm('Pantalla')" class="row">
   <div class="col-md-6">
     <div class="panel panel-default panel-hovered panel-stacked mb20">
       <div class="panel-heading"> 

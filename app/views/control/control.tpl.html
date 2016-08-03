@@ -58,17 +58,19 @@
             <div class="alias-enti">{{cliente.usuario.entidad.alias}}</div>
             <h6 style="margin: 0px;">{{ cliente.nombre_punto }}</h6>
             <md-menu>
-              <button aria-label="Abrir menú" ng-repeat="categoriaking in cliente | categsInscritasDeUsuario:categorias_king:USER.idioma_main_id | filter:{selected:true} " ng-click="openMenuCateg($mdOpenMenu, $event)" class="btn btn-pink btn-xs right">{{categoriaking.nombre}} 
+              <button aria-label="Abrir menú" ng-click="openMenuCateg($mdOpenMenu, $event)" class="btn btn-pink btn-xs right">
+                <!--span(ng-repeat=" cliente | categsInscritasDeUsuario:categorias_king:USER.idioma_main_id | filter:{selected:true} ") | {{categoriaking.nombre}} 
+                --><span ng-bind-html="categoriaSelect(cliente).nombre"></span>
                 <div class="fa fa-chevron-right"></div>
                 <div class="md-ripple-container"></div>
               </button>
               <md-menu-content width="4">
-                <md-menu-item>
-                  <md-button ng-click="crearservidor($event)">Crear Servidor</md-button>
+                <md-menu-item ng-repeat="categoriatrad in cateorias_traducidas">
+                  <md-button ng-click="cambiarCategSel(cliente, categoriatrad)">{{ categoriatrad.nombre }}</md-button>
                 </md-menu-item>
                 <md-menu-divider></md-menu-divider>
                 <md-menu-item>
-                  <md-button ng-click="qrScanear()">QR Scanner</md-button>
+                  <md-button ng-click="empezarExamenCliente(cliente)">Empezar examen</md-button>
                 </md-menu-item>
               </md-menu-content>
             </md-menu>
@@ -129,6 +131,15 @@
 </div>
 <sidenav-select-usu-dir></sidenav-select-usu-dir>
 <sidenav-edit-usu-dir></sidenav-edit-usu-dir>
+<div class="panel panel-default panel-hovered panel-stacked mb20">
+  <div class="panel-heading">
+      
+    Comandos
+  </div>
+  <div class="panel-body">
+    <md-button ng-click="empezarExamen()" class="md-raised">Empezar exámen</md-button>
+  </div>
+</div>
 <div class="panel panel-default panel-hovered panel-stacked mb20">
   <div class="panel-heading">
       

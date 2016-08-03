@@ -65,18 +65,20 @@
 						h6(style="margin: 0px;") {{ cliente.nombre_punto }}
 
 						md-menu
-							button.btn.btn-pink.btn-xs.right(aria-label="Abrir menú" ng-repeat="categoriaking in cliente | categsInscritasDeUsuario:categorias_king:USER.idioma_main_id | filter:{selected:true} " ng-click="openMenuCateg($mdOpenMenu, $event)")
-								| {{categoriaking.nombre}} 
+							button.btn.btn-pink.btn-xs.right(aria-label="Abrir menú" ng-click="openMenuCateg($mdOpenMenu, $event)")
+								//span(ng-repeat=" cliente | categsInscritasDeUsuario:categorias_king:USER.idioma_main_id | filter:{selected:true} ") 
+									| {{categoriaking.nombre}} 
+								span(ng-bind-html="categoriaSelect(cliente).nombre")
 								.fa.fa-chevron-right
 								.md-ripple-container
 							md-menu-content(width="4")
-								md-menu-item
-									md-button(ng-click="crearservidor($event)")
-										| Crear Servidor
+								md-menu-item(ng-repeat="categoriatrad in cateorias_traducidas")
+									md-button(ng-click="cambiarCategSel(cliente, categoriatrad)")
+										| {{ categoriatrad.nombre }}
 								md-menu-divider
 								md-menu-item
-									md-button(ng-click="qrScanear()")
-										| QR Scanner
+									md-button(ng-click="empezarExamenCliente(cliente)")
+										| Empezar examen
 
 					.opts-clt.btn-group
 						button.btn.btn-default.btn-xs.deseleccionador(type="button" ng-click="cerrarSesion(cliente)")
@@ -128,6 +130,15 @@
 
 sidenav-select-usu-dir
 sidenav-edit-usu-dir
+
+
+.panel.panel-default.panel-hovered.panel-stacked.mb20
+	.panel-heading   
+		| Comandos
+
+	.panel-body
+
+		md-button.md-raised(ng-click="empezarExamen()") Empezar exámen
 
 
 .panel.panel-default.panel-hovered.panel-stacked.mb20

@@ -1,4 +1,4 @@
-.row
+.row(ng-if="$state.is('panel')")
 	.col-md-12
 		.panel.panel-default.panel-hovered.panel-stacked.mb20
 			.panel-body
@@ -7,12 +7,27 @@
 					span(ng-switch-when="1")
 						h3.text-light(ng-bind-html="'GRAN_FINAL' | translate") ¡Gran final!
 						md-whiteframe.md-whiteframe-z2(layout layout-align="center center")
-							h2(ng-repeat="categoriaking in user | categsInscritasDeUsuario:categorias_king:user.idioma_main_id | filter:{selected:true} " style="margin-bottom: 20px;")
+							//h2(ng-repeat="categoriaking in user | categsInscritasDeUsuario:categorias_king:user.idioma_main_id | filter:{selected:true} " style="margin-bottom: 20px;")
 								| {{categoriaking.nombre}} 
+							h2(ng-bind-html="categoriaSelect().nombre" style="margin-bottom: 20px;")
 					h3.text-light(ng-switch-default ng-bind-html="'ELIMINATORIAS' | translate") Eliminatorias
 
 
-.row
+.row(ng-if="hasRoleOrPerm('Pantalla')")
+	.col-md-6
+		.panel.panel-default.panel-hovered.panel-stacked.mb20
+			.panel-heading 
+				| Proyectar
+
+			
+			.panel-body
+				
+				md-button.md-raised.md-primary.col-md-12(ng-click="iniciarProyeccion()" style="width: 100%;")
+					| Iniciar proyección
+
+
+
+.row(ng-if="!hasRoleOrPerm('Pantalla')")
 	.col-md-6
 		.panel.panel-default.panel-hovered.panel-stacked.mb20
 			.panel-heading 

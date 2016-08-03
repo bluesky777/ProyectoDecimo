@@ -1,17 +1,23 @@
 angular.module('WissenSystem')
 
-.controller('IniciarCtrl', ['$scope', 'Restangular', 'toastr', '$filter', 'AuthService', '$state', '$uibModal', 'App', ($scope, Restangular, toastr, $filter, AuthService, $state, $modal, App)->
+.controller('IniciarCtrl', ['$scope', 'Restangular', 'toastr', '$filter', 'AuthService', '$state', '$uibModal', 'App', 'SocketData', 'MySocket', 'Perfil', '$rootScope', ($scope, Restangular, toastr, $filter, AuthService, $state, $modal, App, SocketData, MySocket, Perfil, $rootScope)->
 
 	
-
+	$scope.$state = $state
 	$scope.categorias_king = []
 	$scope.examenes_puntajes = []
+	$scope.hasRoleOrPerm = AuthService.hasRoleOrPerm
+
+
 
 	$scope.traer_categorias_evento = ()->
-		console.log 'entra'
 		Restangular.all('categorias/categorias-evento').getList().then((r)->
 			$scope.categorias_king = r
-			#console.log 'Categorias traídas: ', r
+
+			$scope.mi_cliente = SocketData.cliente Perfil.getResourceId()
+			$scope.user.categsel = $scope.mi_cliente.categsel
+
+
 		, (r2)->
 			toastr.warning 'No se trajeron las categorias del evento', 'Problema'
 			console.log 'No se trajo categorias ', r2
@@ -35,9 +41,12 @@ angular.module('WissenSystem')
 	$scope.iniciarExamen = (categoria)->
 		if $scope.eventoactual.gran_final
 			categorias_king = $filter('categsInscritasDeUsuario')($scope.user, $scope.categorias_king, $scope.user.idioma_main_id) 
+
 			for cat in categorias_king
 				cat.selected = false
 			categoria.selected = true
+
+			MySocket.change_my_categ_selected categoria.categoria_id
 
 		else
 			modalInstance = $modal.open({
@@ -53,6 +62,34 @@ angular.module('WissenSystem')
 				console.log 'Resultado del modal: ', examen
 			)
 		
+
+	$scope.categoriaSelect = ()->
+		$scope.mi_cliente = SocketData.cliente Perfil.getResourceId()
+		
+		categorias = $filter('categSelectedDeUsuario')($scope.mi_cliente.usuario, $scope.categorias_king, $scope.user.idioma_main_id, $scope.mi_cliente.categsel)
+		if categorias.length > 0
+			return categorias[0]
+		else
+			return {}
+
+	$scope.iniciarProyeccion = ()->
+		$state.go 'proyectando'
+
+
+	$rootScope.$on 'empezar_examen', ()->
+		inscripcion = {categoria_id: $scope.user.categsel}
+
+		for inscrip in $scope.user.inscripciones
+			if inscrip.categoria_id == $scope.user.categsel
+				inscripcion.inscripcion_id = inscrip.id
+
+		Restangular.all('examenes_respuesta/iniciar').customPOST(inscripcion).then((r)->
+			$rootScope.examen_actual = r
+			$state.transitionTo 'panel.examen_respuesta'
+		, (r2)->
+			toastr.warning 'No se pudo iniciar el examen.', 'Problema'
+			console.log 'Error creando el examen: ', r2
+		)
 
 
 

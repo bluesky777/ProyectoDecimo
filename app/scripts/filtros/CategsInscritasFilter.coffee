@@ -100,16 +100,55 @@ angular.module('WissenSystem')
 				
 				if categ_traducida.length > 0
 					categ_traducida = categ_traducida[0]
-
+					
 					res = $filter('filter')(usuario.inscripciones, { categoria_id: categoriaking.id })
+					
+					if res
+						if res.length > 0 
+							res = res[0]
+							categ_traducida.allowed_to_answer = res.allowed_to_answer
+							categ_traducida.examenes = res.examenes
+							categ_traducida.inscripcion_id = res.id
 
-					if res.length > 0 
-						res = res[0]
-						categ_traducida.allowed_to_answer = res.allowed_to_answer
-						categ_traducida.examenes = res.examenes
-						categ_traducida.inscripcion_id = res.id
+							resultado.push categ_traducida
 
-						resultado.push categ_traducida
+
+			
+			return resultado
+
+		else
+			return []
+])
+
+
+
+.filter('categSelectedDeUsuario', ['$filter', ($filter)->
+	(usuario, categorias_king, idioma_id, categsel) ->
+
+		if usuario and categorias_king
+			
+			resultado = []
+
+
+			for categoriaking in categorias_king
+
+				if categoriaking.id == parseInt(categsel)
+
+					categ_traducida = $filter('porIdioma')(categoriaking.categorias_traducidas, parseFloat(idioma_id))
+					
+					if categ_traducida.length > 0
+						categ_traducida = categ_traducida[0]
+						
+						res = $filter('filter')(usuario.inscripciones, { categoria_id: categoriaking.id })
+						if res
+							if res.length > 0 
+								res = res[0]
+								categ_traducida.allowed_to_answer = res.allowed_to_answer
+								categ_traducida.examenes = res.examenes
+								categ_traducida.inscripcion_id = res.id
+
+								resultado.push categ_traducida
+
 
 			
 			return resultado
