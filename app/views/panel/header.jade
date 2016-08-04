@@ -19,8 +19,9 @@ ul.list-unstyled.left-elems
 
 	// fullscreen
 	li.fullscreen.hidden-xs(ng-click="goFullScreen()")
-		a(href="")
+		a(href="" ng-click="reload(setFullScreen())" )
 			i.fa.fa-arrows-alt
+			md-tooltip Ver en pantalla completa
 
 	// notification drop
 	li.notify-drop.hidden-xs.dropdown(dropdown="" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')")

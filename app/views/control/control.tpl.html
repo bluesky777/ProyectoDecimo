@@ -26,7 +26,7 @@
     </md-menu>
   </div>
   <div class="panel-body">
-    <div ng-class="{'cursor-unselect':deseleccionar}" class="clt-pc-container clt-pc-container">
+    <div ng-class="{'cursor-unselect':deseleccionar}" class="clt-pc-container">
       <div class="options-clts btn-group">
         <button type="button" ng-model="deseleccionar" uib-btn-checkbox class="btn btn-default btn-xs deseleccionador">
           <icon class="fa fa-eye-slash"></icon>
@@ -137,7 +137,20 @@
     Comandos
   </div>
   <div class="panel-body">
+    <div class="row">
+      <div class="col-xs-12 col-md-6">
+        <select multiple="true" style="width: 200px; font-size: 9pt">
+          <option ng-repeat="categoria in categorias_king" ng-model="cmdCategSelected" ng-click="cmdClickCategSelected(categoria)">{{categoria.nombre}}</option>
+        </select>
+        <select multiple="true" style="width: 200px; font-size: 9pt">
+          <option ng-repeat="pregunta in cmdPreguntasTraduc" ng-model="cmdPreguntaSelected" ng-click="cmdClickPreguntaSelected(pregunta, $index)" ng-bind-html="pregunta.enunciado"> </option>
+        </select>
+        <button ng-click="showQuestion()" class="btn btn-default">Mostrar pregunta</button>
+        <md-checkbox ng-click="toggleShowLogoEntidadParticipantes()" ng-model="cmdShowLogoEntidadPartici" aria-label="Mostrar logos">Mostrar logo entidades</md-checkbox>
+      </div>
+    </div>
     <md-button ng-click="empezarExamen()" class="md-raised">Empezar exámen</md-button>
+    <md-button ng-click="showParticipantes()" class="md-raised">Mostrar participantes</md-button>
   </div>
 </div>
 <div class="panel panel-default panel-hovered panel-stacked mb20">

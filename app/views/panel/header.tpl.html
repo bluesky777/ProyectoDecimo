@@ -16,7 +16,8 @@
     <div class="site-logo visible-xs"><a ui-sref="panel" class="text-uppercase h3"><span class="text">Wissen</span></a></div>
   </li>
   <!-- fullscreen-->
-  <li ng-click="goFullScreen()" class="fullscreen hidden-xs"><a href=""><i class="fa fa-arrows-alt"></i></a></li>
+  <li ng-click="goFullScreen()" class="fullscreen hidden-xs"><a href="" ng-click="reload(setFullScreen())"><i class="fa fa-arrows-alt"></i>
+      <md-tooltip>Ver en pantalla completa</md-tooltip></a></li>
   <!-- notification drop-->
   <li dropdown="" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')" class="notify-drop hidden-xs dropdown"><a href="" dropdown-toggle=""><i class="fa fa-laptop"></i><span ng-bind=" evento_actual.alias"></span>
       <!--span.badge.badge-danger.badge-xs.circle {{ USER.eventos.length }}--></a>

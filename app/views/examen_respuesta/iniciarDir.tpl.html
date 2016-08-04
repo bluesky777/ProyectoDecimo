@@ -6,7 +6,7 @@
         <div ng-bind-html=" eventoactual.nombre " class="titulo-3d"></div>
         <div ng-switch on="eventoactual.gran_final" style="text-align: center;"><span ng-switch-when="1">
             <h3 ng-bind-html="'GRAN_FINAL' | translate" class="text-light">¡Gran final!</h3>
-            <md-whiteframe layout layout-align="center center" class="md-whiteframe-z2">
+            <md-whiteframe ng-show="user.categsel" layout layout-align="center center" class="md-whiteframe-z2">
               <!--h2(ng-repeat="categoriaking in user | categsInscritasDeUsuario:categorias_king:user.idioma_main_id | filter:{selected:true} " style="margin-bottom: 20px;")| {{categoriaking.nombre}} 
               -->
               <h2 ng-bind-html="categoriaSelect().nombre" style="margin-bottom: 20px;"></h2>

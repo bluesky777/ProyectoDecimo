@@ -118,6 +118,18 @@ angular.module('WissenSystem')
 			when "empezar_examen"
 				$rootScope.$emit 'empezar_examen'
 				
+			when "sc_show_participantes"
+				get_clts()
+				SocketData.config.categorias_traduc = message.categorias_traduc
+				$state.go('proyectando.participantes')
+
+			when "sc_show_question"
+				SocketData.config.pregunta 			= message.pregunta
+				SocketData.config.reveal_answer 	= false 
+				$state.go('proyectando.question')
+
+			when "sc_show_logo_entidad_partici"
+				SocketData.config.show_logo_entidad_partici = message.valor
 
 
 					
@@ -148,7 +160,6 @@ angular.module('WissenSystem')
 			dataStream.send({ comando: 'conectar', nombre_punto: nombre_p })
 
 
-		
 	got_qr = (qr, usuario_id)->
 		if usuario_id
 			datos = { comando: 'got_qr',  qr: qr, 'usuario_id': usuario_id, from_token: $cookies.get('xtoken') }
@@ -205,6 +216,18 @@ angular.module('WissenSystem')
 	empezar_examen_cliente = (resourceId)->
 		dataStream.send({ comando: 'empezar_examen_cliente', resourceId: resourceId })
 
+	sc_show_participantes = (categorias_traduc)->
+		dataStream.send({ comando: 'sc_show_participantes', categorias_traduc: categorias_traduc })
+
+	sc_show_question = (no_question, pregunta)->
+		dataStream.send({ comando: 'sc_show_question', no_question: no_question, pregunta: pregunta })
+
+	sc_reveal_answer = ()->
+		dataStream.send({ comando: 'sc_reveal_answer' })
+
+	sc_show_logo_entidad_partici = (valor)->
+		dataStream.send({ comando: 'sc_show_logo_entidad_partici', valor: valor })
+
 
 
 
@@ -234,6 +257,10 @@ angular.module('WissenSystem')
 		change_my_categ_selected:	change_my_categ_selected
 		empezar_examen:				empezar_examen
 		empezar_examen_cliente:		empezar_examen_cliente
+		sc_show_participantes:		sc_show_participantes
+		sc_show_question:			sc_show_question
+		sc_reveal_answer:			sc_reveal_answer
+		sc_show_logo_entidad_partici:	sc_show_logo_entidad_partici
 	}
 
 	return methods
@@ -247,6 +274,7 @@ angular.module('WissenSystem')
 	usuarios_all	= []
 	mensajes		= []
 	token_auth		= ''
+	config			= { pregunta: {}, reveal_answer: false, show_logo_entidad_partici: false }
 
 
 	desconectar = (clt)->
@@ -301,6 +329,7 @@ angular.module('WissenSystem')
 		cambiar_registro:			cambiar_registro
 		conectado:					conectado
 		cambiar_categsel:			cambiar_categsel
+		config:						config
 	}
 
 	return methods

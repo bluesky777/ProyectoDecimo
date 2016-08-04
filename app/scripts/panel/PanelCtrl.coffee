@@ -2,8 +2,8 @@
 
 angular.module('WissenSystem')
 
-.controller('PanelCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'AuthService', 'Perfil', 'App', 'resolved_user', 'toastr', '$translate', '$filter', '$uibModal', 'MySocket' 
-	($scope, $http, Restangular, $state, $cookies, $rootScope, AuthService, Perfil, App, resolved_user, toastr, $translate, $filter, $modal, MySocket) ->
+.controller('PanelCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'AuthService', 'Perfil', 'App', 'resolved_user', 'toastr', '$translate', '$filter', '$uibModal', 'MySocket', 'Fullscreen' 
+	($scope, $http, Restangular, $state, $cookies, $rootScope, AuthService, Perfil, App, resolved_user, toastr, $translate, $filter, $modal, MySocket, Fullscreen) ->
 
 
 		$scope.USER = resolved_user
@@ -16,7 +16,14 @@ angular.module('WissenSystem')
 		$rootScope.$on '$stateChangeSuccess', (event, toState, toParams, fromState, fromParams)->
 			$scope.cambiarTema('theme-zero')
 
-			
+		
+		$rootScope.reload = ()->
+			$state.go $state.current, $stateParams, {reload: true}
+
+		$scope.setFullScreen = ()->
+			Fullscreen.toggleAll()
+
+
 		$scope.openMenu = ($mdOpenMenu, ev)->
 			originatorEv = ev
 			$mdOpenMenu(ev)

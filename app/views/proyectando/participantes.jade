@@ -1,0 +1,25 @@
+.categorias-container 
+	.categ-container(ng-repeat="categoria_traduc in SocketData.config.categorias_traduc ")
+		.title-categ-container
+			| {{ categoria_traduc.nombre }}
+
+		.participantes-container
+
+
+			ul
+				li.md-whiteframe-1dp.sc-cliente(ng-repeat="cliente in SocketData.clientes | filter:{'registrado':true}" ng-click="clickedClt($event, cliente)"  
+					ng-dblclick="showSidenavEditUsu(cliente)" ng-mouseover="sobreClt($event, cliente)" ng-class="{'seleccionado': cliente.seleccionado, 'cursor-unselect':deseleccionar }")
+					.sc-cliente-imgs
+						
+						img.img-perfil(ng-src="{{imagesPath + cliente.usuario.imagen_nombre}}" alt="{{cliente.usuario.username}}")
+						
+						img.img-entidad(ng-class="{'showing-logo-ent-part': SocketData.config.show_logo_entidad_partici}" ng-src="{{ imagesPath + cliente.usuario.entidad.logo}}" alt="{{cliente.usuario.username}}")
+						md-tooltip {{ cliente.usuario.entidad.nombre }}
+
+					.sc-info 
+						h5.name.nombresellipsis {{cliente.usuario.nombres}} {{cliente.usuario.apellidos}}
+							md-tooltip {{cliente.usuario.nombres}} {{cliente.usuario.apellidos}}
+						.alias-enti {{cliente.usuario.entidad.alias}}
+
+
+

@@ -6,7 +6,7 @@
 				div(ng-switch on="eventoactual.gran_final" style="text-align: center;")
 					span(ng-switch-when="1")
 						h3.text-light(ng-bind-html="'GRAN_FINAL' | translate") ¡Gran final!
-						md-whiteframe.md-whiteframe-z2(layout layout-align="center center")
+						md-whiteframe.md-whiteframe-z2(ng-show="user.categsel" layout layout-align="center center")
 							//h2(ng-repeat="categoriaking in user | categsInscritasDeUsuario:categorias_king:user.idioma_main_id | filter:{selected:true} " style="margin-bottom: 20px;")
 								| {{categoriaking.nombre}} 
 							h2(ng-bind-html="categoriaSelect().nombre" style="margin-bottom: 20px;")

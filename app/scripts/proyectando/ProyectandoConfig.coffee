@@ -20,6 +20,31 @@ angular.module('WissenSystem')
 			})
 
 
+
+			.state('proyectando.participantes', { #- Estado admin.
+				url: '^/participantes'
+				views:
+					'contenido_panel':
+						templateUrl: "#{App.views}proyectando/participantes.tpl.html"
+						controller: 'ParticipantesCtrl'
+
+				data: 
+					pageTitle: 'Participantes'
+					#needed_permissions: [PERMISSIONS.can_edit_usuarios]
+			})
+
+			.state('proyectando.question', { #- Estado admin.
+				url: '^/question'
+				views:
+					'contenido_panel':
+						templateUrl: "#{App.views}proyectando/question.tpl.html"
+						controller: 'SCQuestionCtrl'
+
+				data: 
+					pageTitle: 'Pregunta'
+					#needed_permissions: [PERMISSIONS.can_edit_usuarios]
+			})
+
 		$translateProvider.preferredLanguage('ES');
 
 
@@ -110,3 +135,6 @@ angular.module('WissenSystem')
 
 		return
 	]
+
+
+

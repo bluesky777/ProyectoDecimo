@@ -837,11 +837,76 @@ md-sidenav md-input-container{
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   background: #3f51b5;
   transition: 0.25s ease-in;
-  position: relative;
+  position: absolute;
   height: 55px;
   top: -57px;
 }
 .container-proyector:hover .proyector-head{
-  top: 0px;
+  //top: 0px; // Descomentaré esto cuando termine de programar para que no me moleste
 }
+.page-wrap.proyectando{
+  overflow: auto;
+}
+.categorias-container{
+  white-space: nowrap;
+  left: 0px;
+  position: relative;
+  transition: all 0.3s;
+}
+.categ-container{
+  width: 270px;
+  display: inline-block;
+  margin-right: 5px;
+  
+
+  .title-categ-container{
+    font-size: 14pt;
+    text-align: center;
+    font-weight: bold;
+  }
+  .sc-cliente{
+    margin-bottom: 5px;
+    width: 100%;
+    display: inline-block;
+  }
+
+
+}
+.participantes-container ul{
+  padding: 0px;
+  white-space: normal;
+}
+
+.sc-cliente-imgs{
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  position: relative;
+  float: left;
+  overflow: hidden;
+
+  .img-entidad, .img-perfil{
+    width: 100%; /* or any custom size */
+    height: 100%; 
+    object-fit: cover;
+    transition: 0.2s;
+    position: absolute;
+  }
+  .img-entidad{
+    left: -60px;
+  }
+  .img-perfil{
+    left: 0px;
+  }
+}
+.sc-info{
+  display: inline-block;
+  width: 200px;
+  float: left;
+  padding-left: 4px;
+}
+.showing-logo-ent-part{
+  left: 0px!important;
+}
+
 
