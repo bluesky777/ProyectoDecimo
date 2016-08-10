@@ -37,10 +37,10 @@ angular.module('WissenSystem')
 
 			#console.log $scope.$parent.USER, $scope.tiempo, ($scope.tiempo*60000), $scope.duracion_exam < ($scope.tiempo*60000)
 
-			if $scope.gran_final
+			if $scope.$parent.USER.evento_actual.gran_final
 
 				if $rootScope.examen_actual.duracion_preg < $scope.tiempo
-
+					$scope.stop()
 					$scope.$emit 'tiempo_preg_terminado'
 
 			else

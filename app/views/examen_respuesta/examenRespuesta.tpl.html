@@ -10,12 +10,13 @@
         <div class="progreso-preguntas"><span style="color: #aaa;">{{ pregunta_actual }}</span>
           <md-progress-linear md-mode="determinate" value="{{pregunta_actual_porc}}"></md-progress-linear>
           <div class="total-pregs">{{ total_preguntas }}</div>
-        </div><br><br>
-        <div ng-repeat="pregunta in examen_actual.preguntas | orderBy:'orden' | preguntaActual:pregunta_actual ">
-          <view-pregunta-examen ng-if="(pregunta.tipo_pregunta || !examen_actual.one_by_one) &amp;&amp; !pregunta.terminado" preguntaking="pregunta" indice="pregunta_actual" idiomapreg="USER.idioma_main_id"></view-pregunta-examen>
-          <view-grupo-examen ng-if="(!pregunta.tipo_pregunta || !examen_actual.one_by_one) &amp;&amp; !pregunta.terminado" grupoking="pregunta" indice="pregunta_actual" idiomapreg="USER.idioma_main_id"></view-grupo-examen>
-          <h4 ng-show="pregunta.terminado">Examen terminado.</h4>
-        </div>
+        </div><br><br><span ng-if="!waiting_question">
+          <div ng-repeat="pregunta in examen_actual.preguntas | orderBy:'orden' | preguntaActual:pregunta_actual ">
+            <view-pregunta-examen ng-if="(pregunta.tipo_pregunta || !examen_actual.one_by_one) &amp;&amp; !pregunta.terminado" preguntaking="pregunta" indice="pregunta_actual" idiomapreg="USER.idioma_main_id"></view-pregunta-examen>
+            <view-grupo-examen ng-if="(!pregunta.tipo_pregunta || !examen_actual.one_by_one) &amp;&amp; !pregunta.terminado" grupoking="pregunta" indice="pregunta_actual" idiomapreg="USER.idioma_main_id"></view-grupo-examen>
+            <h4 ng-show="pregunta.terminado">Examen terminado.</h4>
+          </div></span><span ng-if="waiting_question">
+          <h4>Espera la siguiente pregunta</h4></span>
         <div ng-show="!examen_actual.one_by_one" style="text-align: center;">
           <md-button type="submit" ng-click="guardando()" class="md-default">Guardar y continuar</md-button>
           <md-button ng-click="finalizar_examen()" class="md-primary">Finalizar</md-button>

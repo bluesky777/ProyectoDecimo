@@ -22,7 +22,7 @@ angular.module('WissenSystem', [
   'ngFileUpload'
   'FBAngular'
   'ngMaterial'
-  'froala'
+  'textAngular'
   'angular-svg-round-progress'
   'qrScanner'
   'ja.qr'

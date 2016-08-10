@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.controller('ExamenRespuestaCtrl', ['$scope', 'Restangular', 'toastr', '$filter', 'AuthService', '$state', '$uibModal', 'App', '$rootScope', 'resolved_user', '$interval', ($scope, Restangular, toastr, $filter, AuthService, $state, $modal, App, $rootScope, resolved_user, $interval)->
+.controller('ExamenRespuestaCtrl', ['$scope', 'Restangular', 'toastr', '$filter', 'AuthService', '$state', '$uibModal', 'App', '$rootScope', 'resolved_user', '$interval', '$timeout', ($scope, Restangular, toastr, $filter, AuthService, $state, $modal, App, $rootScope, resolved_user, $interval, $timeout)->
 
 	$scope.USER = resolved_user
 	$scope.imagesPath = App.images
@@ -8,6 +8,7 @@ angular.module('WissenSystem')
 	$scope.pregunta_actual_porc = 0
 	$scope.total_preguntas = 0
 	$scope.cambiarTema('theme-one')
+	$scope.waiting_question = false
 
 	AuthService.verificar_acceso()
 
@@ -40,10 +41,18 @@ angular.module('WissenSystem')
 		# *************************************************
 
 		$scope.$on 'respuesta_elegida', (event, indice)->
-			$scope.pregunta_actual = $filter('noPregActual')($scope.examen_actual.preguntas)
-			$scope.pregunta_actual_porc = $scope.pregunta_actual / $scope.total_preguntas * 100
 
-			$scope.check_por_terminado()
+			if $scope.USER.evento_actual.gran_final
+				$scope.waiting_question = true
+			$timeout(()->
+				$scope.pregunta_actual = $filter('noPregActual')($scope.examen_actual.preguntas)
+				$scope.pregunta_actual_porc = $scope.pregunta_actual / $scope.total_preguntas * 100
+
+				$scope.check_por_terminado()
+
+			, 500)
+
+			
 
 
 
@@ -57,15 +66,21 @@ angular.module('WissenSystem')
 
 
 
+		$rootScope.$on 'next_question', (event)->
+			$scope.waiting_question = false
+
+		$rootScope.$on 'prev_question', (event)->
+			$scope.waiting_question = false
+
+
+
+
 
 		# *************************************************
 		# Configuramos tiempo y cantidad
 		# *************************************************
 
-		$scope.tiempo_max = if $scope.USER.gran_final then $rootScope.examen_actual.duracion_preg else $rootScope.examen_actual.duracion_exam
-		$scope.tiempo_max = $scope.tiempo_max * 60
-		#console.log '$scope.tiempo_max', $scope.tiempo_max, $rootScope.examen_actual
-
+		$scope.tiempo_max = if $scope.USER.evento_actual.gran_final then $rootScope.examen_actual.duracion_preg else ($rootScope.examen_actual.duracion_exam*60)
 
 
 		$scope.pregunta_actual = $filter('noPregActual')($scope.examen_actual.preguntas)

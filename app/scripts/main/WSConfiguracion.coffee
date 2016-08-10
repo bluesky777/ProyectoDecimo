@@ -2,7 +2,7 @@ angular.module('WissenSystem')
 
 
 # Configuración principal de nuestra aplicación.
-.config(['$cookiesProvider', '$stateProvider', '$urlRouterProvider', '$httpProvider', '$locationProvider', 'App', 'PERMISSIONS', 'RestangularProvider', '$intervalProvider', '$rootScopeProvider', 'USER_ROLES', 'toastrConfig', 'uiSelectConfig', ($cookies, $state, $urlRouter, $httpProvider, $locationProvider, App, PERMISSIONS, Restangular, $intervalProvider, $rootScopeProvider, USER_ROLES, toastrConfig, uiSelectConfig)->
+.config(['$cookiesProvider', '$stateProvider', '$urlRouterProvider', '$httpProvider', '$locationProvider', 'App', 'PERMISSIONS', 'RestangularProvider', '$intervalProvider', '$rootScopeProvider', 'USER_ROLES', 'toastrConfig', 'uiSelectConfig', '$provide', ($cookies, $state, $urlRouter, $httpProvider, $locationProvider, App, PERMISSIONS, Restangular, $intervalProvider, $rootScopeProvider, USER_ROLES, toastrConfig, uiSelectConfig, $provide)->
 
 	Restangular.setBaseUrl App.Server + 'api/' # Url a la que se harán todas las llamadas.
 
@@ -77,6 +77,10 @@ angular.module('WissenSystem')
 
 	$rootScopeProvider.bigLoader = true
 
+	$provide.decorator('taOptions', ['taRegisterTool', '$delegate', (taRegisterTool, taOptions)->
+		taOptions.forceTextAngularSanitize = false
+		return taOptions
+	])
 
 
 

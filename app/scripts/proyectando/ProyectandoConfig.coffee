@@ -45,6 +45,18 @@ angular.module('WissenSystem')
 					#needed_permissions: [PERMISSIONS.can_edit_usuarios]
 			})
 
+			.state('proyectando.puntaje_particip', { #- Estado admin.
+				url: '^/puntaje_particip'
+				views:
+					'contenido_panel':
+						templateUrl: "#{App.views}proyectando/puntajeParticip.tpl.html"
+						controller: 'SCPuntajeParticipCtrl'
+
+				data: 
+					pageTitle: 'Puntaje Participante'
+					#needed_permissions: [PERMISSIONS.can_edit_usuarios]
+			})
+
 		$translateProvider.preferredLanguage('ES');
 
 

@@ -5,7 +5,7 @@ angular.module('WissenSystem')
 .controller('PreguntasCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 'preguntasServ', '$filter', 
 	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr, preguntasServ, $filter) ->
 
-
+		$scope.myModel = "";
 		$scope.preguntas_king = []
 		$scope.evalu_seleccionada = {id: -1}
 

@@ -29,18 +29,20 @@
 				br
 				br
 
-				
-				div(ng-repeat="pregunta in examen_actual.preguntas | orderBy:'orden' | preguntaActual:pregunta_actual ")
-					
-					view-pregunta-examen(ng-if="(pregunta.tipo_pregunta || !examen_actual.one_by_one) && !pregunta.terminado" 
-						preguntaking="pregunta" indice="pregunta_actual" idiomapreg="USER.idioma_main_id" )
+				span(ng-if="!waiting_question")
+					div(ng-repeat="pregunta in examen_actual.preguntas | orderBy:'orden' | preguntaActual:pregunta_actual ")
+						
+						view-pregunta-examen(ng-if="(pregunta.tipo_pregunta || !examen_actual.one_by_one) && !pregunta.terminado" 
+							preguntaking="pregunta" indice="pregunta_actual" idiomapreg="USER.idioma_main_id" )
 
 
-					view-grupo-examen(ng-if="(!pregunta.tipo_pregunta || !examen_actual.one_by_one) && !pregunta.terminado" 
-						grupoking="pregunta" indice="pregunta_actual" idiomapreg="USER.idioma_main_id" )
+						view-grupo-examen(ng-if="(!pregunta.tipo_pregunta || !examen_actual.one_by_one) && !pregunta.terminado" 
+							grupoking="pregunta" indice="pregunta_actual" idiomapreg="USER.idioma_main_id" )
 
-					h4(ng-show="pregunta.terminado") Examen terminado.
+						h4(ng-show="pregunta.terminado") Examen terminado.
 
+				span(ng-if="waiting_question")
+					h4 Espera la siguiente pregunta
 					
 
 				div(ng-show="!examen_actual.one_by_one" style="text-align: center;")

@@ -2,14 +2,14 @@
 	.col-sm-12.col-md-12
 		
 		.panel.panel-default.panel-hovered.panel-stacked.mb20
-			.panel-heading(layout)
+			.panel-heading(layout style="padding: 0; padding-bottom: 5px;")
 
-				md-input-container(layout="row" layout-align="start center" style="padding-bottom: 0px; margin-top: -10px;")
+				md-input-container(layout="row" layout-align="start center" style="padding-bottom: 0px; margin-top: 2px;    margin-bottom: 4px;")
 					md-select(placeholder="Idioma" ng-model="idiomaPreg.selected")
 						md-option(ng-repeat="idioma in evento_actual.idiomas" value="{{idioma.id}}") {{idioma.original}}
 
 
-				md-input-container(layout="row" layout-align="start center" style="padding-bottom: 0px; margin-top: -10px;")
+				md-input-container(layout="row" layout-align="start center" style="padding-bottom: 0px; margin-top: 2px;    margin-bottom: 4px;")
 					md-select(placeholder="Categoría" ng-model="categoria" ng-change="traerPreguntasYEvaluaciones()")
 						span(ng-repeat="catking in categorias")
 							md-option(ng-repeat="cat_traduc in catking.categorias_traducidas | catsByIdioma:idiomaPreg.selected" 
@@ -17,7 +17,7 @@
 								|  {{cat_traduc.nombre}}
 
 
-				md-input-container(layout="row" layout-align="start center" style="padding-bottom: 0px; margin-top: -10px;")
+				md-input-container(layout="row" layout-align="start center" style="padding-bottom: 0px; margin-top: 2px;    margin-bottom: 4px;")
 					md-select(placeholder="Evaluaciones" ng-model="evaluacion_id" ng-change="traerPreguntasDeEvaluacion()")
 						md-option(ng-repeat="evalu in evaluaciones" value="{{evalu.id}}") 
 							|  {{evalu.id}} - {{evalu.descripcion}}
@@ -33,7 +33,7 @@
 				input.form-control.ancho-200(type="text" ng-model="preg_buscar" placeholder="{{ 'BUSCAR_PLACEHOLDER' | translate }}")
 
 			.panel-body(ng-show="evaluacion_id!='sin_asignar'")
-
+				
 				div(ng-repeat="pregunta_king in preguntas_king | filter:preg_buscar | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion:evaluacion_id ")
 					div(ng-show="pregunta_king.editando")
 						br

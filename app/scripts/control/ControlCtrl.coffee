@@ -140,6 +140,9 @@ angular.module('WissenSystem')
 	$scope.showQuestion = ()->
 		MySocket.sc_show_question($scope.cmdNoPregSelected, $scope.cmdPreguntaSelected)
 
+	$scope.showPuntajeParticip = ()->
+		MySocket.sc_show_puntaje_particip($scope.cmdCategSelected)
+
 	$scope.cmdClickCategSelected = (categoria)->
 		$scope.cmdCategSelected = categoria
 		$scope.cmdPreguntasTraduc = []
@@ -160,6 +163,9 @@ angular.module('WissenSystem')
 
 	$scope.toggleShowLogoEntidadParticipantes = ()->
 		MySocket.sc_show_logo_entidad_partici(!$scope.cmdShowLogoEntidadPartici) # El modelo no cambia hasta salir de esta función
+
+	$scope.nextQuestion = ()->
+		MySocket.sc_next_question() # El modelo no cambia hasta salir de esta función
 
 
 	MySocket.get_clts()

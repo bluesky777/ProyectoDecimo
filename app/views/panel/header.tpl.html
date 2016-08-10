@@ -19,42 +19,33 @@
   <li ng-click="goFullScreen()" class="fullscreen hidden-xs"><a href="" ng-click="reload(setFullScreen())"><i class="fa fa-arrows-alt"></i>
       <md-tooltip>Ver en pantalla completa</md-tooltip></a></li>
   <!-- notification drop-->
-  <li dropdown="" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')" class="notify-drop hidden-xs dropdown"><a href="" dropdown-toggle=""><i class="fa fa-laptop"></i><span ng-bind=" evento_actual.alias"></span>
-      <!--span.badge.badge-danger.badge-xs.circle {{ USER.eventos.length }}--></a>
-    <div custom-scrollbar="" class="panel panel-default dropdown-menu">
-      <div class="panel-heading">Selecciona el evento que deseas<a ui-sref="panel.eventos" class="right btn btn-xs btn-pink mt-3">Eventos</a></div>
-      <div class="panel-body">
-        <ul class="list-unstyled">
-          <li ng-repeat="evento in USER.eventos" class="clearfix">
-            <!--a(href="" ng-click="set_system_event(evento)")
-            span.fa.fa-laptop.left(ng-class="(evento.actual) ? 'bg-primary': 'bg-success' ")
-            .desc
-            	strong {{ evento.nombre }}
-            	p.small.text-muted(ng-show="evento.actual") Actual
-            
-            --><a href="" ng-click="set_system_event(evento)" style="color: #fff" ng-hide="evento.actual" class="right btn btn-xs btn-purple mt-3">Actual
-              <md-tooltip>Establecer como evento actual</md-tooltip></a><a href="" ng-click="set_user_event(evento)"><span ng-class="(evento.id==USER.evento_selected_id) ? 'bg-primary': 'bg-success' " class="fa fa-laptop left"></span>
-              <div class="desc"><strong>{{ evento.nombre }}</strong>
-                <p ng-show="evento.actual" class="small text-muted">Actual</p>
-              </div></a>
-          </li>
-        </ul>
-      </div>
-    </div>
+  <li dropdown="" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')" class="notify-drop hidden-xs dropdown">
+    <md-menu><a href="" ng-click="openMenu($mdOpenMenu, $event)"><i class="fa fa-laptop"></i><span ng-bind=" evento_actual.alias"></span></a>
+      <md-menu-content style="margin-top: 40px;" width="3">
+        <md-menu-item ng-repeat="evento in USER.eventos">
+          <md-button ng-click="set_user_event(evento)"><span ng-class="(evento.id==USER.evento_selected_id) ? 'bg-primary': 'bg-success' " class="fa fa-laptop left icono-submenu"></span>
+            <div class="desc"><strong>{{ evento.nombre }}</strong>
+              <p ng-show="evento.actual" style="color: #3f51b5; font-weight: bold;" class="small text-muted">Actual</p>
+            </div>
+          </md-button><a href="" ng-click="set_system_event(evento)" style="color: #fff; width: 60px; margin-top: 10px; height: 30px;line-height: 25px;" ng-hide="evento.actual" class="right btn btn-xs btn-purple">Actual
+            <md-tooltip>Establecer como evento actual</md-tooltip></a>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
   </li>
   <!-- Idiomas-->
-  <li dropdown="" class="notify-drop hidden-xs dropdown"><a href="" dropdown-toggle=""><i class="fa fa-flag-checkered"></i></a>
-    <div custom-scrollbar="" class="panel panel-default dropdown-menu">
-      <div class="panel-heading">{{ 'IDIOMA_MENU' | translate }}</div>
-      <div class="panel-body">
-        <ul class="list-unstyled">
-          <li ng-repeat="idioma in idiomas_usados" class="clearfix"><a href="" ng-click="cambiarIdioma(idioma)"><span ng-class="(idioma.actual) ? 'bg-primary': 'bg-success' " class="fa fa-flag left"></span>
-              <div class="desc"><strong>{{idioma.original}} ({{idioma.abrev}}) - {{idioma.nombre}}</strong>
-                <p ng-show="idioma.actual" class="small text-muted">Actual</p>
-              </div></a></li>
-        </ul>
-      </div>
-    </div>
+  <li dropdown="" class="notify-drop hidden-xs dropdown">
+    <md-menu><a href="" ng-click="openMenu($mdOpenMenu, $event)"><i class="fa fa-flag-checkered"></i></a>
+      <md-menu-content style="margin-top: 40px;" width="3">
+        <md-menu-item ng-repeat="idioma in idiomas_usados">
+          <md-button ng-click="cambiarIdioma(idioma)"><span ng-class="(idioma.actual) ? 'bg-primary': 'bg-success' " class="fa fa-flag left icono-submenu"></span>
+            <div class="desc"><strong>{{idioma.original}} ({{idioma.abrev}}) - {{idioma.nombre}}</strong>
+              <p ng-show="idioma.actual" class="small text-muted">Actual</p>
+            </div>
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
   </li>
 </ul>
 <ul class="list-unstyled right-elems ng-scope">

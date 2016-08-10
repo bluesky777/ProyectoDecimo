@@ -1,10 +1,10 @@
 
 <div class="categorias-container"> 
-  <div ng-repeat="categoria_traduc in SocketData.config.categorias_traduc " class="categ-container">
+  <div ng-repeat="categoria_traduc in SocketData.config.categorias_traduc " ng-class="{'categ-retirada': participantesDeCategoria(categoria_traduc).length == 0}" class="categ-container">
     <div class="title-categ-container">{{ categoria_traduc.nombre }}</div>
     <div class="participantes-container">
       <ul>
-        <li ng-repeat="cliente in SocketData.clientes | filter:{'registrado':true}" ng-click="clickedClt($event, cliente)" ng-dblclick="showSidenavEditUsu(cliente)" ng-mouseover="sobreClt($event, cliente)" ng-class="{'seleccionado': cliente.seleccionado, 'cursor-unselect':deseleccionar }" class="md-whiteframe-1dp sc-cliente">
+        <li ng-repeat="cliente in SocketData.clientes | filter:{'registrado':true, 'categsel':categoria_traduc.categoria_id }" ng-class="{'answered_correctly': cliente.evaluacion.answered_correctly, 'answered_correctly': cliente.evaluacion_actual.answered_correctly }" class="md-whiteframe-1dp sc-cliente">
           <div class="sc-cliente-imgs"><img ng-src="{{imagesPath + cliente.usuario.imagen_nombre}}" alt="{{cliente.usuario.username}}" class="img-perfil"><img ng-class="{'showing-logo-ent-part': SocketData.config.show_logo_entidad_partici}" ng-src="{{ imagesPath + cliente.usuario.entidad.logo}}" alt="{{cliente.usuario.username}}" class="img-entidad">
             <md-tooltip>{{ cliente.usuario.entidad.nombre }}</md-tooltip>
           </div>

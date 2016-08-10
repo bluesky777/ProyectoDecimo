@@ -41,7 +41,7 @@ angular.module('WissenSystem')
 				Perfil.setResourceId message.yo.resourceId
 				client = SocketData.cliente message.yo.resourceId
 				if client
-					SocketData.cambiar_registro message.yo
+					SocketData.actualizar_clt message.yo
 				else
 					SocketData.clientes.push(message.yo)
 				
@@ -52,13 +52,13 @@ angular.module('WissenSystem')
 			when "registrado"
 				client = SocketData.cliente message.clt.resourceId
 				if client
-					SocketData.cambiar_registro message.clt
+					SocketData.actualizar_clt message.clt
 				else
 					SocketData.clientes.push(message.clt)
 					$rootScope.$emit 'clt_registrado', {clientes: SocketData.clientes }
 
 			when "unregistered"
-				SocketData.cambiar_registro message.client
+				SocketData.actualizar_clt message.client # Viene el cliente con sus propiedades ya arregladas para unregistrar
 
 			when "take_clts"
 				SocketData.clientes = message.clts
@@ -108,12 +108,17 @@ angular.module('WissenSystem')
 			when "change_the_categ_selected"
 				client = SocketData.cliente Perfil.getResourceId()
 				client.categsel = message.categsel
-				SocketData.cambiar_categsel client, message.categsel
+				SocketData.actualizar_clt client, message.categsel
+				
+			when "change_a_categ_selected"
+				client = SocketData.cliente message.resourceId
+				client.categsel = message.categsel
+				SocketData.actualizar_clt client, message.categsel
 				
 			when "a_categ_selected_change"
 				client = SocketData.cliente message.resourceId
 				client.categsel = message.categsel
-				SocketData.cambiar_categsel client
+				SocketData.actualizar_clt client
 				
 			when "empezar_examen"
 				$rootScope.$emit 'empezar_examen'
@@ -130,6 +135,29 @@ angular.module('WissenSystem')
 
 			when "sc_show_logo_entidad_partici"
 				SocketData.config.show_logo_entidad_partici = message.valor
+
+			when "sc_show_puntaje_particip"
+				SocketData.config.cliente_to_show = message.cliente
+				$state.go('proyectando.puntaje_particip')
+
+			when "sc_answered" # Me avisan que alguien respondió algo
+				client = SocketData.cliente message.resourceId
+				client.answered = message.valor
+				SocketData.actualizar_clt client
+
+			when "next_question" # Me ordenan que vaya a la siguente pregunta
+				if $state.is 'panel.examen_respuesta'
+					client = SocketData.cliente message.resourceId
+					client.answered = 'waiting'
+					SocketData.actualizar_clt client
+				$rootScope.$emit 'next_question'
+
+			when "prev_question" # Me ordenan que vaya a la siguente pregunta
+				if $state.is 'panel.examen_respuesta'
+					client = SocketData.cliente message.resourceId
+					client.answered = 'waiting'
+					SocketData.actualizar_clt client
+				$rootScope.$emit 'prev_question'
 
 
 					
@@ -201,13 +229,13 @@ angular.module('WissenSystem')
 	change_a_categ_selected = (resourceId, categoria_id)->
 		client = SocketData.cliente resourceId
 		client.categsel = categoria_id
-		SocketData.cambiar_categsel client, categoria_id
+		SocketData.actualizar_clt client, categoria_id
 		dataStream.send({ comando: 'change_a_categ_selected',  resourceId: resourceId, categsel: categoria_id })
 
 	change_my_categ_selected = (categoria_id)->
 		client = SocketData.cliente Perfil.getResourceId()
 		client.categsel = categoria_id
-		SocketData.cambiar_categsel client, categoria_id
+		SocketData.actualizar_clt client, categoria_id
 		dataStream.send({ comando: 'warn_my_categ_selected', categsel: categoria_id })
 
 	empezar_examen = ()->
@@ -227,6 +255,15 @@ angular.module('WissenSystem')
 
 	sc_show_logo_entidad_partici = (valor)->
 		dataStream.send({ comando: 'sc_show_logo_entidad_partici', valor: valor })
+
+	sc_show_puntaje_particip = (client)->
+		dataStream.send({ comando: 'sc_show_puntaje_particip', cliente: client })
+
+	sc_answered = (resourceId, valor)->
+		dataStream.send({ comando: 'sc_answered', resourceId: resourceId, valor: valor })
+
+	sc_next_question = ()->
+		dataStream.send({ comando: 'next_question' })
 
 
 
@@ -261,6 +298,9 @@ angular.module('WissenSystem')
 		sc_show_question:			sc_show_question
 		sc_reveal_answer:			sc_reveal_answer
 		sc_show_logo_entidad_partici:	sc_show_logo_entidad_partici
+		sc_show_puntaje_particip:	sc_show_puntaje_particip
+		sc_answered:				sc_answered
+		sc_next_question:			sc_next_question
 	}
 
 	return methods
@@ -288,18 +328,10 @@ angular.module('WissenSystem')
 		return false
 
 
-	cambiar_registro = (client)->
+	actualizar_clt = (client, propiedad)->
 		for clt, indice in @clientes
 			if clt.resourceId == client.resourceId
-				@clientes.splice indice, 1
-				@clientes.splice indice, 0, client
-		return false
-
-	cambiar_categsel = (cliente_new)->
-		for clt, indice in @clientes
-			if clt.resourceId == cliente_new.resourceId
-				@clientes.splice indice, 1
-				@clientes.splice indice, 0, cliente_new
+				@clientes.splice indice, 1, client
 
 		return false
 
@@ -326,9 +358,8 @@ angular.module('WissenSystem')
 		desconectar: 				desconectar
 		token_auth:					token_auth
 		cliente:					cliente
-		cambiar_registro:			cambiar_registro
 		conectado:					conectado
-		cambiar_categsel:			cambiar_categsel
+		actualizar_clt:				actualizar_clt
 		config:						config
 	}
 

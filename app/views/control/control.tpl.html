@@ -65,7 +65,7 @@
                 <div class="md-ripple-container"></div>
               </button>
               <md-menu-content width="4">
-                <md-menu-item ng-repeat="categoriatrad in cateorias_traducidas">
+                <md-menu-item ng-repeat="categoriatrad in categorias_traducidas">
                   <md-button ng-click="cambiarCategSel(cliente, categoriatrad)">{{ categoriatrad.nombre }}</md-button>
                 </md-menu-item>
                 <md-menu-divider></md-menu-divider>
@@ -146,11 +146,13 @@
           <option ng-repeat="pregunta in cmdPreguntasTraduc" ng-model="cmdPreguntaSelected" ng-click="cmdClickPreguntaSelected(pregunta, $index)" ng-bind-html="pregunta.enunciado"> </option>
         </select>
         <button ng-click="showQuestion()" class="btn btn-default">Mostrar pregunta</button>
+        <button ng-click="showPuntajeParticip()" class="btn btn-default">Mostrar puntaje</button>
         <md-checkbox ng-click="toggleShowLogoEntidadParticipantes()" ng-model="cmdShowLogoEntidadPartici" aria-label="Mostrar logos">Mostrar logo entidades</md-checkbox>
       </div>
     </div>
     <md-button ng-click="empezarExamen()" class="md-raised">Empezar exámen</md-button>
     <md-button ng-click="showParticipantes()" class="md-raised">Mostrar participantes</md-button>
+    <button ng-click="nextQuestion()" class="btn btn-primary">Siguiente pregunta</button>
   </div>
 </div>
 <div class="panel panel-default panel-hovered panel-stacked mb20">

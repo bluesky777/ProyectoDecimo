@@ -25,53 +25,40 @@ ul.list-unstyled.left-elems
 
 	// notification drop
 	li.notify-drop.hidden-xs.dropdown(dropdown="" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')")
-		a(href="" dropdown-toggle="")
-			i.fa.fa-laptop
-			span(ng-bind=" evento_actual.alias")
-			//span.badge.badge-danger.badge-xs.circle {{ USER.eventos.length }}
-		
-		.panel.panel-default.dropdown-menu(custom-scrollbar="")
-			.panel-heading Selecciona el evento que deseas
-				a.right.btn.btn-xs.btn-pink.mt-3(ui-sref="panel.eventos") Eventos
-			.panel-body
-				ul.list-unstyled
-					li.clearfix(ng-repeat="evento in USER.eventos")
-						
+		md-menu
+			a(href="" ng-click="openMenu($mdOpenMenu, $event)")
+				i.fa.fa-laptop
+				span(ng-bind=" evento_actual.alias")
+			md-menu-content(style="margin-top: 40px;" width="3")
+			
+				md-menu-item(ng-repeat="evento in USER.eventos")
 
-						//a(href="" ng-click="set_system_event(evento)")
-							span.fa.fa-laptop.left(ng-class="(evento.actual) ? 'bg-primary': 'bg-success' ")
-							.desc
-								strong {{ evento.nombre }}
-								p.small.text-muted(ng-show="evento.actual") Actual
+					md-button(ng-click="set_user_event(evento)")
+						span.fa.fa-laptop.left.icono-submenu(ng-class="(evento.id==USER.evento_selected_id) ? 'bg-primary': 'bg-success' ")
+						.desc
+							strong {{ evento.nombre }}
+							p.small.text-muted(ng-show="evento.actual" style="color: #3f51b5; font-weight: bold;") Actual
 						
-						a.right.btn.btn-xs.btn-purple.mt-3(href="" ng-click="set_system_event(evento)" style="color: #fff" ng-hide="evento.actual")
-							| Actual
-							md-tooltip Establecer como evento actual
-
-						a(href="" ng-click="set_user_event(evento)")
-							span.fa.fa-laptop.left(ng-class="(evento.id==USER.evento_selected_id) ? 'bg-primary': 'bg-success' ")
-							.desc
-								strong {{ evento.nombre }}
-								p.small.text-muted(ng-show="evento.actual") Actual
-						
+					a.right.btn.btn-xs.btn-purple(href="" ng-click="set_system_event(evento)" style="color: #fff; width: 60px; margin-top: 10px; height: 30px;line-height: 25px;" ng-hide="evento.actual")
+						| Actual
+						md-tooltip Establecer como evento actual
+					
 
 
 
 	// Idiomas
 	li.notify-drop.hidden-xs.dropdown(dropdown="")
-		a(href="" dropdown-toggle="")
-			i.fa.fa-flag-checkered
-		
-		.panel.panel-default.dropdown-menu(custom-scrollbar="")
-			.panel-heading {{ 'IDIOMA_MENU' | translate }}
-			.panel-body
-				ul.list-unstyled
-					li.clearfix(ng-repeat="idioma in idiomas_usados")
-						a(href="" ng-click="cambiarIdioma(idioma)")
-							span.fa.fa-flag.left(ng-class="(idioma.actual) ? 'bg-primary': 'bg-success' ")
-							.desc
-								strong {{idioma.original}} ({{idioma.abrev}}) - {{idioma.nombre}}
-								p.small.text-muted(ng-show="idioma.actual") Actual
+		md-menu
+			a(href="" ng-click="openMenu($mdOpenMenu, $event)")
+				i.fa.fa-flag-checkered
+			
+			md-menu-content(style="margin-top: 40px;" width="3")
+				md-menu-item(ng-repeat="idioma in idiomas_usados")
+					md-button(ng-click="cambiarIdioma(idioma)")
+						span.fa.fa-flag.left.icono-submenu(ng-class="(idioma.actual) ? 'bg-primary': 'bg-success' ")
+						.desc
+							strong {{idioma.original}} ({{idioma.abrev}}) - {{idioma.nombre}}
+							p.small.text-muted(ng-show="idioma.actual") Actual
 
 
 ul.list-unstyled.right-elems.ng-scope
