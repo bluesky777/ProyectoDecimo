@@ -43,7 +43,7 @@ angular.module('WissenSystem', [
       localStorage.setItem('dominio', ip)
 
     else
-      dominio = localStorage.getItem('dominio') + '/'
+      dominio = 'http://' + localStorage.getItem('dominio') + '/'
   else
     alert 'El navegador no soporta LocalStorage'
 
@@ -51,15 +51,15 @@ angular.module('WissenSystem', [
   
   console.log 'hostname: ', location.hostname
   
-  if(location.hostname.match('lalvirtual'))
+  if(location.hostname.match('lalvirtual.com'))
     dominio = 'http://lalvirtual.com/wissen/'
     
-  if(location.hostname.match('olimpiadaslibertad'))
+  else if(location.hostname.match('olimpiadaslibertad.com'))
     dominio = 'http://olimpiadaslibertad.com/'
   
-  server = 'http://' + dominio + 'wissenLaravel/public/'
+  server = dominio + 'wissenLaravel/public/'
   #server = ''
-  frontapp = dominio + 'ProyectoDecimo/'
+  frontapp = dominio + 'ws_dist/'
 
 
 
