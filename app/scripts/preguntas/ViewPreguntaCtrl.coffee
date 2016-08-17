@@ -2,7 +2,7 @@ angular.module('WissenSystem')
 
 .controller('ViewPreguntaCtrl', ['$scope', 'App', 'Restangular', '$state', '$cookies', '$rootScope', '$mdToast', '$uibModal', '$filter',
 	($scope, App, Restangular, $state, $cookies, $rootScope, $mdToast, $modal, $filter) ->
-		
+
 		$scope.elegirOpcion = (pregunta, opcion)->
 			angular.forEach pregunta.opciones, (opt)->
 				opt.elegida = false
@@ -25,6 +25,25 @@ angular.module('WissenSystem')
 			})
 			modalInstance.result.then( (elem)->
 				#$scope.$emit 'preguntaAsignada', elem
+				console.log 'Resultado del modal: ', elem
+			)
+
+
+		$scope.cambiarCategoria = (pregunta_king)->
+			modalInstance = $modal.open({
+				templateUrl: App.views + 'preguntas/cambiarCategoria.tpl.html'
+				controller: 'CambiarCategoriaCtrl'
+				resolve: 
+					pregunta: ()->
+						pregunta_king
+					categorias: ()->
+						$scope.$parent.categorias
+					idiomaPreg: ()->
+						$scope.$parent.idiomaPreg
+			})
+			modalInstance.result.then( (elem)->
+				#$scope.$emit 'preguntaAsignada', elem
+				pregunta_king.categoria_id = elem
 				console.log 'Resultado del modal: ', elem
 			)
 
@@ -110,6 +129,41 @@ angular.module('WissenSystem')
 			toastr.warning 'No se pudo asignar la pregunta.', 'Problema'
 			console.log 'Error asignando pregunta: ', r2
 			$scope.asignando = false
+		)
+		
+
+	$scope.cancel = ()->
+		$modalInstance.dismiss('cancel')
+
+])
+
+
+
+.controller('CambiarCategoriaCtrl', ['$scope', '$uibModalInstance', 'pregunta', 'categorias', 'idiomaPreg', 'Restangular', 'toastr', '$filter', ($scope, $modalInstance, pregunta, categorias, idiomaPreg, Restangular, toastr, $filter)->
+	$scope.categorias = categorias
+	$scope.pregunta = pregunta
+	$scope.idiomaPreg = idiomaPreg
+	$scope.cambiando = false
+	$scope.categoria = false
+
+
+	$scope.ok = ()->
+
+		$scope.cambiando = true
+
+		datos = 
+			pregunta_id: pregunta.id
+			categoria_id: $scope.categoria
+
+		Restangular.all('preguntas/cambiar-categoria').customPUT(datos).then((r)->
+			toastr.success 'Pregunta cambiada de categoría.'
+			$scope.cambiando = false
+
+			$modalInstance.close(datos.categoria_id)
+		, (r2)->
+			toastr.warning 'No se pudo asignar la pregunta.', 'Problema'
+			console.log 'Error asignando pregunta: ', r2
+			$scope.cambiando = false
 		)
 		
 

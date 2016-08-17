@@ -178,7 +178,8 @@ a:hover, a:focus {
 .ayuda-preg-showed{
   @include ayuda-preg();
   width: 300px;
-  margin-left: -290px;
+  z-index: 50;
+  background-color: #e3e8ff;
 }
 
 .ayuda-preg-hidded{
@@ -954,5 +955,37 @@ md-sidenav md-input-container{
     background-image: url(../images/system/indsback.jpg);
     background-position: center;
     position: relative;
+}
+
+
+.ta-editor {
+    min-height: 100px!important;
+    width: 97%;
+    font-size: 100%;
+}
+.ta-scroll-window > .ta-bind{
+    min-height: 100px!important;
+}
+/*
+sup {
+  vertical-align: super;
+}
+sub {
+  vertical-align: sub;
+}
+*/
+
+// El texto ayuda en editPreg
+.txtayuda{
+  margin-bottom: 0px;
+  padding-bottom: 0;
+  margin-top: 30px;
+
+  input{
+    font-size: 9pt;
+  }
+}
+.fa-slash:before {
+  content: "\2044";
 }
 

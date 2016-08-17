@@ -72,8 +72,9 @@ ul.list-unstyled.right-elems.ng-scope
 			md-menu-content(style="margin-top: 40px;" width="3")
 				md-menu-item
 					md-button(ng-click="ctrl.redial($event)")
-						i.fa.fa-user(style="font-size: 16px; margin-right: 8px;" )
-						| Perfil
+						a(ui-sref="panel.perfil" style="color: currentColor;")
+							i.fa.fa-user(style="font-size: 16px; margin-right: 8px;" )
+							| Perfil
 				md-menu-item
 					md-button
 						//md-icon.fa(md-font-icon="fa-image" )

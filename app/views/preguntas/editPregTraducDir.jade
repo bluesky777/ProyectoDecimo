@@ -2,11 +2,11 @@ a.btn-tag.btn-tag-info(md-ink-ripple)
 	| Pregunta en {{preguntatraduc.idioma}}
 
 .definicion-preg
-	textarea(froala="editorOptions" ng-model="preguntatraduc.enunciado")
+	div(text-angular ta-toolbar-group-class="btn-group btn-group-xs" ng-model="preguntatraduc.enunciado")
 
 
 	div(layout layout-sm="column")
-		md-input-container(flex)
+		md-input-container.txtayuda(flex)
 			label Texto ayuda
 			input(type="text" ng-model="preguntatraduc.ayuda")
 

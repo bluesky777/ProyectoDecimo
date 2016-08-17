@@ -79,8 +79,47 @@ angular.module('WissenSystem')
 
 	$provide.decorator('taOptions', ['taRegisterTool', '$delegate', (taRegisterTool, taOptions)->
 		taOptions.forceTextAngularSanitize = false
+		taOptions.toolbar = [
+			['h1','h2','h3', 'p', 'pre'],
+			['bold','italics', 'underline', 'ul', 'ol', 'undo', 'redo'],
+			['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+			['insertImage', 'insertLink', 'insertVideo', 'html', 'charcount']
+		]
+
+		taRegisterTool('superscript', {
+			iconclass: "fa fa-superscript",
+			action: ()->
+				return this.$editor().wrapSelection("superscript", null);
+
+			activeState: ()->
+				return this.$editor().queryCommandState('superscript');
+		})
+		taRegisterTool('subscript', {
+			iconclass: "fa fa-subscript",
+			action: ()->
+				return this.$editor().wrapSelection("subscript", null);
+
+			activeState: ()->
+				return this.$editor().queryCommandState('subscript');
+		})
+		taRegisterTool('insertSlash',{
+			iconclass : 'fa fa-slash',
+			tooltiptext : "Insertar fracción",
+			action: ($deferred,restoreSelection)->
+				this.$editor().wrapSelection('insertHTML','&frasl;',true);                                                                                                                     
+							
+		});
+
+		# add the button to the default toolbar definition
+		taOptions.toolbar[2].push('superscript');
+		taOptions.toolbar[2].push('subscript');
+		taOptions.toolbar[2].push('insertSlash');
+
 		return taOptions
 	])
+
+
+
 
 
 
