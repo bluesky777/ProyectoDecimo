@@ -957,6 +957,22 @@ md-sidenav md-input-container{
     position: relative;
 }
 
+.margin0{
+  margin: 0;
+}
+.padding0{
+  padding: 0;
+}
+.margintb0{
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.paddingtb0{
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+
 
 .ta-editor {
     min-height: 100px!important;
@@ -988,4 +1004,34 @@ sub {
 .fa-slash:before {
   content: "\2044";
 }
+md-select.categoria md-select-value{
+  min-width: 170px;
+}
+
+.alto-inscribir{
+  max-height: 350px;
+
+  md-checkbox{
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+  md-list-item{
+    height: 30px !important;
+    min-height: 10px;
+  }
+}
+
+.puestos-table-content{
+  max-height: 500px;
+  overflow-y: auto;
+
+  font-size: 9pt;
+
+  .table > thead > tr > th, .table > tbody > tr > td, .table > tfoot > tr > td{
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+
+
 

@@ -7,40 +7,40 @@
           
         Nuevo
       </div>
-      <div class="panel-body">
+      <div style="padding-top: 30px;" class="panel-body">
         <form ng-submit="guardarNuevo()" name="frm" role="form" class="form-horizontal">
           <div class="row">
             <div class="col-md-8">
               <div layout layout-sm="column">
-                <md-input-container flex>
+                <md-input-container flex class="margintb0">
                   <label>Nombre</label>
                   <input type="text" ng-model="newUsu.nombres" name="nombres" required>
                 </md-input-container>
-                <md-input-container flex>
+                <md-input-container flex class="margintb0">
                   <label>Apellidos</label>
                   <input type="text" ng-model="newUsu.apellidos">
                 </md-input-container>
               </div>
               <div layout layout-sm="column">
-                <md-input-container flex>
+                <md-input-container flex class="margintb0">
                   <label>Username</label>
                   <input type="text" ng-model="newUsu.username" required>
                 </md-input-container>
-                <md-input-container flex>
+                <md-input-container flex class="margintb0">
                   <label>Contraseña</label>
                   <input type="text" ng-model="newUsu.password" required>
                 </md-input-container>
               </div>
               <div layout layout-sm="column">
-                <md-input-container flex>
+                <md-input-container flex class="margintb0">
                   <label>Email</label>
                   <input type="text" ng-model="newUsu.email">
                 </md-input-container>
-                <md-input-container flex>
+                <md-input-container flex class="margintb0">
                   <label>Celular</label>
                   <input type="text" ng-model="newUsu.cell">
                 </md-input-container>
-                <md-input-container flex>
+                <md-input-container flex class="margintb0">
                   <label>Edad</label>
                   <input ng-model="newUsu.edad" type="text">
                 </md-input-container>
@@ -64,14 +64,18 @@
               </div>
             </div>
             <div class="col-md-4">
-              <md-select ng-model="newUsu.entidad_id" placeholder="Entidad">
-                <md-option ng-repeat="entidad in entidades" value="{{entidad.id}}">{{entidad.nombre}}</md-option>
-              </md-select>
+              <div style="padding-left: 15px;" class="form-group">
+                <label>Entidad</label>
+                <ui-select ng-model="newUsu.entidad" theme="select2" style="width: 95%;">
+                  <ui-select-match placeholder="Entidad"> <img ng-src="{{imagesPath + $select.selected.logo_nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
+                  <ui-select-choices repeat="entidad in entidades"><img ng-src="{{imagesPath + entidad.logo_nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + entidad.nombre | highlight: $select.search"></small></ui-select-choices>
+                </ui-select>
+              </div>
               <md-select ng-model="newUsu.nivel_id" placeholder="Niveles">
-                <md-option ng-value="nivel.nivel_king_id" ng-repeat="nivel in $parent.niveles_king | nivelesTraducidos:$parent.evento_actual.idioma_principal_id">{{nivel.nombre}}</md-option>
+                <md-option ng-value="nivel.nivel_king_id" ng-repeat="nivel in niveles_king | nivelesTraducidos:$parent.evento_actual.idioma_principal_id">Nivel {{nivel.nombre}}</md-option>
                 <md-option value="">Todos</md-option>
               </md-select>
-              <md-content>
+              <md-content class="alto-inscribir">
                 <md-list>
                   <md-subheader class="md-no-sticky">Inscribir en:</md-subheader>
                   <md-list-item ng-repeat="categoria in categorias_king1 | categoriasTraducidas:$parent.evento_actual.idioma_principal_id:newUsu.nivel_id">
@@ -98,40 +102,40 @@
           
         Editar a {{currentUser.nombres}}
       </div>
-      <div class="panel-body">
+      <div style="padding-top: 30px;" class="panel-body">
         <form ng-submit="guardarEdicion()" name="frmEdit" role="form" class="form-horizontal">
           <div class="row">
             <div class="col-md-8">
               <div layout layout-sm="column">
-                <md-input-container flex>
+                <md-input-container flex class="margintb0">
                   <label>Nombre</label>
                   <input type="text" ng-model="currentUser.nombres" name="nombres" required>
                 </md-input-container>
-                <md-input-container flex>
+                <md-input-container flex class="margintb0">
                   <label>Apellidos</label>
                   <input type="text" ng-model="currentUser.apellidos">
                 </md-input-container>
               </div>
               <div layout layout-sm="column">
-                <md-input-container flex>
+                <md-input-container flex class="margintb0">
                   <label>Username</label>
                   <input type="text" ng-model="currentUser.username" required>
                 </md-input-container>
-                <md-input-container flex>
+                <md-input-container flex class="margintb0">
                   <label>Contraseña</label>
-                  <input type="text" ng-model="currentUser.password" required>
+                  <input type="text" ng-model="currentUser.password">
                 </md-input-container>
               </div>
               <div layout layout-sm="column">
-                <md-input-container flex>
+                <md-input-container flex class="margintb0">
                   <label>Email</label>
                   <input type="text" ng-model="currentUser.email">
                 </md-input-container>
-                <md-input-container flex>
+                <md-input-container flex class="margintb0">
                   <label>Celular</label>
                   <input type="text" ng-model="currentUser.cell">
                 </md-input-container>
-                <md-input-container flex>
+                <md-input-container flex class="margintb0">
                   <label>Edad</label>
                   <input ng-model="currentUser.edad" type="text">
                 </md-input-container>
@@ -155,17 +159,21 @@
               </div>
             </div>
             <div class="col-md-4">
-              <md-select ng-model="currentUser.entidad_id" placeholder="Entidad">
-                <md-option ng-repeat="entidad in entidades" value="{{entidad.id}}">{{entidad.nombre}}</md-option>
-              </md-select>
+              <div style="padding-left: 15px;" class="form-group">
+                <label>Entidad</label>
+                <ui-select ng-model="currentUser.entidad" theme="select2" style="width: 95%;">
+                  <ui-select-match placeholder="Entidad"> <img ng-src="{{imagesPath + $select.selected.logo_nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
+                  <ui-select-choices repeat="entidad in entidades"><img ng-src="{{imagesPath + entidad.logo_nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + entidad.nombre | highlight: $select.search"></small></ui-select-choices>
+                </ui-select>
+              </div>
               <md-select ng-model="currentUser.nivel_id" placeholder="Niveles">
-                <md-option ng-value="nivel.nivel_king_id" ng-repeat="nivel in $parent.niveles_king | nivelesTraducidos:$parent.evento_actual.idioma_principal_id">{{nivel.nombre}}</md-option>
+                <md-option ng-value="nivel.nivel_king_id" ng-repeat="nivel in niveles_king | nivelesTraducidos:$parent.evento_actual.idioma_principal_id">Nivel {{nivel.nombre}}</md-option>
                 <md-option value="">Todos</md-option>
               </md-select>
-              <md-content>
+              <md-content class="alto-inscribir">
                 <md-list>
                   <md-subheader class="md-no-sticky">Inscribir en:</md-subheader>
-                  <md-list-item ng-repeat="categoria in currentUsers | categsInscritas:categorias_king1:evento_actual.idioma_principal_id | filter: { nivel_id: currentUser.nivel_id } ">
+                  <md-list-item ng-repeat="categoria in categorias_inscripcion | filter: { nivel_id: currentUser.nivel_id } ">
                     <md-checkbox ng-model="categoria.selected" ng-change="cambiaInscripcion(categoria, currentUsers)" aria-label="Categoria" ng-disabled="categoria.cambiando"></md-checkbox>
                     <p>{{categoria.nombre}}</p>
                     <div aria-label="Comentario inútil" ng-click="" class="fa fa-comments-o md-secondary"></div>

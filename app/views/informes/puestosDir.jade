@@ -1,0 +1,40 @@
+.panel.panel-default.panel-hovered.panel-stacked.mb20
+	.panel-heading   
+		| Puestos 
+
+
+	.panel-body
+
+		md-button(ng-click="traerTodosLosExamenes()") Traer todos
+
+		.puestos-table-content
+			table.table
+				thead
+					th(style="padding-right: 15px;") Id
+					th Participante
+					th Ent
+					th Categ
+					th Fecha
+					th Pregs
+					th Malas
+					th Buenas
+					th Puntaje
+				
+				tbody
+					tr(ng-repeat="examen in examenes" )
+						td(style="font-size: 7pt;") {{ examen.examen_id }}
+						td 
+							img(ng-src="{{ imagesPath + examen.imagen_nombre }}" style="width: 25px")
+							| {{ examen.nombres + ' ' + examen.apellidos }}
+						td 
+							img(ng-src="{{ imagesPath + examen.logo_nombre }}" style="width: 25px")
+							| {{ examen.alias_entidad }}
+						td {{ examen.abrev_categ }}
+						td(style="font-size: 7pt;") {{ examen.examen_at }}
+						td {{ examen.resultados.cantidad_pregs }}
+						td {{ examen.resultados.cantidad_pregs - examen.resultados.correctas }}
+						td {{ examen.resultados.correctas }}
+						td {{ examen.resultados.promedio }}%
+
+
+

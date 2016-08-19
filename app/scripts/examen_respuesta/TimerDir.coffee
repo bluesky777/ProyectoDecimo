@@ -44,7 +44,7 @@ angular.module('WissenSystem')
 					$scope.$emit 'tiempo_preg_terminado'
 
 			else
-				console.log 'No gran final', $rootScope.examen_actual.duracion_exam, $scope.tiempo, $rootScope.examen_actual.duracion_exam < ($scope.tiempo)
+				#console.log 'No gran final', $rootScope.examen_actual.duracion_exam, $scope.tiempo, $rootScope.examen_actual.duracion_exam < ($scope.tiempo)
 
 				if $rootScope.examen_actual.duracion_exam*60 < $scope.tiempo
 

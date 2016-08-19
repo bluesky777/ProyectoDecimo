@@ -21,13 +21,13 @@
 						md-option(value="") Todos
 
 
-				md-content
+				md-content(style="max-height: 520px;")
 					md-list
 
 						md-subheader.md-no-sticky
 							| Inscripción rápida
 
-						md-list-item(ng-repeat="categoriaking in currentusers | categsInscritas:categoriasking:idioma | filter:{nivel_id: currentusers[0].nivel_id} ")
+						md-list-item(ng-repeat="categoriaking in categorias_inscripcion | filter:{nivel_id: currentusers[0].nivel_id} ")
 							md-checkbox(ng-model="categoriaking.selected" ng-change="cambiaInscripcion(categoriaking, currentusers)" aria-label="Categoria" ng-disabled="categoriaking.cambiando")
 							span(ng-show="categoriaking.algunos") *
 							span {{categoriaking.abrev }}

@@ -12,6 +12,12 @@ angular.module('WissenSystem')
 	$scope.cmdPreguntaSelected		= {}
 	$scope.cmdNoPregSelected		= 0
 	$scope.cmdShowLogoEntidadPartici = false
+	$scope.show_result_table 		= true
+
+
+	$scope.mostrar_result_table = ()->
+		$scope.show_result_table = true
+		console.log $scope.show_result_table
 
 
 	Restangular.all('evaluaciones/categorias-con-preguntas').getList().then((r)->

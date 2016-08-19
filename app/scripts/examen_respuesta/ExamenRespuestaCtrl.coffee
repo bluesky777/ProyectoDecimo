@@ -14,6 +14,7 @@ angular.module('WissenSystem')
 
 
 
+
 	$scope.incializar = ()->
 
 		if !$rootScope.examen_actual
@@ -86,7 +87,7 @@ angular.module('WissenSystem')
 		$scope.pregunta_actual = $filter('noPregActual')($scope.examen_actual.preguntas)
 		$scope.total_preguntas = $filter('cantPregsEvaluacion')($scope.examen_actual.preguntas)
 		$scope.pregunta_actual_porc = $scope.pregunta_actual / $scope.total_preguntas * 100
-		console.log 'no Preg Actual ', $scope.pregunta_actual, 'de', $scope.total_preguntas, $scope.pregunta_actual_porc
+		
 
 
 

@@ -9,6 +9,7 @@ angular.module('WissenSystem')
 
 	$scope.examen_actual = $rootScope.examen_actual
 	
+	
 
 
 	$scope.elegirOpcion = (pregunta, opcion, indice)->
@@ -17,7 +18,7 @@ angular.module('WissenSystem')
 
 		opcion.elegida = true
 
-
+		
 
 		if $scope.examen_actual.one_by_one
 
@@ -88,9 +89,9 @@ angular.module('WissenSystem')
 	$scope.opcion = opcion
 
 	$scope.examen_actual = examen_actual
-
+	
 	datos = 
-		examen_actual_id: 		examen_actual.id
+		examen_actual_id: 		examen_actual.examen_id
 		pregunta_top_id: 		preguntatop.id
 		pregunta_sub_id: 		pregunta_traduc.id
 		idioma_id: 				pregunta_traduc.idioma_id

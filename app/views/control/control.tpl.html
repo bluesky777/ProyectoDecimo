@@ -59,7 +59,7 @@
             <h6 style="margin: 0px;">{{ cliente.nombre_punto }}</h6>
             <md-menu>
               <button aria-label="Abrir menú" ng-click="openMenuCateg($mdOpenMenu, $event)" class="btn btn-pink btn-xs right">
-                <!--span(ng-repeat=" cliente | categsInscritasDeUsuario:categorias_king:USER.idioma_main_id | filter:{selected:true} ") | {{categoriaking.nombre}} 
+                <!--span(ng-repeat=" cliente.usuario.inscripciones | categsInscritasDeUsuario:categorias_king:USER.idioma_main_id | filter:{selected:true} ") | {{categoriaking.nombre}} 
                 --><span ng-bind-html="categoriaSelect(cliente).nombre"></span>
                 <div class="fa fa-chevron-right"></div>
                 <div class="md-ripple-container"></div>
@@ -155,6 +155,13 @@
     <button ng-click="nextQuestion()" class="btn btn-primary">Siguiente pregunta</button>
   </div>
 </div>
+<!-- RESULTADOS, EXÁMENES, PUESTOS!!!!!!!-->
+<md-button ng-if="!show_result_table" ng-click="mostrar_result_table()" class="md-raised">Tabla de resultados</md-button>
+<puestos-dir ng-if="show_result_table"></puestos-dir>
+<!-- RESULTADOS, EXÁMENES, PUESTOS!!!!!!!-->
+
+
+
 <div class="panel panel-default panel-hovered panel-stacked mb20">
   <div class="panel-heading">
       

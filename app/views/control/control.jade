@@ -66,7 +66,7 @@
 
 						md-menu
 							button.btn.btn-pink.btn-xs.right(aria-label="Abrir menú" ng-click="openMenuCateg($mdOpenMenu, $event)")
-								//span(ng-repeat=" cliente | categsInscritasDeUsuario:categorias_king:USER.idioma_main_id | filter:{selected:true} ") 
+								//span(ng-repeat=" cliente.usuario.inscripciones | categsInscritasDeUsuario:categorias_king:USER.idioma_main_id | filter:{selected:true} ") 
 									| {{categoriaking.nombre}} 
 								span(ng-bind-html="categoriaSelect(cliente).nombre")
 								.fa.fa-chevron-right
@@ -153,7 +153,18 @@ sidenav-edit-usu-dir
 		md-button.md-raised(ng-click="empezarExamen()") Empezar exámen
 		md-button.md-raised(ng-click="showParticipantes()") Mostrar participantes
 		button.btn.btn-primary(ng-click="nextQuestion()") Siguiente pregunta
-				
+			
+
+
+// RESULTADOS, EXÁMENES, PUESTOS!!!!!!!
+
+md-button.md-raised(ng-if="!show_result_table" ng-click="mostrar_result_table()") Tabla de resultados
+puestos-dir(ng-if="show_result_table")
+
+// RESULTADOS, EXÁMENES, PUESTOS!!!!!!!
+
+
+
 
 .panel.panel-default.panel-hovered.panel-stacked.mb20
 	.panel-heading   

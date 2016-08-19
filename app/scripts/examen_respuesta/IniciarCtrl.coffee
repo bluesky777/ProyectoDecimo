@@ -40,7 +40,7 @@ angular.module('WissenSystem')
 
 	$scope.iniciarExamen = (categoria)->
 		if $scope.eventoactual.gran_final
-			categorias_king = $filter('categsInscritasDeUsuario')($scope.user, $scope.categorias_king, $scope.user.idioma_main_id) 
+			categorias_king = $filter('categsInscritasDeUsuario')($scope.user.inscripciones, $scope.categorias_king, $scope.user.idioma_main_id) 
 
 			for cat in categorias_king
 				cat.selected = false

@@ -69,7 +69,6 @@ angular.module('WissenSystem')
 	$scope.guardando = (categoriaking)->
 		Restangular.all('categorias/guardar').customPUT(categoriaking).then((r)->
 			toastr.success 'Categoria guardada.'
-			console.log 'Categoria guardada: ', r
 		, (r2)->
 			toastr.warning 'No se pudo guardar la categoria', 'Problema'
 			console.log 'No se pudo guardar la categoria ', r2

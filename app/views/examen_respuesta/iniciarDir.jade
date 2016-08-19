@@ -38,7 +38,7 @@
 			
 			.panel-body
 				
-				md-button.md-raised.col-md-12(ng-click="iniciarExamen(categoriaking)" ng-repeat="categoriaking in user | categsInscritasDeUsuario:categorias_king:user.idioma_main_id "
+				md-button.md-raised.col-md-12(ng-click="iniciarExamen(categoriaking)" ng-repeat="categoriaking in user.inscripciones | categsInscritasDeUsuario:categorias_king:user.idioma_main_id "
 					ng-class="{'md-primary': categoriaking.selected }" style="width: 100%;")
 					| {{categoriaking.nombre}}
 
@@ -52,10 +52,11 @@
 			
 			.panel-body
 				
-				accordion(close-others="false" ng-repeat="examen in examenes_puntajes | orderBy:'-id'")
-					accordion-group(heading="{{examen.categoria.nombre + ' - (Cod:' + examen.id + ') ' }}" 
+				uib-accordion(close-others="false" ng-repeat="examen in examenes_puntajes | orderBy:'-id'")
+					uib-accordion-group(heading="{{examen.categoria.nombre + ' - (Cod:' + examen.id + ') ' }}" 
 						ng-init="status.open = $first" is-open="status.open"
 						tooltip="{{examen.evaluacion.descripcion}}")
+
 						div() Preguntas: {{examen.cantidad_pregs}} 
 						div() Correctas: {{examen.correctas}} 
 						div() Incorrectas: {{examen.cantidad_pregs-examen.correctas}} 
@@ -64,3 +65,4 @@
 
 						div(style="text-align:right")
 							a(ui-sref="panel.examen_respuesta({examen_respuesta_id: examen.id})" href="") Continuar
+						

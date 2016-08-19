@@ -6,6 +6,7 @@ angular.module('WissenSystem')
 		AuthService.verificar_acceso()
 
 		$scope.imagesPath = App.images
+		$scope.perfilPath = App.images + 'perfil/'
 		$scope.usuarios = []
 		$scope.currentUsers = []
 		$scope.currentUser = {
@@ -84,7 +85,14 @@ angular.module('WissenSystem')
 
 
 
-			
+		
+		$scope.categorias_inscripciones = (row)->
+			# Me tocó copiarlo pues se acumulaban las inscripciones
+			$scope.categorias_king2 = []
+			angular.copy($scope.categorias_king1, $scope.categorias_king2)
+
+			$scope.categorias_inscripcion = $filter('categsInscritas')($scope.currentusers, $scope.categorias_king2, $scope.evento_actual.idioma_principal_id )
+
 
 
 
@@ -198,7 +206,7 @@ angular.module('WissenSystem')
 
 				Restangular.one('inscripciones/desinscribir').customPUT(datos).then((r)->
 					categoriaking.cambiando = false
-					console.log 'Inscripción creada', r
+					console.log 'Inscripción eliminada', r, currentUser.inscripciones, datos.categoria_id
 					
 					currentUser.inscripciones = $filter('filter')(currentUser.inscripciones, {categoria_id: '!'+datos.categoria_id})
 

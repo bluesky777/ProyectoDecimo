@@ -1,7 +1,7 @@
 angular.module('WissenSystem')
 
-.controller('EditPreguntaAgrupCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 
-	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr) ->
+.controller('EditPreguntaAgrupCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', '$filter', 
+	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr, $filter) ->
 
 
 		$scope.editorOptions = 

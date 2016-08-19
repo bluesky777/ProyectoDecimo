@@ -7,7 +7,7 @@ md-button.md-raised.md-primary(ng-click="creando=!creando" ng-show="!creando") N
 			.panel-heading   
 				| Nuevo
 
-			.panel-body
+			.panel-body(style="padding-top: 30px;")
 
 				form.form-horizontal(ng-submit="guardarNuevo()" name="frm" role="form")
 					
@@ -15,32 +15,32 @@ md-button.md-raised.md-primary(ng-click="creando=!creando" ng-show="!creando") N
 						.col-md-8
 
 							div(layout layout-sm="column")
-								md-input-container(flex)
+								md-input-container.margintb0(flex)
 									label Nombre
 									input(type="text" ng-model="newUsu.nombres" name="nombres" required)
-								md-input-container(flex)
+								md-input-container.margintb0(flex)
 									label Apellidos
 									input(type="text" ng-model="newUsu.apellidos")
 							
 							div(layout layout-sm="column")
-								md-input-container(flex)
+								md-input-container.margintb0(flex)
 									label Username
 									input(type="text" ng-model="newUsu.username" required)
 
-								md-input-container(flex)
+								md-input-container.margintb0(flex)
 									label Contraseña
 									input(type="text" ng-model="newUsu.password" required)
 								
 							div(layout layout-sm="column")
-								md-input-container(flex)
+								md-input-container.margintb0(flex)
 									label Email
 									input(type="text" ng-model="newUsu.email")
 								
-								md-input-container(flex)
+								md-input-container.margintb0(flex)
 									label Celular
 									input(type="text" ng-model="newUsu.cell")
 								
-								md-input-container(flex)
+								md-input-container.margintb0(flex)
 									label Edad
 									input(ng-model="newUsu.edad" type="text")
 							.row
@@ -59,15 +59,22 @@ md-button.md-raised.md-primary(ng-click="creando=!creando" ng-show="!creando") N
 
 						.col-md-4
 
-							md-select(ng-model="newUsu.entidad_id" placeholder="Entidad")
-								md-option(ng-repeat="entidad in entidades" value="{{entidad.id}}") {{entidad.nombre}}
+							.form-group(style="padding-left: 15px;")
+								label Entidad
+								ui-select(ng-model="newUsu.entidad" theme="select2" style="width: 95%;")
+									ui-select-match(placeholder="Entidad") 
+										img(ng-src="{{imagesPath + $select.selected.logo_nombre}}" style="width:25px; height:25px;")
+										small(ng-bind-html="' ' + $select.selected.nombre")
+									ui-select-choices(repeat="entidad in entidades")
+										img(ng-src="{{imagesPath + entidad.logo_nombre}}" style="width:25px; height:25px;")
+										small(ng-bind-html="' ' + entidad.nombre | highlight: $select.search")
+
 
 							md-select(ng-model="newUsu.nivel_id" placeholder="Niveles")
-								md-option(ng-value="nivel.nivel_king_id" ng-repeat="nivel in $parent.niveles_king | nivelesTraducidos:$parent.evento_actual.idioma_principal_id") {{nivel.nombre}}
+								md-option(ng-value="nivel.nivel_king_id" ng-repeat="nivel in niveles_king | nivelesTraducidos:$parent.evento_actual.idioma_principal_id") Nivel {{nivel.nombre}}
 								md-option(value="") Todos
 
-
-							md-content
+							md-content.alto-inscribir
 								md-list
 									md-subheader.md-no-sticky
 										| Inscribir en:
@@ -91,39 +98,39 @@ md-button.md-raised.md-primary(ng-click="creando=!creando" ng-show="!creando") N
 			.panel-heading   
 				| Editar a {{currentUser.nombres}}
 
-			.panel-body
+			.panel-body(style="padding-top: 30px;")
 
 				form.form-horizontal(ng-submit="guardarEdicion()" name="frmEdit" role="form")
 					.row
 						.col-md-8
 
 							div(layout layout-sm="column")
-								md-input-container(flex)
+								md-input-container.margintb0(flex)
 									label Nombre
 									input(type="text" ng-model="currentUser.nombres" name="nombres" required)
-								md-input-container(flex)
+								md-input-container.margintb0(flex)
 									label Apellidos
 									input(type="text" ng-model="currentUser.apellidos")
 							
 							div(layout layout-sm="column")
-								md-input-container(flex)
+								md-input-container.margintb0(flex)
 									label Username
 									input(type="text" ng-model="currentUser.username" required)
 
-								md-input-container(flex)
+								md-input-container.margintb0(flex)
 									label Contraseña
-									input(type="text" ng-model="currentUser.password" required)
+									input(type="text" ng-model="currentUser.password")
 								
 							div(layout layout-sm="column")
-								md-input-container(flex)
+								md-input-container.margintb0(flex)
 									label Email
 									input(type="text" ng-model="currentUser.email")
 								
-								md-input-container(flex)
+								md-input-container.margintb0(flex)
 									label Celular
 									input(type="text" ng-model="currentUser.cell")
 								
-								md-input-container(flex)
+								md-input-container.margintb0(flex)
 									label Edad
 									input(ng-model="currentUser.edad" type="text")
 							.row
@@ -142,20 +149,29 @@ md-button.md-raised.md-primary(ng-click="creando=!creando" ng-show="!creando") N
 
 						.col-md-4
 
-							md-select(ng-model="currentUser.entidad_id" placeholder="Entidad")
-								md-option(ng-repeat="entidad in entidades" value="{{entidad.id}}") {{entidad.nombre}}
+							.form-group(style="padding-left: 15px;")
+								label Entidad
+								ui-select(ng-model="currentUser.entidad" theme="select2" style="width: 95%;")
+									ui-select-match(placeholder="Entidad") 
+										img(ng-src="{{imagesPath + $select.selected.logo_nombre}}" style="width:25px; height:25px;")
+										small(ng-bind-html="' ' + $select.selected.nombre")
+									ui-select-choices(repeat="entidad in entidades")
+										img(ng-src="{{imagesPath + entidad.logo_nombre}}" style="width:25px; height:25px;")
+										small(ng-bind-html="' ' + entidad.nombre | highlight: $select.search")
+
+
 
 							md-select(ng-model="currentUser.nivel_id" placeholder="Niveles")
-								md-option(ng-value="nivel.nivel_king_id" ng-repeat="nivel in $parent.niveles_king | nivelesTraducidos:$parent.evento_actual.idioma_principal_id") {{nivel.nombre}}
+								md-option(ng-value="nivel.nivel_king_id" ng-repeat="nivel in niveles_king | nivelesTraducidos:$parent.evento_actual.idioma_principal_id") Nivel {{nivel.nombre}}
 								md-option(value="") Todos
 
 
-							md-content
+							md-content.alto-inscribir
 								md-list
 									md-subheader.md-no-sticky
 										| Inscribir en:
 
-									md-list-item(ng-repeat="categoria in currentUsers | categsInscritas:categorias_king1:evento_actual.idioma_principal_id | filter: { nivel_id: currentUser.nivel_id } ")
+									md-list-item(ng-repeat="categoria in categorias_inscripcion | filter: { nivel_id: currentUser.nivel_id } ")
 										md-checkbox(ng-model="categoria.selected" ng-change="cambiaInscripcion(categoria, currentUsers)" aria-label="Categoria" ng-disabled="categoria.cambiando")
 										p {{categoria.nombre}}
 										.fa.fa-comments-o.md-secondary(aria-label="Comentario inútil" ng-click="")

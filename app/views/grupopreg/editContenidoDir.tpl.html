@@ -11,7 +11,7 @@
     <form name="frm" role="form" ng-submit="finalizarEdicion()" class="form-horizontal">
       <div ng-repeat="contenido in grupoking.contenidos_traducidos | porIdiomasEdit:idiomaPreg" ng-class-odd="'fondo-odd'" ng-class-even="'fondo-even'"><a md-ink-ripple class="btn-tag btn-tag-info">Contenido en {{contenido.idioma}}</a>
         <div class="definicion-preg">
-          <textarea froala="editorOptions" ng-model="contenido.definicion"></textarea>
+          <div text-angular ta-toolbar-group-class="btn-group btn-group-xs" ng-model="contenido.definicion"></div>
         </div><br>
       </div>
       <md-button type="button" ng-click="finalizarEdicion()" class="md-raised md-primary right"> 

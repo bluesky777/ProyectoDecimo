@@ -12,6 +12,12 @@ angular.module('WissenSystem')
 			$scope.gridApi.selection.selectRow(row)
 			$scope.currentuser = row
 
+			# Me tocó copiarlo pues se acumulaban las inscripciones
+			categoriasking_copy = []
+			angular.copy $scope.categoriasking, categoriasking_copy
+
+			$scope.categorias_inscripcion = $filter('categsInscritas')($scope.currentusers, categoriasking_copy, $scope.idioma )
+
 		$scope.seleccionar_entidad = (row)->
 			console.log 'Presionado para cambiar entidad: ', row
 
@@ -38,6 +44,13 @@ angular.module('WissenSystem')
 			$scope.$parent.currentUser = row
 			$scope.currentusers = [row]
 			$scope.$parent.editando = true
+			
+			# Me tocó copiarlo pues se acumulaban las inscripciones
+			categoriasking_copy = []
+			angular.copy $scope.categoriasking, categoriasking_copy
+
+			$scope.$parent.categorias_inscripcion = $filter('categsInscritas')($scope.currentusers, categoriasking_copy, $scope.idioma )
+
 
 
 
@@ -56,7 +69,7 @@ angular.module('WissenSystem')
 			})
 			modalInstance.result.then( (usuario)->
 				$scope.usuarios = $filter('filter')($scope.usuarios, {id: '!'+usuario.id})
-				console.log 'Resultado del modal: ', usuario
+				$scope.gridOptions.data = $scope.usuarios
 			)
 
 
