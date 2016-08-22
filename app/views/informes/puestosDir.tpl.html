@@ -5,34 +5,241 @@
     Puestos 
   </div>
   <div class="panel-body">
-    <md-button ng-click="traerTodosLosExamenes()">Traer todos</md-button>
-    <div class="puestos-table-content">
+    <md-button ng-click="traerTodosLosExamenes()" class="md-raised">Traer todos</md-button>
+    <md-button ng-click="traerExamenesEntidades()" class="md-raised">Por entidades</md-button>
+    <md-button ng-click="traerExamenesEntidadesCategorias()" class="md-raised">Por entidades-categorías</md-button>
+    <md-button ng-click="traerExamenesCategorias()" class="md-raised">Por categorías</md-button>
+    <form>
+      <div style="width: 300px;margin-top: 15px;" class="form-group">
+        <div class="input-group">
+          <div class="input-group-addon"><i class="fa fa-search"></i></div>
+          <input type="text" placeholder="Buscar" ng-model="searchExam" style="border-top: 1px solid #ccc; border-right: 1px solid #ccc;" class="form-control">
+        </div>
+      </div>
+    </form>
+    <div ng-if="mostrando=='todos'" class="puestos-table-content">
       <table class="table">
         <thead>
-          <th style="padding-right: 15px;">Id</th>
-          <th>Participante</th>
+          <th style="padding-right: 15px;"> <a href="" ng-click="sortType = 'examen_id'; sortReverse = !sortReverse">Id<span ng-show="sortType == 'examen_id' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'examen_id' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a>
+            <md-tooltip>Código de examen</md-tooltip>
+          </th>
+          <th style="padding-right: 15px;">
+             
+            No
+            <md-tooltip>Indice</md-tooltip>
+          </th>
+          <th> <a href="" ng-click="sortType = 'nombres'; sortReverse = !sortReverse">Participante<span ng-show="sortType == 'nombres' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'nombres' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a></th>
           <th>Ent</th>
-          <th>Categ</th>
-          <th>Fecha</th>
-          <th>Pregs</th>
-          <th>Malas</th>
-          <th>Buenas</th>
-          <th>Puntaje</th>
+          <th> <a href="" ng-click="sortType = 'abrev_categ'; sortReverse = !sortReverse">Categ<span ng-show="sortType == 'abrev_categ' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'abrev_categ' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a>
+            <md-tooltip>Categoría</md-tooltip>
+          </th>
+          <th> <a href="" ng-click="sortType = 'resultados.examen_at'; sortReverse = !sortReverse">Fecha<span ng-show="sortType == 'examen_at' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'examen_at' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a>
+            <md-tooltip>Fecha realizado</md-tooltip>
+          </th>
+          <th> <a href="" ng-click="sortType = 'resultados.cantidad_pregs'; sortReverse = !sortReverse">Pregs<span ng-show="sortType == 'cantidad_pregs' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'cantidad_pregs' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a></th>
+          <th>Malas
+            <md-tooltip>Incorrectas</md-tooltip>
+          </th>
+          <th>Buenas
+            <md-tooltip>Correctas</md-tooltip>
+          </th>
+          <th> <a href="" ng-click="sortType = 'resultados.promedio'; sortReverse = !sortReverse">Puntaje<span ng-show="sortType == 'resultados.promedio' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'resultados.promedio' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a></th>
         </thead>
         <tbody>
           <tr ng-repeat="examen in examenes">
             <td style="font-size: 7pt;">{{ examen.examen_id }}</td>
+            <td style="font-size: 7pt;">{{ $index +1 }}
+              <md-tooltip>Orden</md-tooltip>
+            </td>
             <td> <img ng-src="{{ imagesPath + examen.imagen_nombre }}" style="width: 25px">{{ examen.nombres + ' ' + examen.apellidos }}</td>
             <td> <img ng-src="{{ imagesPath + examen.logo_nombre }}" style="width: 25px">{{ examen.alias_entidad }}</td>
             <td>{{ examen.abrev_categ }}</td>
             <td style="font-size: 7pt;">{{ examen.examen_at }}</td>
             <td>{{ examen.resultados.cantidad_pregs }}</td>
-            <td>{{ examen.resultados.cantidad_pregs - examen.resultados.correctas }}</td>
-            <td>{{ examen.resultados.correctas }}</td>
+            <td>{{ examen.resultados.cantidad_pregs - examen.resultados.correctas }}
+              <md-tooltip>Incorrectas</md-tooltip>
+            </td>
+            <td>{{ examen.resultados.correctas }}
+              <md-tooltip>Correctas</md-tooltip>
+            </td>
             <td>{{ examen.resultados.promedio }}%</td>
           </tr>
         </tbody>
       </table>
+    </div>
+    <div ng-if="mostrando=='por_entidades'" class="puestos-table-content">
+      <div ng-repeat="entidad in entidades">
+        <md-whiteframe layout style="padding: 10px; margin: 15px; display: block; " class="md-whiteframe-z2 definicion-frame">
+          <h3 class="center"><img ng-src="{{ imagesPath + entidad.logo_nombre }}" style="width: 35px"> {{ entidad.nombre_entidad }} - {{ entidad.alias_entidad }}
+            <md-tooltip>{{ entidad.lider_nombre }}</md-tooltip>
+          </h3>
+        </md-whiteframe>
+        <table class="table">
+          <thead>
+            <th style="padding-right: 15px;"> <a href="" ng-click="sortType = 'examen_id'; sortReverse = !sortReverse">Id<span ng-show="sortType == 'examen_id' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'examen_id' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a>
+              <md-tooltip>Código de examen</md-tooltip>
+            </th>
+            <th style="padding-right: 15px;">
+               
+              No
+              <md-tooltip>Indice</md-tooltip>
+            </th>
+            <th> <a href="" ng-click="sortType = 'nombres'; sortReverse = !sortReverse">Participante<span ng-show="sortType == 'nombres' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'nombres' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a></th>
+            <th> <a href="" ng-click="sortType = 'abrev_categ'; sortReverse = !sortReverse">Categ<span ng-show="sortType == 'abrev_categ' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'abrev_categ' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a>
+              <md-tooltip>Categoría</md-tooltip>
+            </th>
+            <th> <a href="" ng-click="sortType = 'resultados.examen_at'; sortReverse = !sortReverse">Fecha<span ng-show="sortType == 'examen_at' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'examen_at' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a>
+              <md-tooltip>Fecha realizado</md-tooltip>
+            </th>
+            <th> <a href="" ng-click="sortType = 'resultados.cantidad_pregs'; sortReverse = !sortReverse">Pregs<span ng-show="sortType == 'cantidad_pregs' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'cantidad_pregs' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a></th>
+            <th>Malas
+              <md-tooltip>Incorrectas</md-tooltip>
+            </th>
+            <th>Buenas
+              <md-tooltip>Correctas</md-tooltip>
+            </th>
+            <th> <a href="" ng-click="sortType = 'resultados.promedio'; sortReverse = !sortReverse">Puntaje<span ng-show="sortType == 'resultados.promedio' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'resultados.promedio' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a></th>
+          </thead>
+          <tbody>
+            <tr ng-repeat="examen in entidad.examenes | orderBy:sortType:sortReverse | filter:searchExam">
+              <td style="font-size: 7pt;">{{ examen.examen_id }}</td>
+              <td style="font-size: 7pt;">{{ $index +1 }}
+                <md-tooltip>Orden</md-tooltip>
+              </td>
+              <td> <img ng-src="{{ imagesPath + examen.imagen_nombre }}" style="width: 25px">{{ examen.nombres + ' ' + examen.apellidos }}</td>
+              <td>{{ examen.abrev_categ }}</td>
+              <td style="font-size: 7pt;">{{ examen.examen_at }}</td>
+              <td>{{ examen.resultados.cantidad_pregs }}</td>
+              <td>{{ examen.resultados.cantidad_pregs - examen.resultados.correctas }}
+                <md-tooltip>Incorrectas</md-tooltip>
+              </td>
+              <td>{{ examen.resultados.correctas }}
+                <md-tooltip>Correctas</md-tooltip>
+              </td>
+              <td>{{ examen.resultados.promedio }}%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div ng-if="mostrando=='por_entidades_categorias'" class="puestos-table-content">
+      <div ng-repeat="entidad in entidades">
+        <md-whiteframe layout style="padding: 10px; margin: 15px; display: block; " class="md-whiteframe-z2 definicion-frame">
+          <h3 class="center"><img ng-src="{{ imagesPath + entidad.logo_nombre }}" style="width: 35px"> {{ entidad.nombre_entidad }} - {{ entidad.alias_entidad }}
+            <md-tooltip>{{ entidad.lider_nombre }}</md-tooltip>
+          </h3>
+        </md-whiteframe>
+        <div ng-repeat="categoria in entidad.categorias" ng-init="sortType = 'resultados.promedio'; sortReverse = true">
+          <h4 style="margin-top: 10px;" class="center">
+             
+            {{ categoria.nombre_categ }} - {{ categoria.abrev_categ }}
+            <md-tooltip>{{ categoria.descripcion_categ }}</md-tooltip>
+          </h4>
+          <table class="table">
+            <thead>
+              <th style="padding-right: 15px;"> <a href="" ng-click="sortType = 'examen_id'; sortReverse = !sortReverse">Id<span ng-show="sortType == 'examen_id' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'examen_id' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a>
+                <md-tooltip>Código de examen</md-tooltip>
+              </th>
+              <th style="padding-right: 15px;">
+                 
+                No
+                <md-tooltip>Indice</md-tooltip>
+              </th>
+              <th> <a href="" ng-click="sortType = 'nombres'; sortReverse = !sortReverse">Participante<span ng-show="sortType == 'nombres' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'nombres' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a></th>
+              <th> <a href="" ng-click="sortType = 'abrev_categ'; sortReverse = !sortReverse">Categ<span ng-show="sortType == 'abrev_categ' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'abrev_categ' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a>
+                <md-tooltip>Categoría</md-tooltip>
+              </th>
+              <th> <a href="" ng-click="sortType = 'resultados.examen_at'; sortReverse = !sortReverse">Fecha<span ng-show="sortType == 'examen_at' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'examen_at' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a>
+                <md-tooltip>Fecha realizado</md-tooltip>
+              </th>
+              <th> <a href="" ng-click="sortType = 'resultados.cantidad_pregs'; sortReverse = !sortReverse">Pregs<span ng-show="sortType == 'cantidad_pregs' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'cantidad_pregs' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a></th>
+              <th>Malas
+                <md-tooltip>Incorrectas</md-tooltip>
+              </th>
+              <th>Buenas
+                <md-tooltip>Correctas</md-tooltip>
+              </th>
+              <th> <a href="" ng-click="sortType = 'resultados.promedio'; sortReverse = !sortReverse">Puntaje<span ng-show="sortType == 'resultados.promedio' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'resultados.promedio' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a></th>
+            </thead>
+            <tbody>
+              <tr ng-repeat="examen in categoria.examenes | orderBy:sortType:sortReverse | filter:searchExam">
+                <td style="font-size: 7pt;">{{ examen.examen_id }}</td>
+                <td style="font-size: 7pt;">{{ $index +1 }}
+                  <md-tooltip>Orden</md-tooltip>
+                </td>
+                <td> <img ng-src="{{ imagesPath + examen.imagen_nombre }}" style="width: 25px">{{ examen.nombres + ' ' + examen.apellidos }}</td>
+                <td>{{ examen.abrev_categ }}</td>
+                <td style="font-size: 7pt;">{{ examen.examen_at }}</td>
+                <td>{{ examen.resultados.cantidad_pregs }}</td>
+                <td>{{ examen.resultados.cantidad_pregs - examen.resultados.correctas }}
+                  <md-tooltip>Incorrectas</md-tooltip>
+                </td>
+                <td>{{ examen.resultados.correctas }}
+                  <md-tooltip>Correctas</md-tooltip>
+                </td>
+                <td>{{ examen.resultados.promedio }}%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div ng-if="mostrando=='por_categorias'" class="puestos-table-content">
+      <div ng-repeat="categoria in categorias" ng-init="sortType = 'resultados.promedio'; sortReverse = true">
+        <md-whiteframe layout style="padding: 10px; margin: 15px; display: block; " class="md-whiteframe-z2 definicion-frame">
+          <h3 class="center">{{ categoria.nombre_categ }} - {{ categoria.abrev_categ }}
+            <md-tooltip>{{ categoria.descripcion_categ }}</md-tooltip>
+          </h3>
+        </md-whiteframe>
+        <table class="table">
+          <thead>
+            <th style="padding-right: 15px;"> <a href="" ng-click="sortType = 'examen_id'; sortReverse = !sortReverse">Id<span ng-show="sortType == 'examen_id' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'examen_id' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a>
+              <md-tooltip>Código de examen</md-tooltip>
+            </th>
+            <th style="padding-right: 15px;">
+               
+              No
+              <md-tooltip>Indice</md-tooltip>
+            </th>
+            <th> <a href="" ng-click="sortType = 'nombres'; sortReverse = !sortReverse">Participante<span ng-show="sortType == 'nombres' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'nombres' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a></th>
+            <th>Ent</th>
+            <th> <a href="" ng-click="sortType = 'abrev_categ'; sortReverse = !sortReverse">Categ<span ng-show="sortType == 'abrev_categ' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'abrev_categ' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a>
+              <md-tooltip>Categoría</md-tooltip>
+            </th>
+            <th> <a href="" ng-click="sortType = 'resultados.examen_at'; sortReverse = !sortReverse">Fecha<span ng-show="sortType == 'examen_at' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'examen_at' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a>
+              <md-tooltip>Fecha realizado</md-tooltip>
+            </th>
+            <th> <a href="" ng-click="sortType = 'resultados.cantidad_pregs'; sortReverse = !sortReverse">Pregs<span ng-show="sortType == 'cantidad_pregs' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'cantidad_pregs' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a></th>
+            <th>Malas
+              <md-tooltip>Incorrectas</md-tooltip>
+            </th>
+            <th>Buenas
+              <md-tooltip>Correctas</md-tooltip>
+            </th>
+            <th> <a href="" ng-click="sortType = 'resultados.promedio'; sortReverse = !sortReverse">Puntaje<span ng-show="sortType == 'resultados.promedio' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'resultados.promedio' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a></th>
+          </thead>
+          <tbody>
+            <tr ng-repeat="examen in categoria.examenes | orderBy:sortType:sortReverse | filter:searchExam">
+              <td style="font-size: 7pt;">{{ examen.examen_id }}</td>
+              <td style="font-size: 7pt;">{{ $index +1 }}
+                <md-tooltip>Orden</md-tooltip>
+              </td>
+              <td> <img ng-src="{{ imagesPath + examen.imagen_nombre }}" style="width: 25px">{{ examen.nombres + ' ' + examen.apellidos }}</td>
+              <td> <img ng-src="{{ imagesPath + examen.logo_nombre }}" style="width: 25px">{{ examen.alias_entidad }}</td>
+              <td>{{ examen.abrev_categ }}</td>
+              <td style="font-size: 7pt;">{{ examen.examen_at }}</td>
+              <td>{{ examen.resultados.cantidad_pregs }}</td>
+              <td>{{ examen.resultados.cantidad_pregs - examen.resultados.correctas }}
+                <md-tooltip>Incorrectas</md-tooltip>
+              </td>
+              <td>{{ examen.resultados.correctas }}
+                <md-tooltip>Correctas</md-tooltip>
+              </td>
+              <td>{{ examen.resultados.promedio }}%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>

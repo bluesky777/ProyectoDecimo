@@ -67,7 +67,7 @@ angular.module('WissenSystem')
 		
 		confirm = $mdDialog.show({
 			controller: 'PasswordNombrePuntoCtrl',
-			templateUrl: App.views + 'login/password_nombre_punto.tpl.html',
+			templateUrl: App.views + 'login/passwordNombrePunto.tpl.html',
 			parent: angular.element(document.body),
 			clickOutsideToClose:true,
 			#openFrom: '#nombre_punto'

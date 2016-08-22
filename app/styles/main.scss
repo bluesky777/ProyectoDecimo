@@ -1032,6 +1032,16 @@ md-select.categoria md-select-value{
     padding-right: 0px;
   }
 }
-
+.center{
+  text-align: center;
+}
+.puestos-table-content th{
+  cursor: pointer;
+}
+.puestos-table-content {
+  .table tr > td{
+    padding: 2px !important;
+  }
+}
 
 
