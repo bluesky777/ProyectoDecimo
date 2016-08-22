@@ -5,6 +5,8 @@
 
 	.panel-body
 
+		md-checkbox(ng-model="gran_final" aria-label="Gran final") Gran final
+
 		md-button.md-raised(ng-click="traerTodosLosExamenes()") Traer todos
 
 		md-button.md-raised(ng-click="traerExamenesEntidades()") Por entidades
@@ -23,7 +25,7 @@
 
 
 		.puestos-table-content(ng-if="mostrando=='todos'")
-			table.table
+			table.table.table-striped.table-hover.table-bordered
 				thead
 					th(style="padding-right: 15px;") 
 						a(href="" ng-click="sortType = 'examen_id'; sortReverse = !sortReverse")
@@ -85,8 +87,16 @@
 							md-tooltip Incorrectas
 						td {{ examen.resultados.correctas }}
 							md-tooltip Correctas
-						td {{ examen.resultados.promedio }}%
+						td.td-contenedora {{ examen.resultados.promedio | decimales_if:1 }}%
 
+								.menu-puesto-exam 
+									.btn-group
+										a.btn.btn-default.btn-xs(href="" ng-click="mostrarPuesto()")
+											i.fa.fa-child
+											md-tooltip Mostrar en pantalla
+										a.btn.btn-danger.btn-xs(href="" ng-click="eliminarExamen(examen)")
+											i.fa.fa-times
+											md-tooltip Eliminar examen
 
 
 
@@ -99,7 +109,7 @@
 						|  {{ entidad.nombre_entidad }} - {{ entidad.alias_entidad }}
 						md-tooltip {{ entidad.lider_nombre }}
 
-				table.table
+				table.table.table-striped.table-hover.table-bordered
 					thead
 						th(style="padding-right: 15px;") 
 							a(href="" ng-click="sortType = 'examen_id'; sortReverse = !sortReverse")
@@ -157,9 +167,16 @@
 								md-tooltip Incorrectas
 							td {{ examen.resultados.correctas }}
 								md-tooltip Correctas
-							td {{ examen.resultados.promedio }}%
+							td.td-contenedora {{ examen.resultados.promedio | decimales_if:1 }}%
 
-
+								.menu-puesto-exam 
+									.btn-group
+										a.btn.btn-default.btn-xs(href="" ng-click="mostrarPuesto()")
+											i.fa.fa-child
+											md-tooltip Mostrar en pantalla
+										a.btn.btn-danger.btn-xs(href="" ng-click="eliminarExamen(examen)")
+											i.fa.fa-times
+											md-tooltip Eliminar examen
 
 
 
@@ -182,7 +199,7 @@
 						| {{ categoria.nombre_categ }} - {{ categoria.abrev_categ }}
 						md-tooltip {{ categoria.descripcion_categ }}
 
-					table.table
+					table.table.table-striped.table-hover.table-bordered
 						thead
 							th(style="padding-right: 15px;") 
 								a(href="" ng-click="sortType = 'examen_id'; sortReverse = !sortReverse")
@@ -240,8 +257,15 @@
 									md-tooltip Incorrectas
 								td {{ examen.resultados.correctas }}
 									md-tooltip Correctas
-								td {{ examen.resultados.promedio }}%
-
+								td.td-contenedora {{ examen.resultados.promedio | decimales_if:1 }}%
+									.menu-puesto-exam 
+										.btn-group
+											a.btn.btn-default.btn-xs(href="" ng-click="mostrarPuesto()")
+												i.fa.fa-child
+												md-tooltip Mostrar en pantalla
+											a.btn.btn-danger.btn-xs(href="" ng-click="eliminarExamen(examen)")
+												i.fa.fa-times
+												md-tooltip Eliminar examen
 
 
 
@@ -256,7 +280,7 @@
 						| {{ categoria.nombre_categ }} - {{ categoria.abrev_categ }}
 						md-tooltip {{ categoria.descripcion_categ }}
 
-				table.table
+				table.table.table-striped.table-hover.table-bordered
 					thead
 						th(style="padding-right: 15px;") 
 							a(href="" ng-click="sortType = 'examen_id'; sortReverse = !sortReverse")
@@ -318,7 +342,16 @@
 								md-tooltip Incorrectas
 							td {{ examen.resultados.correctas }}
 								md-tooltip Correctas
-							td {{ examen.resultados.promedio }}%
+							td.td-contenedora {{ examen.resultados.promedio | decimales_if:1 }}%
+
+								.menu-puesto-exam 
+									.btn-group
+										a.btn.btn-default.btn-xs(href="" ng-click="mostrarPuesto()")
+											i.fa.fa-child
+											md-tooltip Mostrar en pantalla
+										a.btn.btn-danger.btn-xs(href="" ng-click="eliminarExamen(examen)")
+											i.fa.fa-times
+											md-tooltip Eliminar examen
 
 
 

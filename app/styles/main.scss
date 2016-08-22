@@ -1035,13 +1035,33 @@ md-select.categoria md-select-value{
 .center{
   text-align: center;
 }
-.puestos-table-content th{
-  cursor: pointer;
-}
 .puestos-table-content {
+  
+  border: 1px solid #ccc;
+
   .table tr > td{
     padding: 2px !important;
   }
+}
+.puestos-table-content th{
+  cursor: pointer;
+}
+.td-contenedora{
+  position: relative;
+}
+
+.td-contenedora .menu-puesto-exam{
+  position: absolute;
+  top: 0;
+  right: -5px;
+  transition: all 0.3s;
+  opacity: 0;
+  width: 70px;
+}
+
+.puestos-table-content tr:hover .menu-puesto-exam{
+  opacity: 1;
+  right: 10px;
 }
 
 

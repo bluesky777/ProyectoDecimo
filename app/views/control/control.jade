@@ -138,7 +138,7 @@ sidenav-edit-usu-dir
 
 	.panel-body
 		.row
-			.col-xs-12.col-md-6
+			.col-xs-12.col-md-7
 				select(multiple="true" style="width: 200px; font-size: 9pt")
 					option(ng-repeat="categoria in categorias_king" ng-model="cmdCategSelected" ng-click="cmdClickCategSelected(categoria)") {{categoria.nombre}}
 				select(multiple="true" style="width: 200px; font-size: 9pt")
@@ -148,7 +148,7 @@ sidenav-edit-usu-dir
 				
 				button.btn.btn-default(ng-click="showPuntajeParticip()") Mostrar puntaje
 				
-				md-checkbox(ng-click="toggleShowLogoEntidadParticipantes()" ng-model="cmdShowLogoEntidadPartici" aria-label="Mostrar logos") Mostrar logo entidades
+				md-checkbox(ng-click="toggleShowLogoEntidadParticipantes()" ng-true-value="1" ng-false-value="0" ng-model="cmdShowLogoEntidadPartici" aria-label="Mostrar logos") Mostrar logo entidades
 
 		md-button.md-raised(ng-click="empezarExamen()") Empezar exámen
 		md-button.md-raised(ng-click="showParticipantes()") Mostrar participantes

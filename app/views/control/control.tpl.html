@@ -138,7 +138,7 @@
   </div>
   <div class="panel-body">
     <div class="row">
-      <div class="col-xs-12 col-md-6">
+      <div class="col-xs-12 col-md-7">
         <select multiple="true" style="width: 200px; font-size: 9pt">
           <option ng-repeat="categoria in categorias_king" ng-model="cmdCategSelected" ng-click="cmdClickCategSelected(categoria)">{{categoria.nombre}}</option>
         </select>
@@ -147,7 +147,7 @@
         </select>
         <button ng-click="showQuestion()" class="btn btn-default">Mostrar pregunta</button>
         <button ng-click="showPuntajeParticip()" class="btn btn-default">Mostrar puntaje</button>
-        <md-checkbox ng-click="toggleShowLogoEntidadParticipantes()" ng-model="cmdShowLogoEntidadPartici" aria-label="Mostrar logos">Mostrar logo entidades</md-checkbox>
+        <md-checkbox ng-click="toggleShowLogoEntidadParticipantes()" ng-true-value="1" ng-false-value="0" ng-model="cmdShowLogoEntidadPartici" aria-label="Mostrar logos">Mostrar logo entidades</md-checkbox>
       </div>
     </div>
     <md-button ng-click="empezarExamen()" class="md-raised">Empezar exámen</md-button>
