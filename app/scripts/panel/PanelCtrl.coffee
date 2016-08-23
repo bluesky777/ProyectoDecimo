@@ -16,6 +16,10 @@ angular.module('WissenSystem')
 		$rootScope.$on '$stateChangeSuccess', (event, toState, toParams, fromState, fromParams)->
 			$scope.cambiarTema('theme-zero')
 
+
+		$rootScope.$on 'categ_selected_change', (event, categsel)->
+			$scope.USER.categsel = categsel
+
 		
 		$rootScope.reload = ()->
 			$state.go $state.current, $stateParams, {reload: true}

@@ -43,19 +43,26 @@
 							span.fa.fa-caret-up(ng-show="sortType == 'nombres' && sortReverse")
 					th Ent
 					th 
-						a(href="" ng-click="sortType = 'abrev_categ'; sortReverse = !sortReverse")
+						a(href="" ng-click="sortType = 'categoria'; sortReverse = !sortReverse")
 							| Categ
-							span.fa.fa-caret-down(ng-show="sortType == 'abrev_categ' && !sortReverse")
-							span.fa.fa-caret-up(ng-show="sortType == 'abrev_categ' && sortReverse")
+							span.fa.fa-caret-down(ng-show="sortType == 'categoria' && !sortReverse")
+							span.fa.fa-caret-up(ng-show="sortType == 'categoria' && sortReverse")
 						md-tooltip Categoría
 					th 
-						a(href="" ng-click="sortType = 'resultados.examen_at'; sortReverse = !sortReverse")
+						a(href="" ng-click="sortType = 'examen_at'; sortReverse = !sortReverse")
 							| Fecha
 							span.fa.fa-caret-down(ng-show="sortType == 'examen_at' && !sortReverse")
 							span.fa.fa-caret-up(ng-show="sortType == 'examen_at' && sortReverse")
 						md-tooltip Fecha realizado
 					th 
-						a(href="" ng-click="sortType = 'resultados.cantidad_pregs'; sortReverse = !sortReverse")
+						a(href="" ng-click="sortType = 'tiempo'; sortReverse = !sortReverse")
+							| Tiempo
+							span.fa.fa-caret-down(ng-show="sortType == 'tiempo' && !sortReverse")
+							span.fa.fa-caret-up(ng-show="sortType == 'tiempo' && sortReverse")
+						md-tooltip Duración del examen
+
+					th 
+						a(href="" ng-click="sortType = 'cantidad_pregs'; sortReverse = !sortReverse")
 							| Pregs
 							span.fa.fa-caret-down(ng-show="sortType == 'cantidad_pregs' && !sortReverse")
 							span.fa.fa-caret-up(ng-show="sortType == 'cantidad_pregs' && sortReverse")
@@ -64,13 +71,13 @@
 					th Buenas
 						md-tooltip Correctas
 					th 
-						a(href="" ng-click="sortType = 'resultados.promedio'; sortReverse = !sortReverse")
+						a(href="" ng-click="sortType = 'promedio'; sortReverse = !sortReverse")
 							| Puntaje
-							span.fa.fa-caret-down(ng-show="sortType == 'resultados.promedio' && !sortReverse")
-							span.fa.fa-caret-up(ng-show="sortType == 'resultados.promedio' && sortReverse")
+							span.fa.fa-caret-down(ng-show="sortType == 'promedio' && !sortReverse")
+							span.fa.fa-caret-up(ng-show="sortType == 'promedio' && sortReverse")
 				
 				tbody
-					tr(ng-repeat="examen in examenes" )
+					tr(ng-repeat="examen in examenes | filter:searchExam | orderObjectBy:sortType:sortReverse" )
 						td(style="font-size: 7pt;") {{ examen.examen_id }}
 						td(style="font-size: 7pt;") {{ $index +1 }}
 							md-tooltip Orden
@@ -82,6 +89,7 @@
 							| {{ examen.alias_entidad }}
 						td {{ examen.abrev_categ }}
 						td(style="font-size: 7pt;") {{ examen.examen_at }}
+						td(style="font-size: 7pt;") {{ examen.resultados.tiempo | secondsToDateTime }}
 						td {{ examen.resultados.cantidad_pregs }}
 						td {{ examen.resultados.cantidad_pregs - examen.resultados.correctas }}
 							md-tooltip Incorrectas
@@ -91,7 +99,7 @@
 
 								.menu-puesto-exam 
 									.btn-group
-										a.btn.btn-default.btn-xs(href="" ng-click="mostrarPuesto()")
+										a.btn.btn-default.btn-xs(href="" ng-click="mostrarPuesto(examen, $index +1)")
 											i.fa.fa-child
 											md-tooltip Mostrar en pantalla
 										a.btn.btn-danger.btn-xs(href="" ng-click="eliminarExamen(examen)")
@@ -126,19 +134,25 @@
 								span.fa.fa-caret-down(ng-show="sortType == 'nombres' && !sortReverse")
 								span.fa.fa-caret-up(ng-show="sortType == 'nombres' && sortReverse")
 						th 
-							a(href="" ng-click="sortType = 'abrev_categ'; sortReverse = !sortReverse")
+							a(href="" ng-click="sortType = 'categoria'; sortReverse = !sortReverse")
 								| Categ
-								span.fa.fa-caret-down(ng-show="sortType == 'abrev_categ' && !sortReverse")
-								span.fa.fa-caret-up(ng-show="sortType == 'abrev_categ' && sortReverse")
+								span.fa.fa-caret-down(ng-show="sortType == 'categoria' && !sortReverse")
+								span.fa.fa-caret-up(ng-show="sortType == 'categoria' && sortReverse")
 							md-tooltip Categoría
 						th 
-							a(href="" ng-click="sortType = 'resultados.examen_at'; sortReverse = !sortReverse")
+							a(href="" ng-click="sortType = 'examen_at'; sortReverse = !sortReverse")
 								| Fecha
 								span.fa.fa-caret-down(ng-show="sortType == 'examen_at' && !sortReverse")
 								span.fa.fa-caret-up(ng-show="sortType == 'examen_at' && sortReverse")
 							md-tooltip Fecha realizado
 						th 
-							a(href="" ng-click="sortType = 'resultados.cantidad_pregs'; sortReverse = !sortReverse")
+							a(href="" ng-click="sortType = 'tiempo'; sortReverse = !sortReverse")
+								| Tiempo
+								span.fa.fa-caret-down(ng-show="sortType == 'tiempo' && !sortReverse")
+								span.fa.fa-caret-up(ng-show="sortType == 'tiempo' && sortReverse")
+							md-tooltip Duración del examen
+						th 
+							a(href="" ng-click="sortType = 'cantidad_pregs'; sortReverse = !sortReverse")
 								| Pregs
 								span.fa.fa-caret-down(ng-show="sortType == 'cantidad_pregs' && !sortReverse")
 								span.fa.fa-caret-up(ng-show="sortType == 'cantidad_pregs' && sortReverse")
@@ -147,13 +161,13 @@
 						th Buenas
 							md-tooltip Correctas
 						th 
-							a(href="" ng-click="sortType = 'resultados.promedio'; sortReverse = !sortReverse")
+							a(href="" ng-click="sortType = 'promedio'; sortReverse = !sortReverse")
 								| Puntaje
-								span.fa.fa-caret-down(ng-show="sortType == 'resultados.promedio' && !sortReverse")
-								span.fa.fa-caret-up(ng-show="sortType == 'resultados.promedio' && sortReverse")
+								span.fa.fa-caret-down(ng-show="sortType == 'promedio' && !sortReverse")
+								span.fa.fa-caret-up(ng-show="sortType == 'promedio' && sortReverse")
 					
 					tbody
-						tr(ng-repeat="examen in entidad.examenes | orderBy:sortType:sortReverse | filter:searchExam" )
+						tr(ng-repeat="examen in entidad.examenes | filter:searchExam | orderObjectBy:sortType:sortReverse" )
 							td(style="font-size: 7pt;") {{ examen.examen_id }}
 							td(style="font-size: 7pt;") {{ $index +1 }}
 								md-tooltip Orden
@@ -162,6 +176,7 @@
 								| {{ examen.nombres + ' ' + examen.apellidos }}
 							td {{ examen.abrev_categ }}
 							td(style="font-size: 7pt;") {{ examen.examen_at }}
+							td(style="font-size: 7pt;") {{ examen.resultados.tiempo | secondsToDateTime }}
 							td {{ examen.resultados.cantidad_pregs }}
 							td {{ examen.resultados.cantidad_pregs - examen.resultados.correctas }}
 								md-tooltip Incorrectas
@@ -171,7 +186,7 @@
 
 								.menu-puesto-exam 
 									.btn-group
-										a.btn.btn-default.btn-xs(href="" ng-click="mostrarPuesto()")
+										a.btn.btn-default.btn-xs(href="" ng-click="mostrarPuesto(examen, $index +1, entidad)")
 											i.fa.fa-child
 											md-tooltip Mostrar en pantalla
 										a.btn.btn-danger.btn-xs(href="" ng-click="eliminarExamen(examen)")
@@ -193,7 +208,7 @@
 						|  {{ entidad.nombre_entidad }} - {{ entidad.alias_entidad }}
 						md-tooltip {{ entidad.lider_nombre }}
 
-				div(ng-repeat="categoria in entidad.categorias" ng-init="sortType = 'resultados.promedio'; sortReverse = true")
+				div(ng-repeat="categoria in entidad.categorias" ng-init="sortType = 'promedio'; sortReverse = true")
 
 					h4.center(style="margin-top: 10px;") 
 						| {{ categoria.nombre_categ }} - {{ categoria.abrev_categ }}
@@ -216,19 +231,25 @@
 									span.fa.fa-caret-down(ng-show="sortType == 'nombres' && !sortReverse")
 									span.fa.fa-caret-up(ng-show="sortType == 'nombres' && sortReverse")
 							th 
-								a(href="" ng-click="sortType = 'abrev_categ'; sortReverse = !sortReverse")
+								a(href="" ng-click="sortType = 'categoria'; sortReverse = !sortReverse")
 									| Categ
-									span.fa.fa-caret-down(ng-show="sortType == 'abrev_categ' && !sortReverse")
-									span.fa.fa-caret-up(ng-show="sortType == 'abrev_categ' && sortReverse")
+									span.fa.fa-caret-down(ng-show="sortType == 'categoria' && !sortReverse")
+									span.fa.fa-caret-up(ng-show="sortType == 'categoria' && sortReverse")
 								md-tooltip Categoría
 							th 
-								a(href="" ng-click="sortType = 'resultados.examen_at'; sortReverse = !sortReverse")
+								a(href="" ng-click="sortType = 'examen_at'; sortReverse = !sortReverse")
 									| Fecha
 									span.fa.fa-caret-down(ng-show="sortType == 'examen_at' && !sortReverse")
 									span.fa.fa-caret-up(ng-show="sortType == 'examen_at' && sortReverse")
 								md-tooltip Fecha realizado
 							th 
-								a(href="" ng-click="sortType = 'resultados.cantidad_pregs'; sortReverse = !sortReverse")
+								a(href="" ng-click="sortType = 'tiempo'; sortReverse = !sortReverse")
+									| Tiempo
+									span.fa.fa-caret-down(ng-show="sortType == 'tiempo' && !sortReverse")
+									span.fa.fa-caret-up(ng-show="sortType == 'tiempo' && sortReverse")
+								md-tooltip Duración del examen
+							th 
+								a(href="" ng-click="sortType = 'cantidad_pregs'; sortReverse = !sortReverse")
 									| Pregs
 									span.fa.fa-caret-down(ng-show="sortType == 'cantidad_pregs' && !sortReverse")
 									span.fa.fa-caret-up(ng-show="sortType == 'cantidad_pregs' && sortReverse")
@@ -237,13 +258,13 @@
 							th Buenas
 								md-tooltip Correctas
 							th 
-								a(href="" ng-click="sortType = 'resultados.promedio'; sortReverse = !sortReverse")
+								a(href="" ng-click="sortType = 'promedio'; sortReverse = !sortReverse")
 									| Puntaje
-									span.fa.fa-caret-down(ng-show="sortType == 'resultados.promedio' && !sortReverse")
-									span.fa.fa-caret-up(ng-show="sortType == 'resultados.promedio' && sortReverse")
+									span.fa.fa-caret-down(ng-show="sortType == 'promedio' && !sortReverse")
+									span.fa.fa-caret-up(ng-show="sortType == 'promedio' && sortReverse")
 						
 						tbody
-							tr(ng-repeat="examen in categoria.examenes | orderBy:sortType:sortReverse | filter:searchExam" )
+							tr(ng-repeat="examen in categoria.examenes | filter:searchExam | orderObjectBy:sortType:sortReverse" )
 								td(style="font-size: 7pt;") {{ examen.examen_id }}
 								td(style="font-size: 7pt;") {{ $index +1 }}
 									md-tooltip Orden
@@ -252,6 +273,7 @@
 									| {{ examen.nombres + ' ' + examen.apellidos }}
 								td {{ examen.abrev_categ }}
 								td(style="font-size: 7pt;") {{ examen.examen_at }}
+								td(style="font-size: 7pt;") {{ examen.resultados.tiempo | secondsToDateTime }}
 								td {{ examen.resultados.cantidad_pregs }}
 								td {{ examen.resultados.cantidad_pregs - examen.resultados.correctas }}
 									md-tooltip Incorrectas
@@ -260,7 +282,7 @@
 								td.td-contenedora {{ examen.resultados.promedio | decimales_if:1 }}%
 									.menu-puesto-exam 
 										.btn-group
-											a.btn.btn-default.btn-xs(href="" ng-click="mostrarPuesto()")
+											a.btn.btn-default.btn-xs(href="" ng-click="mostrarPuesto(examen, $index +1, entidad)")
 												i.fa.fa-child
 												md-tooltip Mostrar en pantalla
 											a.btn.btn-danger.btn-xs(href="" ng-click="eliminarExamen(examen)")
@@ -273,7 +295,7 @@
 
 
 		.puestos-table-content(ng-if="mostrando=='por_categorias'")
-			div(ng-repeat="categoria in categorias" ng-init="sortType = 'resultados.promedio'; sortReverse = true")
+			div(ng-repeat="categoria in categorias" ng-init="sortType = 'promedio'; sortReverse = true")
 				
 				md-whiteframe.md-whiteframe-z2.definicion-frame(layout style="padding: 10px; margin: 15px; display: block; ")
 					h3.center
@@ -298,19 +320,25 @@
 								span.fa.fa-caret-up(ng-show="sortType == 'nombres' && sortReverse")
 						th Ent
 						th 
-							a(href="" ng-click="sortType = 'abrev_categ'; sortReverse = !sortReverse")
+							a(href="" ng-click="sortType = 'categorias'; sortReverse = !sortReverse")
 								| Categ
-								span.fa.fa-caret-down(ng-show="sortType == 'abrev_categ' && !sortReverse")
-								span.fa.fa-caret-up(ng-show="sortType == 'abrev_categ' && sortReverse")
+								span.fa.fa-caret-down(ng-show="sortType == 'categorias' && !sortReverse")
+								span.fa.fa-caret-up(ng-show="sortType == 'categorias' && sortReverse")
 							md-tooltip Categoría
 						th 
-							a(href="" ng-click="sortType = 'resultados.examen_at'; sortReverse = !sortReverse")
+							a(href="" ng-click="sortType = 'examen_at'; sortReverse = !sortReverse")
 								| Fecha
 								span.fa.fa-caret-down(ng-show="sortType == 'examen_at' && !sortReverse")
 								span.fa.fa-caret-up(ng-show="sortType == 'examen_at' && sortReverse")
 							md-tooltip Fecha realizado
 						th 
-							a(href="" ng-click="sortType = 'resultados.cantidad_pregs'; sortReverse = !sortReverse")
+							a(href="" ng-click="sortType = 'tiempo'; sortReverse = !sortReverse")
+								| Tiempo
+								span.fa.fa-caret-down(ng-show="sortType == 'tiempo' && !sortReverse")
+								span.fa.fa-caret-up(ng-show="sortType == 'tiempo' && sortReverse")
+							md-tooltip Duración del examen
+						th 
+							a(href="" ng-click="sortType = 'cantidad_pregs'; sortReverse = !sortReverse")
 								| Pregs
 								span.fa.fa-caret-down(ng-show="sortType == 'cantidad_pregs' && !sortReverse")
 								span.fa.fa-caret-up(ng-show="sortType == 'cantidad_pregs' && sortReverse")
@@ -319,13 +347,14 @@
 						th Buenas
 							md-tooltip Correctas
 						th 
-							a(href="" ng-click="sortType = 'resultados.promedio'; sortReverse = !sortReverse")
+							a(href="" ng-click="sortType = 'promedio'; sortReverse = !sortReverse")
 								| Puntaje
-								span.fa.fa-caret-down(ng-show="sortType == 'resultados.promedio' && !sortReverse")
-								span.fa.fa-caret-up(ng-show="sortType == 'resultados.promedio' && sortReverse")
+								span.fa.fa-caret-down(ng-show="sortType == 'promedio' && !sortReverse")
+								span.fa.fa-caret-up(ng-show="sortType == 'promedio' && sortReverse")
 					
 					tbody
-						tr(ng-repeat="examen in categoria.examenes | orderBy:sortType:sortReverse | filter:searchExam" )
+						//tr(ng-repeat="examen in categoria.examenes | filter:searchExam | orderBy:sortType:sortReverse" )
+						tr(ng-repeat="examen in categoria.examenes | filter:searchExam | orderObjectBy:sortType:sortReverse" )
 							td(style="font-size: 7pt;") {{ examen.examen_id }}
 							td(style="font-size: 7pt;") {{ $index +1 }}
 								md-tooltip Orden
@@ -337,6 +366,7 @@
 								| {{ examen.alias_entidad }}
 							td {{ examen.abrev_categ }}
 							td(style="font-size: 7pt;") {{ examen.examen_at }}
+							td(style="font-size: 7pt;") {{ examen.resultados.tiempo | secondsToDateTime }}
 							td {{ examen.resultados.cantidad_pregs }}
 							td {{ examen.resultados.cantidad_pregs - examen.resultados.correctas }}
 								md-tooltip Incorrectas
@@ -346,7 +376,7 @@
 
 								.menu-puesto-exam 
 									.btn-group
-										a.btn.btn-default.btn-xs(href="" ng-click="mostrarPuesto()")
+										a.btn.btn-default.btn-xs(href="" ng-click="mostrarPuesto(examen, $index +1)")
 											i.fa.fa-child
 											md-tooltip Mostrar en pantalla
 										a.btn.btn-danger.btn-xs(href="" ng-click="eliminarExamen(examen)")

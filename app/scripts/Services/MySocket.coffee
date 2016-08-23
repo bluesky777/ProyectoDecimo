@@ -109,6 +109,7 @@ angular.module('WissenSystem')
 				client = SocketData.cliente Perfil.getResourceId()
 				client.categsel = message.categsel
 				SocketData.actualizar_clt client, message.categsel
+				$rootScope.$emit 'categ_selected_change', message.categsel
 				
 			when "change_a_categ_selected"
 				client = SocketData.cliente message.resourceId
@@ -130,6 +131,7 @@ angular.module('WissenSystem')
 
 			when "sc_show_question"
 				SocketData.config.pregunta 			= message.pregunta
+				SocketData.config.no_question 		= message.no_question
 				SocketData.config.reveal_answer 	= false 
 				$state.go('proyectando.question')
 
@@ -140,16 +142,25 @@ angular.module('WissenSystem')
 				SocketData.config.cliente_to_show = message.cliente
 				$state.go('proyectando.puntaje_particip')
 
+			when "sc_show_puntaje_examen"
+				SocketData.config.puntaje_to_show = message.examen
+				$state.go('proyectando.puntaje_particip')
+
 			when "sc_answered" # Me avisan que alguien respondió algo
 				client = SocketData.cliente message.resourceId
-				client.answered = message.valor
+				client = message.cliente
 				SocketData.actualizar_clt client
 
+				if message.resourceId != Perfil.getResourceId()
+					if message.cliente.answered == 'correct'
+						audio = new Audio('/sounds/Pin.wav');
+						audio.play();
+					else
+						audio = new Audio('/sounds/Error.wav');
+						audio.play();
+
 			when "next_question" # Me ordenan que vaya a la siguente pregunta
-				if $state.is 'panel.examen_respuesta'
-					client = SocketData.cliente message.resourceId
-					client.answered = 'waiting'
-					SocketData.actualizar_clt client
+				SocketData.set_waiting()
 				$rootScope.$emit 'next_question'
 
 			when "prev_question" # Me ordenan que vaya a la siguente pregunta
@@ -221,7 +232,7 @@ angular.module('WissenSystem')
 		dataStream.send({ comando: 'guardar_nombre_punto',  resourceId: resourceId, nombre: nombre })
 
 	get_usuarios = ()->
-		console.log SocketData.usuarios_all.length
+		#console.log SocketData.usuarios_all.length
 		if SocketData.usuarios_all.length == 0
 			xtoken = $cookies.get('xtoken')
 			dataStream.send({ comando: 'get_usuarios',  from_token: xtoken })
@@ -232,6 +243,7 @@ angular.module('WissenSystem')
 		SocketData.actualizar_clt client, categoria_id
 		dataStream.send({ comando: 'change_a_categ_selected',  resourceId: resourceId, categsel: categoria_id })
 
+	# El participante selecciona una categoría por su cuenta y llama a esta función
 	change_my_categ_selected = (categoria_id)->
 		client = SocketData.cliente Perfil.getResourceId()
 		client.categsel = categoria_id
@@ -240,9 +252,13 @@ angular.module('WissenSystem')
 
 	empezar_examen = ()->
 		dataStream.send({ comando: 'empezar_examen' })
+		audio = new Audio('/sounds/Sirviendo.wav');
+		audio.play();
 
 	empezar_examen_cliente = (resourceId)->
 		dataStream.send({ comando: 'empezar_examen_cliente', resourceId: resourceId })
+		audio = new Audio('/sounds/Sirviendo.wav');
+		audio.play();
 
 	sc_show_participantes = (categorias_traduc)->
 		dataStream.send({ comando: 'sc_show_participantes', categorias_traduc: categorias_traduc })
@@ -259,11 +275,25 @@ angular.module('WissenSystem')
 	sc_show_puntaje_particip = (client)->
 		dataStream.send({ comando: 'sc_show_puntaje_particip', cliente: client })
 
-	sc_answered = (resourceId, valor)->
-		dataStream.send({ comando: 'sc_answered', resourceId: resourceId, valor: valor })
+	sc_show_puntaje_examen = (examen)->
+		dataStream.send({ comando: 'sc_show_puntaje_examen', examen: examen })
+
+	sc_answered = (valor, tiempo)->
+		resourceId = Perfil.getResourceId()
+		dataStream.send({ comando: 'sc_answered', resourceId: resourceId, valor: valor, tiempo: tiempo })
 
 	sc_next_question = ()->
+		SocketData.set_waiting()
 		dataStream.send({ comando: 'next_question' })
+		audio = new Audio('/sounds/Siguiente.wav');
+		audio.play();
+
+	sc_next_question_cliente = (cliente)->
+		client = SocketData.cliente cliente.resourceId
+		client.answered = 'waiting'
+		dataStream.send({ comando: 'next_question', resourceId: cliente.resourceId })
+		audio = new Audio('/sounds/Siguiente.wav');
+		audio.play();
 
 
 
@@ -299,8 +329,10 @@ angular.module('WissenSystem')
 		sc_reveal_answer:			sc_reveal_answer
 		sc_show_logo_entidad_partici:	sc_show_logo_entidad_partici
 		sc_show_puntaje_particip:	sc_show_puntaje_particip
+		sc_show_puntaje_examen:		sc_show_puntaje_examen
 		sc_answered:				sc_answered
 		sc_next_question:			sc_next_question
+		sc_next_question_cliente:	sc_next_question_cliente
 	}
 
 	return methods
@@ -346,6 +378,13 @@ angular.module('WissenSystem')
 			@clientes.push client
 		return true
 
+	set_waiting = ()->
+		for clt, indice in @clientes
+			clt.answered = 'waiting'
+
+		return false
+
+
 
 
 
@@ -361,6 +400,7 @@ angular.module('WissenSystem')
 		conectado:					conectado
 		actualizar_clt:				actualizar_clt
 		config:						config
+		set_waiting:				set_waiting
 	}
 
 	return methods

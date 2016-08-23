@@ -1,2 +1,45 @@
 h1 Pregunta!
-{{ SocketData.config.pregunta }}
+
+div()
+
+	md-whiteframe.md-whiteframe-z2.definicion-frame(layout style="padding: 10px; position: relative")
+		span(flex="5") {{SocketData.config.no_question}}.
+		span(ng-bind-html="SocketData.config.pregunta.enunciado" flex="95")
+
+		div(ng-show="SocketData.config.pregunta.ayuda" ng-click="toggleMostrarAyuda(SocketData.config.pregunta)" ng-class="{'ayuda-preg-showed': SocketData.config.pregunta.mostrar_ayuda, 'ayuda-preg-hidded':!SocketData.config.pregunta.mostrar_ayuda}")
+			a(ng-show="!SocketData.config.pregunta.mostrar_ayuda")
+				i.fa.fa-anchor
+			span(ng-show="SocketData.config.pregunta.mostrar_ayuda")
+				| {{SocketData.config.pregunta.ayuda}}
+
+
+
+	// Opciones checkbox para seleccionar varios
+	md-list(ng-if="SocketData.config.pregunta.tipo_pregunta=='Multiple'")
+		md-list-item(ng-repeat="opcion in SocketData.config.pregunta.opciones")
+			md-checkbox(ng-model="topping.wanted")
+			p {{ opcion.definicion }}
+			md-icon.md-secondary.fa.fa-comment(ng-click="" aria-label="Chat")
+
+	
+
+	// Opciones de tipo ICFES
+	div.opciones(layout="row" layout-wrap layout-fill ng-if="SocketData.config.pregunta.tipo_pregunta=='Test'" 
+		style="padding-bottom: 32px; justify-content: center;")
+		
+		md-whiteframe.pointer.md-whiteframe-z2.btn(ng-class="{'elegida':opcion.elegida}" 
+			ng-if="!opcion.nueva" flex="45" 
+			ng-click="elegirOpcion(SocketData.config.pregunta, opcion, $index)" 
+			ng-repeat="opcion in SocketData.config.pregunta.opciones") 
+			
+			span(style="font-weight: bold;") {{ indexChar($index) }}. 
+			span {{ opcion.definicion }}
+
+
+br
+br
+br
+br
+md-divider
+br
+br

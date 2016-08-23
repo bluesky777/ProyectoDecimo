@@ -39,6 +39,11 @@ angular.module('WissenSystem')
 			$rootScope.lastState = next.name
 			$rootScope.lastStateParam = toParams
 
+		if fromState.name == 'panel.examen_respuesta' 
+			answer = confirm("No debes salir del examen, ¿Seguro de continuar?")
+			if (!answer)
+				event.preventDefault()
+
 
 	#- Evento cuando ya hemos cambiado de estado.
 	$rootScope.$on '$stateChangeSuccess', (event, toState, toParams, fromState, fromParams)->

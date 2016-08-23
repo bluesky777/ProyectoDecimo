@@ -51,7 +51,7 @@
           <header><img ng-src="{{imagesPath + cliente.usuario.imagen_nombre}}" alt="{{cliente.usuario.username}}" class="img-perfil nodrag"><img ng-src="{{ imagesPath + cliente.usuario.entidad.logo}}" alt="{{cliente.usuario.username}}" class="img-entidad nodrag">
             <md-tooltip>{{cliente.usuario.entidad.nombre}}</md-tooltip>
           </header>
-          <div class="info"> 
+          <div ng-class="{'incorrect': cliente.answered=='incorrect', 'correct': cliente.answered=='correct' }" class="info"> 
             <h5 class="name text-center nombresellipsis">{{cliente.usuario.nombres}} {{cliente.usuario.apellidos}}
               <md-tooltip>{{cliente.usuario.username}}</md-tooltip>
             </h5>
@@ -71,6 +71,9 @@
                 <md-menu-divider></md-menu-divider>
                 <md-menu-item>
                   <md-button ng-click="empezarExamenCliente(cliente)">Empezar examen</md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="nextQuestionCliente(cliente)">Siguiente pregunta</md-button>
                 </md-menu-item>
               </md-menu-content>
             </md-menu>

@@ -87,10 +87,16 @@ angular.module('WissenSystem')
 
 .filter('preguntaActual', ['$filter', 'Perfil', ($filter, Perfil)->
 	(input, indice_actual) ->
+		filtered = [];
+		angular.forEach(input, (item)->
+			filtered.push(item);
+		)
 
-		if input
+		filtered = $filter('orderBy')(filtered, 'orden')
+
+		if filtered
 			
-			for pregunta in input
+			for pregunta in filtered
 
 				if pregunta.tipo_pregunta
 
@@ -132,9 +138,10 @@ angular.module('WissenSystem')
 				
 
 
-			res = input[0]
-			res.terminado = true
-			res = [res]
+			res = filtered[0]
+			if res
+				res.terminado = true
+				res = [res]
 			
 			return res
 		else

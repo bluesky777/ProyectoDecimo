@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.controller('ViewPreguntaExamenCtrl', ['$scope', 'Restangular', 'toastr', '$filter', '$rootScope', '$state', '$uibModal', 'App', ($scope, Restangular, toastr, $filter, $rootScope, $state, $modal, App)->
+.controller('ViewPreguntaExamenCtrl', ['$scope', 'Restangular', 'toastr', '$filter', '$rootScope', '$state', '$uibModal', 'App', 'MySocket', ($scope, Restangular, toastr, $filter, $rootScope, $state, $modal, App, MySocket)->
 
 	
 	$scope.USER = $scope.$parent.USER
@@ -42,6 +42,10 @@ angular.module('WissenSystem')
 			modalInstance.result.then( (option)->
 				opcion.respondida = true
 				$scope.$emit 'respuesta_elegida', indice
+				console.log option, opcion
+				valor = if opcion.is_correct then 'correct' else 'incorrect'
+				MySocket.sc_answered valor, $rootScope.tiempo
+
 			)
 			
 
@@ -108,7 +112,6 @@ angular.module('WissenSystem')
 		ruta = if agrupada then grupopreg else pregking
 		
 		Restangular.all(ruta).customPUT(datos).then((r)->
-			#toastr.success 'Iniciamos el examen.' 
 			$modalInstance.close(r)
 		, (r2)->
 			toastr.warning 'No se pudo guardar respuesta.', 'Problema'

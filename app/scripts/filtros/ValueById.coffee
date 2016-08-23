@@ -71,11 +71,11 @@ angular.module('WissenSystem')
 							resultado.push categ_traducido[0]
 
 				else
-
-					categ_traducido = $filter('porIdioma')(categ_king.categorias_traducidas, idioma_id)
-					if categ_traducido.length > 0
-						#categ_traducido[0].categoria_king_id = categ_king.id
-						resultado.push categ_traducido[0]
+					if categ_king
+						categ_traducido = $filter('porIdioma')(categ_king.categorias_traducidas, idioma_id)
+						if categ_traducido.length > 0
+							#categ_traducido[0].categoria_king_id = categ_king.id
+							resultado.push categ_traducido[0]
 
 
 			return resultado

@@ -8,7 +8,7 @@ angular.module('WissenSystem')
 		$scope.SocketData = SocketData
 
 		$scope.participantesDeCategoria = (categoria_traduc)->
-			return $filter('filter')(SocketData.clientes, {'registrado':true, 'categsel':categoria_traduc.categoria_id })
+			return $filter('filter')(SocketData.clientes, {'registrado':true, 'categsel':categoria_traduc.categoria_id }, true)
 		
 		return
 	]

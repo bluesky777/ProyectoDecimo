@@ -37,6 +37,9 @@
                     </div>
                   </div>
                   <div class="form-group">
+                    <md-checkbox ng-model="newEvent.gran_final" ng-false-value="0" ng-true-value="1" ng-value="newEvent.gran_final">Gran final</md-checkbox>
+                  </div>
+                  <div class="form-group">
                     <label class="control-label col-md-3">Examen actual</label>
                     <md-select ng-model="newEvent.examen_actual_id" placeholder="Selecciona...">
                       <md-option value="1">Para pruebas</md-option>
@@ -143,6 +146,9 @@
                     <div class="col-md-9">
                       <input ng-model="currentEvent.descripcion" type="text" placeholder="Descripción" class="form-control">
                     </div>
+                  </div>
+                  <div class="form-group">
+                    <md-checkbox ng-model="currentEvent.gran_final" ng-false-value="0" ng-true-value="1">Gran final</md-checkbox>
                   </div>
                   <div class="form-group">
                     <label class="control-label col-md-3">Examen actual</label>

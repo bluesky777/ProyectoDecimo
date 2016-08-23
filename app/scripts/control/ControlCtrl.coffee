@@ -129,6 +129,7 @@ angular.module('WissenSystem')
 			return {}
 
 	$scope.cambiarCategSel = (cliente, categoria)->
+		console.log cliente, categoria
 		MySocket.change_a_categ_selected(cliente.resourceId, categoria.categoria_id)
 
 
@@ -158,6 +159,7 @@ angular.module('WissenSystem')
 				for preguntasking in evaluac.preguntas_evaluacion
 					for preguntatraduc in preguntasking.preguntas_traducidas
 						if preguntatraduc.idioma_id == $scope.USER.idioma_main_id
+							preguntatraduc.tipo_pregunta = preguntasking.tipo_pregunta
 							$scope.cmdPreguntasTraduc.push preguntatraduc
 
 
@@ -172,6 +174,9 @@ angular.module('WissenSystem')
 
 	$scope.nextQuestion = ()->
 		MySocket.sc_next_question() # El modelo no cambia hasta salir de esta función
+
+	$scope.nextQuestionCliente = (cliente)->
+		MySocket.sc_next_question_cliente(cliente) # El modelo no cambia hasta salir de esta función
 
 
 	MySocket.get_clts()

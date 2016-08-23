@@ -781,6 +781,12 @@ img.message-entilogo{
 .info{
   font-size: 9pt;
 }
+.info.correct{
+  background-color: #cdccff;
+}
+.info.incorrect{
+  background-color: #ffcccc;
+}
 .nombresellipsis{
   white-space: nowrap;
   //width: 150px;
@@ -888,7 +894,14 @@ md-sidenav md-input-container{
     width: 100%;
     display: inline-block;
   }
-
+  .sc-cliente.correct{
+    background-color: #4f4aff;
+    color: white;
+  }
+  .sc-cliente.incorrect{
+    background-color: #fb3f3f;
+    color: white;
+  }
 
 }
 .participantes-container ul{
@@ -1063,5 +1076,6 @@ md-select.categoria md-select-value{
   opacity: 1;
   right: 10px;
 }
+
 
 

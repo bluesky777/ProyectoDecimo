@@ -58,14 +58,14 @@ angular.module('WissenSystem')
 			)
 
 
-		$scope.mostrarPuesto = ()->
-			Restangular.all('informes/examenes-categorias').getList({gran_final: $scope.gran_final}).then((r)->
-				$scope.categorias = r
-				$scope.mostrando = 'por_categorias';
-			, (r2)->
-				toastr.warning 'No se trajeron los exámenes por entidad y categorías', 'Problema'
-				console.log 'No se trajeron los exámenes por entidad y categorías ', r2
-			)
+		$scope.mostrarPuesto = (examen, puesto, entidad)->
+			examen.puesto = puesto
+			if entidad
+				examen.logo_nombre 		= entidad.logo_nombre
+				examen.alias_entidad 	= entidad.alias_entidad
+				examen.nombre_entidad 	= entidad.nombre_entidad
+				examen.lider_nombre 	= entidad.lider_nombre
+			MySocket.sc_show_puntaje_examen(examen)
 
 
 		$scope.eliminarExamen = (examen)->

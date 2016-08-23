@@ -37,11 +37,12 @@ angular.module('WissenSystem')
 		$scope.traer_categorias_evento()
 
 
-
+	# Esta función es llamada por el participante cuando él presiona una categoría en la que está inscrito
 	$scope.iniciarExamen = (categoria)->
 		if $scope.eventoactual.gran_final
 			categorias_king = $filter('categsInscritasDeUsuario')($scope.user.inscripciones, $scope.categorias_king, $scope.user.idioma_main_id) 
-
+			$scope.user.categsel = categoria.categoria_id
+			console.log '$scope.user.categsel', $scope.user.categsel
 			for cat in categorias_king
 				cat.selected = false
 			categoria.selected = true
@@ -76,7 +77,8 @@ angular.module('WissenSystem')
 		$state.go 'proyectando'
 
 
-	$rootScope.$on 'empezar_examen', ()->
+	destroyEmpezar_examen = $rootScope.$on 'empezar_examen', (event)->
+		console.log event
 		inscripcion = {categoria_id: $scope.user.categsel}
 
 		for inscrip in $scope.user.inscripciones
@@ -90,6 +92,12 @@ angular.module('WissenSystem')
 			toastr.warning 'No se pudo iniciar el examen.', 'Problema'
 			console.log 'Error creando el examen: ', r2
 		)
+
+
+
+	$scope.$on('$destroy', ()->
+	  destroyEmpezar_examen() # remove listener.
+	);  
 
 
 

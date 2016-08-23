@@ -58,7 +58,7 @@
 						img.img-entidad.nodrag(ng-src="{{ imagesPath + cliente.usuario.entidad.logo}}" alt="{{cliente.usuario.username}}")
 						md-tooltip {{cliente.usuario.entidad.nombre}}
 				
-					.info 
+					.info(ng-class="{'incorrect': cliente.answered=='incorrect', 'correct': cliente.answered=='correct' }") 
 						h5.name.text-center.nombresellipsis {{cliente.usuario.nombres}} {{cliente.usuario.apellidos}}
 							md-tooltip {{cliente.usuario.username}}
 						.alias-enti {{cliente.usuario.entidad.alias}}
@@ -79,6 +79,9 @@
 								md-menu-item
 									md-button(ng-click="empezarExamenCliente(cliente)")
 										| Empezar examen
+								md-menu-item
+									md-button(ng-click="nextQuestionCliente(cliente)")
+										| Siguiente pregunta
 
 					.opts-clt.btn-group
 						button.btn.btn-default.btn-xs.deseleccionador(type="button" ng-click="cerrarSesion(cliente)")

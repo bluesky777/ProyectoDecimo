@@ -1,4 +1,5 @@
 .categorias-container 
+
 	.categ-container(ng-repeat="categoria_traduc in SocketData.config.categorias_traduc "
 		ng-class="{'categ-retirada': participantesDeCategoria(categoria_traduc).length == 0}" )
 		.title-categ-container
@@ -6,10 +7,9 @@
 
 		.participantes-container
 
-
 			ul
-				li.md-whiteframe-1dp.sc-cliente(ng-repeat="cliente in SocketData.clientes | filter:{'registrado':true, 'categsel':categoria_traduc.categoria_id }"   
-					ng-class="{'answered_correctly': cliente.evaluacion.answered_correctly, 'answered_correctly': cliente.evaluacion_actual.answered_correctly }")
+				li.md-whiteframe-1dp.sc-cliente(ng-repeat="cliente in SocketData.clientes | filter:{'registrado':true, 'categsel':categoria_traduc.categoria_id }:true | orderParticipantes "   
+					ng-class="{'correct': cliente.answered=='correct', 'incorrect': cliente.answered=='incorrect' }")
 					.sc-cliente-imgs
 						
 						img.img-perfil(ng-src="{{imagesPath + cliente.usuario.imagen_nombre}}" alt="{{cliente.usuario.username}}")

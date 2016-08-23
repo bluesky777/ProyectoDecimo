@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.controller('ExamenRespuestaCtrl', ['$scope', 'Restangular', 'toastr', '$filter', 'AuthService', '$state', '$uibModal', 'App', '$rootScope', 'resolved_user', '$interval', '$timeout', ($scope, Restangular, toastr, $filter, AuthService, $state, $modal, App, $rootScope, resolved_user, $interval, $timeout)->
+.controller('ExamenRespuestaCtrl', ['$scope', 'Restangular', 'toastr', '$filter', 'AuthService', '$state', '$uibModal', 'App', '$rootScope', 'resolved_user', '$interval', '$timeout', 'MySocket', ($scope, Restangular, toastr, $filter, AuthService, $state, $modal, App, $rootScope, resolved_user, $interval, $timeout, MySocket)->
 
 	$scope.USER = resolved_user
 	$scope.imagesPath = App.images
@@ -24,10 +24,6 @@ angular.module('WissenSystem')
 			console.log 'Examen no válido', $rootScope.examen_actual
 			$state.transitionTo 'panel' 
 
-
-		$scope.$on '$destroy', ()->
-			console.log 'En destrucción!'
-			window.onbeforeunload = undefined
 
 		$scope.categoria_traducida = $filter('categoriasTraducidas')([$rootScope.examen_actual.categoria], $scope.USER.idioma_main_id)
 		if $scope.categoria_traducida.length > 0
@@ -59,6 +55,39 @@ angular.module('WissenSystem')
 
 		$scope.$on 'tiempo_preg_terminado', (event)->
 			console.log 'Tiempo pregunta terminado'
+			$scope.waiting_question = true
+			MySocket.sc_answered 'incorrect', $rootScope.tiempo
+
+			preg_check = $filter('preguntaActual')($scope.examen_actual.preguntas)
+			if preg_check.length == 1
+				pregs_trad = $filter('porIdioma')(preg_check[0].preguntas_traducidas, $scope.USER.idioma_main_id)
+				if pregs_trad.length > 0
+					if pregs_trad[0].opciones.length > 0
+						pregs_trad[0].opciones[0].respondida = true
+					else
+						toastr.warning 'No hay opciones para esta pregunta'
+						console.log 'No hay opciones para esta pregunta', pregs_trad[0]
+					datos = 
+						examen_actual_id: 		$scope.examen_actual.examen_id
+						pregunta_top_id: 		preg_check[0].id
+						pregunta_sub_id: 		pregs_trad[0].id
+						idioma_id: 				pregs_trad[0].idioma_id
+						tipo_pregunta: 			preg_check[0].tipo_pregunta
+						tiempo:					$rootScope.tiempo
+
+					ruta = 'examenes_respuesta/responder-pregunta'
+					Restangular.all(ruta).customPUT(datos).then((r)->
+						console.log 'Guardado el time out'
+					, (r2)->
+						toastr.warning 'No se pudo guardar respuesta.', 'Problema'
+						console.log 'No se pudo guardar respuesta: ', r2
+					)
+
+				else
+					toastr.warning 'No hay traducción para esta pregunta'
+					console.log 'No hay traducción para esta pregunta', preg_check[0]
+
+			$scope.check_por_terminado()
 
 		$scope.$on 'tiempo_exam_terminado', (event)->
 			console.log 'Tiempo examen terminado'
@@ -67,13 +96,23 @@ angular.module('WissenSystem')
 
 
 
-		$rootScope.$on 'next_question', (event)->
+		destroy_next_question = $rootScope.$on 'next_question', (event)->
+			if $scope.waiting_question = false
+				pregtemp = $filter('preguntaActual')($scope.examen_actual.preguntas, $scope.pregunta_actual)[0]
+				pregunta = $filter('filter')($scope.examen_actual.preguntas, {pregunta_id: pregtemp.pregunta_id})[0]
+				console.log pregunta
 			$scope.waiting_question = false
 
-		$rootScope.$on 'prev_question', (event)->
+		destroy_prev_question = $rootScope.$on 'prev_question', (event)->
 			$scope.waiting_question = false
 
 
+
+		$scope.$on('$destroy', ()->
+			window.onbeforeunload = undefined
+			destroy_next_question() # remove listener.
+			destroy_prev_question()
+		);
 
 
 
@@ -130,7 +169,14 @@ angular.module('WissenSystem')
 
 		console.log 'Finalizar examen'
 
-	
+	###	
+	$scope.$on('$locationChangeStart', ( event, param1, param2 )->
+		answer = confirm("No debes salir del examen, ¿Seguro de continuar?")
+		if (!answer)
+			event.preventDefault()
+	);
+	###
+
 
 
 
