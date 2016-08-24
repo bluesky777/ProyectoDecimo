@@ -17,7 +17,7 @@ angular.module('WissenSystem')
 		$scope.sortType     = 'promedio'; 
 		$scope.sortReverse  = false;  
 		$scope.searchExam   = ''; 
-		$scope.gran_final	= false;
+		$scope.gran_final	= true;
 
 
 		$scope.traerTodosLosExamenes = ()->
@@ -57,6 +57,19 @@ angular.module('WissenSystem')
 				console.log 'No se trajeron los exámenes por entidad y categorías ', r2
 			)
 
+		$scope.traerExamenesCategoria = ()->
+			if $scope.$parent.cmdCategSelected.id
+				categoria_id = $scope.$parent.cmdCategSelected.id
+				Restangular.all('informes/examenes-categoria').getList({gran_final: $scope.gran_final, categoria_id: categoria_id}).then((r)->
+					$scope.categorias = r
+					$scope.mostrando = 'por_categorias';
+				, (r2)->
+					toastr.warning 'No se trajeron los exámenes por entidad y categorías', 'Problema'
+					console.log 'No se trajeron los exámenes por entidad y categorías ', r2
+				)
+			else
+				toastr.warning 'Selecciona una categoría.'
+				
 
 		$scope.mostrarPuesto = (examen, puesto, entidad)->
 			examen.puesto = puesto

@@ -34,7 +34,6 @@ angular.module("WissenSystem")
 
 
 
-
 	$scope.upload =  (files)->
 		$scope.imgFiles = files
 		$scope.errorMsg = ''
@@ -147,11 +146,10 @@ angular.module("WissenSystem")
 
 
 
-
 	$scope.borrarImagen = (imagen)->
 
 		modalInstance = $modal.open({
-			templateUrl: '==fileManager/removeImage.tpl.html'
+			templateUrl: App.views + 'fileManager/removeImage.tpl.html'
 			controller: 'RemoveImageCtrl'
 			size: 'sm',
 			resolve: 
@@ -168,7 +166,6 @@ angular.module("WissenSystem")
 	$scope.usuarioSelect = (item, model)->
 		$scope.dato.selectUsuarioModel = item
 
-
 	
 
 	$scope.cambiarFotoUnUsuario = (usuarioElegido, imgUsuario)->
@@ -183,18 +180,6 @@ angular.module("WissenSystem")
 			toastr.error 'Error al asignar foto al usuario', 'Problema'
 		)
 
-
-
-	$scope.pedirCambioFirma = (usuarioElegido, imgFirma)->
-		
-		aEnviar = {
-			imgFirma: imgFirma.id
-		}
-		$http.put('::perfiles/cambiar-firma/'+usuarioElegido.id, aEnviar).then((r)->
-			toastr.success 'Firma asignada con éxito'
-		, (r2)->
-			toastr.error 'Error al asignar firma', 'Problema'
-		)
 
 
 

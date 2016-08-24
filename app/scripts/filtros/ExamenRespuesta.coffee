@@ -18,7 +18,7 @@ angular.module('WissenSystem')
 					if pregs_cont.length > 0
 						indice = indice + pregs_cont[0].preguntas_agrupadas.length
 
-				
+
 			return indice
 		else
 			return false

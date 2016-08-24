@@ -13,7 +13,7 @@
     <div ng-show="SocketData.config.puntaje_to_show">
       <div class="row">
         <div style="text-align: center;" class="col-md-12 col-sm-12">
-          <h2 style="margin-left:10px; font-size: 30pt;"> <span style="font-size: 70pt">{{ SocketData.config.puntaje_to_show.puesto }}º </span><span>puesto - {{ SocketData.config.puntaje_to_show.nombre_categ }}</span></h2>
+          <h2 style="margin-left:10px; font-size: 30pt;"> <span style="font-size: 70pt">{{ SocketData.config.puntaje_to_show.puesto }}º </span><span style="margin-left: -40px;">puesto - {{ SocketData.config.puntaje_to_show.nombre_categ }}</span></h2>
         </div>
       </div>
       <div class="row">
@@ -23,7 +23,7 @@
         <div class="col-md-6 col-sm-6 col-xs-6 center"><img ng-src="{{ imagesPath + SocketData.config.puntaje_to_show.imagen_nombre }}" style="width: 200px"></div>
       </div>
       <div class="row">
-        <div style="font-size:20pt;margin-top: 70px" class="col-md-6 col-sm-6 col-xs-6">Preguntas: {{ SocketData.config.puntaje_to_show.resultados.cantidad_pregs }}<br>Incorrectas: {{ SocketData.config.puntaje_to_show.resultados.cantidad_pregs - SocketData.config.puntaje_to_show.resultados.correctas }}<br>Correctas: {{ SocketData.config.puntaje_to_show.resultados.correctas }}</div>
+        <div style="font-size:20pt;margin-top: 40px" class="col-md-6 col-sm-6 col-xs-6">Preguntas: {{ SocketData.config.puntaje_to_show.resultados.cantidad_pregs }}<br>Incorrectas: {{ SocketData.config.puntaje_to_show.resultados.cantidad_pregs - SocketData.config.puntaje_to_show.resultados.correctas }}<br>Correctas: {{ SocketData.config.puntaje_to_show.resultados.correctas }}<br>Tiempo: {{ SocketData.config.puntaje_to_show.resultados.tiempo | secondsToDateTime:true }}</div>
         <div class="col-md-6 col-sm-6 col-xs-6 center">
           <h1 style="font-size:80pt; color: white; text-shadow: 4px 4px 2px rgb(21, 33, 33);">{{ SocketData.config.puntaje_to_show.resultados.promedio | decimales_if:1 }}%</h1>
         </div>

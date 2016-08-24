@@ -10,6 +10,7 @@
     <md-button ng-click="traerExamenesEntidades()" class="md-raised">Por entidades</md-button>
     <md-button ng-click="traerExamenesEntidadesCategorias()" class="md-raised">Por entidades-categorías</md-button>
     <md-button ng-click="traerExamenesCategorias()" class="md-raised">Por categorías</md-button>
+    <md-button ng-click="traerExamenesCategoria()" class="md-raised">Traer categoría</md-button>
     <form>
       <div style="width: 300px;margin-top: 15px;" class="form-group">
         <div class="input-group">
@@ -59,7 +60,7 @@
             <td> <img ng-src="{{ imagesPath + examen.logo_nombre }}" style="width: 25px">{{ examen.alias_entidad }}</td>
             <td>{{ examen.abrev_categ }}</td>
             <td style="font-size: 7pt;">{{ examen.examen_at }}</td>
-            <td style="font-size: 7pt;">{{ examen.resultados.tiempo | secondsToDateTime }}</td>
+            <td style="font-size: 7pt;">{{ examen.resultados.tiempo | secondsToDateTime:true }}</td>
             <td>{{ examen.resultados.cantidad_pregs }}</td>
             <td>{{ examen.resultados.cantidad_pregs - examen.resultados.correctas }}
               <md-tooltip>Incorrectas</md-tooltip>
@@ -123,7 +124,7 @@
               <td> <img ng-src="{{ imagesPath + examen.imagen_nombre }}" style="width: 25px">{{ examen.nombres + ' ' + examen.apellidos }}</td>
               <td>{{ examen.abrev_categ }}</td>
               <td style="font-size: 7pt;">{{ examen.examen_at }}</td>
-              <td style="font-size: 7pt;">{{ examen.resultados.tiempo | secondsToDateTime }}</td>
+              <td style="font-size: 7pt;">{{ examen.resultados.tiempo | secondsToDateTime:true }}</td>
               <td>{{ examen.resultados.cantidad_pregs }}</td>
               <td>{{ examen.resultados.cantidad_pregs - examen.resultados.correctas }}
                 <md-tooltip>Incorrectas</md-tooltip>
@@ -194,7 +195,7 @@
                 <td> <img ng-src="{{ imagesPath + examen.imagen_nombre }}" style="width: 25px">{{ examen.nombres + ' ' + examen.apellidos }}</td>
                 <td>{{ examen.abrev_categ }}</td>
                 <td style="font-size: 7pt;">{{ examen.examen_at }}</td>
-                <td style="font-size: 7pt;">{{ examen.resultados.tiempo | secondsToDateTime }}</td>
+                <td style="font-size: 7pt;">{{ examen.resultados.tiempo | secondsToDateTime:true }}</td>
                 <td>{{ examen.resultados.cantidad_pregs }}</td>
                 <td>{{ examen.resultados.cantidad_pregs - examen.resultados.correctas }}
                   <md-tooltip>Incorrectas</md-tooltip>
@@ -263,7 +264,7 @@
               <td> <img ng-src="{{ imagesPath + examen.logo_nombre }}" style="width: 25px">{{ examen.alias_entidad }}</td>
               <td>{{ examen.abrev_categ }}</td>
               <td style="font-size: 7pt;">{{ examen.examen_at }}</td>
-              <td style="font-size: 7pt;">{{ examen.resultados.tiempo | secondsToDateTime }}</td>
+              <td style="font-size: 7pt;">{{ examen.resultados.tiempo | secondsToDateTime:true }}</td>
               <td>{{ examen.resultados.cantidad_pregs }}</td>
               <td>{{ examen.resultados.cantidad_pregs - examen.resultados.correctas }}
                 <md-tooltip>Incorrectas</md-tooltip>

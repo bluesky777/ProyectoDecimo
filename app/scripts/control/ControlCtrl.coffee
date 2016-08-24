@@ -12,12 +12,12 @@ angular.module('WissenSystem')
 	$scope.cmdPreguntaSelected		= {}
 	$scope.cmdNoPregSelected		= 0
 	$scope.cmdShowLogoEntidadPartici = false
+	$scope.cmdPreguntaActual 		= 0
 	$scope.show_result_table 		= true
 
 
 	$scope.mostrar_result_table = ()->
 		$scope.show_result_table = true
-		console.log $scope.show_result_table
 
 
 	Restangular.all('evaluaciones/categorias-con-preguntas').getList().then((r)->
@@ -129,13 +129,19 @@ angular.module('WissenSystem')
 			return {}
 
 	$scope.cambiarCategSel = (cliente, categoria)->
-		console.log cliente, categoria
 		MySocket.change_a_categ_selected(cliente.resourceId, categoria.categoria_id)
 
 
 	$scope.empezarExamen = (cliente)->
+		$scope.cmdPreguntaActual = 1
 		MySocket.empezar_examen()
 		toastr.info "Examen empezado"
+
+		pregunta = $scope.cmdPreguntasTraduc[$scope.cmdPreguntaActual]
+		if pregunta
+			MySocket.sc_show_question($scope.cmdPreguntaActual, pregunta)
+		else
+			toastr.warning 'No hay categoría seleccionada'
 
 
 	$scope.empezarExamenCliente = (cliente)->
@@ -159,7 +165,11 @@ angular.module('WissenSystem')
 				for preguntasking in evaluac.preguntas_evaluacion
 					for preguntatraduc in preguntasking.preguntas_traducidas
 						if preguntatraduc.idioma_id == $scope.USER.idioma_main_id
-							preguntatraduc.tipo_pregunta = preguntasking.tipo_pregunta
+							preguntatraduc.tipo_pregunta 	= preguntasking.tipo_pregunta
+							preguntatraduc.nombre_categ 	= categoria.nombre
+							preguntatraduc.descrip_categ 	= evaluac.descripcion
+							preguntatraduc.catidad_pregs 	= evaluac.preguntas_evaluacion.length
+
 							$scope.cmdPreguntasTraduc.push preguntatraduc
 
 
@@ -167,13 +177,21 @@ angular.module('WissenSystem')
 	$scope.cmdClickPreguntaSelected = (pregunta, indice)->
 		$scope.cmdNoPregSelected 		= indice + 1
 		$scope.cmdPreguntaSelected 		= pregunta
-		console.log $scope.cmdNoPregSelected, pregunta
 
 	$scope.toggleShowLogoEntidadParticipantes = ()->
 		MySocket.sc_show_logo_entidad_partici(!$scope.cmdShowLogoEntidadPartici) # El modelo no cambia hasta salir de esta función
 
 	$scope.nextQuestion = ()->
 		MySocket.sc_next_question() # El modelo no cambia hasta salir de esta función
+
+		pregunta = $scope.cmdPreguntasTraduc[$scope.cmdPreguntaActual]
+		if pregunta
+			$scope.cmdPreguntaActual 	= $scope.cmdPreguntaActual + 1
+			MySocket.sc_show_question($scope.cmdPreguntaActual, pregunta)
+		else
+			toastr.warning 'No hay categoría seleccionada'
+
+		
 
 	$scope.nextQuestionCliente = (cliente)->
 		MySocket.sc_next_question_cliente(cliente) # El modelo no cambia hasta salir de esta función

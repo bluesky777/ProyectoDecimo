@@ -30,7 +30,7 @@ angular.module('WissenSystem')
 					categ_traducida.algunos 	= false # No aplica si solo hay uno
 					categ_traducida.nivel_id 	= categoriaking.nivel_id
 
-					console.log usuario.inscripciones
+
 					for inscripcion in usuario.inscripciones 
 						if inscripcion.categoria_id == categoriaking.id
 

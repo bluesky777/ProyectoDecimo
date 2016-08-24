@@ -19,7 +19,6 @@ angular.module('WissenSystem')
 			$scope.categorias_inscripcion = $filter('categsInscritas')($scope.currentusers, categoriasking_copy, $scope.idioma )
 
 		$scope.seleccionar_entidad = (row)->
-			console.log 'Presionado para cambiar entidad: ', row
 
 			modalInstance = $modal.open({
 				templateUrl: App.views + 'usuarios/cambiarEntidadUsuario.tpl.html'
@@ -32,7 +31,6 @@ angular.module('WissenSystem')
 			})
 			modalInstance.result.then( (entidad_id)->
 				row.entidad_id = entidad_id
-				console.log 'Resultado del modal: ', entidad_id
 			)
 
 
@@ -91,7 +89,7 @@ angular.module('WissenSystem')
 						)
 			})
 			modalInstance.result.then( (user)->
-				console.log 'Resultado del modal: ', user
+				#console.log 'Resultado del modal: ', user
 			)
 
 
@@ -149,7 +147,6 @@ angular.module('WissenSystem')
 				)
 
 				gridApi.edit.on.afterCellEdit($scope, (rowEntity, colDef, newValue, oldValue)->
-					console.log 'Fila editada, ', rowEntity, ' Column:', colDef, ' newValue:' + newValue + ' oldValue:' + oldValue ;
 					
 					if newValue != oldValue
 						Restangular.one('usuarios/update', rowEntity.id).customPUT(rowEntity).then((r)->
@@ -200,7 +197,6 @@ angular.module('WissenSystem')
 
 
 					categoria.cambiando = false
-					console.log 'Usuarios inscritos: ', currentUsers
 				, (r2)->
 					toastr.warning 'No se inscribó el usuario', 'Problema'
 					console.log 'No se inscribó el usuario ', r2
@@ -211,9 +207,7 @@ angular.module('WissenSystem')
 			else
 				
 				Restangular.one('inscripciones/desinscribir-varios').customPUT(datos).then((r)->
-					#$scope.usuarios.push r
 					categoria.cambiando = false
-					#console.log 'Usuario creado', r
 
 					for usua in currentUsers
 						usua.inscripciones = $filter('filter')(usua.inscripciones, {categoria_id: '!'+categoria.categoria_id})
@@ -243,7 +237,6 @@ angular.module('WissenSystem')
 .controller('RemoveUsuarioCtrl', ['$scope', '$uibModalInstance', 'usuario', 'entidades', 'Restangular', 'toastr', ($scope, $modalInstance, usuario, entidades, Restangular, toastr)->
 	$scope.usuario = usuario
 	$scope.entidades = entidades
-	console.log 'elemento', usuario, entidades
 
 	$scope.ok = ()->
 
@@ -268,8 +261,6 @@ angular.module('WissenSystem')
 	$scope.entidades = entidades
 	$scope.entidades_extras = $filter('filter')(entidades, {id: '!'+usuario.entidad_id})
 
-	console.log 'elementos', usuario, entidades
-
 	$scope.seleccionar = (entidad)->
 
 		datos =
@@ -284,7 +275,6 @@ angular.module('WissenSystem')
 			console.log 'Error cambiando elemento: ', r2
 			$modalInstance.dismiss('Error')
 		)
-		
 
 	$scope.cancel = ()->
 		$modalInstance.dismiss('cancel')
@@ -309,8 +299,6 @@ angular.module('WissenSystem')
 			user_id: usuario.id
 			role_id: $item.id
 
-		console.log $scope.datos.selecteds, $item
-
 		Restangular.one('roles/add-role-to-user').customPUT(codigos).then((r)->
 			toastr.success 'Rol agregado con éxito.'
 		, (r2)->
@@ -319,7 +307,6 @@ angular.module('WissenSystem')
 		)
 
 	$scope.quitando = ($item, $model)->
-		console.log $item, $model
 
 		Restangular.one('roles/remove-role-to-user').customPUT({role_id: $item.id, user_id: usuario.id}).then((r)->
 			toastr.success 'Rol quitado con éxito.'

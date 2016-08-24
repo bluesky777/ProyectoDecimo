@@ -78,7 +78,7 @@ angular.module('WissenSystem')
 
 
 	destroyEmpezar_examen = $rootScope.$on 'empezar_examen', (event)->
-		console.log event
+
 		inscripcion = {categoria_id: $scope.user.categsel}
 
 		for inscrip in $scope.user.inscripciones

@@ -15,6 +15,8 @@
 
 		md-button.md-raised(ng-click="traerExamenesCategorias()") Por categorías
 
+		md-button.md-raised(ng-click="traerExamenesCategoria()") Traer categoría
+
 
 		form
 			.form-group(style="width: 300px;margin-top: 15px;")
@@ -89,7 +91,7 @@
 							| {{ examen.alias_entidad }}
 						td {{ examen.abrev_categ }}
 						td(style="font-size: 7pt;") {{ examen.examen_at }}
-						td(style="font-size: 7pt;") {{ examen.resultados.tiempo | secondsToDateTime }}
+						td(style="font-size: 7pt;") {{ examen.resultados.tiempo | secondsToDateTime:true }}
 						td {{ examen.resultados.cantidad_pregs }}
 						td {{ examen.resultados.cantidad_pregs - examen.resultados.correctas }}
 							md-tooltip Incorrectas
@@ -176,7 +178,7 @@
 								| {{ examen.nombres + ' ' + examen.apellidos }}
 							td {{ examen.abrev_categ }}
 							td(style="font-size: 7pt;") {{ examen.examen_at }}
-							td(style="font-size: 7pt;") {{ examen.resultados.tiempo | secondsToDateTime }}
+							td(style="font-size: 7pt;") {{ examen.resultados.tiempo | secondsToDateTime:true }}
 							td {{ examen.resultados.cantidad_pregs }}
 							td {{ examen.resultados.cantidad_pregs - examen.resultados.correctas }}
 								md-tooltip Incorrectas
@@ -273,7 +275,7 @@
 									| {{ examen.nombres + ' ' + examen.apellidos }}
 								td {{ examen.abrev_categ }}
 								td(style="font-size: 7pt;") {{ examen.examen_at }}
-								td(style="font-size: 7pt;") {{ examen.resultados.tiempo | secondsToDateTime }}
+								td(style="font-size: 7pt;") {{ examen.resultados.tiempo | secondsToDateTime:true }}
 								td {{ examen.resultados.cantidad_pregs }}
 								td {{ examen.resultados.cantidad_pregs - examen.resultados.correctas }}
 									md-tooltip Incorrectas
@@ -366,7 +368,7 @@
 								| {{ examen.alias_entidad }}
 							td {{ examen.abrev_categ }}
 							td(style="font-size: 7pt;") {{ examen.examen_at }}
-							td(style="font-size: 7pt;") {{ examen.resultados.tiempo | secondsToDateTime }}
+							td(style="font-size: 7pt;") {{ examen.resultados.tiempo | secondsToDateTime:true }}
 							td {{ examen.resultados.cantidad_pregs }}
 							td {{ examen.resultados.cantidad_pregs - examen.resultados.correctas }}
 								md-tooltip Incorrectas

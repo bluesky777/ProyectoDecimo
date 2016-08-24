@@ -133,7 +133,7 @@ angular.module('WissenSystem')
 
 
 .filter('secondsToDateTime', [ ->
-	(input) ->
+	(input, horas) ->
 		z = (n)->
 			if n < 10
 				return '0' + n
@@ -141,9 +141,15 @@ angular.module('WissenSystem')
 				return '' + n
 				
 		seconds = input % 60;
-		minutes = Math.floor(input % 3600 / 60);
-		hours = Math.floor(input / 3600);
-		return (z(hours) + ':' + z(minutes) + ':' + z(seconds));
+
+		if horas
+			minutes = Math.floor(input % 3600 / 60);
+			hours = Math.floor(input / 3600);
+			return (z(hours) + ':' + z(minutes) + ':' + z(seconds));
+		else
+			minutes = Math.floor(input % 60 / 60);
+			return (z(minutes) + ':' + z(seconds));
+
 ])
 
 .filter('orderObjectBy', [ ->

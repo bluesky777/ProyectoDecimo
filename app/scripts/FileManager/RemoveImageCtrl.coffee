@@ -1,6 +1,6 @@
 angular.module("WissenSystem")
 
-.controller('RemoveImageCtrl', ['$scope', '$uibModalInstance', 'imagen', 'App', '$http', 'AuthService', 'toastr', ($scope, $modalInstance, imagen, App, $http, AuthService, toastr)->
+.controller('RemoveImageCtrl', ['$scope', '$uibModalInstance', 'imagen', 'App', 'Restangular', 'AuthService', 'toastr', ($scope, $modalInstance, imagen, App, Restangular, AuthService, toastr)->
 
 	$scope.imagesPath = App.images + 'perfil/'
 	$scope.imagen = imagen
@@ -8,7 +8,7 @@ angular.module("WissenSystem")
 
 	$scope.ok = ()->
 
-		$http.delete('::imagenes/destroy/'+imagen.id).then((r)->
+		Restangular.one('imagenes/destroy/'+imagen.id).customDELETE().then((r)->
 			toastr.success 'La imagen ha sido removida.'
 		, (r2)->
 			toastr.error 'No se pudo eliminar la imagen.'

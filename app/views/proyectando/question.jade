@@ -1,10 +1,10 @@
-h1 Pregunta!
+h2(style="text-align: center; color: blue;") {{ SocketData.config.pregunta.nombre_categ + ' (' + SocketData.config.no_question + ' de ' + SocketData.config.pregunta.catidad_pregs + ')' }}
 
-div()
+div(style="font-size: 25pt;")
 
 	md-whiteframe.md-whiteframe-z2.definicion-frame(layout style="padding: 10px; position: relative")
-		span(flex="5") {{SocketData.config.no_question}}.
-		span(ng-bind-html="SocketData.config.pregunta.enunciado" flex="95")
+		span(style="font-weight: bold;") {{SocketData.config.no_question}}.   
+		span(ng-bind-html="SocketData.config.pregunta.enunciado")
 
 		div(ng-show="SocketData.config.pregunta.ayuda" ng-click="toggleMostrarAyuda(SocketData.config.pregunta)" ng-class="{'ayuda-preg-showed': SocketData.config.pregunta.mostrar_ayuda, 'ayuda-preg-hidded':!SocketData.config.pregunta.mostrar_ayuda}")
 			a(ng-show="!SocketData.config.pregunta.mostrar_ayuda")
@@ -30,7 +30,8 @@ div()
 		md-whiteframe.pointer.md-whiteframe-z2.btn(ng-class="{'elegida':opcion.elegida}" 
 			ng-if="!opcion.nueva" flex="45" 
 			ng-click="elegirOpcion(SocketData.config.pregunta, opcion, $index)" 
-			ng-repeat="opcion in SocketData.config.pregunta.opciones") 
+			ng-repeat="opcion in SocketData.config.pregunta.opciones"
+			style="font-size: 20pt;") 
 			
 			span(style="font-weight: bold;") {{ indexChar($index) }}. 
 			span {{ opcion.definicion }}

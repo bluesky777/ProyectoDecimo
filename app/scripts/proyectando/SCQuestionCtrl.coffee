@@ -7,6 +7,11 @@ angular.module('WissenSystem')
 		$scope.MySocket = MySocket
 		$scope.SocketData = SocketData
 
+		
+		$scope.indexChar = (index)->
+			return String.fromCharCode(65 + index)
+
+
 		return
 	]
 )

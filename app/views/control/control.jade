@@ -145,8 +145,10 @@ sidenav-edit-usu-dir
 				select(multiple="true" style="width: 200px; font-size: 9pt")
 					option(ng-repeat="categoria in categorias_king" ng-model="cmdCategSelected" ng-click="cmdClickCategSelected(categoria)") {{categoria.nombre}}
 				select(multiple="true" style="width: 200px; font-size: 9pt")
-					option(ng-repeat="pregunta in cmdPreguntasTraduc" ng-model="cmdPreguntaSelected" ng-click="cmdClickPreguntaSelected(pregunta, $index)" ng-bind-html="pregunta.enunciado") 
+					option(ng-repeat="pregunta in cmdPreguntasTraduc" ng-model="cmdPreguntaSelected" 
+						ng-click="cmdClickPreguntaSelected(pregunta, $index)" ng-bind-html="($index+1) + '. ' + pregunta.enunciado") 
 				
+				span(style="font-weight: bold;") Preg:{{ cmdPreguntaActual }}
 				button.btn.btn-default(ng-click="showQuestion()") Mostrar pregunta
 				
 				button.btn.btn-default(ng-click="showPuntajeParticip()") Mostrar puntaje
