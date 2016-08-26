@@ -127,6 +127,13 @@ a:hover, a:focus {
   padding-left: 10px;
 
 }
+.opciones md-whiteframe.correcta-revelada {
+  background: #ca2a71;
+  color: #fff;
+  padding-left: 10px;
+
+}
+
 
 
 .definicion-preg{
@@ -197,16 +204,17 @@ a:hover, a:focus {
 }
 
 .definicion-frame:hover .btn-container-edit{
+  right: 5px;
   opacity: 1;
 }
 
 .definicion-frame .btn-container-edit{
   position: absolute;
-  right: 0px;
-  margin-top: -15px;
+  right: -25px;
+  top: 5px;
 
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: all 0.3s;
 }
 
 .fr-box:last-child{
@@ -1077,5 +1085,9 @@ md-select.categoria md-select-value{
   right: 10px;
 }
 
+.dropdown-menu {
+  -webkit-animation: auto; 
+  animation: auto; 
+}
 
 

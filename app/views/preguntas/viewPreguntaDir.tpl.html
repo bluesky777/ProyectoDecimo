@@ -1,53 +1,34 @@
 
-<div ng-repeat="pregunta in preguntaking.preguntas_traducidas | porIdioma:idiomapreg.selected" ng-class-odd="'fondo-gris-odd'">
-  <div ng-show="!preguntaking.editando">
-    <md-whiteframe layout style="padding: 10px" class="md-whiteframe-z2 definicion-frame"><span flex="5">{{indice+1}}.</span><span ng-bind-html="pregunta.enunciado" flex="95"></span>
-      <div ng-show="pregunta.ayuda &amp;&amp; preguntaking.showDetail" ng-click="toggleMostrarAyuda(pregunta)" ng-class="{'ayuda-preg-showed': pregunta.mostrar_ayuda, 'ayuda-preg-hidded':!pregunta.mostrar_ayuda}"><a ng-show="!pregunta.mostrar_ayuda"><i class="fa fa-anchor"></i></a><span ng-show="pregunta.mostrar_ayuda">{{pregunta.ayuda}}</span></div>
-      <div layout="row" class="btn-container-edit">
-        <!--md-button.md-default.md-raised(ng-click="editarPregunta(preguntaking)") Editar-->
-        <md-button aria-label="Editar" ng-click="editarPregunta(preguntaking)" class="md-fab md-primary md-mini">
-          <md-icon class="fa fa-pencil"></md-icon>
-          <md-tooltip>Editar pregunta</md-tooltip>
-        </md-button>
-        <md-button aria-label="Preview" ng-click="previewPregunta(preguntaking)" class="md-icon-button md-mini">
-          <md-icon class="fa fa-eye"></md-icon>
-          <md-tooltip>Preview</md-tooltip>
-        </md-button>
-        <md-menu style="padding:0">
-          <md-button aria-label="Opciones de la pregunta" ng-click="$mdOpenMenu($event)" class="md-icon-button">
-            <md-icon md-menu-origin class="fa fa-align-justify"></md-icon>
-          </md-button>
-          <md-menu-content>
-            <md-menu-item>
-              <md-button ng-click="eliminarPregunta(preguntaking)">
-                <md-icon md-menu-align-target class="fa fa-trash"></md-icon>Eliminar pregunta
-              </md-button>
-            </md-menu-item>
-            <md-menu-item>
-              <md-button ng-click="asignarAEvaluacion(preguntaking)">
-                <md-icon class="fa fa-clipboard"></md-icon>Asignar a Evaluación
-              </md-button>
-            </md-menu-item>
-            <md-menu-divider></md-menu-divider>
-            <md-menu-item>
-              <md-button ng-click="cambiarCategoria(preguntaking)">
-                <md-icon class="fa fa-eye"></md-icon>Cambiar categoría
-              </md-button>
-            </md-menu-item>
-          </md-menu-content>
-        </md-menu>
+<md-whiteframe layout style="padding: 10px" class="md-whiteframe-z2 definicion-frame"><span flex="5">{{$index+1}}.</span><span ng-bind-html="pg_pregunta.enunciado" flex="95"></span>
+  <div ng-show="pg_pregunta.ayuda &amp;&amp; pg_pregunta.showDetail" ng-click="toggleMostrarAyuda(pg_pregunta)" ng-class="{'ayuda-preg-showed': pg_pregunta.mostrar_ayuda, 'ayuda-preg-hidded':!pg_pregunta.mostrar_ayuda}"><a ng-show="!pg_pregunta.mostrar_ayuda"><i class="fa fa-anchor"></i></a><span ng-show="pg_pregunta.mostrar_ayuda">{{pg_pregunta.ayuda}}</span></div>
+  <div layout="row" class="btn-container-edit">
+    <div aria-label="..." class="btn-group">
+      <button type="button" ng-click="editarpg_pregunta(pg_pregunta)" class="btn btn-default"> <i class="fa fa-pencil"></i>
+        <md-tooltip>Editar pregunta</md-tooltip>
+      </button>
+      <button type="button" ng-click="previewpg_pregunta(pg_pregunta)" class="btn btn-default"><i class="fa fa-eye"></i>
+        <md-tooltip>Preview</md-tooltip>
+      </button>
+      <div class="btn-group">
+        <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-default dropdown-toggle"><i class="fa fa-align-justify"></i><span class="caret"></span></button>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li><a href="#" ng-click="eliminarpg_pregunta(pg_pregunta)"><i class="fa fa-trash"></i> Eliminar pregunta</a></li>
+          <li><a href="#" ng-click="asignarAEvaluacion(pg_pregunta)"><i class="fa fa-clipboard"></i> Asignar a Evaluación</a></li>
+          <li role="separator" class="divider"></li>
+          <li><a href="#" ng-click="cambiarCategoria(pg_pregunta)"><i class="fa fa-eye"></i> Cambiar categoría</a></li>
+        </ul>
       </div>
-    </md-whiteframe><span ng-show="preguntaking.showDetail">
-      <md-list ng-if="preguntaking.tipo_pregunta=='Multiple'">
-        <md-list-item ng-repeat="opcion in pregunta.opciones | filter:{id: '!-1'} ">
-          <md-checkbox ng-model="topping.wanted"></md-checkbox>
-          <p>{{ opcion.definicion }}</p>
-          <md-icon ng-click="" aria-label="Chat" class="md-secondary fa fa-comment"></md-icon>
-        </md-list-item>
-      </md-list>
-      <div layout="row" layout-wrap layout-fill ng-if="preguntaking.tipo_pregunta=='Test'" style="padding-bottom: 32px;" class="opciones">
-        <md-whiteframe ng-class="{'elegida':opcion.elegida}" ng-if="!opcion.nueva" flex="40" ng-click="elegirOpcion(pregunta, opcion)" ng-repeat="opcion in pregunta.opciones" class="pointer md-whiteframe-z2 btn"> <span style="font-weight: bold;">{{ indexChar($index) }}. </span><span>{{ opcion.definicion }}</span></md-whiteframe>
-      </div></span>
+    </div>
   </div>
-  <edit-pregunta preguntaking="preguntaking" ng-show="preguntaking.editando" eventoactual="eventoactual" eventoactualselec="{{eventoactualselec}}"></edit-pregunta>
-</div>
+</md-whiteframe><span ng-show="pg_pregunta.showDetail">
+  <md-list ng-if="pg_pregunta.tipo_pg_pregunta=='Multiple'">
+    <md-list-item ng-repeat="opcion in pg_pregunta.opciones | filter:{id: '!-1'} ">
+      <md-checkbox ng-model="topping.wanted"></md-checkbox>
+      <p>{{ opcion.definicion }}</p>
+      <md-icon ng-click="" aria-label="Chat" class="md-secondary fa fa-comment"></md-icon>
+    </md-list-item>
+  </md-list>
+  <div layout="row" layout-wrap layout-fill ng-if="pg_pregunta.tipo_pg_pregunta=='Test'" style="padding-bottom: 32px;" class="opciones">
+    <md-whiteframe ng-class="{'elegida':opcion.elegida, 'correcta-revelada':opcion.is_correct}" ng-if="!opcion.nueva" flex="40" ng-click="elegirOpcion(pg_pregunta, opcion)" ng-repeat="opcion in pg_pregunta.opciones" class="pointer md-whiteframe-z2 btn"> <span style="font-weight: bold;">{{ indexChar($index) }}. </span><span>{{ opcion.definicion }}</span></md-whiteframe>
+  </div></span>
+<edit-pg_pregunta pg_pregunta="pg_pregunta" ng-show="pg_pregunta.editando" eventoactual="eventoactual" eventoactualselec="{{eventoactualselec}}"></edit-pg_pregunta>

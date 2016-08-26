@@ -2,7 +2,7 @@ angular.module('WissenSystem')
 
 .controller('ViewPreguntaCtrl', ['$scope', 'App', 'Restangular', '$state', '$cookies', '$rootScope', '$mdToast', '$uibModal', '$filter',
 	($scope, App, Restangular, $state, $cookies, $rootScope, $mdToast, $modal, $filter) ->
-		
+
 		$scope.elegirOpcion = (pregunta, opcion)->
 			angular.forEach pregunta.opciones, (opt)->
 				opt.elegida = false

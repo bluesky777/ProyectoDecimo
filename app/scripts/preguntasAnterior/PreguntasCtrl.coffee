@@ -5,6 +5,7 @@ angular.module('WissenSystem')
 .controller('PreguntasCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 'preguntasServ', '$filter', 
 	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr, preguntasServ, $filter) ->
 
+		$scope.myModel = "";
 		$scope.preguntas_king = []
 		$scope.evalu_seleccionada = {id: -1}
 
@@ -42,6 +43,7 @@ angular.module('WissenSystem')
 		$scope.evaluacion_id = 0
 
 		$scope.preguntas_king = []
+		$scope.preguntas_king2 = []
 		$scope.categorias = []
 
 		$scope.traerDatos = ()->
@@ -77,8 +79,9 @@ angular.module('WissenSystem')
 
 		$scope.traerPreguntas = ()->
 			# Las preguntas
-			Restangular.all('preguntas').getList({categoria_id: $scope.categoria, idioma_id: $scope.idiomaPreg.selected}).then((r)->
+			Restangular.all('preguntas').getList({categoria_id: $scope.categoria}).then((r)->
 				$scope.preguntas_king = r
+				$scope.preguntas_king2 = r
 				$scope.inicializado = true
 				console.log '$scope.inicializado', $scope.inicializado
 			, (r2)->
@@ -167,15 +170,10 @@ angular.module('WissenSystem')
 .filter('pregsByCatsAndEvaluacion', ['$filter', ($filter)->
 	(input, categoria, preguntas_evaluacion, evaluacion_id) ->
 		
-		filtered = [];
-		angular.forEach(input, (item)->
-			filtered.push(item);
-		)
-
 		
 		resultado = []
 
-		for preg in filtered
+		for preg in input
 	
 			if parseFloat(preg.categoria_id) == parseFloat(categoria)
 				
@@ -184,9 +182,9 @@ angular.module('WissenSystem')
 					found = false
 
 					if preg.tipo_pregunta
-						found = $filter('filter')(preguntas_evaluacion, {pregunta_id: preg.id}, true)
+						found = $filter('filter')(preguntas_evaluacion, {pregunta_id: preg.id})
 					else
-						found = $filter('filter')(preguntas_evaluacion, {grupo_pregs_id: preg.id}, true)
+						found = $filter('filter')(preguntas_evaluacion, {grupo_pregs_id: preg.id})
 
 					if found
 						if found.length > 0
@@ -196,6 +194,7 @@ angular.module('WissenSystem')
 
 				else
 					resultado.push preg
+
 
 		return resultado
 ])

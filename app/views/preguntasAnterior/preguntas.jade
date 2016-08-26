@@ -6,7 +6,7 @@
 
 				md-input-container(layout="row" layout-align="start center" style="padding-bottom: 0px; margin-top: 2px;    margin-bottom: 4px;")
 					md-select(placeholder="Idioma" ng-model="idiomaPreg.selected")
-						md-option(ng-repeat="idioma in evento_actual.idiomas" value="{{idioma.id}}")  En {{idioma.original}}
+						md-option(ng-repeat="idioma in evento_actual.idiomas" value="{{idioma.id}}") {{idioma.original}}
 
 
 				md-input-container(layout="row" layout-align="start center" style="padding-bottom: 0px; margin-top: 2px;    margin-bottom: 4px;")
@@ -14,7 +14,7 @@
 						span(ng-repeat="catking in categorias")
 							md-option(ng-repeat="cat_traduc in catking.categorias_traducidas | catsByIdioma:idiomaPreg.selected" 
 								ng-show="cat_traduc.idioma_id==idiomaPreg.selected" value="{{cat_traduc.categoria_id}}") 
-								| {{cat_traduc.nombre}}
+								|  {{cat_traduc.nombre}}
 
 
 				md-input-container(layout="row" layout-align="start center" style="padding-bottom: 0px; margin-top: 2px;    margin-bottom: 4px;")
@@ -34,16 +34,16 @@
 
 			.panel-body(ng-show="evaluacion_id!='sin_asignar'")
 				
-				div(ng-repeat="pregunta in preguntas_king | filter:preg_buscar | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion:evaluacion_id " ng-class-odd="'fondo-gris-odd'" style="position: relative;")
-					
-					
-					view-pregunta(ng-show="pregunta.is_preg")
+				div(ng-repeat="pregunta_king in preguntas_king | filter:preg_buscar | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion:evaluacion_id ")
+					div(ng-show="pregunta_king.editando")
+						br
+						br
+					view-pregunta(ng-show="pregunta_king.tipo_pregunta" preguntaking="pregunta_king" 
+						indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" 
+						eventoactualselec="idiomaPreg.selected" evaluaciones="evaluaciones")
 
 
-
-
-
-					view-grupo(ng-show="!pregunta.is_preg" grupoking="pregunta_king" 
+					view-grupo(ng-show="!pregunta_king.tipo_pregunta" grupoking="pregunta_king" 
 						indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" 
 						idiomaactualselec="idiomaPreg.selected" evaluaciones="evaluaciones")
 							
@@ -59,7 +59,10 @@
 					div(ng-show="pregunta_king.editando")
 						br
 						br
-					
+					view-pregunta(ng-show="pregunta_king.tipo_pregunta" preguntaking="pregunta_king" 
+						indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" 
+						eventoactualselec="idiomaPreg.selected" evaluaciones="evaluaciones")
+
 
 					view-grupo(ng-show="!pregunta_king.tipo_pregunta" grupoking="pregunta_king" 
 						indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" 
