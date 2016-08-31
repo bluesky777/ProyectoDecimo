@@ -15,7 +15,7 @@ md-whiteframe.md-whiteframe-z2.definicion-frame(layout layout-wrap style="paddin
 			md-tooltip Editar contenido
 
 
-		md-button.md-fab.md-success.md-mini(ng-click="addNewPregunta(pg_pregunta)" aria-label="Nueva pregunta"  ng-disabled="creando")
+		md-button.md-fab.md-success.md-mini(ng-click="addNewPregunta(pg_pregunta)" aria-label="Nueva pregunta"  ng-disabled="creandoGrupoPreg")
 			md-icon.fa.fa-plus
 			md-tooltip Nueva pregunta
 
@@ -45,7 +45,7 @@ md-whiteframe.md-whiteframe-z2.definicion-frame(layout layout-wrap style="paddin
 
 
 	div(ng-repeat="pregunta_agrup in pg_pregunta.pregs_agrupadas" flex="100")
-		div(ng-show="!pregunta_agrup.editando")
+		div(ng-if="!pregunta_agrup.editando")
 			md-whiteframe.md-whiteframe-z2.definicion-frame(layout style="margin-left: 20px; padding: 10px")
 				span(flex="5") {{$index+1}}.
 				span(ng-bind-html="pregunta_agrup.enunciado" flex="95")
@@ -74,7 +74,7 @@ md-whiteframe.md-whiteframe-z2.definicion-frame(layout layout-wrap style="paddin
 
 
 
-			span(ng-show="pregunta_agrup.showDetail")
+			span(ng-show="pregunta_agrup.showDetail || showOptions")
 				md-list(ng-if="pregunta_agrup.tipo_pregunta=='Multiple'")
 					md-list-item(ng-repeat="opcion in pregunta_agrup.opciones | filter:{id: '!-1'} ")
 						md-checkbox(ng-model="topping.wanted")
@@ -83,12 +83,12 @@ md-whiteframe.md-whiteframe-z2.definicion-frame(layout layout-wrap style="paddin
 				
 
 				div.opciones(layout="row" layout-wrap layout-fill ng-if="pregunta_agrup.tipo_pregunta=='Test'" style="padding-bottom: 32px;")
-					md-whiteframe.pointer.md-whiteframe-z2.btn(ng-class="{'elegida':opcion.elegida}" ng-if="!opcion.nueva" flex="40" ng-click="elegirOpcion(pregunta_agrup, opcion)" ng-repeat="opcion in pregunta_agrup.opciones") 
+					md-whiteframe.pointer.md-whiteframe-z2.btn(ng-class="{'elegida':opcion.elegida, 'correcta-revelada':opcion.is_correct && showCorrects}" ng-if="!opcion.nueva" flex="40" ng-click="elegirOpcion(pregunta_agrup, opcion)" ng-repeat="opcion in pregunta_agrup.opciones") 
 						span(style="font-weight: bold;") {{ indexChar($index) }}. 
 						span {{ opcion.definicion }}
 
 
-		edit-pregunta-agrupada(pregagrup="pregunta_agrup" ng-show="pregunta_agrup.editando")
+		edit-pregunta-agrupada(pregagrup="pregunta_agrup" ng-if="pregunta_agrup.editando")
 
 
 edit-contenido(grupoking="grupoking" ng-show="grupoking.editando" eventoactual="eventoactual" idiomaactualselec="idiomaactualselec")

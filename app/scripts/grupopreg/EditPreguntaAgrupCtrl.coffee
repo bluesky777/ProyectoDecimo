@@ -126,7 +126,7 @@ angular.module('WissenSystem')
 		$scope.cerrarEdicion = ()->
 			$scope.pregagrup.editando = false
 
-		$scope.mostrarConfiguracion = false
+		$scope.mostrarConfiguracion = true
 		$scope.mostrarConfig = ()->
 			$scope.mostrarConfiguracion = !$scope.mostrarConfiguracion
 

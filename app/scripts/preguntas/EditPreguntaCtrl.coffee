@@ -4,8 +4,6 @@ angular.module('WissenSystem')
 	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr) ->
 
 		$scope.idiomaPreg = [$scope.$parent.preguntaEdit.idioma_id]
-		$scope.traducciones_cargadas = false
-
 
 		$scope.editorOptions = 
 			inlineMode: true
@@ -54,7 +52,6 @@ angular.module('WissenSystem')
 					r.opciones 		= $scope.preguntaEdit.opciones
 					r.enunciado 	= $scope.preguntaEdit.enunciado
 
-			$scope.traducciones_cargadas = true
 			$scope.preguntaEdit.preguntas_traducidas = r
 
 		, (r2)->

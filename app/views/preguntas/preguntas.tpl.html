@@ -39,8 +39,12 @@
           <label ng-model="showOptions" uib-btn-checkbox class="btn btn-primary">Ver opciones</label>
           <label ng-model="showCorrects" uib-btn-checkbox class="btn btn-primary">Revelar correctas</label>
         </div>
-        <!-- Editar una pregunta-->
-        <edit-pregunta ng-if="editando"></edit-pregunta>
+        <div id="edicionking">
+          <!-- Editar una pregunta-->
+          <edit-pregunta ng-if="editando"></edit-pregunta>
+          <!-- Editar un grupo-->
+          <edit-contenido ng-if="editandoContenido"></edit-contenido>
+        </div>
         <div ng-repeat="pg_pregunta in pg_preguntas | filter:preg_buscar | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion:evaluacion_id " ng-class-odd="'fondo-gris-odd'" style="position: relative;">
           <view-pregunta ng-if="pg_pregunta.is_preg"></view-pregunta>
           <view-grupo ng-if="!pg_pregunta.is_preg"></view-grupo>
@@ -65,9 +69,9 @@
     <div class="panel panel-default panel-hovered panel-stacked mb20">
       <div layout class="panel-heading">Preguntas</div>
       <div class="panel-body">
-        <div ng-repeat="pregunta_king in preguntas_king2 | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion2:evalu_seleccionada.id | orderBy:'orden' ">
-          <view-pregunta-eval ng-if="pregunta_king.tipo_pregunta" preguntaking="pregunta_king" indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" eventoactualselec="idiomaPreg.selected" evaluaciones="evaluaciones" preguntasevaluacion2="preguntas_evaluacion2"></view-pregunta-eval>
-          <view-grupo-eval ng-if="!pregunta_king.tipo_pregunta" grupoking="pregunta_king" indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" idiomaactualselec="idiomaPreg.selected" evaluaciones="evaluaciones" preguntasevaluacion2="preguntas_evaluacion2"></view-grupo-eval>
+        <div ng-repeat="pregunta_king in pg_preguntas | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion2:evalu_seleccionada.id | orderBy:'orden' " style="position: relative;">
+          <view-pregunta-eval ng-if="pregunta_king.tipo_pregunta" preguntaking="pregunta_king"></view-pregunta-eval>
+          <view-grupo-eval ng-if="!pregunta_king.tipo_pregunta" grupoking="pregunta_king"></view-grupo-eval>
         </div>
       </div>
     </div>

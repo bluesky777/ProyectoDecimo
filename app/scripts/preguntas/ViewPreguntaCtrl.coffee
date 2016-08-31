@@ -1,7 +1,7 @@
 angular.module('WissenSystem')
 
-.controller('ViewPreguntaCtrl', ['$scope', 'App', 'Restangular', '$state', '$cookies', '$rootScope', '$mdToast', '$uibModal', '$filter',
-	($scope, App, Restangular, $state, $cookies, $rootScope, $mdToast, $modal, $filter) ->
+.controller('ViewPreguntaCtrl', ['$scope', 'App', 'Restangular', '$state', '$cookies', '$rootScope', '$location', '$anchorScroll', '$uibModal', '$filter',
+	($scope, App, Restangular, $state, $cookies, $rootScope, $location, $anchorScroll, $modal, $filter) ->
 		
 		$scope.elegirOpcion = (pregunta, opcion)->
 			angular.forEach pregunta.opciones, (opt)->
@@ -55,6 +55,8 @@ angular.module('WissenSystem')
 		$scope.editarPregunta = (pg_pregunta)->
 			$scope.$parent.$parent.preguntaEdit = pg_pregunta
 			$scope.$parent.$parent.editando 	= true
+			$location.hash('content');
+			$anchorScroll();
 
 
 		$scope.eliminarPregunta = (pregunta)->

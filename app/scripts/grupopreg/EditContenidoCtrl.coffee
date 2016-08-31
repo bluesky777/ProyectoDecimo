@@ -3,9 +3,7 @@ angular.module('WissenSystem')
 .controller('EditContenidoCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 
 	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr) ->
 
-		$scope.idiomaactualselec = parseInt($scope.idiomaactualselec)
-		
-		$scope.idiomaPreg = [$scope.idiomaactualselec]
+		$scope.idiomaPreg = [$scope.contenidoEdit.idioma_id]
 
 
 		$scope.editorOptions = 
@@ -14,39 +12,41 @@ angular.module('WissenSystem')
 
 
 		$scope.cerrarEdicion = ()->
-			$scope.grupoking.editando = false
+			$scope.$parent.editandoContenido = false
+			$scope.contenidoEdit = {}
+
 
 
 		$scope.finalizarEdicion = ()->
-			$scope.$emit 'finalizaEdicionContenido'
-			
-			$datos = {contenidos_traducidos: $scope.grupoking.contenidos_traducidos}
-
-			Restangular.one('contenido_traduc/update').customPUT($datos).then((r)->
-				console.log('Cambios guardados', r)
-				$scope.grupoking.editando = false
+			Restangular.one('contenido_traduc/update').customPUT($scope.contenidoEdit).then((r)->
+				$scope.$parent.editandoContenido = false
+				$scope.contenidoEdit = {}
 				toastr.success 'Cambios guardados con éxito'
 			, (r2)->
 				console.log('No se pudo guardar los cambios', r2)
 				toastr.warning 'Cambios NO guardados', 'Problema'
 			)
-			console.log 'Guardando cambios...'
 
 
 		$scope.aplicarCambios = ()->
-		
-			$datos = {contenidos_traducidos: $scope.grupoking.contenidos_traducidos}
-
-			Restangular.one('contenido_traduc/update').customPUT($datos).then((r)->
-				console.log('Cambios guardados', r)
-				toastr.success 'Cambios guardados con éxito'
+			Restangular.one('contenido_traduc/update').customPUT($scope.contenidoEdit).then((r)->
+				toastr.success 'Cambios guardados'
 			, (r2)->
 				console.log('No se pudo guardar los cambios', r2)
 				toastr.warning 'Cambios NO guardados', 'Problema'
-
 			)
-			console.log 'Guardando cambios...'
 
+		Restangular.all('grupo_preguntas/traducidos').getList({ grupo_id: $scope.contenidoEdit.pg_id }).then((r)->
+			for trad in r
+				if r.pg_traduc_id = $scope.contenidoEdit.pg_traduc_id
+					r.enunciado 	= $scope.contenidoEdit.enunciado
+
+			$scope.contenidoEdit.contenidos_traducidos = r
+
+		, (r2)->
+			console.log('No se trajeron las traducciones de la pregunta', r2)
+			toastr.warning 'No se trajeron las traducciones de la pregunta', 'Problema'
+		)
 		
 
 

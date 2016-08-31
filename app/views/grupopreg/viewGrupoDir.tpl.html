@@ -6,7 +6,7 @@
       <md-icon class="fa fa-pencil"></md-icon>
       <md-tooltip>Editar contenido</md-tooltip>
     </md-button>
-    <md-button ng-click="addNewPregunta(pg_pregunta)" aria-label="Nueva pregunta" ng-disabled="creando" class="md-fab md-success md-mini">
+    <md-button ng-click="addNewPregunta(pg_pregunta)" aria-label="Nueva pregunta" ng-disabled="creandoGrupoPreg" class="md-fab md-success md-mini">
       <md-icon class="fa fa-plus"></md-icon>
       <md-tooltip>Nueva pregunta</md-tooltip>
     </md-button>
@@ -35,7 +35,7 @@
     </md-menu>
   </div>
   <div ng-repeat="pregunta_agrup in pg_pregunta.pregs_agrupadas" flex="100">
-    <div ng-show="!pregunta_agrup.editando">
+    <div ng-if="!pregunta_agrup.editando">
       <md-whiteframe layout style="margin-left: 20px; padding: 10px" class="md-whiteframe-z2 definicion-frame"><span flex="5">{{$index+1}}.</span><span ng-bind-html="pregunta_agrup.enunciado" flex="95"></span>
         <div ng-show="pregunta_agrup.ayuda &amp;&amp; pregunta_agrup.showDetail" ng-click="toggleMostrarAyuda(pregunta_agrup)" ng-class="{'ayuda-preg-showed': pregunta_agrup.mostrar_ayuda, 'ayuda-preg-hidded':!pregunta_agrup.mostrar_ayuda}"><a ng-show="!pregunta_agrup.mostrar_ayuda"><i class="fa fa-anchor"></i></a><span ng-show="pregunta_agrup.mostrar_ayuda">{{pregunta_agrup.ayuda}}</span></div>
         <div layout="row" class="btn-container-edit-pregagrup">
@@ -52,7 +52,7 @@
             <md-tooltip>Preview</md-tooltip>
           </md-button>
         </div>
-      </md-whiteframe><span ng-show="pregunta_agrup.showDetail">
+      </md-whiteframe><span ng-show="pregunta_agrup.showDetail || showOptions">
         <md-list ng-if="pregunta_agrup.tipo_pregunta=='Multiple'">
           <md-list-item ng-repeat="opcion in pregunta_agrup.opciones | filter:{id: '!-1'} ">
             <md-checkbox ng-model="topping.wanted"></md-checkbox>
@@ -61,10 +61,10 @@
           </md-list-item>
         </md-list>
         <div layout="row" layout-wrap layout-fill ng-if="pregunta_agrup.tipo_pregunta=='Test'" style="padding-bottom: 32px;" class="opciones">
-          <md-whiteframe ng-class="{'elegida':opcion.elegida}" ng-if="!opcion.nueva" flex="40" ng-click="elegirOpcion(pregunta_agrup, opcion)" ng-repeat="opcion in pregunta_agrup.opciones" class="pointer md-whiteframe-z2 btn"> <span style="font-weight: bold;">{{ indexChar($index) }}. </span><span>{{ opcion.definicion }}</span></md-whiteframe>
+          <md-whiteframe ng-class="{'elegida':opcion.elegida, 'correcta-revelada':opcion.is_correct &amp;&amp; showCorrects}" ng-if="!opcion.nueva" flex="40" ng-click="elegirOpcion(pregunta_agrup, opcion)" ng-repeat="opcion in pregunta_agrup.opciones" class="pointer md-whiteframe-z2 btn"> <span style="font-weight: bold;">{{ indexChar($index) }}. </span><span>{{ opcion.definicion }}</span></md-whiteframe>
         </div></span>
     </div>
-    <edit-pregunta-agrupada pregagrup="pregunta_agrup" ng-show="pregunta_agrup.editando"></edit-pregunta-agrupada>
+    <edit-pregunta-agrupada pregagrup="pregunta_agrup" ng-if="pregunta_agrup.editando"></edit-pregunta-agrupada>
   </div>
 </md-whiteframe>
 <edit-contenido grupoking="grupoking" ng-show="grupoking.editando" eventoactual="eventoactual" idiomaactualselec="idiomaactualselec"></edit-contenido>

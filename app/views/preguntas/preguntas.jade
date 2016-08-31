@@ -39,11 +39,16 @@
 					label.btn.btn-primary(ng-model="showCorrects" uib-btn-checkbox) Revelar correctas
 				
 
-				// Editar una pregunta
-				edit-pregunta(ng-if="editando")
+				
+				#edicionking
+					// Editar una pregunta
+					edit-pregunta(ng-if="editando")
+					// Editar un grupo
+					edit-contenido(ng-if="editandoContenido")
 
 
-				div(ng-repeat="pg_pregunta in pg_preguntas | filter:preg_buscar | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion:evaluacion_id " ng-class-odd="'fondo-gris-odd'" style="position: relative;")
+				div(ng-repeat="pg_pregunta in pg_preguntas | filter:preg_buscar | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion:evaluacion_id " 
+					ng-class-odd="'fondo-gris-odd'" style="position: relative;")
 					
 					
 					view-pregunta(ng-if="pg_pregunta.is_preg")
@@ -80,17 +85,12 @@
 
 			.panel-body
 
-				div(ng-repeat="pregunta_king in preguntas_king2 | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion2:evalu_seleccionada.id | orderBy:'orden' ")
+				div(ng-repeat="pregunta_king in pg_preguntas | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion2:evalu_seleccionada.id | orderBy:'orden' " 
+					style="position: relative;")
 					
-					view-pregunta-eval(ng-if="pregunta_king.tipo_pregunta" preguntaking="pregunta_king" 
-						indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" 
-						eventoactualselec="idiomaPreg.selected" evaluaciones="evaluaciones"
-						preguntasevaluacion2="preguntas_evaluacion2")
+					view-pregunta-eval(ng-if="pregunta_king.tipo_pregunta" preguntaking="pregunta_king")
 
-
-					view-grupo-eval(ng-if="!pregunta_king.tipo_pregunta" grupoking="pregunta_king" 
-						indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" 
-						idiomaactualselec="idiomaPreg.selected" evaluaciones="evaluaciones" preguntasevaluacion2="preguntas_evaluacion2")
+					view-grupo-eval(ng-if="!pregunta_king.tipo_pregunta" grupoking="pregunta_king")
 							
 
 

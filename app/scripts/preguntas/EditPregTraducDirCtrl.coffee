@@ -5,7 +5,7 @@ angular.module('WissenSystem')
 
 
 		txtNewOpcion = 'Agregar nueva opción'
-		console.log $scope.pregunta_traduc
+		
 		if !$scope.pregunta_traduc
 			$scope.pregunta_traduc = $scope.preguntaEdit
 

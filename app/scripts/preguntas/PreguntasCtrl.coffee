@@ -11,8 +11,10 @@ angular.module('WissenSystem')
 
 		$scope.creando 		= false
 		$scope.editando 	= false
+		$scope.editandoContenido = false
 		$scope.inicializado = false # Se inicializa cuando haya respuesta por preguntas
 		$scope.preguntaEdit = {}
+		$scope.contenidoEdit = {}
 
 		$scope.showDetail 	= false
 		$scope.showOptions 	= false
@@ -129,7 +131,7 @@ angular.module('WissenSystem')
 
 			evalu.selected = true
 
-			found = $filter('filter')($scope.evaluaciones, {id: evalu.id} )
+			found = $filter('filter')($scope.evaluaciones, {id: evalu.id}, true )
 
 			if found.length > 0
 				$scope.preguntas_evaluacion2 = found[0].preguntas_evaluacion
@@ -177,15 +179,15 @@ angular.module('WissenSystem')
 		for preg in filtered
 	
 			if parseFloat(preg.categoria_id) == parseFloat(categoria)
-				
+
 				if evaluacion_id and parseFloat(evaluacion_id) != 0
 
 					found = false
 
 					if preg.tipo_pregunta
-						found = $filter('filter')(preguntas_evaluacion, {pregunta_id: preg.id}, true)
+						found = $filter('filter')(preguntas_evaluacion, {pregunta_id: preg.pg_id}, true)
 					else
-						found = $filter('filter')(preguntas_evaluacion, {grupo_pregs_id: preg.id}, true)
+						found = $filter('filter')(preguntas_evaluacion, {grupo_pregs_id: preg.pg_id}, true)
 
 					if found
 						if found.length > 0

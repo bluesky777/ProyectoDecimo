@@ -9,18 +9,18 @@
 			
 			div(ng-show="mostrarConfiguracion" layout layout-margin layout-wrap layout-padding )
 				
-				md-input-container(flex="10")
+				md-input-container.margintb0.paddingtb0(flex="40")
 					label Duración
 					input(type="number" ng-model="pregagrup.duracion")
 					md-tooltip En segundos. Solo para la gran final
 
-				md-input-container(flex="10")
+				md-input-container.margintb0.paddingtb0(flex="20")
 					label Puntos
 					input(type="number" ng-model="pregagrup.puntos")
 					md-tooltip Solo aplica si la evaluación es por puntos y no por promedio.
 
-				md-input-container(flex="20" layout="row" layout-align="start center")
-					md-select(placeholder="Tipo pregunta" ng-model="pregagrup.tipo_pregunta" ng-change="cambiaTipoPregunta()")
+				md-input-container.margintb0.paddingtb0(flex="30" layout="row" layout-align="start center" style="margin-top:-20px; height: 50px;")
+					md-select(placeholder="Tipo pregunta" ng-model="pregagrup.tipo_pregunta" ng-change="cambiaTipoPregunta()" style="min-width: 150px;")
 						md-option() Test
 						md-option() Multiple
 						md-option() Texto
@@ -28,7 +28,7 @@
 						md-option() Ordenar
 						//md-option() Cuadrícula // No aplica para pregunta_king, sino para grupos_preguntas
 
-				.form-group(flex="40")
+				.form-group(flex="50" style="margin-top:-10px")
 					md-checkbox(ng-model="pregagrup.aleatorias" ng-true-value="1" ng-false-value="0" aria-label="Opciones aleatorias")
 						| Opciones aleatorias
 					md-tooltip No importará el orden en que ordene las opciones. Siempre saldrán aleatoriamente.
@@ -49,11 +49,13 @@
 
 				.opcionesedit(ui-sortable="sortableOptions" ng-model="pregagrup.opciones")
 					
-					md-input-container.input-group(flex ng-repeat="opcion in pregagrup.opciones | orderBy:'orden'")
+					md-input-container.input-group.margintb0.paddingtb0(flex ng-repeat="opcion in pregagrup.opciones | orderBy:'orden'")
 						label(ng-show="!opcion.nueva")
 							i.fa.fa-sort 
 							| Opción {{$index+1}}:
-						input.form-control(type="text" ng-model="opcion.definicion" ng-class="{ 'textblue':opcion.is_correct, 'add-opcion':opcion.nueva }" ng-focus="addButtonNewOpcion(pregagrup, opcion)" ng-disable="opcion.creando")
+						input.form-control(type="text" ng-model="opcion.definicion" ng-class="{ 'textblue':opcion.is_correct, 'add-opcion':opcion.nueva }" 
+							ng-focus="addButtonNewOpcion(pregagrup, opcion)" ng-disable="opcion.creando")
+							
 						span.input-group-btn(ng-show="!opcion.nueva")
 							
 							md-button.md-icon-button.md-warn(type="button" aria-label="Quitar" ng-click="deleteOption(pregagrup, opcion)")

@@ -1,27 +1,23 @@
 angular.module('WissenSystem')
 
-.controller('ViewGrupoCtrl', ['$scope', 'App', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', '$uibModal', '$filter',
-	($scope, App, Restangular, $state, $cookies, $rootScope, toastr, $modal, $filter) ->
-		"""
-		$scope.idiomaactualselec = parseInt($scope.idiomaactualselec)
-		$scope.idiomaPreg = $scope.idiomaactualselec
-		"""
-
-		$scope.creando = false
+.controller('ViewGrupoCtrl', ['$scope', 'App', 'Restangular', '$state', '$cookies', '$rootScope', '$location', '$anchorScroll', 'toastr', '$uibModal', '$filter',
+	($scope, App, Restangular, $state, $cookies, $rootScope, $location, $anchorScroll, toastr, $modal, $filter) ->
+		
+		$scope.creandoGrupoPreg = false
 
 		$scope.addNewPregunta = (contenido)->
 
-			$scope.creando = true
+			$scope.creandoGrupoPreg = true
 
 			Restangular.one('preguntas_agrupadas/store').customPOST({contenido_id: contenido.id}).then((r)->
 				r.editando = true
-				$scope.creando = false
+				$scope.creandoGrupoPreg = false
 				contenido.preguntas_agrupadas.push r
 				console.log 'Pregunta añadida: ', contenido
 
 			(r2)->
 				console.log 'Rechazada la nueva ', r2
-				$scope.creando = false
+				$scope.creandoGrupoPreg = false
 				toastr.warning 'No se creó pregunta', 'Problema'
 			)
 
@@ -36,7 +32,6 @@ angular.module('WissenSystem')
 						$scope.evaluaciones
 			})
 			modalInstance.result.then( (elem)->
-				#$scope.$emit 'preguntaAsignada', elem
 				console.log 'Resultado del modal: ', elem
 			)
 
@@ -50,7 +45,10 @@ angular.module('WissenSystem')
 			return String.fromCharCode(65 + index)
 
 		$scope.editarGrupo = (grupoking)->
-			grupoking.editando = true
+			$scope.$parent.$parent.contenidoEdit 		= grupoking
+			$scope.$parent.$parent.editandoContenido 	= true
+			$location.hash('content');
+			$anchorScroll();
 
 
 		$scope.eliminarContenido = (grupoking)->
@@ -105,7 +103,7 @@ angular.module('WissenSystem')
 
 	$scope.ok = ()->
 
-		Restangular.all('grupo_preguntas/destroy/'+grupoking.id).remove().then((r)->
+		Restangular.all('grupo_preguntas/destroy/'+grupoking.pg_id).remove().then((r)->
 			toastr.success 'Pregunta eliminada con éxito.', 'Eliminada'
 		, (r2)->
 			toastr.warning 'No se pudo eliminar la grupoking.', 'Problema'
