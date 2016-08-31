@@ -5,12 +5,23 @@ angular.module('WissenSystem')
 .controller('PreguntasCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 'preguntasServ', '$filter', 
 	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr, preguntasServ, $filter) ->
 
-		$scope.preguntas_king = []
+		$scope.pg_preguntas = []
 		$scope.evalu_seleccionada = {id: -1}
 
 
-		$scope.grupo = 'grupo'
-		$scope.king = 'king'
+		$scope.creando 		= false
+		$scope.editando 	= false
+		$scope.inicializado = false # Se inicializa cuando haya respuesta por preguntas
+		$scope.preguntaEdit = {}
+
+		$scope.showDetail 	= false
+		$scope.showOptions 	= false
+		$scope.showCorrects = false
+		$scope.categoria 	= 0
+		$scope.evaluacion_id = 0
+
+		$scope.categorias 	= []
+
 
 		$scope.comprobar_evento_actual = ()->
 			if $scope.evento_actual
@@ -32,18 +43,6 @@ angular.module('WissenSystem')
 		$scope.$on 'cambia_evento_actual', ()->
 			$scope.comprobar_evento_actual()
 
-
-
-		$scope.creando = false
-		$scope.inicializado = false # Se inicializa cuando haya respuesta por preguntas
-
-		$scope.showDetail = false
-		$scope.categoria = 0
-		$scope.evaluacion_id = 0
-
-		$scope.preguntas_king = []
-		$scope.categorias = []
-
 		$scope.traerDatos = ()->
 
 			# Las categorias
@@ -51,7 +50,12 @@ angular.module('WissenSystem')
 				$scope.categorias = r
 
 				if $scope.categorias.length > 0
-					$scope.categoria = r[0].id # Que se Seleccione la primera opción
+
+					if localStorage.getItem("selected_categpreg") == null
+						localStorage.setItem('selected_categpreg', r[0].id)
+						$scope.categoria = r[0].id # Que se Seleccione la primera opción
+					else
+						$scope.categoria = localStorage.getItem("selected_categpreg")
 
 					$scope.traerEvaluaciones()
 					$scope.traerPreguntas()
@@ -78,9 +82,8 @@ angular.module('WissenSystem')
 		$scope.traerPreguntas = ()->
 			# Las preguntas
 			Restangular.all('preguntas').getList({categoria_id: $scope.categoria, idioma_id: $scope.idiomaPreg.selected}).then((r)->
-				$scope.preguntas_king = r
+				$scope.pg_preguntas = r
 				$scope.inicializado = true
-				console.log '$scope.inicializado', $scope.inicializado
 			, (r2)->
 				console.log 'Pailas la promesa de las preguntas ', r2
 				$scope.inicializado = true
@@ -89,6 +92,7 @@ angular.module('WissenSystem')
 
 
 		$scope.traerPreguntasYEvaluaciones = ()->
+			localStorage.setItem('selected_categpreg', $scope.categoria)
 			$scope.traerPreguntas()
 			$scope.traerEvaluaciones()
 
@@ -97,7 +101,7 @@ angular.module('WissenSystem')
 
 			if $scope.evaluacion_id == 'sin_asignar'
 				Restangular.all('pregunta_evaluacion/solo-sin-asignar').getList({categoria_id: $scope.categoria}).then((r)->
-					$scope.preguntas_king = r
+					$scope.pg_preguntas = r
 				, (r2)->
 					console.log 'No se trajo las preguntas sin asignar ', r2
 					$scope.inicializado = true
@@ -138,18 +142,13 @@ angular.module('WissenSystem')
 			#console.log 'elem', elem
 
 
-		$scope.$on 'preguntaEliminada', (e, elem)->
-			$scope.preguntas_king = $filter('filter')($scope.preguntas_king, {id: "!" + elem.id, tipo_pregunta: "!undefined" }, true)
-			console.log 'Recibido eliminación', elem, $filter('filter')($scope.preguntas_king, {id: "!" + elem.id, tipo_pregunta: "!undefined" })
-
-
 		$scope.$on 'preguntaQuitada', (e, elem)->
 			$scope.preguntas_evaluacion2 = $filter('filter')($scope.preguntas_evaluacion2, {id: "!" + elem})
 			console.log 'Recibido quitada', elem, 
 
 
 		$scope.$on 'grupoEliminado', (e, elem)->
-			$scope.preguntas_king = $filter('filter')($scope.preguntas_king, (pregunta_king, index)->
+			$scope.pg_preguntas = $filter('filter')($scope.pg_preguntas, (pregunta_king, index)->
 
 				if pregunta_king.tipo_pregunta # No la eliminamos si es una preguntaking que tiene tipo_pregunta
 					return true

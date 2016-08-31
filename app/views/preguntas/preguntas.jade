@@ -33,46 +33,28 @@
 				input.form-control.ancho-200(type="text" ng-model="preg_buscar" placeholder="{{ 'BUSCAR_PLACEHOLDER' | translate }}")
 
 			.panel-body(ng-show="evaluacion_id!='sin_asignar'")
+
+				.btn-group(style="margin-bottom: 20px;")
+					label.btn.btn-primary(ng-model="showOptions" uib-btn-checkbox) Ver opciones
+					label.btn.btn-primary(ng-model="showCorrects" uib-btn-checkbox) Revelar correctas
 				
-				div(ng-repeat="pregunta in preguntas_king | filter:preg_buscar | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion:evaluacion_id " ng-class-odd="'fondo-gris-odd'" style="position: relative;")
+
+				// Editar una pregunta
+				edit-pregunta(ng-if="editando")
+
+
+				div(ng-repeat="pg_pregunta in pg_preguntas | filter:preg_buscar | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion:evaluacion_id " ng-class-odd="'fondo-gris-odd'" style="position: relative;")
 					
 					
-					view-pregunta(ng-show="pregunta.is_preg")
+					view-pregunta(ng-if="pg_pregunta.is_preg")
 
-
-
-
-
-					view-grupo(ng-show="!pregunta.is_preg" grupoking="pregunta_king" 
-						indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" 
-						idiomaactualselec="idiomaPreg.selected" evaluaciones="evaluaciones")
+					view-grupo(ng-if="!pg_pregunta.is_preg")
 							
 							
-				add-pregunta(preguntasking="preguntas_king" categoria="categoria" tipo="king" ng-show="inicializado")
-				add-pregunta(preguntasking="preguntas_king" categoria="categoria" tipo="grupo" ng-show="inicializado")
 
 
-
-			.panel-body(ng-show="evaluacion_id=='sin_asignar'")
-
-				div(ng-repeat="pregunta_king in preguntas_king | filter:preg_buscar | orderBy:'orden' ")
-					div(ng-show="pregunta_king.editando")
-						br
-						br
-					
-
-					view-grupo(ng-show="!pregunta_king.tipo_pregunta" grupoking="pregunta_king" 
-						indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" 
-						idiomaactualselec="idiomaPreg.selected" evaluaciones="evaluaciones")
-					
-
-
-					md-divider
-
-				add-pregunta(preguntasking="preguntas_king" categoria="categoria" tipo="king" ng-show="inicializado")
-				add-pregunta(preguntasking="preguntas_king" categoria="categoria" tipo="grupo" ng-show="inicializado")
-
-
+				add-pregunta(ng-show="inicializado")
+				
 
 .row
 	.col-sm-12.col-md-4

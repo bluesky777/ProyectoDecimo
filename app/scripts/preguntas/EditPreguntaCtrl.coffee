@@ -3,9 +3,8 @@ angular.module('WissenSystem')
 .controller('EditPreguntaCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 
 	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr) ->
 
-		$scope.eventoactualselec = parseInt($scope.eventoactualselec)
-		
-		$scope.idiomaPreg = [$scope.eventoactualselec]
+		$scope.idiomaPreg = [$scope.$parent.preguntaEdit.idioma_id]
+		$scope.traducciones_cargadas = false
 
 
 		$scope.editorOptions = 
@@ -13,48 +12,57 @@ angular.module('WissenSystem')
 			placeholder: ''
 
 
-		$scope.mostrarConfiguracion = false
+
+		$scope.mostrarConfiguracion = true
 		$scope.mostrarConfig = ()->
 			$scope.mostrarConfiguracion = !$scope.mostrarConfiguracion
 			
 
 		$scope.cerrarEdicion = ()->
-			$scope.preguntaking.editando = false
+			$scope.$parent.editando = false
 
 
 		$scope.finalizarEdicion = ()->
-			$scope.$emit 'finalizaEdicionPreg'
-			
 
-			Restangular.one('preguntas/update').customPUT($scope.preguntaking).then((r)->
-				console.log('Cambios guardados', r)
-				$scope.preguntaking.editando = false
+			Restangular.one('preguntas/update').customPUT($scope.preguntaEdit).then((r)->
+				$scope.$parent.editando = false
 				toastr.success 'Cambios guardados con éxito'
 			, (r2)->
 				console.log('No se pudo guardar los cambios', r2)
 				toastr.warning 'Cambios NO guardados', 'Problema'
 			)
-			console.log 'Guardando cambios...'
 
 
 		$scope.aplicarCambios = ()->
-			Restangular.one('preguntas/update').customPUT($scope.preguntaking).then((r)->
-				console.log('Cambios guardados', r)
+			Restangular.one('preguntas/update').customPUT($scope.preguntaEdit).then((r)->
 				toastr.success 'Cambios guardados con éxito'
 			, (r2)->
 				console.log('No se pudo guardar los cambios', r2)
 				toastr.warning 'Cambios NO guardados', 'Problema'
 
 			)
-			console.log 'Guardando cambios...'
 
-		
 
 		$scope.cambiaTipoPregunta = ()->
-			console.log 'Cambia el tipo: ', $scope.preguntaking.tipo_pregunta
-
+			console.log 'Cambia el tipo: ', $scope.preguntaEdit.tipo_pregunta
 			$scope.$broadcast 'cambiaTipoPregunta'
 			
+		
+		Restangular.all('preguntas/traducidas').getList({ pregunta_id: $scope.preguntaEdit.pg_id }).then((r)->
+			for trad in r
+				if r.pg_traduc_id = $scope.preguntaEdit.pg_traduc_id
+					r.opciones 		= $scope.preguntaEdit.opciones
+					r.enunciado 	= $scope.preguntaEdit.enunciado
+
+			$scope.traducciones_cargadas = true
+			$scope.preguntaEdit.preguntas_traducidas = r
+
+		, (r2)->
+			console.log('No se trajeron las traducciones de la pregunta', r2)
+			toastr.warning 'No se trajeron las traducciones de la pregunta', 'Problema'
+
+		)
+		
 
 		return
 	]

@@ -207,11 +207,22 @@ a:hover, a:focus {
   right: 5px;
   opacity: 1;
 }
-
 .definicion-frame .btn-container-edit{
   position: absolute;
   right: -25px;
   top: 5px;
+
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.definicion-frame:hover .btn-container-edit-pregagrup{
+  right: 5px;
+  opacity: 1;
+}
+.definicion-frame .btn-container-edit-pregagrup{
+  position: absolute;
+  right: -25px;
 
   opacity: 0;
   transition: all 0.3s;

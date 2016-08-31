@@ -5,11 +5,13 @@ angular.module('WissenSystem')
 
 
 		txtNewOpcion = 'Agregar nueva opción'
-			
-		
+		console.log $scope.pregunta_traduc
+		if !$scope.pregunta_traduc
+			$scope.pregunta_traduc = $scope.preguntaEdit
+
 		$scope.inicializar = ()->
 
-			for opci in $scope.preguntatraduc.opciones
+			for opci in $scope.pregunta_traduc.opciones
 				if opci.nueva
 					return
 
@@ -19,7 +21,7 @@ angular.module('WissenSystem')
 				nueva: true
 				is_correct: false
 			
-			$scope.preguntatraduc.opciones.push newOpcion
+			$scope.pregunta_traduc.opciones.push newOpcion
 
 		$scope.inicializar()
 
@@ -33,14 +35,14 @@ angular.module('WissenSystem')
 
 				sortHash = []
 
-				for opcion, index in $scope.preguntatraduc.opciones
+				for opcion, index in $scope.pregunta_traduc.opciones
 					if opcion.id != -1
 						hashEntry = {}
 						hashEntry["" + opcion.id] = index
 						sortHash.push(hashEntry)
 				
 				datos = 
-					pregunta_traduc_id: $scope.preguntatraduc.id
+					pregunta_traduc_id: $scope.pregunta_traduc.id
 					sortHash: sortHash
 				
 				Restangular.one('opciones/update-orden').customPUT(datos).then((r)->
@@ -60,7 +62,7 @@ angular.module('WissenSystem')
 			if opt.nueva
 
 				opt.definicion = 'Opción ' + preg.opciones.length
-				opt.preg_traduc_id = preg.id
+				opt.preg_traduc_id = preg.pg_traduc_id
 				opt.orden = preg.opciones.length - 1
 
 				if preg.opciones.length == 1
@@ -94,14 +96,14 @@ angular.module('WissenSystem')
 
 		
 		$scope.setAsCorrect = (preg, opt)->
-			if $scope.preguntaking.tipo_pregunta == 'Test'
+			if $scope.preguntaEdit.tipo_pregunta == 'Test'
 				angular.forEach preg.opciones, (opcion)->  # Solo puede haber una correcta, así que quitamos las otras.
 					opcion.is_correct = 0
 
 				opt.is_correct = 1
 
 
-			if $scope.preguntaking.tipo_pregunta == 'Multiple'
+			if $scope.preguntaEdit.tipo_pregunta == 'Multiple'
 				opt.is_correct = 1  # Pueden haber muchas correctas, así que simplemente la estrablecemos correcta sin importar si hay alguna otra como correcta.
 
 
@@ -117,21 +119,11 @@ angular.module('WissenSystem')
 			)
 			
 
-			### Probando el mdToast
-			toast = $mdToast.simple()
-				.content('Opción eliminada!')
-				.action('OK')
-				.highlightAction(false)
-				.position('top right');
-			$mdToast.show(toast)
-			###
-
-			
 		$scope.$on 'cambiaTipoPregunta', ()->
 
-			if $scope.preguntaking.tipo_pregunta == 'Test'
+			if $scope.preguntaEdit.tipo_pregunta == 'Test'
 
-				for preg_trad in $scope.preguntaking.preguntas_traducidas  
+				for preg_trad in $scope.preguntaEdit.preguntas_traducidas  
 					correctas = 0
 					for opcion in preg_trad.opciones  # Solo puede haber una correcta, así que quitamos todas menos una.
 						

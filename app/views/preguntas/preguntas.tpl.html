@@ -35,21 +35,17 @@
         <input type="text" ng-model="preg_buscar" placeholder="{{ 'BUSCAR_PLACEHOLDER' | translate }}" class="form-control ancho-200">
       </div>
       <div ng-show="evaluacion_id!='sin_asignar'" class="panel-body">
-        <div ng-repeat="pregunta in preguntas_king | filter:preg_buscar | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion:evaluacion_id " ng-class-odd="'fondo-gris-odd'" style="position: relative;">
-          <view-pregunta ng-show="pregunta.is_preg"></view-pregunta>
-          <view-grupo ng-show="!pregunta.is_preg" grupoking="pregunta_king" indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" idiomaactualselec="idiomaPreg.selected" evaluaciones="evaluaciones"></view-grupo>
+        <div style="margin-bottom: 20px;" class="btn-group">
+          <label ng-model="showOptions" uib-btn-checkbox class="btn btn-primary">Ver opciones</label>
+          <label ng-model="showCorrects" uib-btn-checkbox class="btn btn-primary">Revelar correctas</label>
         </div>
-        <add-pregunta preguntasking="preguntas_king" categoria="categoria" tipo="king" ng-show="inicializado"></add-pregunta>
-        <add-pregunta preguntasking="preguntas_king" categoria="categoria" tipo="grupo" ng-show="inicializado"></add-pregunta>
-      </div>
-      <div ng-show="evaluacion_id=='sin_asignar'" class="panel-body">
-        <div ng-repeat="pregunta_king in preguntas_king | filter:preg_buscar | orderBy:'orden' ">
-          <div ng-show="pregunta_king.editando"><br><br></div>
-          <view-grupo ng-show="!pregunta_king.tipo_pregunta" grupoking="pregunta_king" indice="$index" idiomapreg="idiomaPreg" eventoactual="evento_actual" idiomaactualselec="idiomaPreg.selected" evaluaciones="evaluaciones"></view-grupo>
-          <md-divider></md-divider>
+        <!-- Editar una pregunta-->
+        <edit-pregunta ng-if="editando"></edit-pregunta>
+        <div ng-repeat="pg_pregunta in pg_preguntas | filter:preg_buscar | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion:evaluacion_id " ng-class-odd="'fondo-gris-odd'" style="position: relative;">
+          <view-pregunta ng-if="pg_pregunta.is_preg"></view-pregunta>
+          <view-grupo ng-if="!pg_pregunta.is_preg"></view-grupo>
         </div>
-        <add-pregunta preguntasking="preguntas_king" categoria="categoria" tipo="king" ng-show="inicializado"></add-pregunta>
-        <add-pregunta preguntasking="preguntas_king" categoria="categoria" tipo="grupo" ng-show="inicializado"></add-pregunta>
+        <add-pregunta ng-show="inicializado"></add-pregunta>
       </div>
     </div>
   </div>

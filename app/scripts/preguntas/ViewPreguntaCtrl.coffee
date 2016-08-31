@@ -13,29 +13,28 @@ angular.module('WissenSystem')
 			pregunta.mostrar_ayuda = !pregunta.mostrar_ayuda
 
 
-		$scope.asignarAEvaluacion = (pregunta_king)->
+		$scope.asignarAEvaluacion = (pg_pregunta)->
 			modalInstance = $modal.open({
 				templateUrl: App.views + 'preguntas/asignarPregunta.tpl.html'
 				controller: 'AsignarPreguntaCtrl'
 				resolve: 
 					pregunta: ()->
-						pregunta_king
+						pg_pregunta
 					evaluaciones: ()->
 						$scope.evaluaciones
 			})
 			modalInstance.result.then( (elem)->
-				#$scope.$emit 'preguntaAsignada', elem
 				console.log 'Resultado del modal: ', elem
 			)
 
 
-		$scope.cambiarCategoria = (pregunta_king)->
+		$scope.cambiarCategoria = (pg_pregunta)->
 			modalInstance = $modal.open({
 				templateUrl: App.views + 'preguntas/cambiarCategoria.tpl.html'
 				controller: 'CambiarCategoriaCtrl'
 				resolve: 
 					pregunta: ()->
-						pregunta_king
+						pg_pregunta
 					categorias: ()->
 						$scope.$parent.categorias
 					idiomaPreg: ()->
@@ -43,7 +42,7 @@ angular.module('WissenSystem')
 			})
 			modalInstance.result.then( (elem)->
 				#$scope.$emit 'preguntaAsignada', elem
-				pregunta_king.categoria_id = elem
+				pg_pregunta.categoria_id = elem
 				console.log 'Resultado del modal: ', elem
 			)
 
@@ -53,13 +52,12 @@ angular.module('WissenSystem')
 
 			
 
-		$scope.editarPregunta = (pregunta_king)->
-			pregunta_king.editando = true
+		$scope.editarPregunta = (pg_pregunta)->
+			$scope.$parent.$parent.preguntaEdit = pg_pregunta
+			$scope.$parent.$parent.editando 	= true
 
 
 		$scope.eliminarPregunta = (pregunta)->
-			console.log 'Presionado para eliminar fila: ', pregunta
-
 			modalInstance = $modal.open({
 				templateUrl: App.views + 'preguntas/removePregunta.tpl.html'
 				controller: 'RemovePreguntaCtrl'
@@ -68,17 +66,12 @@ angular.module('WissenSystem')
 						pregunta
 			})
 			modalInstance.result.then( (elem)->
-				$scope.$emit 'preguntaEliminada', elem
-				console.log 'Resultado del modal: ', elem
+				$scope.pg_preguntas = $filter('filter')($scope.pg_preguntas, {id: "!" + elem.pg_id, tipo_pregunta: "!undefined" }, true)
 			)
 
 
-		$scope.previewPregunta = (pregunta_king)->
-			if pregunta_king.showDetail == true
-				pregunta_king.showDetail = false
-			else
-				pregunta_king.showDetail = true
-
+		$scope.previewPregunta = (pg_pregunta)->
+			pg_pregunta.showDetail = if pg_pregunta.showDetail then false else true
 
 
 	]
@@ -90,7 +83,7 @@ angular.module('WissenSystem')
 
 	$scope.ok = ()->
 
-		Restangular.all('preguntas/destroy/'+pregunta.id).remove().then((r)->
+		Restangular.all('preguntas/destroy/'+pregunta.pg_id).remove().then((r)->
 			toastr.success 'Pregunta eliminada con éxito.', 'Eliminada'
 		, (r2)->
 			toastr.warning 'No se pudo eliminar la pregunta.', 'Problema'

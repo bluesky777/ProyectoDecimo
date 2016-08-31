@@ -3,32 +3,31 @@
   <div ng-show="pg_pregunta.ayuda &amp;&amp; pg_pregunta.showDetail" ng-click="toggleMostrarAyuda(pg_pregunta)" ng-class="{'ayuda-preg-showed': pg_pregunta.mostrar_ayuda, 'ayuda-preg-hidded':!pg_pregunta.mostrar_ayuda}"><a ng-show="!pg_pregunta.mostrar_ayuda"><i class="fa fa-anchor"></i></a><span ng-show="pg_pregunta.mostrar_ayuda">{{pg_pregunta.ayuda}}</span></div>
   <div layout="row" class="btn-container-edit">
     <div aria-label="..." class="btn-group">
-      <button type="button" ng-click="editarpg_pregunta(pg_pregunta)" class="btn btn-default"> <i class="fa fa-pencil"></i>
+      <button type="button" ng-click="editarPregunta(pg_pregunta)" class="btn btn-default"> <i class="fa fa-pencil"></i>
         <md-tooltip>Editar pregunta</md-tooltip>
       </button>
-      <button type="button" ng-click="previewpg_pregunta(pg_pregunta)" class="btn btn-default"><i class="fa fa-eye"></i>
+      <button type="button" ng-click="previewPregunta(pg_pregunta)" class="btn btn-default"><i class="fa fa-eye"></i>
         <md-tooltip>Preview</md-tooltip>
       </button>
       <div class="btn-group">
         <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-default dropdown-toggle"><i class="fa fa-align-justify"></i><span class="caret"></span></button>
         <ul class="dropdown-menu dropdown-menu-right">
-          <li><a href="#" ng-click="eliminarpg_pregunta(pg_pregunta)"><i class="fa fa-trash"></i> Eliminar pregunta</a></li>
-          <li><a href="#" ng-click="asignarAEvaluacion(pg_pregunta)"><i class="fa fa-clipboard"></i> Asignar a Evaluación</a></li>
+          <li><a href="" ng-click="eliminarPregunta(pg_pregunta)"><i class="fa fa-trash"></i> Eliminar pregunta</a></li>
+          <li><a href="" ng-click="asignarAEvaluacion(pg_pregunta)"><i class="fa fa-clipboard"></i> Asignar a Evaluación</a></li>
           <li role="separator" class="divider"></li>
-          <li><a href="#" ng-click="cambiarCategoria(pg_pregunta)"><i class="fa fa-eye"></i> Cambiar categoría</a></li>
+          <li><a href="" ng-click="cambiarCategoria(pg_pregunta)"><i class="fa fa-eye"></i> Cambiar categoría</a></li>
         </ul>
       </div>
     </div>
   </div>
-</md-whiteframe><span ng-show="pg_pregunta.showDetail">
-  <md-list ng-if="pg_pregunta.tipo_pg_pregunta=='Multiple'">
+</md-whiteframe><span ng-show="pg_pregunta.showDetail || showOptions">
+  <md-list ng-if="pg_pregunta.tipo_pregunta=='Multiple'">
     <md-list-item ng-repeat="opcion in pg_pregunta.opciones | filter:{id: '!-1'} ">
       <md-checkbox ng-model="topping.wanted"></md-checkbox>
       <p>{{ opcion.definicion }}</p>
       <md-icon ng-click="" aria-label="Chat" class="md-secondary fa fa-comment"></md-icon>
     </md-list-item>
   </md-list>
-  <div layout="row" layout-wrap layout-fill ng-if="pg_pregunta.tipo_pg_pregunta=='Test'" style="padding-bottom: 32px;" class="opciones">
-    <md-whiteframe ng-class="{'elegida':opcion.elegida, 'correcta-revelada':opcion.is_correct}" ng-if="!opcion.nueva" flex="40" ng-click="elegirOpcion(pg_pregunta, opcion)" ng-repeat="opcion in pg_pregunta.opciones" class="pointer md-whiteframe-z2 btn"> <span style="font-weight: bold;">{{ indexChar($index) }}. </span><span>{{ opcion.definicion }}</span></md-whiteframe>
+  <div layout="row" layout-wrap layout-fill ng-if="pg_pregunta.tipo_pregunta=='Test'" style="padding-bottom: 32px;" class="opciones">
+    <md-whiteframe ng-class="{'elegida': opcion.elegida, 'correcta-revelada':opcion.is_correct &amp;&amp; showCorrects}" ng-if="!opcion.nueva" flex="40" ng-click="elegirOpcion(pg_pregunta, opcion)" ng-repeat="opcion in pg_pregunta.opciones" class="pointer md-whiteframe-z2 btn"> <span style="font-weight: bold;">{{ indexChar($index) }}. </span><span>{{ opcion.definicion }}</span></md-whiteframe>
   </div></span>
-<edit-pg_pregunta pg_pregunta="pg_pregunta" ng-show="pg_pregunta.editando" eventoactual="eventoactual" eventoactualselec="{{eventoactualselec}}"></edit-pg_pregunta>

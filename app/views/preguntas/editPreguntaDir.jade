@@ -2,10 +2,9 @@
 	.panel-heading( layout style="height: 40px;")
 		span
 			|  Editar en idiomas:  
-
-		md-input-container(layout="row" layout-align="start center" style="padding-bottom: 0px; margin-top: -10px;")
+		md-input-container(layout="row" layout-align="start center" style="margin-left: 5px; margin-top: 0px; margin-right: 5px")
 			md-select(multiple="true" placeholder="Idioma" ng-model="idiomaPreg")
-				md-option(ng-repeat="idioma in eventoactual.idiomas" value="{{idioma.id}}") {{idioma.original}}
+				md-option(ng-repeat="idioma in evento_actual.idiomas" value="{{idioma.id}}") {{idioma.original}}
 
 		a(href="" ng-click="mostrarConfig()" ng-show="!mostrarConfiguracion") Configurar
 		a(href="" ng-click="mostrarConfig()" ng-show="mostrarConfiguracion") Ocultar
@@ -13,24 +12,24 @@
 	.panel-body
 		form.form-horizontal(name="frm" role="form" ng-submit="finalizarEdicion()")
 			
-			div(ng-show="mostrarConfiguracion" layout layout-margin layout-wrap layout-padding )
+			.margin0.padding0(ng-show="mostrarConfiguracion" layout layout-margin layout-wrap layout-padding )
 				
-				md-input-container(flex="40")
+				md-input-container.margintb0.paddingtb0(flex="40")
 					label Descripción
-					input(type="text" ng-model="preguntaking.descripcion")
+					input(type="text" ng-model="preguntaEdit.descripcion")
 
-				md-input-container(flex="20")
+				md-input-container.margintb0.paddingtb0(flex="20")
 					label Duración
-					input(type="number" ng-model="preguntaking.duracion")
+					input(type="number" ng-model="preguntaEdit.duracion")
 					md-tooltip En segundos. Solo para la gran final
 
-				md-input-container(flex="20")
+				md-input-container.margintb0.paddingtb0(flex="20")
 					label Puntos
-					input(type="number" ng-model="preguntaking.puntos")
+					input(type="number" ng-model="preguntaEdit.puntos")
 					md-tooltip Solo aplica si la evaluación es por puntos y no por promedio.
 
-				md-input-container(flex="30" layout="row" layout-align="start center")
-					md-select(placeholder="Tipo pregunta" ng-model="preguntaking.tipo_pregunta" ng-change="cambiaTipoPregunta()")
+				md-input-container.margintb0.paddingtb0(flex="30" layout="row" layout-align="start center" style="margin-top:-20px; height: 50px;")
+					md-select(placeholder="Tipo pregunta" ng-model="preguntaEdit.tipo_pregunta" ng-change="cambiaTipoPregunta()" style="min-width: 150px;")
 						md-option() Test
 						md-option() Multiple
 						md-option() Texto
@@ -38,18 +37,22 @@
 						md-option() Ordenar
 						//md-option() Cuadrícula // No aplica para pregunta_king, sino para grupos_preguntas
 
-				.form-group(flex="50")
-					md-checkbox(ng-model="preguntaking.aleatorias" ng-true-value="1" ng-false-value="0" aria-label="Opciones aleatorias")
+				.form-group(flex="50" style="margin-top:-10px")
+					md-checkbox(ng-model="preguntaEdit.aleatorias" ng-true-value="1" ng-false-value="0" aria-label="Opciones aleatorias")
 						| Opciones aleatorias
 					md-tooltip No importará el orden en que ordene las opciones. Siempre saldrán aleatoriamente.
 
 
 			
-			div(ng-repeat="pregunta_traduc in preguntaking.preguntas_traducidas | porIdiomasEdit:idiomaPreg" ng-class-odd="'fondo-odd'" ng-class-even="'fondo-even'")
+			div(ng-if="preguntaEdit.preguntas_traducidas.length > 0" 
+				ng-repeat="pregunta_traduc in preguntaEdit.preguntas_traducidas | porIdiomasEdit:idiomaPreg" 
+				ng-class-odd="'fondo-odd'" ng-class-even="'fondo-even'")
 
-				
+				edit-preg-traduc-dir
 
-				edit-preg-traduc-dir(preguntatraduc="pregunta_traduc" preguntaking="preguntaking" eventoactual="eventoactual")
+			span(ng-if="!preguntaEdit.preguntas_traducidas")
+
+				edit-preg-traduc-dir
 
 
 				br

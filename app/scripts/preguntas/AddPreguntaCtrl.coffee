@@ -3,7 +3,6 @@ angular.module('WissenSystem')
 .controller('AddPreguntaCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', '$mdToast', 'toastr'
 	($scope, $http, Restangular, $state, $cookies, $rootScope, $mdToast, toastr) ->
 
-		console.log 'Add pregunta dir'
 		$scope.creando = false
 
 		$scope.addNewPregunta = ()->
@@ -13,8 +12,8 @@ angular.module('WissenSystem')
 			Restangular.one('preguntas/store').customPOST({categoria_id: $scope.categoria}).then((r)->
 				r.editando = true
 				$scope.creando = false
-				$scope.preguntasking.push r
-				console.log 'Pregunta añadida: ', $scope.preguntasking
+				$scope.pg_preguntas.push r
+				console.log 'Pregunta añadida: ', $scope.pg_preguntas
 
 			(r2)->
 				console.log 'Rechazada la nueva ', r2
@@ -31,8 +30,8 @@ angular.module('WissenSystem')
 			Restangular.one('grupo_preguntas/store').customPOST({categoria_id: $scope.categoria}).then((r)->
 				r.editando = true
 				$scope.creando = false
-				$scope.preguntasking.push r
-				console.log 'Pregunta añadida: ', $scope.preguntasking
+				$scope.pg_preguntas.push r
+				console.log 'Pregunta añadida: ', $scope.pg_preguntas
 
 			(r2)->
 				console.log 'Rechazada la nueva ', r2
