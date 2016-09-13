@@ -1,7 +1,7 @@
 angular.module('WissenSystem')
 
-.controller('EditPreguntaCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 
-	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr) ->
+.controller('EditPreguntaCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', '$filter', 
+	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr, $filter) ->
 
 		$scope.idiomaPreg = [$scope.$parent.preguntaEdit.idioma_id]
 
@@ -23,7 +23,14 @@ angular.module('WissenSystem')
 		$scope.finalizarEdicion = ()->
 
 			Restangular.one('preguntas/update').customPUT($scope.preguntaEdit).then((r)->
-				$scope.$parent.editando = false
+				$scope.$parent.editando = false # Creo que ya no sirve para nada
+				
+				# Actualizamos para que el cambio se vea reflejado sin recargar la página
+				for preg, indice in $scope.pg_preguntas
+					if preg.pg_id == r.pg_id
+						$scope.pg_preguntas.splice indice, 1, r
+
+				$scope.filtrarPreguntas()
 				toastr.success 'Cambios guardados con éxito'
 			, (r2)->
 				console.log('No se pudo guardar los cambios', r2)
@@ -32,7 +39,14 @@ angular.module('WissenSystem')
 
 
 		$scope.aplicarCambios = ()->
+
 			Restangular.one('preguntas/update').customPUT($scope.preguntaEdit).then((r)->
+				# Actualizamos para que el cambio se vea reflejado sin recargar la página
+				for preg, indice in $scope.pg_preguntas
+					if preg.pg_id == r.pg_id
+						$scope.pg_preguntas.splice indice, 1, r
+
+				$scope.filtrarPreguntas()
 				toastr.success 'Cambios guardados con éxito'
 			, (r2)->
 				console.log('No se pudo guardar los cambios', r2)

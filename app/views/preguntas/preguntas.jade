@@ -33,10 +33,13 @@
 				input.form-control.ancho-200(type="text" ng-model="preg_buscar" placeholder="{{ 'BUSCAR_PLACEHOLDER' | translate }}")
 
 			.panel-body(ng-show="evaluacion_id!='sin_asignar'")
-
-				.btn-group(style="margin-bottom: 20px;")
-					label.btn.btn-primary(ng-model="showOptions" uib-btn-checkbox) Ver opciones
-					label.btn.btn-primary(ng-model="showCorrects" uib-btn-checkbox) Revelar correctas
+				.row
+					.col-lg-12
+						.btn-group(style="margin-bottom: 20px;")
+							label.btn.btn-primary(ng-model="showOptions" uib-btn-checkbox) Ver opciones
+							label.btn.btn-primary(ng-model="showCorrects" uib-btn-checkbox) Revelar correctas
+							
+						button.btn.btn-default(ng-click="cambiarRutaImagenes()" style="margin-bottom: 20px;") Rutas
 				
 
 				
@@ -47,7 +50,7 @@
 					edit-contenido(ng-if="editandoContenido")
 
 
-				div(ng-repeat="pg_pregunta in pg_preguntas | filter:preg_buscar | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion:evaluacion_id " 
+				div(ng-repeat="pg_pregunta in pg_preguntas | filter:preg_buscar " 
 					ng-class-odd="'fondo-gris-odd'" style="position: relative;")
 					
 					

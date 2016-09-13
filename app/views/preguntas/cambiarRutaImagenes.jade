@@ -1,0 +1,16 @@
+.modal-header
+	h3.modal-title Cambiar ruta de imágenes en las preguntas.
+.modal-body
+	.row
+		.col-lg-12.col-xs-12
+			p Haga backup primero. Esta operación es delicada. Podría dañar no solo las rutas de las imágenes, sino las mimas preguntas.
+			h4 Ruta anterior:
+			input(type="text" ng-model="ruta_anterior")
+			h4 Ruta nueva:
+			input(type="text" ng-model="ruta_nueva")
+
+
+.modal-footer
+	button.btn.btn-labeled.btn-primary(ng-click="ok()") Cambiar
+		i.btn-label.fa.fa-times
+	button.btn.btn-yellow(ng-click="cancel()") Cancelar

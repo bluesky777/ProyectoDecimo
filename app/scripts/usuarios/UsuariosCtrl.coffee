@@ -1,7 +1,7 @@
 angular.module('WissenSystem')
 
-.controller('UsuariosCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 'uiGridConstants', '$uibModal', '$filter', 'App', 'AuthService' 
-	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr, uiGridConstants, $modal, $filter, App, AuthService) ->
+.controller('UsuariosCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 'uiGridConstants', '$uibModal', '$filter', '$location', '$anchorScroll', '$mdSidenav', 'MySocket', 'SocketData', 'App', 'AuthService' 
+	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr, uiGridConstants, $modal, $filter, $location, $anchorScroll, $mdSidenav, MySocket, SocketData, App, AuthService) ->
 
 		AuthService.verificar_acceso()
 
@@ -12,13 +12,21 @@ angular.module('WissenSystem')
 		$scope.currentUser = {
 			inscripciones: []
 		}
+
+		nivel 	= if localStorage.getItem('nivelSelected') then parseInt(localStorage.getItem('nivelSelected')) else ''
+		entidad = if localStorage.getItem('entidadSelected') then parseInt(localStorage.getItem('entidadSelected')) else ''
 		$scope.newUsu = {
 			sexo: 'M'
-			nivel: ""
+			nivel_id: nivel
 			inscripciones: []
 		}
 		$scope.editando = false
 		$scope.creando = false
+
+
+		console.log $scope.newUsu
+
+
 
 		$scope.comprobar_evento_actual = ()->
 			if $scope.evento_actual
@@ -126,6 +134,29 @@ angular.module('WissenSystem')
 				console.log 'No se creó usuario ', r2
 				$scope.guardando = false
 			)
+		
+
+		$scope.guardarNuevoYLogin = ()->
+			$scope.guardando = true
+
+			Restangular.one('usuarios/store').customPOST($scope.newUsu).then((r)->
+				toastr.success 'Usuario guardado con éxito.'
+				$scope.usuarios.push r
+				$scope.guardando = false
+				console.log 'Usuario creado', r
+				SocketData.clt_selected = usuario
+				$mdSidenav('sidenavSelectPC').toggle()
+				$location.hash('sidenavSelectPC');
+				$anchorScroll();
+			, (r2)->
+				toastr.warning 'No se creó el usuario', 'Problema'
+				console.log 'No se creó usuario ', r2
+				$scope.guardando = false
+			)
+
+		$scope.cambiaNivelNewUsu = ()->
+			console.log $scope.newUsu.nivel_id
+			localStorage.setItem 'nivelSelected', $scope.newUsu.nivel_id
 		
 
 		$scope.guardando_edicion = false

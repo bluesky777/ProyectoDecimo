@@ -1,5 +1,8 @@
 md-button.md-raised.md-primary(ng-click="creando=!creando" ng-show="!creando") Nuevo usuario
 
+sidenav-select-pc-dir#sidenavSelectPC
+
+
 .row(ng-show="creando")
 	.col-sm-12.col-md-12
 		
@@ -70,9 +73,9 @@ md-button.md-raised.md-primary(ng-click="creando=!creando" ng-show="!creando") N
 										small(ng-bind-html="' ' + entidad.nombre | highlight: $select.search")
 
 
-							md-select(ng-model="newUsu.nivel_id" placeholder="Niveles")
+							md-select(ng-model="newUsu.nivel_id" placeholder="Niveles" ng-change="cambiaNivelNewUsu()")
 								md-option(ng-value="nivel.nivel_king_id" ng-repeat="nivel in niveles_king | nivelesTraducidos:$parent.evento_actual.idioma_principal_id") Nivel {{nivel.nombre}}
-								md-option(value="") Todos
+								md-option(value="-1") Todos
 
 							md-content.alto-inscribir
 								md-list
@@ -87,6 +90,7 @@ md-button.md-raised.md-primary(ng-click="creando=!creando" ng-show="!creando") N
 
 
 					.clearfix.right
+						md-button.md-primary(type="button" ng-click="guardarNuevoYLogin()" ng-disabled="guardando") Guardar y enviar
 						md-button.md-primary(type="submit" ng-disabled="guardando") Guardar
 						md-button.md-default(type="button" ng-click="cancelarNuevo()") Cancelar
 

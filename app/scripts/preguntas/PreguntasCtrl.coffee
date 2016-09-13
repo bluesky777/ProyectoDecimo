@@ -2,8 +2,8 @@
 
 angular.module('WissenSystem')
 
-.controller('PreguntasCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 'preguntasServ', '$filter', 
-	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr, preguntasServ, $filter) ->
+.controller('PreguntasCtrl', ['$scope', 'App', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 'preguntasServ', '$filter', '$timeout', '$uibModal', 
+	($scope, App, $http, Restangular, $state, $cookies, $rootScope, toastr, preguntasServ, $filter, $timeout, $modal) ->
 
 		$scope.pg_preguntas = []
 		$scope.evalu_seleccionada = {id: -1}
@@ -21,6 +21,7 @@ angular.module('WissenSystem')
 		$scope.showCorrects = false
 		$scope.categoria 	= 0
 		$scope.evaluacion_id = 0
+		$scope.preguntas_evaluacion = []
 
 		$scope.categorias 	= []
 
@@ -85,12 +86,26 @@ angular.module('WissenSystem')
 			# Las preguntas
 			Restangular.all('preguntas').getList({categoria_id: $scope.categoria, idioma_id: $scope.idiomaPreg.selected}).then((r)->
 				$scope.pg_preguntas = r
+				$scope.pg_preguntas = $filter('pregsByCatsAndEvaluacion')($scope.pg_preguntas, $scope.categoria, $scope.preguntas_evaluacion, $scope.evaluacion_id)
 				$scope.inicializado = true
 			, (r2)->
 				console.log 'Pailas la promesa de las preguntas ', r2
 				$scope.inicializado = true
 			)
 
+
+		$scope.filtrarPreguntas = ()->
+			$scope.pg_preguntas	= $filter('pregsByCatsAndEvaluacion')($scope.pg_preguntas, $scope.categoria, $scope.preguntas_evaluacion, $scope.evaluacion_id)
+			
+
+		$scope.cambiarRutaImagenes = ()->
+			modalInstance = $modal.open({
+				templateUrl: App.views + 'preguntas/cambiarRutaImagenes.tpl.html'
+				controller: 'CambiarRutaImagenes'
+			})
+			modalInstance.result.then( (elem)->
+				console.log 'Rutas Cambiadas'
+			)
 
 
 		$scope.traerPreguntasYEvaluaciones = ()->
@@ -162,6 +177,37 @@ angular.module('WissenSystem')
 
 	]
 )
+
+
+
+.controller('CambiarRutaImagenes', ['$scope', '$uibModalInstance', 'Restangular', 'toastr', ($scope, $modalInstance, Restangular, toastr)->
+	
+	$scope.ruta_anterior 	= 'http://192.168.0.10'
+	$scope.ruta_nueva 		= 'http://' + localStorage.getItem('dominio')
+
+	$scope.ok = ()->
+
+		$scope.cambiando = true
+
+		datos = 
+			ruta_anterior: 	$scope.ruta_anterior
+			ruta_nueva: 	$scope.ruta_nueva
+
+		Restangular.one('perfiles/cambiar-ruta-imagenes').customPUT(datos).then((r)->
+			toastr.success 'Rutas cambiadas.'
+			$modalInstance.close(datos)
+		, (r2)->
+			toastr.warning 'No se pudo cambiar rutas.', 'Problema'
+			console.log 'Error cambiando rutas: ', r2
+			$scope.cambiando = false
+		)
+		
+
+	$scope.cancel = ()->
+		$modalInstance.dismiss('cancel')
+
+])
+
 
 
 

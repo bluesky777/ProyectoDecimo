@@ -68,7 +68,13 @@ angular.module('WissenSystem')
 						pregunta
 			})
 			modalInstance.result.then( (elem)->
-				$scope.pg_preguntas = $filter('filter')($scope.pg_preguntas, {id: "!" + elem.pg_id, tipo_pregunta: "!undefined" }, true)
+				frescas = []
+				for preg, indice in $scope.$parent.$parent.pg_preguntas
+					if preg.pg_id != elem.pg_id
+						frescas.push preg
+
+				$scope.$parent.$parent.pg_preguntas = frescas
+				$scope.$parent.$parent.filtrarPreguntas()
 			)
 
 

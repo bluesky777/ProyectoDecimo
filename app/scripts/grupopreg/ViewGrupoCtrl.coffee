@@ -5,16 +5,14 @@ angular.module('WissenSystem')
 		
 		$scope.creandoGrupoPreg = false
 
-		$scope.addNewPregunta = (contenido)->
+		$scope.addNewPregunta = (pg_pregunta)->
 
 			$scope.creandoGrupoPreg = true
 
-			Restangular.one('preguntas_agrupadas/store').customPOST({contenido_id: contenido.id}).then((r)->
+			Restangular.one('preguntas_agrupadas/store').customPOST({contenido_id: pg_pregunta.pg_traduc_id}).then((r)->
 				r.editando = true
 				$scope.creandoGrupoPreg = false
-				contenido.preguntas_agrupadas.push r
-				console.log 'Pregunta añadida: ', contenido
-
+				pg_pregunta.pregs_agrupadas.push r
 			(r2)->
 				console.log 'Rechazada la nueva ', r2
 				$scope.creandoGrupoPreg = false
@@ -82,8 +80,8 @@ angular.module('WissenSystem')
 			})
 			modalInstance.result.then( (elem)->
 				$scope.$emit 'pregAgrupEliminada', elem
-				console.log 'Resultado del modal: ', preg_agrup.id, $filter('filter')(contenido.preguntas_agrupadas, {id: '!' + preg_agrup.id})
-				contenido.preguntas_agrupadas = $filter('filter')(contenido.preguntas_agrupadas, {id: '!' + preg_agrup.id})
+				console.log 'Resultado del modal: ', preg_agrup.id, $filter('filter')(contenido.pregs_agrupadas, {id: '!' + preg_agrup.id}, true)
+				contenido.pregs_agrupadas = $filter('filter')(contenido.pregs_agrupadas, {id: '!' + preg_agrup.id}, true)
 			)
 
 

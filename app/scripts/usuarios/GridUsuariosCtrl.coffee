@@ -1,7 +1,7 @@
 angular.module('WissenSystem')
 
-.controller('GridUsuariosCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$interval', 'toastr', 'uiGridConstants', '$uibModal', '$filter', 'App' 
-	($scope, $http, Restangular, $state, $cookies, $interval, toastr, uiGridConstants, $modal, $filter, App) ->
+.controller('GridUsuariosCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$interval', 'toastr', 'uiGridConstants', '$uibModal', '$filter', '$location', '$anchorScroll', '$mdSidenav', 'App', 'MySocket', 'SocketData' 
+	($scope, $http, Restangular, $state, $cookies, $interval, toastr, uiGridConstants, $modal, $filter, $location, $anchorScroll, $mdSidenav, App, MySocket, SocketData) ->
 
 		$scope.currentusers = []
 		$scope.currentuser = {}
@@ -32,6 +32,13 @@ angular.module('WissenSystem')
 			modalInstance.result.then( (entidad_id)->
 				row.entidad_id = entidad_id
 			)
+
+
+		$scope.showSidenavSelectPC = (usuario)->
+			SocketData.clt_selected = usuario
+			$mdSidenav('sidenavSelectPC').toggle()
+			$location.hash('sidenavSelectPC');
+			$anchorScroll();
 
 
 		$scope.editando = false
@@ -96,6 +103,7 @@ angular.module('WissenSystem')
 		btGrid1 = '<a tooltip="Editar" tooltip-placement="left" class="btn btn-default btn-xs " ng-click="grid.appScope.editar(row.entity)"><i class="fa fa-edit "></i></a>'
 		btGrid2 = '<a tooltip="X Eliminar" tooltip-placement="right" class="btn btn-xs btn-danger" ng-click="grid.appScope.eliminar(row.entity)"><i class="fa fa-trash "></i></a> '
 		btGrid3 = '<a tooltip="Seleccionar" tooltip-placement="right" class="btn btn-xs btn-info" ng-click="grid.appScope.seleccionar_fila(row.entity)"><i class="fa fa-check "></i></a>'
+		btGridP = '<a tooltip="Abrir en equipo" tooltip-placement="right" class="btn btn-xs btn-info" ng-click="grid.appScope.showSidenavSelectPC(row.entity)"><i class="fa fa-desktop "></i></a>'
 		btGrid4 = '<a tooltip="{{row.entity.entidad_id | nombreEntidad:grid.appScope.$parent.entidades:false}}" tooltip-placement="left" class="btn btn-xs shiny btn-info" ng-click="grid.appScope.seleccionar_entidad(row.entity)" ng-bind="row.entity.entidad_id | nombreEntidad:grid.appScope.$parent.entidades:true"></a>'
 		btGrid5 = '<a tooltip="Modificar roles" tooltip-placement="left" class="btn btn-xs btn-info" ng-click="grid.appScope.verRoles(row.entity)"><span ng-repeat="rol in row.entity.roles">{{rol.display_name}}-</span></a>'
 
@@ -111,7 +119,7 @@ angular.module('WissenSystem')
 			enableSelectAll: true,
 			columnDefs: [
 				{ field: 'id', displayName:'Id', width: 60, enableCellEdit: false, enableColumnMenu: false}
-				{ name: 'edicion', displayName:'Edición', width: 100, enableSorting: false, enableFiltering: false, cellTemplate: btGrid1 + btGrid2 + btGrid3, enableCellEdit: false, enableColumnMenu: false}
+				{ name: 'edicion', displayName:'Edición', width: 130, enableSorting: false, enableFiltering: false, cellTemplate: btGrid1 + btGrid2 + btGrid3 + btGridP, enableCellEdit: false, enableColumnMenu: false}
 				{ field: 'nombres', filter: {condition: uiGridConstants.filter.CONTAINS}, enableHiding: false }
 				{ field: 'apellidos', filter: { condition: uiGridConstants.filter.CONTAINS }}
 				{ field: 'sexo', width: 60 }

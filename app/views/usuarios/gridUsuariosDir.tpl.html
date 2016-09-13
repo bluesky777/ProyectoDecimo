@@ -10,7 +10,7 @@
         <div id="grid1" ui-grid="gridOptions" ui-grid-selection ui-grid-edit ui-grid-resize-columns style="height: 600px" class="grid"></div>
       </div>
       <div class="col-md-3"><span ng-show="currentusers.length == 1">
-          <md-select ng-model="currentusers[0].nivel_id" placeholder="Niveles">
+          <md-select ng-model="currentusers[0].llk" placeholder="Niveles">
             <md-option ng-value="nivel.nivel_id" ng-repeat="nivel in nivelesking | nivelesTraducidos:idioma">{{nivel.nombre}}</md-option>
             <md-option value="">Todos</md-option>
           </md-select></span>

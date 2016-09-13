@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.0-rc4-master-f9738f5
+ * v1.1.1
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -187,7 +187,8 @@ function MdTabLabel () {
 }
 
 
-angular.module('material.components.tabs')
+
+MdTabScroll.$inject = ["$parse"];angular.module('material.components.tabs')
     .directive('mdTabScroll', MdTabScroll);
 
 function MdTabScroll ($parse) {
@@ -203,9 +204,9 @@ function MdTabScroll ($parse) {
     }
   }
 }
-MdTabScroll.$inject = ["$parse"];
 
-angular
+
+MdTabsController.$inject = ["$scope", "$element", "$window", "$mdConstant", "$mdTabInkRipple", "$mdUtil", "$animateCss", "$attrs", "$compile", "$mdTheming"];angular
     .module('material.components.tabs')
     .controller('MdTabsController', MdTabsController);
 
@@ -540,7 +541,17 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
       tab = elements.tabs[ i ];
       if (tab.offsetLeft + tab.offsetWidth > totalWidth) break;
     }
-    ctrl.offsetLeft = fixOffset(tab.offsetLeft);
+    
+    if (viewportWidth > tab.offsetWidth) {
+      //Canvas width *greater* than tab width: usual positioning
+      ctrl.offsetLeft = fixOffset(tab.offsetLeft);
+    } else {
+      /**
+       * Canvas width *smaller* than tab width: positioning at the *end* of current tab to let 
+       * pagination "for loop" to proceed correctly on next tab when nextPage() is called again
+       */
+      ctrl.offsetLeft = fixOffset(tab.offsetLeft + (tab.offsetWidth - viewportWidth + 1));
+    }
   }
 
   /**
@@ -553,7 +564,17 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
       tab = elements.tabs[ i ];
       if (tab.offsetLeft + tab.offsetWidth >= ctrl.offsetLeft) break;
     }
-    ctrl.offsetLeft = fixOffset(tab.offsetLeft + tab.offsetWidth - elements.canvas.clientWidth);
+    
+    if (elements.canvas.clientWidth > tab.offsetWidth) {
+      //Canvas width *greater* than tab width: usual positioning
+      ctrl.offsetLeft = fixOffset(tab.offsetLeft + tab.offsetWidth - elements.canvas.clientWidth);
+    } else {
+      /**
+       * Canvas width *smaller* than tab width: positioning at the *beginning* of current tab to let 
+       * pagination "for loop" to break correctly on previous tab when previousPage() is called again
+       */
+      ctrl.offsetLeft = fixOffset(tab.offsetLeft);  
+    }
   }
 
   /**
@@ -712,7 +733,11 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   function shouldPaginate () {
     if (ctrl.noPagination || !loaded) return false;
     var canvasWidth = $element.prop('clientWidth');
-    angular.forEach(getElements().dummies, function (tab) { canvasWidth -= tab.offsetWidth; });
+
+    angular.forEach(getElements().dummies, function (tab) {
+      canvasWidth -= tab.offsetWidth;
+    });
+
     return canvasWidth < 0;
   }
 
@@ -777,17 +802,22 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
   }
 
   /**
+   * Calculates the width of the pagination wrapper by summing the widths of the dummy tabs.
    * @returns {number}
    */
   function calcPagingWidth () {
-    var width = 1;
+    return calcTabsWidth(getElements().dummies);
+  }
 
-    angular.forEach(getElements().dummies, function (element) {
+  function calcTabsWidth(tabs) {
+    var width = 0;
+
+    angular.forEach(tabs, function (tab) {
       //-- Uses the larger value between `getBoundingClientRect().width` and `offsetWidth`.  This
       //   prevents `offsetWidth` value from being rounded down and causing wrapping issues, but
       //   also handles scenarios where `getBoundingClientRect()` is inaccurate (ie. tabs inside
       //   of a dialog)
-      width += Math.max(element.offsetWidth, element.getBoundingClientRect().width);
+      width += Math.max(tab.offsetWidth, tab.getBoundingClientRect().width);
     });
 
     return Math.ceil(width);
@@ -953,21 +983,25 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
       angular.element(elements.inkBar).css({ left: 'auto', right: 'auto' });
       return;
     }
+
     if (!ctrl.tabs.length) return queue.push(ctrl.updateInkBarStyles);
     // if the element is not visible, we will not be able to calculate sizes until it is
     // we should treat that as a resize event rather than just updating the ink bar
     if (!$element.prop('offsetParent')) return handleResizeWhenVisible();
+
     var index      = ctrl.selectedIndex,
         totalWidth = elements.paging.offsetWidth,
         tab        = elements.tabs[ index ],
         left       = tab.offsetLeft,
-        right      = totalWidth - left - tab.offsetWidth,
-        tabWidth;
+        right      = totalWidth - left - tab.offsetWidth;
+
     if (ctrl.shouldCenterTabs) {
-      tabWidth = Array.prototype.slice.call(elements.tabs).reduce(function (value, element) {
-        return value + element.offsetWidth;
-      }, 0);
-      if (totalWidth > tabWidth) $mdUtil.nextTick(updateInkBarStyles, false);
+      // We need to use the same calculate process as in the pagination wrapper, to avoid rounding deviations.
+      var tabWidth = calcTabsWidth(elements.tabs);
+
+      if (totalWidth > tabWidth) {
+        $mdUtil.nextTick(updateInkBarStyles, false);
+      }
     }
     updateInkBarClassName();
     angular.element(elements.inkBar).css({ left: left + 'px', right: right + 'px' });
@@ -1014,7 +1048,6 @@ function MdTabsController ($scope, $element, $window, $mdConstant, $mdTabInkRipp
     $mdTabInkRipple.attach(scope, element, options);
   }
 }
-MdTabsController.$inject = ["$scope", "$element", "$window", "$mdConstant", "$mdTabInkRipple", "$mdUtil", "$animateCss", "$attrs", "$compile", "$mdTheming"];
 
 /**
  * @ngdoc directive
@@ -1024,9 +1057,10 @@ MdTabsController.$inject = ["$scope", "$element", "$window", "$mdConstant", "$md
  * @restrict E
  *
  * @description
- * The `<md-tabs>` directive serves as the container for 1..n `<md-tab>` child directives to produces a Tabs components.
- * In turn, the nested `<md-tab>` directive is used to specify a tab label for the **header button** and a [optional] tab view
- * content that will be associated with each tab button.
+ * The `<md-tabs>` directive serves as the container for 1..n `<md-tab>` child directives to
+ * produces a Tabs components. In turn, the nested `<md-tab>` directive is used to specify a tab
+ * label for the **header button** and a [optional] tab view content that will be associated with
+ * each tab button.
  *
  * Below is the markup for its simplest usage:
  *
@@ -1044,9 +1078,18 @@ MdTabsController.$inject = ["$scope", "$element", "$window", "$mdConstant", "$md
  *  2. Tabs with internal view content
  *  3. Tabs with external view content
  *
- * **Tab-only** support is useful when tab buttons are used for custom navigation regardless of any other components, content, or views.
- * **Tabs with internal views** are the traditional usages where each tab has associated view content and the view switching is managed internally by the Tabs component.
- * **Tabs with external view content** is often useful when content associated with each tab is independently managed and data-binding notifications announce tab selection changes.
+ * **Tab-only** support is useful when tab buttons are used for custom navigation regardless of any
+ * other components, content, or views.
+ *
+ * <i><b>Note:</b> If you are using the Tabs component for page-level navigation, please take a look
+ * at the <a ng-href="./api/directive/mdNavBar">NavBar component</a> instead as it can handle this
+ * case a bit more natively.</i>
+ *
+ * **Tabs with internal views** are the traditional usages where each tab has associated view
+ * content and the view switching is managed internally by the Tabs component.
+ *
+ * **Tabs with external view content** is often useful when content associated with each tab is
+ * independently managed and data-binding notifications announce tab selection changes.
  *
  * Additional features also include:
  *
@@ -1104,11 +1147,12 @@ MdTabsController.$inject = ["$scope", "$element", "$window", "$mdConstant", "$md
  * </hljs>
  *
  */
+MdTabs.$inject = ["$$mdSvgRegistry"];
 angular
     .module('material.components.tabs')
     .directive('mdTabs', MdTabs);
 
-function MdTabs () {
+function MdTabs ($$mdSvgRegistry) {
   return {
     scope:            {
       selectedIndex: '=?mdSelected'
@@ -1126,7 +1170,7 @@ function MdTabs () {
               'ng-class="{ \'md-disabled\': !$mdTabsCtrl.canPageBack() }" ' +
               'ng-if="$mdTabsCtrl.shouldPaginate" ' +
               'ng-click="$mdTabsCtrl.previousPage()"> ' +
-            '<md-icon md-svg-icon="md-tabs-arrow"></md-icon> ' +
+            '<md-icon md-svg-src="'+ $$mdSvgRegistry.mdTabsArrow +'"></md-icon> ' +
           '</md-prev-button> ' +
           '<md-next-button ' +
               'tabindex="-1" ' +
@@ -1136,7 +1180,7 @@ function MdTabs () {
               'ng-class="{ \'md-disabled\': !$mdTabsCtrl.canPageForward() }" ' +
               'ng-if="$mdTabsCtrl.shouldPaginate" ' +
               'ng-click="$mdTabsCtrl.nextPage()"> ' +
-            '<md-icon md-svg-icon="md-tabs-arrow"></md-icon> ' +
+            '<md-icon md-svg-src="'+ $$mdSvgRegistry.mdTabsArrow +'"></md-icon> ' +
           '</md-next-button> ' +
           '<md-tabs-canvas ' +
               'tabindex="{{ $mdTabsCtrl.hasFocus ? -1 : 0 }}" ' +
@@ -1172,7 +1216,7 @@ function MdTabs () {
                   'md-scope="::tab.parent"></md-tab-item> ' +
               '<md-ink-bar></md-ink-bar> ' +
             '</md-pagination-wrapper> ' +
-            '<md-tabs-dummy-wrapper class="_md-visually-hidden md-dummy-wrapper"> ' +
+            '<md-tabs-dummy-wrapper class="md-visually-hidden md-dummy-wrapper"> ' +
               '<md-dummy-tab ' +
                   'class="md-tab" ' +
                   'tabindex="-1" ' +
@@ -1220,7 +1264,8 @@ function MdTabs () {
   };
 }
 
-angular
+
+MdTabsDummyWrapper.$inject = ["$mdUtil", "$window"];angular
   .module('material.components.tabs')
   .directive('mdTabsDummyWrapper', MdTabsDummyWrapper);
 
@@ -1228,37 +1273,56 @@ angular
  * @private
  *
  * @param $mdUtil
+ * @param $window
  * @returns {{require: string, link: link}}
  * @constructor
- * 
+ *
  * ngInject
  */
-function MdTabsDummyWrapper ($mdUtil) {
+function MdTabsDummyWrapper ($mdUtil, $window) {
   return {
     require: '^?mdTabs',
     link:    function link (scope, element, attr, ctrl) {
       if (!ctrl) return;
 
-      var observer = new MutationObserver(function(mutations) {
+      var observer;
+      var disconnect;
+
+      var mutationCallback = function() {
         ctrl.updatePagination();
         ctrl.updateInkBarStyles();
-      });
-      var config = { childList: true, subtree: true };
+      };
 
-      observer.observe(element[0], config);
+      if('MutationObserver' in $window) {
+        var config = {
+          childList: true,
+          subtree: true,
+          // Per https://bugzilla.mozilla.org/show_bug.cgi?id=1138368, browsers will not fire
+          // the childList mutation, once a <span> element's innerText changes.
+          // The characterData of the <span> element will change.
+          characterData: true
+        };
+
+        observer = new MutationObserver(mutationCallback);
+        observer.observe(element[0], config);
+        disconnect = observer.disconnect.bind(observer);
+      } else {
+        var debounced = $mdUtil.debounce(mutationCallback, 15, null, false);
+        
+        element.on('DOMSubtreeModified', debounced);
+        disconnect = element.off.bind(element, 'DOMSubtreeModified', debounced);
+      }
 
       // Disconnect the observer
       scope.$on('$destroy', function() {
-        if (observer) {
-          observer.disconnect();
-        }
+        disconnect();
       });
     }
   };
 }
-MdTabsDummyWrapper.$inject = ["$mdUtil"];
 
-angular
+
+MdTabsTemplate.$inject = ["$compile", "$mdUtil"];angular
     .module('material.components.tabs')
     .directive('mdTabsTemplate', MdTabsTemplate);
 
@@ -1297,6 +1361,5 @@ function MdTabsTemplate ($compile, $mdUtil) {
     }
   }
 }
-MdTabsTemplate.$inject = ["$compile", "$mdUtil"];
 
 })(window, window.angular);

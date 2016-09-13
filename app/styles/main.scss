@@ -1102,3 +1102,38 @@ md-select.categoria md-select-value{
 }
 
 
+
+header.fotoselectpc{
+  position: relative;
+  height: 50px;
+  margin-right: 14px;
+  display: block;
+  border-left: 2px solid #fb6e52;
+  width: 60px;
+  overflow: hidden;
+  &:hover .img-perfil{
+    left: -120px; 
+  }
+  .img-entidad, .img-perfil{
+    width: 100%; /* or any custom size */
+    height: 100%; 
+    object-fit: cover;
+    transition: 0.2s;
+    position: absolute;
+    left: 0px;
+  }
+  .img-entidad{
+    z-index: 10;
+
+  }
+  .img-perfil{
+    z-index: 20;
+  }
+
+}
+.itemselectpc-busy{
+  border-bottom: 1px solid #ccc; border-bottom-style: dashed; background-color: #f8f8ff; 
+  min-height: 50px!important;
+}
+
+

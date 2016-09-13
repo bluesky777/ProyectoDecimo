@@ -345,6 +345,7 @@ angular.module('WissenSystem')
 	@clientes		= []
 	usuarios_all	= []
 	mensajes		= []
+	@clt_selected	= {}
 	token_auth		= ''
 	config			= { pregunta: {}, reveal_answer: false, show_logo_entidad_partici: false }
 
@@ -389,7 +390,6 @@ angular.module('WissenSystem')
 
 
 
-
 	methods = {
 		clientes: 					@clientes,
 		usuarios_all: 				usuarios_all,
@@ -401,6 +401,7 @@ angular.module('WissenSystem')
 		actualizar_clt:				actualizar_clt
 		config:						config
 		set_waiting:				set_waiting
+		clt_selected:				@clt_selected
 	}
 
 	return methods

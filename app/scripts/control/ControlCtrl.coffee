@@ -48,7 +48,7 @@ angular.module('WissenSystem')
 		$scope.clt_to_edit = cliente.usuario
 		$mdSidenav('sidenavEditusu').toggle()
 			.then( ()->
-				console.log("toggle  is done");
+				console.log("toggle is done");
 			)
 
 	$scope.showSidenavSelectUsu = (cliente)->

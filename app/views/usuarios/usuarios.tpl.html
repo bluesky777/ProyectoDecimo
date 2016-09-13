@@ -1,5 +1,6 @@
 
 <md-button ng-click="creando=!creando" ng-show="!creando" class="md-raised md-primary">Nuevo usuario</md-button>
+<sidenav-select-pc-dir id="sidenavSelectPC"></sidenav-select-pc-dir>
 <div ng-show="creando" class="row">
   <div class="col-sm-12 col-md-12">
     <div class="panel panel-default panel-hovered panel-stacked mb20">
@@ -71,9 +72,9 @@
                   <ui-select-choices repeat="entidad in entidades"><img ng-src="{{imagesPath + entidad.logo_nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + entidad.nombre | highlight: $select.search"></small></ui-select-choices>
                 </ui-select>
               </div>
-              <md-select ng-model="newUsu.nivel_id" placeholder="Niveles">
+              <md-select ng-model="newUsu.nivel_id" placeholder="Niveles" ng-change="cambiaNivelNewUsu()">
                 <md-option ng-value="nivel.nivel_king_id" ng-repeat="nivel in niveles_king | nivelesTraducidos:$parent.evento_actual.idioma_principal_id">Nivel {{nivel.nombre}}</md-option>
-                <md-option value="">Todos</md-option>
+                <md-option value="-1">Todos</md-option>
               </md-select>
               <md-content class="alto-inscribir">
                 <md-list>
@@ -87,6 +88,7 @@
             </div>
           </div>
           <div class="clearfix right">
+            <md-button type="button" ng-click="guardarNuevoYLogin()" ng-disabled="guardando" class="md-primary">Guardar y enviar</md-button>
             <md-button type="submit" ng-disabled="guardando" class="md-primary">Guardar</md-button>
             <md-button type="button" ng-click="cancelarNuevo()" class="md-default">Cancelar</md-button>
           </div>
