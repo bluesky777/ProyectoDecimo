@@ -2,6 +2,7 @@ a.btn-tag.btn-tag-info(md-ink-ripple ng-if="!pregunta_traduc.is_preg")
 	| Pregunta en {{pregunta_traduc.idioma}}
 
 .definicion-preg
+	button.btn.btn-primary.fa.fa-image.btn-xs(type="button" ng-click="misImagenes()" style="float: right;")  Imágenes...
 	div(text-angular ta-toolbar-group-class="btn-group btn-group-xs" ng-model="pregunta_traduc.enunciado")
 
 

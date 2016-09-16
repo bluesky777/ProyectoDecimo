@@ -10,8 +10,8 @@
       <div ng-model="imgFiles" ngf-select="upload($files)" ngf-multiple="true" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="20MB" class="col-md-5 mb15">
         <div class="dropzone">
           <div class="drop-info"><i class="fa fa-upload"></i>
-            <h3 class="mt0 text-bold">DropZone</h3>
-            <p>Arrastre imágenes aquí para subirlas <strong class="text-muted">(o de click)</strong></p>
+            <h3 class="mt0 text-bold">Click aquí</h3>
+            <p>para subir imágenes</p>
           </div>
         </div>
         <input type="file" multiple="multiple" style="visibility: hidden; position: absolute;">
@@ -19,7 +19,7 @@
       <div class="col-md-7">
         <div ng-show="imgFiles.length==0" class="mb20 alert alert-info"><strong>No has seleccionado ningún archivo</strong></div>
         <div ng-show="errorMsg!='' &amp;&amp; errorMsg!=null" class="mb20 alert alert-info"><strong>{{errorMsg}}</strong></div>
-        <table ng-hide="imgFiles.length==0" style="background: #fff" class="table table-bordered table-condensed">
+        <table ng-hide="imgFiles.length==0" style="background: #fff" class="table table-bordered table-condensed table-responsive table-hover">
           <thead>
             <tr>
               <th>Imagen</th>
@@ -47,8 +47,8 @@
   </div>
 </div>
 <div class="row hidden-print">
-  <div class="col-lg-12">
-    <table style="background: #fff" class="table table-bordered table-condensed">
+  <div style="max-height: 700px; overflow-y: scroll;" class="col-lg-12">
+    <table style="background: #fff" class="table table-bordered table-condensed table-responsive table-hover">
       <thead>
         <tr>
           <th class="col-sm-2"> </th>
@@ -58,11 +58,21 @@
       </thead>
       <tbody>
         <tr ng-repeat="file in imagenes">
-          <td><span ng-click="borrarImagen(file)" role="button" tabindex="0" class="btn btn-danger fa fa-times">
-              <md-tooltip>Eliminar imagen</md-tooltip></span><span ng-click="asignToUser($event, file)" role="button" tabindex="0" class="btn btn-info fa fa-angle-double-right"> Asignar
-              <md-tooltip>Asinar imagen a usuario</md-tooltip></span></td>
-          <td> <img ng-src="{{perfilPath + file.nombre}}" style="width:60px;height:60px" class="imagen-thumb"></td>
-          <td class="text-bold">{{file.nombre}}</td>
+          <td style="padding: 0px; text-align: center;"> 
+            <div class="btn-group">
+              <button ng-click="borrarImagen(file)" class="btn btn-xs btn-danger fa fa-times"> 
+                <md-tooltip>Eliminar imagen</md-tooltip>
+              </button>
+              <button ng-click="asignToUser($event, file)" class="btn btn-xs btn-info fa fa-angle-double-right"> Asignar
+                <md-tooltip>Asinar imagen a usuario</md-tooltip>
+              </button>
+              <button ngclipboard data-clipboard-text="{{perfilPath + file.nombre}}" ngclipboard-success="onCopySuccess(e);" ngclipboard-error="onCopyError(e);" class="btn btn-xs btn-info fa fa-copy"> 
+                <md-tooltip>Copiar ruta absoluta de la imagen</md-tooltip>
+              </button>
+            </div>
+          </td>
+          <td style="padding: 0px"> <img ng-src="{{perfilPath + file.nombre}}" style="width:40px;height:40px" class="imagen-thumb"></td>
+          <td style="padding: 0px" class="text-bold"> {{file.nombre}}</td>
         </tr>
       </tbody>
     </table>
@@ -79,7 +89,7 @@
               <div class="form-group">
                 <label>Imagen de usuario</label>
                 <ui-select ng-model="dato.imgUsuario" on-select="imagenSelect($item, $model)" theme="select2" style="min-width: 200px;">
-                  <ui-select-match placeholder="Imagen usuario"> <img ng-src="{{perfilPath + $select.selected.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
+                  <ui-select-match placeholder="Imagen usuario"> <img ng-src="{{imagesPath + $select.selected.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
                   <ui-select-choices repeat="imagen in imagenes | filter: {nombre: $select.search}"><img ng-src="{{perfilPath + imagen.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + imagen.nombre | highlight: $select.search"></small></ui-select-choices>
                 </ui-select>
                 <input type="submit" ng-submit="pedirCambioUsuario(dato.imgUsuario)" value="Cambiar perfil" class="btn btn-primary shiny">

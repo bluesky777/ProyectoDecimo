@@ -1,5 +1,6 @@
 <a md-ink-ripple ng-if="!pregunta_traduc.is_preg" class="btn-tag btn-tag-info">Pregunta en {{pregunta_traduc.idioma}}</a>
 <div class="definicion-preg">
+  <button type="button" ng-click="misImagenes()" style="float: right;" class="btn btn-primary fa fa-image btn-xs"> Imágenes...</button>
   <div text-angular ta-toolbar-group-class="btn-group btn-group-xs" ng-model="pregunta_traduc.enunciado"></div>
   <div layout layout-sm="column">
     <md-input-container flex class="txtayuda">

@@ -185,6 +185,13 @@ angular.module('WissenSystem')
 	$scope.ruta_anterior 	= 'http://192.168.0.10'
 	$scope.ruta_nueva 		= 'http://' + localStorage.getItem('dominio')
 
+
+	Restangular.all('preguntas/con-imagenes').getList().then((r)->
+		$scope.preguntas = r
+	, (r2)->
+		toastr.warning 'No se trajeron las preguntas con imágenes.', 'Problema'
+	)
+
 	$scope.ok = ()->
 
 		$scope.cambiando = true

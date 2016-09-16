@@ -1,7 +1,7 @@
 angular.module('WissenSystem')
 
-.controller('EditPregTraducDirCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', '$filter', 
-	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr, $filter) ->
+.controller('EditPregTraducDirCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', '$filter', '$uibModal', 'App', 
+	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr, $filter, $modal, App) ->
 
 
 		txtNewOpcion = 'Agregar nueva opción'
@@ -132,6 +132,22 @@ angular.module('WissenSystem')
 								opcion.is_correct = 0
 							else
 								correctas = correctas + 1
+
+
+		$scope.misImagenes = ()->
+			
+			modalInstance = $modal.open({
+				templateUrl: App.views + 'preguntas/misImagenes.tpl.html'
+				controller: 'MisImagenes'
+				size: 'lg',
+				resolve: 
+					resolved_user: ()->
+						$scope.USER
+			})
+			modalInstance.result.then( (elem)->
+				console.log 'Fin mis imágenes'
+			)
+
 	]
 )
 

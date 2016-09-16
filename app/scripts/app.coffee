@@ -27,6 +27,7 @@ angular.module('WissenSystem', [
   'qrScanner'
   'ja.qr'
   'ngWebSocket'
+  'ngclipboard'
 ])
 
 #- Valores que usaremos para nuestro proyecto

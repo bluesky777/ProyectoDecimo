@@ -9,6 +9,12 @@
 			h4 Ruta nueva:
 			input(type="text" ng-model="ruta_nueva")
 
+			br
+			h4 Preguntas con la etiqueta img:
+			div(style="max-height	:300px; overflow:scroll")
+				textarea.form-control(ng-repeat="preg in preguntas" 
+					ng-model="preg.enunciado")
+
 
 .modal-footer
 	button.btn.btn-labeled.btn-primary(ng-click="ok()") Cambiar

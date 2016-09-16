@@ -123,8 +123,9 @@ angular.module('WissenSystem')
 
 
 	$rootScope.$on 'nombre_punto_cambiado', (ev, datos)->
-		localStorage.setItem('nombre_punto', datos.nombre)
-		$scope.in_evento_actual.ip = datos.nombre
+		if datos.resourceId == Perfil.getResourceId()
+			localStorage.setItem('nombre_punto', datos.nombre)
+			$scope.in_evento_actual.ip = datos.nombre
 
 
 

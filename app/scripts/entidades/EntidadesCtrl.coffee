@@ -35,9 +35,9 @@ angular.module('WissenSystem')
 				
 				if newValue != oldValue
 					Restangular.one('entidades/update', rowEntity.id).customPUT(rowEntity).then((r)->
-						$scope.toastr.success 'Entidad actualizada con éxito', 'Actualizado'
+						toastr.success 'Entidad actualizada con éxito', 'Actualizado'
 					, (r2)->
-						$scope.toastr.error 'Cambio no guardado', 'Error'
+						toastr.error 'Cambio no guardado', 'Error'
 						console.log 'Falló al intentar guardar: ', r2
 					)
 				$scope.$apply()

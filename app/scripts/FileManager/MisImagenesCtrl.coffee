@@ -1,8 +1,7 @@
-'use strict'
+angular.module('WissenSystem')
 
-angular.module("WissenSystem")
 
-.controller('FileManagerCtrl', ['$scope', 'Upload', '$timeout', '$filter', 'App', 'Restangular', 'Perfil', '$uibModal', '$mdDialog', 'resolved_user', 'toastr', 'AuthService', ($scope, $upload, $timeout, $filter, App, Restangular, Perfil, $modal, $mdDialog, resolved_user, toastr, AuthService)->
+.controller('MisImagenes', ['$scope', '$uibModalInstance', 'Upload', '$timeout', '$filter', 'App', 'Restangular', 'Perfil', '$uibModal', '$mdDialog', 'resolved_user', 'toastr', 'AuthService', ($scope, $modalInstance, $upload, $timeout, $filter, App, Restangular, Perfil, $modal, $mdDialog, resolved_user, toastr, AuthService)->
 	
 	$scope.USER = resolved_user
 	$scope.subir_intacta = {intacta: true}
@@ -16,13 +15,13 @@ angular.module("WissenSystem")
 				nombre:	$scope.USER.imagen_nombre 
 
 	fixDato()
-
 	$scope.imagesPath = App.images
 	$scope.perfilPath = App.images + 'perfil/'
 	$scope.imgFiles = []
 	$scope.errorMsg = ''
 	$scope.fileReaderSupported = window.FileReader != null && (window.FileAPI == null || FileAPI.html5 != false);
 	$scope.dato.usuarioElegido = []
+
 
 	Restangular.one('imagenes/usuarios').customGET().then((r)->
 		$scope.imagenes = r.imagenes
@@ -108,8 +107,7 @@ angular.module("WissenSystem")
 
 
 	$scope.asignToUser = (ev, file)->
-
-		modalInstance = $modal.open({
+		modalInstance2 = $modal.open({
 			controller: 'AsignToUserCtrl',
 			templateUrl: App.views + 'fileManager/asignToUser.tpl.html',
 			resolve: {
@@ -118,18 +116,12 @@ angular.module("WissenSystem")
 				perfilPath: ()->
 					$scope.perfilPath
 			}
+
 		})
-		modalInstance.result.then( (usuar)->
+		modalInstance2.result.then( (usuar)->
 			$scope.cambiarFotoUnUsuario(usuar, file)
 		)
-
-
-
-	$scope.imagenSelect = (item, model)->
-		#console.log 'imagenSelect: ', item, model
-
-	$scope.fotoSelect = (item, model)->
-		#console.log 'imagenSelect: ', item, model
+		
 
 
 	$scope.rotarImagen = (imagen)->
@@ -186,8 +178,10 @@ angular.module("WissenSystem")
 
 
 
+	$scope.ok = ()->
+		$modalInstance.close('Cerrando...')
+		
 
-	return
 ])
 
 

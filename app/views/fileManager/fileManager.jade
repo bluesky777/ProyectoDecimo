@@ -13,9 +13,8 @@
 				.dropzone
 					.drop-info
 						i.fa.fa-upload
-						h3.mt0.text-bold DropZone
-						p Arrastre imágenes aquí para subirlas 
-							strong.text-muted (o de click)
+						h3.mt0.text-bold Click aquí
+						p para subir imágenes
 
 				input(type="file" multiple="multiple" style="visibility: hidden; position: absolute;")
 
@@ -26,7 +25,7 @@
 					strong {{errorMsg}}
 
 
-				table.table.table-bordered.table-condensed(ng-hide="imgFiles.length==0" style="background: #fff")
+				table.table.table-bordered.table-condensed.table-responsive.table-hover(ng-hide="imgFiles.length==0" style="background: #fff")
 					thead
 						tr
 							th Imagen
@@ -50,8 +49,8 @@
 							
 				
 .row.hidden-print
-	.col-lg-12
-		table.table.table-bordered.table-condensed(style="background: #fff")
+	.col-lg-12(style="max-height: 700px; overflow-y: scroll;")
+		table.table.table-bordered.table-condensed.table-responsive.table-hover(style="background: #fff")
 			thead
 				tr
 					th.col-sm-2 
@@ -59,14 +58,19 @@
 					th Nombre
 			tbody
 				tr(ng-repeat="file in imagenes")
-					td
-						span.btn.btn-danger.fa.fa-times(ng-click="borrarImagen(file)" role="button" tabindex="0")
-							md-tooltip Eliminar imagen
-						span.btn.btn-info.fa.fa-angle-double-right(ng-click="asignToUser($event, file)" role="button" tabindex="0")  Asignar
-							md-tooltip Asinar imagen a usuario
-					td 
-						img.imagen-thumb(ng-src="{{perfilPath + file.nombre}}" style="width:60px;height:60px")
-					td.text-bold {{file.nombre}}
+					td(style="padding: 0px; text-align: center;") 
+						.btn-group
+							button.btn.btn-xs.btn-danger.fa.fa-times(ng-click="borrarImagen(file)") 
+								md-tooltip Eliminar imagen
+							button.btn.btn-xs.btn-info.fa.fa-angle-double-right(ng-click="asignToUser($event, file)")  Asignar
+								md-tooltip Asinar imagen a usuario
+							button.btn.btn-xs.btn-info.fa.fa-copy(ngclipboard data-clipboard-text="{{perfilPath + file.nombre}}" 
+								ngclipboard-success="onCopySuccess(e);" ngclipboard-error="onCopyError(e);" ) 
+								md-tooltip Copiar ruta absoluta de la imagen
+							
+					td(style="padding: 0px") 
+						img.imagen-thumb(ng-src="{{perfilPath + file.nombre}}" style="width:40px;height:40px")
+					td.text-bold(style="padding: 0px")  {{file.nombre}}
 					
 					
 
@@ -86,7 +90,7 @@
 								label Imagen de usuario
 								ui-select(ng-model="dato.imgUsuario" on-select="imagenSelect($item, $model)" theme="select2" style="min-width: 200px;")
 									ui-select-match(placeholder="Imagen usuario") 
-										img(ng-src="{{perfilPath + $select.selected.nombre}}" style="width:25px; height:25px;")
+										img(ng-src="{{imagesPath + $select.selected.nombre}}" style="width:25px; height:25px;")
 										small(ng-bind-html="' ' + $select.selected.nombre")
 									ui-select-choices(repeat="imagen in imagenes | filter: {nombre: $select.search}")
 										img(ng-src="{{perfilPath + imagen.nombre}}" style="width:25px; height:25px;")

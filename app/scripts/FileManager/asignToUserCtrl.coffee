@@ -2,15 +2,16 @@
 
 angular.module("WissenSystem")
 
-.controller('AsignToUserCtrl', ['$scope', '$mdDialog', 'toastr', 'usuarios', 'perfilPath', ($scope, $mdDialog, toastr, usuarios, perfilPath)->
+.controller('AsignToUserCtrl', ['$scope', '$uibModalInstance', 'toastr', 'usuarios', 'perfilPath', 'App', ($scope, $uibModalInstance, toastr, usuarios, perfilPath, App)->
 	$scope.usuarios = usuarios
+	$scope.imagesPath = App.images
 	$scope.perfilPath = perfilPath
 
 	$scope.asignar = (usu)->
-		$mdDialog.hide(usu)
+		$uibModalInstance.close(usu)
 
 	$scope.cancelar = ()->
-		$mdDialog.hide()
+		$uibModalInstance.dismiss('cancel')
 
 	return
 

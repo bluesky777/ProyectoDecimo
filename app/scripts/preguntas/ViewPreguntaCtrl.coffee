@@ -110,12 +110,14 @@ angular.module('WissenSystem')
 	$scope.asignando = false
 	$scope.selected = false
 
+	$scope.selected = evaluaciones[evaluaciones.length - 1].id
+
 	$scope.ok = ()->
 
 		$scope.asignando = true
 
 		datos = 
-			pregunta_id: pregunta.id
+			pregunta_id: pregunta.pg_id
 			evaluacion_id: $scope.selected
 
 		Restangular.all('pregunta_evaluacion/asignar-pregunta').customPUT(datos).then((r)->
@@ -147,13 +149,15 @@ angular.module('WissenSystem')
 	$scope.cambiando = false
 	$scope.categoria = false
 
+	$scope.categoria = categorias[categorias.length - 1].id
+
 
 	$scope.ok = ()->
 
 		$scope.cambiando = true
 
 		datos = 
-			pregunta_id: pregunta.id
+			pregunta_id: pregunta.pg_id
 			categoria_id: $scope.categoria
 
 		Restangular.all('preguntas/cambiar-categoria').customPUT(datos).then((r)->

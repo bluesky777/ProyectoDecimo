@@ -62,6 +62,7 @@ angular.module('WissenSystem')
 
 			when "take_clts"
 				SocketData.clientes = message.clts
+				SocketData.config.info_evento = message.info_evento
 				
 			when "got_your_qr"
 				if message.seleccionar
@@ -94,7 +95,7 @@ angular.module('WissenSystem')
 			when "nombre_punto_cambiado"
 				client = SocketData.cliente message.resourceId
 				client.nombre_punto = $filter('clearhtml')(message.nombre)
-				$rootScope.$emit 'nombre_punto_cambiado', {nombre: client.nombre_punto }
+				$rootScope.$emit 'nombre_punto_cambiado', {nombre: client.nombre_punto, resourceId: message.resourceId }
 				
 			when "take_usuarios"
 				SocketData.usuarios_all = message.usuarios
@@ -347,7 +348,11 @@ angular.module('WissenSystem')
 	mensajes		= []
 	@clt_selected	= {}
 	token_auth		= ''
-	config			= { pregunta: {}, reveal_answer: false, show_logo_entidad_partici: false }
+	config			= 
+		pregunta: {}, 
+		reveal_answer: false, 
+		show_logo_entidad_partici: false 
+		info_evento: { examen_iniciado: false, preg_actual: 0 }
 
 
 	desconectar = (clt)->
