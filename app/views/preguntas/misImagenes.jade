@@ -5,7 +5,88 @@
 		.col-lg-12
 
 			h4 Mis imágenes
+				
+			.btn-group(style="margin-bottom: 20px;")
+				label.btn.btn-primary(ng-model="subirImagenes" uib-btn-radio="'nada'") No subir
+				label.btn.btn-primary(ng-model="subirImagenes" uib-btn-radio="'subir'") Subir imágenes
+				label.btn.btn-primary(ng-model="subirImagenes" uib-btn-radio="'tomar'") Tomar foto
+							
 
+
+			div(ng-if=" subirImagenes == 'subir' ")
+				md-checkbox.md-primary.md-align-top-left(ng-model="subir_intacta.intacta" aria-label="No modificar imagen al subir") 
+					| No modificar imagen al subir
+
+
+				.row.mb20
+					.col-md-5.mb15(ng-model="imgFiles" ngf-select="upload($files)" ngf-multiple="true" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="20MB" )
+						.dropzone
+							.drop-info
+								i.fa.fa-upload
+								h3.mt0.text-bold Click aquí
+								p para subir imágenes
+
+						input(type="file" multiple="multiple" style="visibility: hidden; position: absolute;")
+
+					.col-md-7
+						.mb20.alert.alert-info(ng-show="imgFiles.length==0")
+							strong No has seleccionado ningún archivo
+						.mb20.alert.alert-info(ng-show="errorMsg!='' && errorMsg!=null")
+							strong {{errorMsg}}
+
+
+						table.table.table-bordered.table-condensed.table-responsive.table-hover(ng-hide="imgFiles.length==0" style="background: #fff")
+							thead
+								tr
+									th Imagen
+									th.col-sm-4 Nombre
+									th Peso
+									th.col-sm-1 Proceso
+									th.col-sm-1 
+							tbody
+								tr(ng-repeat="file in imgFiles")
+									td.text-center
+										img.imagen-thumb(ng-src="{{file.dataUrl}}")
+									td.text-bold {{file.name}}
+									td.small {{(file.size / 1000000) | number:1 }}MB
+									td
+										span.type(ng-show="file.porcentaje==undefined") Hay problemas
+										.progress-xs.progress-striped.progress(value="file.porcentaje" type="primary" ng-class="{active: file.isUploading()}")
+										.progress-bar.progress-bar-primary(ng-class="type && 'progress-bar-' + type" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" ng-style="{width: percent + '%'}" aria-valuetext="100%" style="width: 100%;")
+									td
+										span.btn.btn-xs.btn-danger.fa.fa-times(ng-click="file.cancel()" role="button" tabindex="0")
+
+			span(ng-if=" subirImagenes == 'tomar' ")
+				.row(style="margin-bottom: 40px")
+					.col-lg-4.col-sm-6
+
+						
+						ng-camera(
+							capture-message="Sonrie!"
+							output-height="320"
+							output-width="426"
+							crop-height="320"
+							crop-width="426"
+							image-format="jpeg"
+							jpeg-quality="100"
+							action-message="Tomar foto"
+							snapshot="vm.picture"
+							flash-fallback-url="/images/webcam.swf"
+							shutter-url="/sounds/shutter.mp3"
+							style="display: inline-block")
+
+						
+					
+					.col-lg-7.col-sm-6
+						.row
+							.col-lg-12.col-sm-12
+								image(ng-src="{{vm.picture}}")
+						.row
+							.col-lg-12.col-sm-12
+								md-button.md-raised(ng-show="vm.picture" type="button" ng-click="uploadFoto()" aria-label="guardar foto") Guardar foto
+
+							
+							
 
 			md-checkbox.md-primary.md-align-top-left(ng-model="subir_intacta.intacta" aria-label="No modificar imagen al subir") 
 				| No modificar imagen al subir

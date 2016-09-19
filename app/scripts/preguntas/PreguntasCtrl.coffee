@@ -71,12 +71,19 @@ angular.module('WissenSystem')
 		$scope.traerDatos()
 
 
-		$scope.traerEvaluaciones = ()->
+		$scope.traerEvaluaciones = (evalu_selected)->
 			# Los exámenes
 			Restangular.all('evaluaciones').getList({categoria_id: $scope.categoria}).then((r)->
 				$scope.evaluaciones = r
 				#if $scope.evaluaciones.length > 0
 				#	$scope.evaluacion = r[0].id # Que se Seleccione la primera opción
+				
+				# Si se acaban de asignar preguntas aleatoriamente
+				if evalu_selected
+					for evaluacion in $scope.evaluaciones
+						if evaluacion.id == $scope.evalu_seleccionada.id
+							$scope.evalu_seleccionada = evaluacion
+							$scope.selectEvaluacion(evaluacion)
 			, (r2)->
 				console.log 'No se trajeron las evaluaciones ', r2
 			)
@@ -151,6 +158,26 @@ angular.module('WissenSystem')
 			if found.length > 0
 				$scope.preguntas_evaluacion2 = found[0].preguntas_evaluacion
 
+		
+
+		$scope.asignarPreguntasRandom = ()->
+			
+			modalInstance = $modal.open({
+				templateUrl: App.views + 'preguntas/asignarPreguntasRandom.tpl.html'
+				controller: 'AsignarPreguntasRandom'
+				resolve: {
+					evaluacion: ()->
+						$scope.evalu_seleccionada
+				}
+			})
+			modalInstance.result.then( (elem)->
+				$scope.traerEvaluaciones($scope.evalu_seleccionada)
+				console.log 'Asignado' 
+				
+
+			)
+
+
 
 
 
@@ -177,6 +204,47 @@ angular.module('WissenSystem')
 
 	]
 )
+
+
+
+.controller('AsignarPreguntasRandom', ['$scope', '$uibModalInstance', 'Restangular', 'toastr', 'evaluacion', ($scope, $modalInstance, Restangular, toastr, evaluacion)->
+	
+	$scope.examenes = []
+	$scope.pregNoAsignadas = false
+	$scope.cantPregRandom = 3
+	$scope.cambiando = false
+
+
+	Restangular.all('pregunta_evaluacion/examenes-de-evaluacion').getList({evaluacion_id: evaluacion.id}).then((r)->
+		$scope.examenes = r
+	, (r2)->
+		toastr.warning 'No se trajeron las preguntas con imágenes.', 'Problema'
+	)
+
+	$scope.ok = ()->
+
+		$scope.cambiando = true
+
+		datos = 
+			cantPregRandom: 	$scope.cantPregRandom
+			evaluacion_id: 		evaluacion.id
+			categoria_id: 		evaluacion.categoria_id
+			pregNoAsignadas:	$scope.pregNoAsignadas
+
+		Restangular.one('pregunta_evaluacion/asignar-aleatoriamente').customPUT(datos).then((r)->
+			toastr.success 'Preguntas asignadas.'
+			$modalInstance.close(datos)
+		, (r2)->
+			toastr.warning 'No se pudo asignar preguntas.', 'Problema'
+			console.log 'No se pudo asignar preguntas: ', r2
+			$scope.cambiando = false
+		)
+		
+
+	$scope.cancel = ()->
+		$modalInstance.dismiss('cancel')
+
+])
 
 
 

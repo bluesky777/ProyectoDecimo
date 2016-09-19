@@ -6,6 +6,72 @@
   <div class="row hidden-print">
     <div class="col-lg-12">
       <h4>Mis imágenes</h4>
+      <div style="margin-bottom: 20px;" class="btn-group">
+        <label ng-model="subirImagenes" uib-btn-radio="'nada'" class="btn btn-primary">No subir</label>
+        <label ng-model="subirImagenes" uib-btn-radio="'subir'" class="btn btn-primary">Subir imágenes</label>
+        <label ng-model="subirImagenes" uib-btn-radio="'tomar'" class="btn btn-primary">Tomar foto</label>
+      </div>
+      <div ng-if=" subirImagenes == 'subir' ">
+        <md-checkbox ng-model="subir_intacta.intacta" aria-label="No modificar imagen al subir" class="md-primary md-align-top-left">
+           
+          No modificar imagen al subir
+        </md-checkbox>
+        <div class="row mb20">
+          <div ng-model="imgFiles" ngf-select="upload($files)" ngf-multiple="true" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="20MB" class="col-md-5 mb15">
+            <div class="dropzone">
+              <div class="drop-info"><i class="fa fa-upload"></i>
+                <h3 class="mt0 text-bold">Click aquí</h3>
+                <p>para subir imágenes</p>
+              </div>
+            </div>
+            <input type="file" multiple="multiple" style="visibility: hidden; position: absolute;">
+          </div>
+          <div class="col-md-7">
+            <div ng-show="imgFiles.length==0" class="mb20 alert alert-info"><strong>No has seleccionado ningún archivo</strong></div>
+            <div ng-show="errorMsg!='' &amp;&amp; errorMsg!=null" class="mb20 alert alert-info"><strong>{{errorMsg}}</strong></div>
+            <table ng-hide="imgFiles.length==0" style="background: #fff" class="table table-bordered table-condensed table-responsive table-hover">
+              <thead>
+                <tr>
+                  <th>Imagen</th>
+                  <th class="col-sm-4">Nombre</th>
+                  <th>Peso</th>
+                  <th class="col-sm-1">Proceso</th>
+                  <th class="col-sm-1"> </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="file in imgFiles">
+                  <td class="text-center"><img ng-src="{{file.dataUrl}}" class="imagen-thumb"></td>
+                  <td class="text-bold">{{file.name}}</td>
+                  <td class="small">{{(file.size / 1000000) | number:1 }}MB</td>
+                  <td><span ng-show="file.porcentaje==undefined" class="type">Hay problemas</span>
+                    <div value="file.porcentaje" type="primary" ng-class="{active: file.isUploading()}" class="progress-xs progress-striped progress"></div>
+                    <div ng-class="type &amp;&amp; 'progress-bar-' + type" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" ng-style="{width: percent + '%'}" aria-valuetext="100%" style="width: 100%;" class="progress-bar progress-bar-primary"></div>
+                  </td>
+                  <td><span ng-click="file.cancel()" role="button" tabindex="0" class="btn btn-xs btn-danger fa fa-times"></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div><span ng-if=" subirImagenes == 'tomar' ">
+        <div style="margin-bottom: 40px" class="row">
+          <div class="col-lg-4 col-sm-6">
+            <ng-camera capture-message="Sonrie!" output-height="320" output-width="426" crop-height="320" crop-width="426" image-format="jpeg" jpeg-quality="100" action-message="Tomar foto" snapshot="vm.picture" flash-fallback-url="/images/webcam.swf" shutter-url="/sounds/shutter.mp3" style="display: inline-block"></ng-camera>
+          </div>
+          <div class="col-lg-7 col-sm-6">
+            <div class="row">
+              <div class="col-lg-12 col-sm-12">
+                <image ng-src="{{vm.picture}}"></image>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12 col-sm-12">
+                <md-button ng-show="vm.picture" type="button" ng-click="uploadFoto()" aria-label="guardar foto" class="md-raised">Guardar foto</md-button>
+              </div>
+            </div>
+          </div>
+        </div></span>
       <md-checkbox ng-model="subir_intacta.intacta" aria-label="No modificar imagen al subir" class="md-primary md-align-top-left">
          
         No modificar imagen al subir

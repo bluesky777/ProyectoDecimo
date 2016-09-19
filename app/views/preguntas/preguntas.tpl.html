@@ -74,6 +74,9 @@
     <div class="panel panel-default panel-hovered panel-stacked mb20">
       <div layout class="panel-heading">Preguntas</div>
       <div class="panel-body">
+        <div class="row">
+          <button ng-click="asignarPreguntasRandom()" style="margin-bottom: 20px; margin-left: 20px;" class="btn btn-default">Asignar preguntas</button>
+        </div>
         <div ng-repeat="pregunta_king in pg_preguntas | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion2:evalu_seleccionada.id | orderBy:'orden' " style="position: relative;">
           <view-pregunta-eval ng-if="pregunta_king.tipo_pregunta" preguntaking="pregunta_king"></view-pregunta-eval>
           <view-grupo-eval ng-if="!pregunta_king.tipo_pregunta" grupoking="pregunta_king"></view-grupo-eval>

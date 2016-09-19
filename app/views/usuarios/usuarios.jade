@@ -60,6 +60,23 @@ sidenav-select-pc-dir#sidenavSelectPC
 													img.img-gender(ng-src="{{avatar.femenino.img}}")
 													md-tooltip Femenino
 
+							.row
+								.col-md-12
+									.form-group(style="padding-left: 15px;")
+										label Imagen
+										button.btn.btn-primary.fa.fa-image.btn-xs(type="button" ng-click="misImagenes()" style="float: right;margin-right: 20px;")  Imágenes...
+										ui-select(ng-model="dato.imgUsuario" on-select="imagenSelect($item, $model)" theme="select2" style="width: 95%;")
+											ui-select-match(placeholder="Imagen usuario") 
+												img(ng-src="{{imagesPath + $select.selected.nombre}}" style="width:25px; height:25px;")
+												small(ng-bind-html="' ' + $select.selected.nombre")
+											ui-select-choices(repeat="imagen in imagenes | filter: {nombre: $select.search}")
+												img(ng-src="{{perfilPath + imagen.nombre}}" style="width:25px; height:25px;")
+												small(ng-bind-html="' ' + imagen.nombre | highlight: $select.search")
+											ui-select-no-choice
+												img(ng-src="{{imagesPath + 'perfil/system/no-photo.jpg'}}" style="width:25px; height:25px;")
+												small(ng-bind-html="' Sin foto '")
+
+
 						.col-md-4
 
 							.form-group(style="padding-left: 15px;")

@@ -34,6 +34,23 @@ angular.module('WissenSystem')
 
 
 
+	$scope.uploadFoto = ()->
+		file = $scope.vm.picture
+		
+		if (file) 
+
+			file = file.replace(/^data\:image\/\w+\;base64\,/, '')
+
+			Restangular.one('imagenes/store').customPOST({foto: file}).then( (r)->
+				toastr.success 'Foto subida correctamente.'
+				$modalInstance.close(r)
+			, (r2)->
+				toastr.error 'No se pudo subir foto', 'Error'
+			)
+
+
+
+
 	$scope.upload =  (files)->
 		$scope.imgFiles = files
 		$scope.errorMsg = ''

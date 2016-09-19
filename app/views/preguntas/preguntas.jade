@@ -88,6 +88,10 @@
 
 			.panel-body
 
+				.row
+					button.btn.btn-default(ng-click="asignarPreguntasRandom()" style="margin-bottom: 20px; margin-left: 20px;") Asignar preguntas
+				
+
 				div(ng-repeat="pregunta_king in pg_preguntas | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion2:evalu_seleccionada.id | orderBy:'orden' " 
 					style="position: relative;")
 					

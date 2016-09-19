@@ -24,7 +24,28 @@ angular.module('WissenSystem')
 		$scope.creando = false
 
 
-		console.log $scope.newUsu
+		
+
+		Restangular.one('imagenes/usuarios').customGET().then((r)->
+			$scope.imagenes = r.imagenes
+		, (r2)->
+			toastr.error 'No se trajeron las imágenes.'
+		)
+		
+
+		$scope.misImagenes = ()->
+			
+			modalInstance = $modal.open({
+				templateUrl: App.views + 'preguntas/misImagenes.tpl.html'
+				controller: 'MisImagenes'
+				size: 'lg',
+				resolve: 
+					resolved_user: ()->
+						$scope.USER
+			})
+			modalInstance.result.then( (elem)->
+				console.log elem
+			)
 
 
 
