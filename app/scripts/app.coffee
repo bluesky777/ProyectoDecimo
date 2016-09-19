@@ -28,6 +28,7 @@ angular.module('WissenSystem', [
   'ja.qr'
   'ngWebSocket'
   'ngclipboard'
+  'camera'
 ])
 
 #- Valores que usaremos para nuestro proyecto

@@ -105,6 +105,7 @@ angular.module('WissenSystem')
 		if $scope.selectedUser.id
 			Restangular.one('qr/validar-usuario').customPUT({user_id: $scope.selectedUser.id, token_auth: SocketData.token_auth }).then((r)->
 				if r.token
+					SocketData.usuarios_all = []
 					$cookies.put('xtoken', r.token)
 					$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.get('xtoken')
 					$state.go 'panel'

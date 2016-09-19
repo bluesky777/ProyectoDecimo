@@ -20,10 +20,10 @@
 
 					md-list-item.md-2-line(ng-repeat="usuario in usuarios | filter:filtro | orderBy:'nombres' " ng-click="seleccionarUsu(usuario)")
 						img.md-avatar(ng-src="{{imagesPath + usuario.imagen_nombre}}" alt="{{usuario.username}}")
-						.md-list-item-text
+						.md-list-item-text(aria-label="Seleccionado{{ ($index+1) + usuario.nombres}}")
 							h3 {{ ($index+1) + '. ' + usuario.nombres + ' ' + usuario.apellidos}}
 							h4 {{ usuario.nombre_entidad }}
-						md-checkbox.md-secondary(ng-model="usuario.seleccionado" ng-click="seleccionarCkUsu(usuario)" aria-label="Seleccionado")
+						md-checkbox(ng-model="usuario.seleccionado" ng-click="seleccionarCkUsu(usuario)" aria-label="Seleccionado{{ ($index+1) + usuario.nombres}}")
 
 
 			md-divider

@@ -33,7 +33,10 @@ angular.module('WissenSystem')
 						toastr.success 'Código acceptado: "' + r.comando + '"'
 					else
 						toastr.warning 'Código NO aceptado', 'Tal vez ya ha sido usado antes'
-				$scope.esperando = false
+				setTimeout(()->
+					$scope.esperando = false
+				, 3000);
+				
 			, (r2)->
 				toastr.warning 'No se pudo reconocer el código qr'
 				console.log 'No se pudo reconocer el código qr ', r2
