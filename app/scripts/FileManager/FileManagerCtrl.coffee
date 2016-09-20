@@ -7,7 +7,7 @@ angular.module("WissenSystem")
 	$scope.USER = resolved_user
 	$scope.subir_intacta = {intacta: true}
 	$scope.hasRoleOrPerm = AuthService.hasRoleOrPerm
-	$scope.subirImagenes = 'noSubir'
+	$scope.subirImagenes = 'nada'
 	$scope.vm			= {}
 
 

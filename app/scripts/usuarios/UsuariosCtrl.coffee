@@ -16,9 +16,10 @@ angular.module('WissenSystem')
 		nivel 	= if localStorage.getItem('nivelSelected') then parseInt(localStorage.getItem('nivelSelected')) else ''
 		entidad = if localStorage.getItem('entidadSelected') then parseInt(localStorage.getItem('entidadSelected')) else ''
 		$scope.newUsu = {
-			sexo: 'M'
-			nivel_id: nivel
-			inscripciones: []
+			sexo: 			'M'
+			nivel_id: 		nivel
+			inscripciones: 	[]
+			imgUsuario: 	null
 		}
 		$scope.editando = false
 		$scope.creando = false
@@ -45,6 +46,9 @@ angular.module('WissenSystem')
 			})
 			modalInstance.result.then( (elem)->
 				console.log elem
+				$scope.imagenes.push elem
+				$scope.newUsu.imgUsuario = $scope.imagenes[$scope.imagenes.length - 1]
+				$scope.currentUser.imgUsuario = $scope.imagenes[$scope.imagenes.length - 1]
 			)
 
 
@@ -147,11 +151,16 @@ angular.module('WissenSystem')
 
 			Restangular.one('usuarios/store').customPOST($scope.newUsu).then((r)->
 				toastr.success 'Usuario guardado con éxito.'
-				$scope.usuarios.push r
+				$scope.usuarios.unshift r
 				$scope.guardando = false
 				console.log 'Usuario creado', r
+				$scope.newUsu.nombres = 		''
+				$scope.newUsu.apellidos = 		''
+				$scope.newUsu.username = 		''
+				$scope.newUsu.inscripciones = 	[]
+				$scope.newUsu.imgUsuario = 		null
 			, (r2)->
-				toastr.warning 'No se creó el usuario', 'Problema'
+				toastr.warning 'No se creó el usuario, posible login repetido', 'Problema'
 				console.log 'No se creó usuario ', r2
 				$scope.guardando = false
 			)
@@ -162,15 +171,22 @@ angular.module('WissenSystem')
 
 			Restangular.one('usuarios/store').customPOST($scope.newUsu).then((r)->
 				toastr.success 'Usuario guardado con éxito.'
-				$scope.usuarios.push r
+				$scope.usuarios.unshift r
 				$scope.guardando = false
 				console.log 'Usuario creado', r
+
+				$scope.newUsu.nombres = 		''
+				$scope.newUsu.apellidos = 		''
+				$scope.newUsu.username = 		''
+				$scope.newUsu.inscripciones = 	[]
+				$scope.newUsu.imgUsuario = 		null
+
 				SocketData.clt_selected = usuario
 				$mdSidenav('sidenavSelectPC').toggle()
 				$location.hash('sidenavSelectPC');
 				$anchorScroll();
 			, (r2)->
-				toastr.warning 'No se creó el usuario', 'Problema'
+				toastr.warning 'No se creó el usuario, posible login repetido', 'Problema'
 				console.log 'No se creó usuario ', r2
 				$scope.guardando = false
 			)

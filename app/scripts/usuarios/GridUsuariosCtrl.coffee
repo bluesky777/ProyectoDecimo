@@ -47,6 +47,13 @@ angular.module('WissenSystem')
 			$scope.gridApi.selection.selectRow(row)
 
 			$scope.$parent.currentUser = row
+			$scope.$parent.currentUser.imgUsuario = {id: $scope.$parent.currentUser.imagen_id, nombre: $scope.$parent.currentUser.imagen_nombre}
+
+			for entid in $scope.$parent.entidades
+				if entid.id == $scope.$parent.currentUser.entidad_id
+					$scope.$parent.currentUser.entidad = entid
+
+			$scope.$parent.currentUser.nivel_id = parseInt($scope.$parent.currentUser.nivel_id)
 			$scope.currentusers = [row]
 			$scope.$parent.editando = true
 			

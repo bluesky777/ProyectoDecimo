@@ -90,12 +90,12 @@
               <button ng-click="asignToUser($event, file)" class="btn btn-xs btn-info fa fa-angle-double-right"> Asignar
                 <md-tooltip>Asinar imagen a usuario</md-tooltip>
               </button>
-              <button ngclipboard data-clipboard-text="{{perfilPath + file.nombre}}" ngclipboard-success="onCopySuccess(e);" ngclipboard-error="onCopyError(e);" class="btn btn-xs btn-info fa fa-copy"> 
+              <button ngclipboard data-clipboard-text="{{imagesPath + file.nombre}}" ngclipboard-success="onCopySuccess(e);" ngclipboard-error="onCopyError(e);" class="btn btn-xs btn-info fa fa-copy"> 
                 <md-tooltip>Copiar ruta absoluta de la imagen</md-tooltip>
               </button>
             </div>
           </td>
-          <td style="padding: 0px"> <img ng-src="{{perfilPath + file.nombre}}" style="width:40px;height:40px" class="imagen-thumb"></td>
+          <td style="padding: 0px"> <img ng-src="{{imagesPath + file.nombre}}" style="width:40px;height:40px" class="imagen-thumb"></td>
           <td style="padding: 0px" class="text-bold"> {{file.nombre}}</td>
         </tr>
       </tbody>
@@ -114,7 +114,7 @@
                 <label>Imagen de usuario</label>
                 <ui-select ng-model="dato.imgUsuario" on-select="imagenSelect($item, $model)" theme="select2" style="min-width: 200px;">
                   <ui-select-match placeholder="Imagen usuario"> <img ng-src="{{imagesPath + $select.selected.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
-                  <ui-select-choices repeat="imagen in imagenes | filter: {nombre: $select.search}"><img ng-src="{{perfilPath + imagen.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + imagen.nombre | highlight: $select.search"></small></ui-select-choices>
+                  <ui-select-choices repeat="imagen in imagenes | filter: {nombre: $select.search}"><img ng-src="{{imagesPath + imagen.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + imagen.nombre | highlight: $select.search"></small></ui-select-choices>
                 </ui-select>
                 <input type="submit" ng-submit="pedirCambioUsuario(dato.imgUsuario)" value="Cambiar perfil" class="btn btn-primary shiny">
               </div>
@@ -123,8 +123,8 @@
               <div class="form-group">
                 <label>Logo del evento actual</label>
                 <ui-select ng-model="dato.imgLogo" on-select="imagenSelect($item, $model)" theme="select2" style="min-width: 200px;">
-                  <ui-select-match placeholder="Logo del evento actual"> <img ng-src="{{perfilPath + $select.selected.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
-                  <ui-select-choices repeat="imagen in imagenes | filter: {nombre: $select.search}"><img ng-src="{{perfilPath + imagen.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + imagen.nombre | highlight: $select.search"></small></ui-select-choices>
+                  <ui-select-match placeholder="Logo del evento actual"> <img ng-src="{{imagesPath + $select.selected.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
+                  <ui-select-choices repeat="imagen in imagenes | filter: {nombre: $select.search}"><img ng-src="{{imagesPath + imagen.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + imagen.nombre | highlight: $select.search"></small></ui-select-choices>
                 </ui-select>
                 <input type="submit" value="Cambiar logo" class="btn btn-primary shiny">
               </div>

@@ -6,6 +6,8 @@ angular.module('WissenSystem')
 	$scope.USER = resolved_user
 	$scope.subir_intacta = {intacta: true}
 	$scope.hasRoleOrPerm = AuthService.hasRoleOrPerm
+	$scope.subirImagenes = 'nada'
+	$scope.vm			= {}
 
 	
 	fixDato = ()->
@@ -43,10 +45,16 @@ angular.module('WissenSystem')
 
 			Restangular.one('imagenes/store').customPOST({foto: file}).then( (r)->
 				toastr.success 'Foto subida correctamente.'
+				r.nombre = 'perfil/' + r.nombre
 				$modalInstance.close(r)
 			, (r2)->
 				toastr.error 'No se pudo subir foto', 'Error'
 			)
+
+
+
+	$scope.elegirImagen = (imagen)->
+		$modalInstance.close(imagen)
 
 
 
