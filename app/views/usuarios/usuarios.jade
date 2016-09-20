@@ -1,4 +1,4 @@
-md-button.md-raised.md-primary(ng-click="creando=!creando" ng-show="!creando") Nuevo usuario
+md-button.md-raised.md-primary(ng-click="empezarCrear()" ng-show="!creando") Nuevo usuario
 
 sidenav-select-pc-dir#sidenavSelectPC
 
@@ -106,6 +106,7 @@ sidenav-select-pc-dir#sidenavSelectPC
 
 
 
+
 					.clearfix.right
 						md-button.md-primary(type="button" ng-click="guardarNuevoYLogin()" ng-disabled="guardando") Guardar y enviar
 						md-button.md-primary(type="submit" ng-disabled="guardando") Guardar
@@ -200,7 +201,7 @@ sidenav-select-pc-dir#sidenavSelectPC
 
 							md-select(ng-model="currentUser.nivel_id" placeholder="Niveles")
 								md-option(ng-value="nivel.nivel_king_id" ng-repeat="nivel in niveles_king | nivelesTraducidos:$parent.evento_actual.idioma_principal_id") Nivel {{nivel.nombre}}
-								md-option(value="") Todos
+								md-option(value="-1") Todos
 
 
 							md-content.alto-inscribir
@@ -208,7 +209,7 @@ sidenav-select-pc-dir#sidenavSelectPC
 									md-subheader.md-no-sticky
 										| Inscribir en:
 
-									md-list-item(ng-repeat="categoria in categorias_inscripcion | filter: { nivel_id: currentUser.nivel_id } ")
+									md-list-item(ng-repeat="categoria in categorias_inscripcion | listaCategsDelUsuarioSegunNivel:currentUser.nivel_id ")
 										md-checkbox(ng-model="categoria.selected" ng-change="cambiaInscripcion(categoria, currentUsers)" aria-label="Categoria" ng-disabled="categoria.cambiando")
 										p {{categoria.nombre}}
 										.fa.fa-comments-o.md-secondary(aria-label="Comentario inútil" ng-click="")

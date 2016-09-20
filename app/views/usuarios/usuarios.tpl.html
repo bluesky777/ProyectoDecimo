@@ -1,5 +1,5 @@
 
-<md-button ng-click="creando=!creando" ng-show="!creando" class="md-raised md-primary">Nuevo usuario</md-button>
+<md-button ng-click="empezarCrear()" ng-show="!creando" class="md-raised md-primary">Nuevo usuario</md-button>
 <sidenav-select-pc-dir id="sidenavSelectPC"></sidenav-select-pc-dir>
 <div ng-show="creando" class="row">
   <div class="col-sm-12 col-md-12">
@@ -196,12 +196,12 @@
               </div>
               <md-select ng-model="currentUser.nivel_id" placeholder="Niveles">
                 <md-option ng-value="nivel.nivel_king_id" ng-repeat="nivel in niveles_king | nivelesTraducidos:$parent.evento_actual.idioma_principal_id">Nivel {{nivel.nombre}}</md-option>
-                <md-option value="">Todos</md-option>
+                <md-option value="-1">Todos</md-option>
               </md-select>
               <md-content class="alto-inscribir">
                 <md-list>
                   <md-subheader class="md-no-sticky">Inscribir en:</md-subheader>
-                  <md-list-item ng-repeat="categoria in categorias_inscripcion | filter: { nivel_id: currentUser.nivel_id } ">
+                  <md-list-item ng-repeat="categoria in categorias_inscripcion | listaCategsDelUsuarioSegunNivel:currentUser.nivel_id ">
                     <md-checkbox ng-model="categoria.selected" ng-change="cambiaInscripcion(categoria, currentUsers)" aria-label="Categoria" ng-disabled="categoria.cambiando"></md-checkbox>
                     <p>{{categoria.nombre}}</p>
                     <div aria-label="Comentario inútil" ng-click="" class="fa fa-comments-o md-secondary"></div>

@@ -118,15 +118,6 @@ angular.module('WissenSystem')
 
 
 
-		
-		$scope.categorias_inscripciones = (row)->
-			# Me tocó copiarlo pues se acumulaban las inscripciones
-			$scope.categorias_king2 = []
-			angular.copy($scope.categorias_king1, $scope.categorias_king2)
-
-			$scope.categorias_inscripcion = $filter('categsInscritas')($scope.currentusers, $scope.categorias_king2, $scope.evento_actual.idioma_principal_id )
-
-
 
 
 		$scope.avatar = {
@@ -142,6 +133,8 @@ angular.module('WissenSystem')
 			}
 		}
 
+		$scope.empezarCrear = ()->
+			$scope.creando 					= !$scope.creando
 		
 		
 

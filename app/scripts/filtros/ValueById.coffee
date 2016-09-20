@@ -62,8 +62,8 @@ angular.module('WissenSystem')
 				if nivel_id
 					
 					nivel_id = parseFloat(nivel_id)
-
-					if categ_king.nivel_id == nivel_id
+					
+					if categ_king.nivel_id == nivel_id or nivel_id == -1 or nivel_id == null
 
 						categ_traducido = $filter('porIdioma')(categ_king.categorias_traducidas, idioma_id)
 						if categ_traducido.length > 0

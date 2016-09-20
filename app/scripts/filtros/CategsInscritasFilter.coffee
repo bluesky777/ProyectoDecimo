@@ -86,7 +86,7 @@ angular.module('WissenSystem')
 
 					resultado.push categ_traducida
 
-			console.log 'resultado', resultado
+
 			return resultado
 
 		else
@@ -127,39 +127,26 @@ angular.module('WissenSystem')
 ])
 
 
-.filter('categsInscritasDeUsuario-Anterior-Para-Borrar', ['$filter', ($filter)->
-	(inscripciones, categorias_king, idioma_id) ->
+.filter('listaCategsDelUsuarioSegunNivel', ['$filter', ($filter)->
+	(categorias_inscripcion, nivel_usuario_id) ->
 
-		if inscripciones and categorias_king
+		if categorias_inscripcion and nivel_usuario_id
 			
-			resultado = []
+			resultado 			= []
+			nivel_usuario_id 	= parseInt(nivel_usuario_id)
 
 
-			for categoriaking in categorias_king
+			for categoria in categorias_inscripcion
 
-				categ_traducida = $filter('porIdioma')(categoriaking.categorias_traducidas, parseFloat(idioma_id))
-				
-				if categ_traducida.length > 0
-					categ_traducida = categ_traducida[0]
-					
-					res = $filter('filter')(inscripciones, { categoria_id: categoriaking.id })
-					
-					if res
-						if res.length > 0 
-							res = res[0]
-							categ_traducida.allowed_to_answer 	= res.allowed_to_answer
-							categ_traducida.examenes 			= res.examenes
-							categ_traducida.inscripcion_id 		= res.id
-							categ_traducida.categ_traducida_id 	= categ_traducida.id
-
-							resultado.push categ_traducida
+				if categoria.nivel_id == nivel_usuario_id or nivel_usuario_id == null or nivel_usuario_id == 0 or nivel_usuario_id == -1
+					resultado.push categoria
 
 
 			
 			return resultado
 
 		else
-			return []
+			return categorias_inscripcion
 ])
 
 
