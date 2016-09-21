@@ -11,8 +11,8 @@ angular.module('WissenSystem')
 	$scope.cmdPreguntasTraduc 		= []
 	$scope.cmdPreguntaSelected		= {}
 	$scope.cmdNoPregSelected		= 0
+	$scope.cmdNoPregunta			= 0
 	$scope.cmdShowLogoEntidadPartici = false
-	$scope.cmdPreguntaActual 		= 0
 	$scope.show_result_table 		= true
 
 
@@ -133,19 +133,25 @@ angular.module('WissenSystem')
 
 
 	$scope.empezarExamen = (cliente)->
-		$scope.cmdPreguntaActual = 1
 		MySocket.empezar_examen()
 		toastr.info "Examen empezado"
+		SocketData.config.info_evento.preg_actual 	= 1
 
-		pregunta = $scope.cmdPreguntasTraduc[$scope.cmdPreguntaActual]
+		pregunta = $scope.cmdPreguntasTraduc[SocketData.config.info_evento.preg_actual]
 		if pregunta
-			MySocket.sc_show_question($scope.cmdPreguntaActual, pregunta)
+			MySocket.sc_show_question(SocketData.config.info_evento.preg_actual, pregunta)
 		else
 			toastr.warning 'No hay categoría seleccionada'
 
 
 	$scope.empezarExamenCliente = (cliente)->
 		MySocket.empezar_examen_cliente(cliente.resourceId)
+
+	$scope.empezarExamenCltsSeleccionados = ()->
+		for cliente in SocketData.clientes
+			if cliente.seleccionado
+				MySocket.empezar_examen_cliente(cliente.resourceId) # El modelo no cambia hasta salir de esta función
+				
 
 	$scope.showParticipantes = ()->
 		MySocket.sc_show_participantes($scope.categorias_traducidas)
@@ -184,10 +190,10 @@ angular.module('WissenSystem')
 	$scope.nextQuestion = ()->
 		MySocket.sc_next_question() # El modelo no cambia hasta salir de esta función
 
-		pregunta = $scope.cmdPreguntasTraduc[$scope.cmdPreguntaActual]
+		pregunta = $scope.cmdPreguntasTraduc[SocketData.config.info_evento.preg_actual]
 		if pregunta
-			$scope.cmdPreguntaActual 	= $scope.cmdPreguntaActual + 1
-			MySocket.sc_show_question($scope.cmdPreguntaActual, pregunta)
+			SocketData.config.info_evento.preg_actual 	= SocketData.config.info_evento.preg_actual + 1
+			MySocket.sc_show_question(SocketData.config.info_evento.preg_actual, pregunta)
 		else
 			toastr.warning 'No hay categoría seleccionada'
 
@@ -195,6 +201,17 @@ angular.module('WissenSystem')
 
 	$scope.nextQuestionCliente = (cliente)->
 		MySocket.sc_next_question_cliente(cliente) # El modelo no cambia hasta salir de esta función
+
+	$scope.nextQuestionCltsSeleccionados = ()->
+		for cliente in SocketData.clientes
+			if cliente.seleccionado
+				MySocket.sc_next_question_cliente(cliente) # El modelo no cambia hasta salir de esta función
+
+
+	$scope.gotoNoQuestionClt = ()->
+		for cliente in SocketData.clientes
+			#if cliente.seleccionado # Debo quitar el comentario!!!!!
+			MySocket.sc_goto_question_no_clt(cliente, $scope.cmdNoPregunta) # El modelo no cambia hasta salir de esta función
 
 
 	MySocket.get_clts()

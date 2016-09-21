@@ -164,12 +164,9 @@ angular.module('WissenSystem')
 				SocketData.set_waiting()
 				$rootScope.$emit 'next_question'
 
-			when "prev_question" # Me ordenan que vaya a la siguente pregunta
-				if $state.is 'panel.examen_respuesta'
-					client = SocketData.cliente message.resourceId
-					client.answered = 'waiting'
-					SocketData.actualizar_clt client
-				$rootScope.$emit 'prev_question'
+			when "goto_question_no" # Me ordenan que vaya a la pregunta tal
+				SocketData.set_waiting()
+				$rootScope.$emit 'goto_question_no', message.numero
 
 
 					
@@ -258,8 +255,6 @@ angular.module('WissenSystem')
 
 	empezar_examen_cliente = (resourceId)->
 		dataStream.send({ comando: 'empezar_examen_cliente', resourceId: resourceId })
-		audio = new Audio('/sounds/Sirviendo.wav');
-		audio.play();
 
 	sc_show_participantes = (categorias_traduc)->
 		dataStream.send({ comando: 'sc_show_participantes', categorias_traduc: categorias_traduc })
@@ -293,8 +288,12 @@ angular.module('WissenSystem')
 		client = SocketData.cliente cliente.resourceId
 		client.answered = 'waiting'
 		dataStream.send({ comando: 'next_question', resourceId: cliente.resourceId })
-		audio = new Audio('/sounds/Siguiente.wav');
-		audio.play();
+
+	sc_goto_question_no_clt = (cliente, numero)->
+		client = SocketData.cliente cliente.resourceId
+		client.answered = 'waiting'
+		dataStream.send({ comando: 'goto_question_no_clt', resourceId: cliente.resourceId, numero: numero })
+
 
 
 
@@ -334,6 +333,7 @@ angular.module('WissenSystem')
 		sc_answered:				sc_answered
 		sc_next_question:			sc_next_question
 		sc_next_question_cliente:	sc_next_question_cliente
+		sc_goto_question_no_clt:	sc_goto_question_no_clt
 	}
 
 	return methods

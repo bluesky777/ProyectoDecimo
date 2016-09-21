@@ -46,7 +46,7 @@ angular.module('WissenSystem')
 
 				if $scope.$parent.USER.evento_actual.gran_final
 
-					if $rootScope.examen_actual.duracion_preg < $scope.tiempo
+					if $rootScope.examen_actual.duracion_preg <= $scope.tiempo
 						$scope.stop()
 						$scope.$emit 'tiempo_preg_terminado'
 
@@ -69,11 +69,21 @@ angular.module('WissenSystem')
 
 
 	$rootScope.$on 'next_question', (event)->
-		$rootScope.tiempo = -1
-		$scope.tiempo = $rootScope.tiempo;  
+		if $scope.$parent.waiting_question != false
+			$rootScope.tiempo = -1
+			$scope.tiempo = $rootScope.tiempo;  
 
-		if $scope.$parent.USER.evento_actual.gran_final
-			$scope.start()
+			if $scope.$parent.USER.evento_actual.gran_final
+				$scope.start()
+
+
+	$rootScope.$on 'goto_question_no', (event)->
+		if $scope.$parent.waiting_question != false
+			$rootScope.tiempo = -1
+			$scope.tiempo = $rootScope.tiempo;  
+
+			if $scope.$parent.USER.evento_actual.gran_final
+				$scope.start()
 
 
 

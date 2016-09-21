@@ -40,7 +40,7 @@
         </div>
       </div>
       <div class="panel-body">
-        <md-button ng-click="iniciarExamen(categoriaking)" ng-repeat="categoriaking in user.inscripciones | categsInscritasDeUsuario:categorias_king:user.idioma_main_id " ng-class="{'md-primary': categoriaking.selected }" style="width: 100%;" class="md-raised col-md-12">{{categoriaking.nombre}}</md-button>
+        <md-button ng-click="iniciarExamen(categoriaking)" ng-repeat="categoriaking in user.inscripciones | categsInscritasDeUsuario:categorias_king:user.idioma_main_id:categoriaSelect().categoria_id " ng-class="{'md-primary': categoriaking.selected }" style="width: 100%;" class="md-raised col-md-12">{{categoriaking.nombre}}</md-button>
       </div>
     </div>
   </div>

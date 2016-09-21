@@ -96,7 +96,7 @@ angular.module('WissenSystem')
 
 
 .filter('categsInscritasDeUsuario', ['$filter', ($filter)->
-	(inscripciones, categorias_king, idioma_id) ->
+	(inscripciones, categorias_king, idioma_id, cmdCategSelected) ->
 
 		if inscripciones and categorias_king
 			
@@ -119,6 +119,17 @@ angular.module('WissenSystem')
 							categ_traducida.categ_traducida_id 	= categ_traducida.id
 
 							resultado.push categ_traducida
+
+
+			if cmdCategSelected
+				for categ in resultado
+					if categ.categoria_id == cmdCategSelected
+						categ.selected = true
+					else
+						categ.selected = false
+			else
+				for categ in resultado
+					categ.selected = false
 
 			return resultado
 

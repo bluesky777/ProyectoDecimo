@@ -40,6 +40,14 @@
           <icon class="fa fa-eye"></icon>
           <md-tooltip>Seleccionar todo</md-tooltip>
         </button>
+        <button type="button" ng-click="empezarExamenCltsSeleccionados()" class="btn btn-default btn-xs deseleccionador">
+          <icon class="fa fa-play"></icon>
+          <md-tooltip>Empezar examen</md-tooltip>
+        </button>
+        <button type="button" ng-click="nextQuestionCltsSeleccionados()" class="btn btn-danger btn-xs deseleccionador">
+          <icon class="fa fa-arrow-right"></icon>
+          <md-tooltip>Siguiente pregunta</md-tooltip>
+        </button>
         <button type="button" ng-click="actualizarClts()" class="btn btn-default btn-xs deseleccionador">
           <icon class="fa fa-refresh"></icon>
           <md-tooltip>Actualizar</md-tooltip>
@@ -55,7 +63,8 @@
             <h5 class="name text-center nombresellipsis">{{cliente.usuario.nombres}} {{cliente.usuario.apellidos}}
               <md-tooltip>{{cliente.usuario.username}}</md-tooltip>
             </h5>
-            <div class="alias-enti">{{cliente.usuario.entidad.alias}}</div>
+            <div ng-hide="cliente.usuario.entidad.alias" style="color: white;" class="alias-enti">{{cliente.nombre_punto}}</div>
+            <div ng-show="cliente.usuario.entidad.alias" class="alias-enti">{{cliente.usuario.entidad.alias}}</div>
             <h6 style="margin: 0px;">{{ cliente.nombre_punto }}</h6>
             <md-menu>
               <button aria-label="Abrir menú" ng-click="openMenuCateg($mdOpenMenu, $event)" class="btn btn-pink btn-xs right">
@@ -142,20 +151,35 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-xs-12 col-md-7">
-        <select multiple="true" style="width: 200px; font-size: 9pt">
+        <select multiple="true" style="width: 150px; height: 150px; font-size: 9pt">
           <option ng-repeat="categoria in categorias_king" ng-model="cmdCategSelected" ng-click="cmdClickCategSelected(categoria)">{{categoria.nombre}}</option>
         </select>
-        <select multiple="true" style="width: 200px; font-size: 9pt">
+        <select multiple="true" style="width: 250px; height: 150px; font-size: 9pt; overflow: scroll">
           <option ng-repeat="pregunta in cmdPreguntasTraduc" ng-model="cmdPreguntaSelected" ng-click="cmdClickPreguntaSelected(pregunta, $index)" ng-bind-html="($index+1) + '. ' + pregunta.enunciado"> </option>
-        </select><span style="font-weight: bold;">Preg:{{ cmdPreguntaActual }}</span>
+        </select><span style="font-weight: bold;">Preg: {{ SocketData.config.info_evento.preg_actual }}</span>
         <button ng-click="showQuestion()" class="btn btn-default">Mostrar pregunta</button>
         <button ng-click="showPuntajeParticip()" class="btn btn-default">Mostrar puntaje</button>
         <md-checkbox ng-click="toggleShowLogoEntidadParticipantes()" ng-true-value="1" ng-false-value="0" ng-model="cmdShowLogoEntidadPartici" aria-label="Mostrar logos">Mostrar logo entidades</md-checkbox>
       </div>
     </div>
-    <md-button ng-click="empezarExamen()" class="md-raised">Empezar exámen</md-button>
     <md-button ng-click="showParticipantes()" class="md-raised">Mostrar participantes</md-button>
-    <button ng-click="nextQuestion()" class="btn btn-primary">Siguiente pregunta</button>
+    <button ng-click="empezarExamen()" class="btn btn-primary">Empezar exámen  <i class="fa fa-play"></i></button>
+    <button ng-click="nextQuestion()" class="btn btn-danger">Siguiente pregunta  <i class="fa fa-arrow-right"></i></button>
+    <div class="row">
+      <div class="col-xs-12 col-md-7">
+        <md-content>
+          <div style="width: 200px;margin-top: 15px;" class="form-group">
+            <div class="input-group">
+              <md-tooltip>Enviar a los clientes seleccionados a una pregunta</md-tooltip>
+              <input type="number" placeholder="Número" ng-model="cmdNoPregunta" style="border: 1px solid #ccc; border-right: 0px;" class="form-control">
+              <div class="input-group-btn">
+                <button type="button" ng-click="gotoNoQuestionClt()" style="height: 34px; border-left: 0px;" class="btn btn-default">Ir</button>
+              </div>
+            </div>
+          </div>
+        </md-content>
+      </div>
+    </div>
   </div>
 </div>
 <!-- RESULTADOS, EXÁMENES, PUESTOS!!!!!!!-->

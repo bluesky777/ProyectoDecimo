@@ -37,8 +37,8 @@
 
 			
 			.panel-body
-				
-				md-button.md-raised.col-md-12(ng-click="iniciarExamen(categoriaking)" ng-repeat="categoriaking in user.inscripciones | categsInscritasDeUsuario:categorias_king:user.idioma_main_id "
+
+				md-button.md-raised.col-md-12(ng-click="iniciarExamen(categoriaking)" ng-repeat="categoriaking in user.inscripciones | categsInscritasDeUsuario:categorias_king:user.idioma_main_id:categoriaSelect().categoria_id "
 					ng-class="{'md-primary': categoriaking.selected }" style="width: 100%;")
 					| {{categoriaking.nombre}}
 

@@ -96,22 +96,28 @@ angular.module('WissenSystem')
 
 
 
-		destroy_next_question = $rootScope.$on 'next_question', (event)->
-			if $scope.waiting_question = false
+		destroy_next_question = $rootScope.$on 'next_question', (event)-> # Hay otro listening en TimerDir
+			if $scope.waiting_question != false
 				pregtemp = $filter('preguntaActual')($scope.examen_actual.preguntas, $scope.pregunta_actual)[0]
 				pregunta = $filter('filter')($scope.examen_actual.preguntas, {pregunta_id: pregtemp.pregunta_id})[0]
 				console.log pregunta
-			$scope.waiting_question = false
+				$scope.waiting_question = false
 
-		destroy_prev_question = $rootScope.$on 'prev_question', (event)->
-			$scope.waiting_question = false
+		destroy_goto_question_on = $rootScope.$on 'goto_question_no', (event, numero)->
+			console.log numero
+			if $scope.waiting_question != false
+				$scope.pregunta_actual = numero
+				pregtemp = $filter('preguntaActual')($scope.examen_actual.preguntas, numero)[0]
+				pregunta = $filter('filter')($scope.examen_actual.preguntas, {pregunta_id: pregtemp.pregunta_id})[0]
+				console.log pregunta
+				$scope.waiting_question = false
 
 
 
 		$scope.$on('$destroy', ()->
 			window.onbeforeunload = undefined
 			destroy_next_question() # remove listener.
-			destroy_prev_question()
+			destroy_goto_question_on()
 		);
 
 

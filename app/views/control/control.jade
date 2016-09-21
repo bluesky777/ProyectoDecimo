@@ -41,6 +41,14 @@
 					icon.fa.fa-eye
 					md-tooltip Seleccionar todo
 
+				button.btn.btn-default.btn-xs.deseleccionador(type="button" ng-click="empezarExamenCltsSeleccionados()")
+					icon.fa.fa-play
+					md-tooltip Empezar examen
+
+				button.btn.btn-danger.btn-xs.deseleccionador(type="button" ng-click="nextQuestionCltsSeleccionados()")
+					icon.fa.fa-arrow-right
+					md-tooltip Siguiente pregunta
+
 				button.btn.btn-default.btn-xs.deseleccionador(type="button" ng-click="actualizarClts()")
 					icon.fa.fa-refresh
 					md-tooltip Actualizar
@@ -61,7 +69,8 @@
 					.info(ng-class="{'incorrect': cliente.answered=='incorrect', 'correct': cliente.answered=='correct' }") 
 						h5.name.text-center.nombresellipsis {{cliente.usuario.nombres}} {{cliente.usuario.apellidos}}
 							md-tooltip {{cliente.usuario.username}}
-						.alias-enti {{cliente.usuario.entidad.alias}}
+						.alias-enti(ng-hide="cliente.usuario.entidad.alias" style="color: white;") {{cliente.nombre_punto}}
+						.alias-enti(ng-show="cliente.usuario.entidad.alias") {{cliente.usuario.entidad.alias}}
 						h6(style="margin: 0px;") {{ cliente.nombre_punto }}
 
 						md-menu
@@ -142,23 +151,38 @@ sidenav-edit-usu-dir
 	.panel-body
 		.row
 			.col-xs-12.col-md-7
-				select(multiple="true" style="width: 200px; font-size: 9pt")
+				select(multiple="true" style="width: 150px; height: 150px; font-size: 9pt")
 					option(ng-repeat="categoria in categorias_king" ng-model="cmdCategSelected" ng-click="cmdClickCategSelected(categoria)") {{categoria.nombre}}
-				select(multiple="true" style="width: 200px; font-size: 9pt")
+				select(multiple="true" style="width: 250px; height: 150px; font-size: 9pt; overflow: scroll")
 					option(ng-repeat="pregunta in cmdPreguntasTraduc" ng-model="cmdPreguntaSelected" 
 						ng-click="cmdClickPreguntaSelected(pregunta, $index)" ng-bind-html="($index+1) + '. ' + pregunta.enunciado") 
 				
-				span(style="font-weight: bold;") Preg:{{ cmdPreguntaActual }}
+				span(style="font-weight: bold;") Preg: {{ SocketData.config.info_evento.preg_actual }}
 				button.btn.btn-default(ng-click="showQuestion()") Mostrar pregunta
 				
 				button.btn.btn-default(ng-click="showPuntajeParticip()") Mostrar puntaje
 				
 				md-checkbox(ng-click="toggleShowLogoEntidadParticipantes()" ng-true-value="1" ng-false-value="0" ng-model="cmdShowLogoEntidadPartici" aria-label="Mostrar logos") Mostrar logo entidades
 
-		md-button.md-raised(ng-click="empezarExamen()") Empezar exámen
 		md-button.md-raised(ng-click="showParticipantes()") Mostrar participantes
-		button.btn.btn-primary(ng-click="nextQuestion()") Siguiente pregunta
-			
+		
+		button.btn.btn-primary(ng-click="empezarExamen()") Empezar exámen  
+			i.fa.fa-play
+		button.btn.btn-danger(ng-click="nextQuestion()") Siguiente pregunta  
+			i.fa.fa-arrow-right
+
+
+		.row
+			.col-xs-12.col-md-7
+				md-content
+					.form-group(style="width: 200px;margin-top: 15px;")
+						.input-group
+							md-tooltip Enviar a los clientes seleccionados a una pregunta
+							input.form-control(type="number" placeholder="Número" ng-model="cmdNoPregunta" style="border: 1px solid #ccc; border-right: 0px;")
+							.input-group-btn
+								button.btn.btn-default(type="button" ng-click="gotoNoQuestionClt()" style="height: 34px; border-left: 0px;") Ir
+
+
 
 
 // RESULTADOS, EXÁMENES, PUESTOS!!!!!!!
