@@ -210,8 +210,8 @@ angular.module('WissenSystem')
 
 	$scope.gotoNoQuestionClt = ()->
 		for cliente in SocketData.clientes
-			#if cliente.seleccionado # Debo quitar el comentario!!!!!
-			MySocket.sc_goto_question_no_clt(cliente, $scope.cmdNoPregunta) # El modelo no cambia hasta salir de esta función
+			if cliente.seleccionado # Debo quitar el comentario!!!!!
+				MySocket.sc_goto_question_no_clt(cliente, $scope.cmdNoPregunta) # El modelo no cambia hasta salir de esta función
 
 
 	MySocket.get_clts()
