@@ -24,10 +24,10 @@
   <md-list ng-if="pg_pregunta.tipo_pregunta=='Multiple'">
     <md-list-item ng-repeat="opcion in pg_pregunta.opciones | filter:{id: '!-1'} ">
       <md-checkbox ng-model="topping.wanted"></md-checkbox>
-      <p>{{ opcion.definicion }}</p>
+      <p ng-bind-html="opcion.definicion"></p>
       <md-icon ng-click="" aria-label="Chat" class="md-secondary fa fa-comment"></md-icon>
     </md-list-item>
   </md-list>
   <div layout="row" layout-wrap layout-fill ng-if="pg_pregunta.tipo_pregunta=='Test'" style="padding-bottom: 32px;" class="opciones">
-    <md-whiteframe ng-class="{'elegida': opcion.elegida, 'correcta-revelada':opcion.is_correct &amp;&amp; showCorrects}" ng-if="!opcion.nueva" flex="40" ng-click="elegirOpcion(pg_pregunta, opcion)" ng-repeat="opcion in pg_pregunta.opciones" class="pointer md-whiteframe-z2 btn"> <span style="font-weight: bold;">{{ indexChar($index) }}. </span><span>{{ opcion.definicion }}</span></md-whiteframe>
+    <md-whiteframe ng-class="{'elegida': opcion.elegida, 'correcta-revelada':opcion.is_correct &amp;&amp; showCorrects}" ng-if="!opcion.nueva" flex="40" ng-click="elegirOpcion(pg_pregunta, opcion)" ng-repeat="opcion in pg_pregunta.opciones" class="pointer md-whiteframe-z2 btn"> <span style="font-weight: bold;">{{ indexChar($index) }}. </span><span ng-bind-html="opcion.definicion"> </span></md-whiteframe>
   </div></span>

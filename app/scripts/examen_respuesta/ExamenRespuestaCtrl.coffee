@@ -90,6 +90,7 @@ angular.module('WissenSystem')
 			$scope.check_por_terminado()
 
 		$scope.$on 'tiempo_exam_terminado', (event)->
+			$rootScope.permiso_de_salir = true
 			console.log 'Tiempo examen terminado'
 			$state.go 'panel'
 

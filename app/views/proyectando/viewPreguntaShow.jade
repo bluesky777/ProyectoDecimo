@@ -16,7 +16,7 @@ div(ng-repeat="pregunta in preguntaking.preguntas_traducidas | porIdioma:idiomap
 	md-list(ng-if="preguntaking.tipo_pregunta=='Multiple'")
 		md-list-item(ng-repeat="opcion in pregunta.opciones")
 			md-checkbox(ng-model="topping.wanted")
-			p {{ opcion.definicion }}
+			p(ng-bind-html="opcion.definicion") 
 			md-icon.md-secondary.fa.fa-comment(ng-click="" aria-label="Chat")
 
 	
@@ -31,7 +31,7 @@ div(ng-repeat="pregunta in preguntaking.preguntas_traducidas | porIdioma:idiomap
 			ng-repeat="opcion in pregunta.opciones") 
 			
 			span(style="font-weight: bold;") {{ indexChar($index) }}. 
-			span {{ opcion.definicion }}
+			span(ng-bind-html="opcion.definicion") 
 
 
 br

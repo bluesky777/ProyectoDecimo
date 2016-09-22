@@ -42,14 +42,14 @@ span(ng-show="pg_pregunta.showDetail || showOptions")
 	md-list(ng-if="pg_pregunta.tipo_pregunta=='Multiple'")
 		md-list-item(ng-repeat="opcion in pg_pregunta.opciones | filter:{id: '!-1'} ")
 			md-checkbox(ng-model="topping.wanted")
-			p {{ opcion.definicion }}
+			p(ng-bind-html="opcion.definicion")
 			md-icon.md-secondary.fa.fa-comment(ng-click="" aria-label="Chat")
 	
 
 	div.opciones(layout="row" layout-wrap layout-fill ng-if="pg_pregunta.tipo_pregunta=='Test'" style="padding-bottom: 32px;")
 		md-whiteframe.pointer.md-whiteframe-z2.btn(ng-class="{'elegida': opcion.elegida, 'correcta-revelada':opcion.is_correct && showCorrects}" ng-if="!opcion.nueva" flex="40" ng-click="elegirOpcion(pg_pregunta, opcion)" ng-repeat="opcion in pg_pregunta.opciones") 
 			span(style="font-weight: bold;") {{ indexChar($index) }}. 
-			span {{ opcion.definicion }}
+			span(ng-bind-html="opcion.definicion") 
 
 
 

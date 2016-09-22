@@ -3,10 +3,17 @@ a.btn-tag.btn-tag-info(md-ink-ripple ng-if="!pregunta_traduc.is_preg")
 
 .definicion-preg
 	button.btn.btn-primary.fa.fa-image.btn-xs(type="button" ng-click="misImagenes()" style="float: right;")  Imágenes...
-	div(text-angular ta-toolbar-group-class="btn-group btn-group-xs" ng-model="pregunta_traduc.enunciado")
 
+	text-angular-toolbar(name="mytoolbar" ta-toolbar-group-class="btn-group btn-group-xs")
+	text-angular(ng-model="pregunta_traduc.enunciado" ta-target-toolbars='mytoolbar')
+	//div(text-angular ta-toolbar-group-class="btn-group btn-group-xs" ng-model="pregunta_traduc.enunciado")
 
-	div(layout layout-sm="column")
+	div(ng-show="!pregunta_traduc.mostrar_ayuda")
+		a.pointer(ng-click="pregunta_traduc.mostrar_ayuda=true")
+			i.fa.fa-anchor
+			md-tooltip Mostrar ayuda
+
+	div(layout layout-sm="column" ng-show="pregunta_traduc.mostrar_ayuda")
 		md-input-container.txtayuda(flex)
 			label Texto ayuda
 			input(type="text" ng-model="pregunta_traduc.ayuda")
@@ -17,10 +24,13 @@ a.btn-tag.btn-tag-info(md-ink-ripple ng-if="!pregunta_traduc.is_preg")
 		
 		md-input-container.input-group.margintb0.paddingtb0(flex ng-repeat="opcion in pregunta_traduc.opciones | orderBy:'orden'")
 			label(ng-show="!opcion.nueva")
-				i.fa.fa-sort 
-				| Opción {{$index+1}}:
-			input.form-control(type="text" ng-model="opcion.definicion" ng-class="{ 'textblue':opcion.is_correct, 'add-opcion':opcion.nueva }" 
+				i.fa.fa-sort  
+				|  Opción {{$index+1}}:
+			//input.form-control(type="text" ng-model="opcion.definicion" ng-class="{ 'textblue':opcion.is_correct, 'add-opcion':opcion.nueva }" 
 				ng-focus="addButtonNewOpcion(pregunta_traduc, opcion)" ng-disable="opcion.creando")
+
+			text-angular(ng-model="opcion.definicion" ta-target-toolbars='mytoolbar' ng-class="{ 'textblue':opcion.is_correct, 'add-opcion':opcion.nueva }" 
+				ng-focus="addButtonNewOpcion(pregunta_traduc, opcion)" ta-text-editor-class="form-control editor-height" ta-html-editor-class="form-control editor-height" ng-disable="opcion.creando")
 			
 			span.input-group-btn(ng-show="!opcion.nueva")
 				

@@ -85,8 +85,9 @@ angular.module('WissenSystem')
 			when "sesion_closed"
 				if message.clt.resourceId == Perfil.getResourceId()
 					unregister()
-					$rootScope.lastState = null
-					$rootScope.lastStateParam = null
+					$rootScope.lastState 		= null
+					$rootScope.lastStateParam 	= null
+					$rootScope.permiso_de_salir = true
 					Perfil.deleteUser()
 					$state.transitionTo 'login'
 					$cookies.remove('xtoken')

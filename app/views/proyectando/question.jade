@@ -18,7 +18,7 @@ div(style="font-size: 25pt;")
 	md-list(ng-if="SocketData.config.pregunta.tipo_pregunta=='Multiple'")
 		md-list-item(ng-repeat="opcion in SocketData.config.pregunta.opciones")
 			md-checkbox(ng-model="topping.wanted")
-			p {{ opcion.definicion }}
+			p(ng-bind-html="opcion.definicion") 
 			md-icon.md-secondary.fa.fa-comment(ng-click="" aria-label="Chat")
 
 	
@@ -34,7 +34,7 @@ div(style="font-size: 25pt;")
 			style="font-size: 20pt;") 
 			
 			span(style="font-weight: bold;") {{ indexChar($index) }}. 
-			span {{ opcion.definicion }}
+			span(ng-bind-html="opcion.definicion") 
 
 
 br

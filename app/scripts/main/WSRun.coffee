@@ -39,7 +39,7 @@ angular.module('WissenSystem')
 			$rootScope.lastState = next.name
 			$rootScope.lastStateParam = toParams
 
-		if fromState.name == 'panel.examen_respuesta' 
+		if fromState.name == 'panel.examen_respuesta' and $rootScope.permiso_de_salir == false
 			answer = confirm("No debes salir del examen, ¿Seguro de continuar?")
 			if (!answer)
 				event.preventDefault()

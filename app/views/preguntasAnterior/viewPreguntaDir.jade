@@ -50,14 +50,14 @@ div(ng-repeat="pregunta in preguntaking.preguntas_traducidas | porIdioma:idiomap
 			md-list(ng-if="preguntaking.tipo_pregunta=='Multiple'")
 				md-list-item(ng-repeat="opcion in pregunta.opciones | filter:{id: '!-1'} ")
 					md-checkbox(ng-model="topping.wanted")
-					p {{ opcion.definicion }}
+					p(ng-bind-html="opcion.definicion") 
 					md-icon.md-secondary.fa.fa-comment(ng-click="" aria-label="Chat")
 			
 
 			div.opciones(layout="row" layout-wrap layout-fill ng-if="preguntaking.tipo_pregunta=='Test'" style="padding-bottom: 32px;")
 				md-whiteframe.pointer.md-whiteframe-z2.btn(ng-class="{'elegida':opcion.elegida}" ng-if="!opcion.nueva" flex="40" ng-click="elegirOpcion(pregunta, opcion)" ng-repeat="opcion in pregunta.opciones") 
 					span(style="font-weight: bold;") {{ indexChar($index) }}. 
-					span {{ opcion.definicion }}
+					span(ng-bind-html="opcion.definicion") 
 
 	edit-pregunta(preguntaking="preguntaking" ng-show="preguntaking.editando" eventoactual="eventoactual" eventoactualselec="{{eventoactualselec}}")
 

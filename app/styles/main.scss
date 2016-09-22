@@ -1136,5 +1136,27 @@ header.fotoselectpc{
   border-bottom: 1px solid #ccc; border-bottom-style: dashed; background-color: #f8f8ff; 
   min-height: 50px!important;
 }
+/*
+.opcionesedit .input-group .form-control{
+  float: none !important;
+}
+*/
+.ta-editor.form-control.editor-height, .ta-scroll-window.form-control.editor-height  {
+    min-height: 30px !important;
+    height: 60px;
+    overflow: auto;
+    font-family: inherit;
+    font-size: 100%;
+    background: 0 0;
+}
+
+.form-control.editor-height > .ta-bind {
+    height: auto;
+    min-height: 30px !important;
+    padding: 6px 12px;
+}
+.ta-root.focussed > .ta-scroll-window.form-control {
+    background-color: white !important;
+}
 
 

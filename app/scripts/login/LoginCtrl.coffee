@@ -47,6 +47,20 @@ angular.module('WissenSystem')
 		)
 
 
+	$scope.entrar_como_invitado = ()->
+		$scope.credentials.username = 'sc'
+		$scope.credentials.password = '123'
+
+		user = AuthService.login_credentials($scope.credentials)
+		
+		user.then((r)->
+			#console.log 'Promise ganada', r
+			return
+		, (r2)->
+			console.log 'Promise de login_credentials rechazada', r2
+		)
+
+
 	$scope.mostrar_modificar_servidor = ()->
 		$scope.modificando_servidor = !$scope.modificando_servidor
 
