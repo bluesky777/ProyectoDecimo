@@ -2,7 +2,8 @@ angular.module('WissenSystem')
 #- Run ejecuta código depués de haber configurado nuestro módulo con config()
 .run ['$rootScope', 'cfpLoadingBar', '$state', '$stateParams', '$translate', '$cookies', 'Restangular', 'Perfil', 'AuthService', 'AUTH_EVENTS', 'toastr', ($rootScope, cfpLoadingBar, $state, $stateParams, $translate, $cookies, Restangular, Perfil, AuthService, AUTH_EVENTS, toastr) ->
 
-	$rootScope.examen_actual = []
+	$rootScope.examen_actual 		= []
+	$rootScope.permiso_de_salir 	= false
 
 
 

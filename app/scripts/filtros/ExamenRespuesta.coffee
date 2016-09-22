@@ -95,6 +95,11 @@ angular.module('WissenSystem')
 		filtered = $filter('orderBy')(filtered, 'orden')
 
 		if filtered
+
+			if indice_actual
+				return [filtered[indice_actual-1]]
+
+
 			
 			for pregunta in filtered
 

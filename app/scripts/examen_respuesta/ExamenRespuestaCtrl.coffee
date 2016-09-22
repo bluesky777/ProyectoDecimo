@@ -9,6 +9,7 @@ angular.module('WissenSystem')
 	$scope.total_preguntas = 0
 	$scope.cambiarTema('theme-one')
 	$scope.waiting_question = false
+	$scope.opcion_eligida 	= ''
 
 	AuthService.verificar_acceso()
 
@@ -37,7 +38,12 @@ angular.module('WissenSystem')
 		# Evantos del examen
 		# *************************************************
 
-		$scope.$on 'respuesta_elegida', (event, indice)->
+		$scope.$on 'respuesta_elegida', (event, indice, valor)->
+			if valor
+				if valor == 'incorrect'
+					$scope.opcion_eligida = 'Incorrecta'
+				else if valor == 'correct'
+					$scope.opcion_eligida = 'Correcta'
 
 			if $scope.USER.evento_actual.gran_final
 				$scope.waiting_question = true
@@ -54,7 +60,7 @@ angular.module('WissenSystem')
 
 
 		$scope.$on 'tiempo_preg_terminado', (event)->
-			console.log 'Tiempo pregunta terminado'
+			$scope.opcion_eligida = 'Incorrecta'
 			$scope.waiting_question = true
 			MySocket.sc_answered 'incorrect', $rootScope.tiempo
 
@@ -87,11 +93,13 @@ angular.module('WissenSystem')
 					toastr.warning 'No hay traducción para esta pregunta'
 					console.log 'No hay traducción para esta pregunta', preg_check[0]
 
+			$scope.pregunta_actual = $filter('noPregActual')($scope.examen_actual.preguntas)
+			$scope.pregunta_actual_porc = $scope.pregunta_actual / $scope.total_preguntas * 100
+
 			$scope.check_por_terminado()
 
 		$scope.$on 'tiempo_exam_terminado', (event)->
 			$rootScope.permiso_de_salir = true
-			console.log 'Tiempo examen terminado'
 			$state.go 'panel'
 
 
@@ -99,19 +107,24 @@ angular.module('WissenSystem')
 
 		destroy_next_question = $rootScope.$on 'next_question', (event)-> # Hay otro listening en TimerDir
 			if $scope.waiting_question != false
+				$scope.pregunta_actual = $filter('noPregActual')($scope.examen_actual.preguntas)
+				$scope.pregunta_actual_porc = $scope.pregunta_actual / $scope.total_preguntas * 100
+				
 				pregtemp = $filter('preguntaActual')($scope.examen_actual.preguntas, $scope.pregunta_actual)[0]
 				pregunta = $filter('filter')($scope.examen_actual.preguntas, {pregunta_id: pregtemp.pregunta_id})[0]
 				console.log pregunta
 				$scope.waiting_question = false
+				$scope.$broadcast 'next_question'
 
 		destroy_goto_question_on = $rootScope.$on 'goto_question_no', (event, numero)->
-			console.log numero
 			if $scope.waiting_question != false
-				$scope.pregunta_actual = numero
+				$scope.pregunta_actual 		= numero
+				$scope.pregunta_actual_porc = $scope.pregunta_actual / $scope.total_preguntas * 100
+
 				pregtemp = $filter('preguntaActual')($scope.examen_actual.preguntas, numero)[0]
 				pregunta = $filter('filter')($scope.examen_actual.preguntas, {pregunta_id: pregtemp.pregunta_id})[0]
-				console.log pregunta
 				$scope.waiting_question = false
+				$scope.$broadcast 'goto_question_no', numero
 
 
 
@@ -166,6 +179,7 @@ angular.module('WissenSystem')
 			if preg_check[0].terminado
 				console.log 'Todas las respuestas contestadas', preg_check
 				toastr.success 'Examen terminado'
+				$rootScope.permiso_de_salir = true
 				$state.go 'panel'
 				return true
 		return false

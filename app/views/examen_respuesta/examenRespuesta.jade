@@ -41,7 +41,8 @@
 
 						h4(ng-show="pregunta.terminado") Examen terminado.
 
-				span(ng-if="waiting_question")
+				span(ng-if="waiting_question" style="text-align: center;")
+					h4 Respuesta {{opcion_eligida}}
 					h4 Espera la siguiente pregunta
 					
 
@@ -51,4 +52,4 @@
 
 
 			.panel-footer.todo-foot.clearfix
-				| El pie del panel
+				| No salgas de esta ventana

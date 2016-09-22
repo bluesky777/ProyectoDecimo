@@ -11,7 +11,7 @@ angular.module('WissenSystem')
 	$scope.cmdPreguntasTraduc 		= []
 	$scope.cmdPreguntaSelected		= {}
 	$scope.cmdNoPregSelected		= 0
-	$scope.cmdNoPregunta			= 0
+	$scope.cmdNoPregunta			= 1
 	$scope.cmdShowLogoEntidadPartici = false
 	$scope.show_result_table 		= true
 
@@ -209,9 +209,13 @@ angular.module('WissenSystem')
 
 
 	$scope.gotoNoQuestionClt = ()->
+		cant = 0
 		for cliente in SocketData.clientes
 			if cliente.seleccionado # Debo quitar el comentario!!!!!
+				cant = cant + 1
 				MySocket.sc_goto_question_no_clt(cliente, $scope.cmdNoPregunta) # El modelo no cambia hasta salir de esta función
+		if cant == 0
+			toastr.warning 'Primero debes seleccionar al menos un participante'
 
 
 	MySocket.get_clts()

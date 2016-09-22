@@ -41,9 +41,8 @@ angular.module('WissenSystem')
 			})
 			modalInstance.result.then( (option)->
 				opcion.respondida = true
-				$scope.$emit 'respuesta_elegida', indice
-				console.log option, opcion
 				valor = if opcion.is_correct then 'correct' else 'incorrect'
+				$scope.$emit 'respuesta_elegida', indice, valor
 				MySocket.sc_answered valor, $rootScope.tiempo
 
 			)

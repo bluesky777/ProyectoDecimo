@@ -68,22 +68,20 @@ angular.module('WissenSystem')
 		$interval.cancel($rootScope.promiseInterval)
 
 
-	$rootScope.$on 'next_question', (event)->
-		if $scope.$parent.waiting_question != false
-			$rootScope.tiempo = -1
-			$scope.tiempo = $rootScope.tiempo;  
+	$scope.$on 'next_question', (event)->
+		$rootScope.tiempo = -1
+		$scope.tiempo = $rootScope.tiempo;  
 
-			if $scope.$parent.USER.evento_actual.gran_final
-				$scope.start()
+		if $scope.$parent.USER.evento_actual.gran_final
+			$scope.start()
 
 
-	$rootScope.$on 'goto_question_no', (event)->
-		if $scope.$parent.waiting_question != false
-			$rootScope.tiempo = -1
-			$scope.tiempo = $rootScope.tiempo;  
+	$scope.$on 'goto_question_no', (event)->
+		$rootScope.tiempo = -1
+		$scope.tiempo = $rootScope.tiempo;  
 
-			if $scope.$parent.USER.evento_actual.gran_final
-				$scope.start()
+		if $scope.$parent.USER.evento_actual.gran_final
+			$scope.start()
 
 
 

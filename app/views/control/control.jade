@@ -178,7 +178,7 @@ sidenav-edit-usu-dir
 					.form-group(style="width: 200px;margin-top: 15px;")
 						.input-group
 							md-tooltip Enviar a los clientes seleccionados a una pregunta
-							input.form-control(type="number" placeholder="Número" ng-model="cmdNoPregunta" style="border: 1px solid #ccc; border-right: 0px;")
+							input.form-control(type="number" min="1" placeholder="Número" ng-model="cmdNoPregunta" style="border: 1px solid #ccc; border-right: 0px;")
 							.input-group-btn
 								button.btn.btn-default(type="button" ng-click="gotoNoQuestionClt()" style="height: 34px; border-left: 0px;") Ir
 
