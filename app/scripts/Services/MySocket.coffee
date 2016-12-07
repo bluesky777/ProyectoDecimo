@@ -3,8 +3,17 @@ angular.module('WissenSystem')
 .factory('MySocket', ['$websocket', 'App', '$q', '$rootScope', 'Perfil', '$interval', '$cookies', '$http', '$state', 'SocketData', '$filter', ($websocket, App, $q, $rootScope, Perfil, $interval, $cookies, $http, $state, SocketData, $filter) ->
 
 	#Open a WebSocket connection
-	url = 'ws://' + localStorage.getItem('dominio') + ':8787'
-	dataStream = $websocket(url, {reconnectIfNotNormalClose: true})
+	# Verifico que no tenga puerto asignado
+	dominioSplit 	= localStorage.getItem('dominio').split(':')
+	dominioSolo 	= ''
+
+	if 'http' in dominioSplit[0]
+		dominioSolo 	= dominioSplit[1]
+	else
+		dominioSolo 	= dominioSplit[0]
+
+	url 		= 'ws://' + dominioSolo + ':8787'
+	dataStream 	= $websocket(url, {reconnectIfNotNormalClose: true})
 
 	clientes = []
 	@usuarios_all = []

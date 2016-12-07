@@ -2,17 +2,15 @@
 
 angular.module('WissenSystem', [
   'ngAnimate'
+  'ngAria'
   'ngCookies'
   'ngResource'
   'ngRoute'
   'ngSanitize'
   'ui.router'
   'ui.bootstrap'
-  'ui.select'
   'pascalprecht.translate'
   'angular-loading-bar'
-  'restangular'
-  'toastr'
   'http-auth-interceptor'
   'ui.grid'
   'ui.grid.edit'
@@ -26,9 +24,12 @@ angular.module('WissenSystem', [
   'angular-svg-round-progress'
   'qrScanner'
   'ja.qr'
-  'ngWebSocket'
   'ngclipboard'
   'camera'
+  'ngWebSocket'
+  'toastr'
+  'ui.select'
+  'restangular'
 ])
 
 #- Valores que usaremos para nuestro proyecto

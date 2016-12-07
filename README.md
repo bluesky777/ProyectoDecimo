@@ -1,41 +1,12 @@
-EduCity
-=======
+# wissen-system-front
 
-Plataforma educativa profesional para instituciones o profesionales que dictan cursos ya sea presencial o virtual.
+This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
+version 0.15.1.
 
+## Build & development
 
-Características iniciales
-=========================
+Run `grunt` for building and `grunt serve` for preview.
 
-Página inicial con el listado de cursos.
-Control de cuentas de usuario.
-Notificaciones sobre tareas y actividades.
-Sistema de mensajería.
-Creación del curso al cual después se le crearán los bloques.
-Creación de las materias asignadas a cada bloque.
-Los alumnos pueden responder a las tareas con texto o archivos, según lo establecido por el profesor.
-Informes detallados del estado educativo de un alumno o varios.
+## Testing
 
-
-
-Mejoras futuras
-===============
-
-Soporte de múltiples idiomas, inicialmente se traducirá a Inglés.
-Inscripción controlada a través de Facebook o Twitter.
-Valor del bloque por defecto o calculado según materias inscritas.
-Cada materia puede tener dependencia de otra(s) materia(s) anterior(es) para ser asignada a un bloque.
-Estado contable de un alumno.
-Diseño adaptativo para todo tipo de móviles.
-
-
-Por qué Educity?
-================
-
-Existen muchas plataformas educativas en el mercado, pero ninguna tiene la ventaja de ser Single Page, es decir,
-una página que al cargar un módulo primario, no tenga que recargar la página entera en busca de una repuesta 
-del servidor, ya que esta página utiliza Frameworks(componentes) profesionales que permiten hacer llamadas de solo 
-datos para luego renderizarlos en el lugar correspondiente de la página. A este proceso se le llama AJAX.
-El principal Framework del lado del navegador, se llama Angularjs(mantenido por Google) el cual permite una 
-experiencia inigualable al usuario.
-Además está pensado para ser altamente configurable, lo cual le permite adaptarse a las necesidades de la empresa.
+Running `grunt test` will run the unit tests with karma.
