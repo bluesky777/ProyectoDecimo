@@ -1,6 +1,6 @@
 
 <div ng-repeat="disciplinaking in disciplinasking">
-  <md-whiteframe layout ng-repeat="disciplina in disciplinaking.disciplinas_traducidas | porIdioma:idiomapreg.selected" ng-hide="disciplinaking.editando" style="padding: 10px" class="md-whiteframe-z2 definicion-frame"><span flex="10">{{$parent.$index+1}}.</span><span flex="90">{{disciplina.nombre}}</span>
+  <md-whiteframe layout ng-repeat="disciplina in disciplinaking.disciplinas_traducidas | porIdioma:idiomapreg.selected" ng-hide="disciplinaking.editando" style="padding: 10px; position: relative;" class="md-whiteframe-z2 definicion-frame"><span flex="10">{{$parent.$index+1}}.</span><span flex="90">{{disciplina.nombre}}</span>
     <div layout="row" class="btn-container-edit">
       <md-button aria-label="Editar" ng-click="editarDisciplina(disciplinaking)" class="md-fab md-primary md-mini">
         <md-icon class="fa fa-pencil"></md-icon>
@@ -15,7 +15,7 @@
   <div ng-show="disciplinaking.editando" style="margin-top: 20px">
     <div class="panel panel-default panel-hovered panel-stacked mb20">
       <div ng-show="!eventoactual.es_idioma_unico" layout style="height: 40px;" class="panel-heading"> <span>Editar disciplina en idiomas: </span>
-        <md-input-container layout="row" layout-align="start center" style="padding-bottom: 0px; margin-top: -10px;">
+        <md-input-container layout="row" layout-align="start center" style="padding-bottom: 4px; margin-top: 2px; margin-bottom: 0;">
           <md-select multiple="true" placeholder="Idioma" ng-model="disciplinaking.idiomasEdit" ng-init="disciplinaking.idiomasEdit=[eventoactual.idioma_principal_id]">
             <md-option ng-repeat="idioma in eventoactual.idiomas" value="{{idioma.id}}">{{idioma.original}}</md-option>
           </md-select>

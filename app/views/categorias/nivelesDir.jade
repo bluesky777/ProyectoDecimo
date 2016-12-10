@@ -1,6 +1,6 @@
 div(ng-repeat="nivelking in nivelesking" )
 
-	md-whiteframe.md-whiteframe-z2.definicion-frame(layout ng-repeat="nivel in nivelking.niveles_traducidos | porIdioma:idiomapreg.selected" ng-hide="nivelking.editando" style="padding: 10px")
+	md-whiteframe.md-whiteframe-z2.definicion-frame(layout ng-repeat="nivel in nivelking.niveles_traducidos | porIdioma:idiomapreg.selected" ng-hide="nivelking.editando" style="padding: 10px; position: relative;")
 		span(flex="10") {{$parent.$index+1}}.
 		span(flex="90") {{nivel.nombre}}
 
@@ -23,7 +23,7 @@ div(ng-repeat="nivelking in nivelesking" )
 				span
 					|  Editar nivel en idiomas:  
 
-				md-input-container(layout="row" layout-align="start center" style="padding-bottom: 0px; margin-top: -10px;")
+				md-input-container(layout="row" layout-align="start center" style="padding-bottom: 4px; margin-top: 2px; margin-bottom: 0;")
 					md-select(multiple="true" placeholder="Idioma" ng-model="nivelking.idiomasEdit" ng-init="nivelking.idiomasEdit=[eventoactual.idioma_principal_id]")
 						md-option(ng-repeat="idioma in eventoactual.idiomas" value="{{idioma.id}}") {{idioma.original}}
 

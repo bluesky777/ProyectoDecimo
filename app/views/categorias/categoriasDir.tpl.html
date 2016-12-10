@@ -1,6 +1,6 @@
 
 <div ng-repeat="categoriaking in categoriasking">
-  <md-whiteframe layout ng-repeat="categoria in categoriaking.categorias_traducidas | porIdioma:idiomapreg.selected" ng-hide="categoriaking.editando" style="padding: 10px" class="md-whiteframe-z2 definicion-frame"><span flex="10">{{$parent.$index+1}}.</span><span flex="90">{{categoria.nombre}}</span>
+  <md-whiteframe layout ng-repeat="categoria in categoriaking.categorias_traducidas | porIdioma:idiomapreg.selected" ng-hide="categoriaking.editando" style="padding: 10px; position: relative;" class="md-whiteframe-z2 definicion-frame"><span flex="10">{{$parent.$index+1}}.</span><span flex="90">{{categoria.nombre}}</span>
     <div layout="row" class="btn-container-edit">
       <md-button aria-label="Editar" ng-click="editarCategoria(categoriaking)" class="md-fab md-primary md-mini">
         <md-icon class="fa fa-pencil"></md-icon>
@@ -15,7 +15,7 @@
   <div ng-show="categoriaking.editando" style="margin-top: 20px">
     <div class="panel panel-default panel-hovered panel-stacked mb20">
       <div ng-if="!evento_actual.es_idioma_unico" layout style="height: 40px;" class="panel-heading"><span> Editar categoria en idiomas:  </span>
-        <md-input-container layout="row" layout-align="start center" style="padding-bottom: 0px; margin-top: -10px;">
+        <md-input-container layout="row" layout-align="start center" style="padding-bottom: 4px; margin-top: 2px; margin-bottom: 0;">
           <md-select multiple="true" placeholder="Idioma" ng-model="categoriaking.idiomasEdit" ng-init="categoriaking.idiomasEdit=[eventoactual.idioma_principal_id]">
             <md-option ng-repeat="idioma in eventoactual.idiomas" value="{{idioma.id}}">{{idioma.original}}</md-option>
           </md-select>

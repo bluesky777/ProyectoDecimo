@@ -46,6 +46,8 @@ angular.module('WissenSystem')
 
 		$scope.guardando_edit = true
 
+		console.log $scope.currentEvent.gran_final
+
 		Restangular.one('eventos/update').customPUT($scope.currentEvent).then((r)->
 			console.log 'Evento editado', r
 			$scope.guardando_edit = false

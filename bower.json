@@ -42,5 +42,5 @@
     "angular-mocks": "^1.4.0"
   },
   "appPath": "app",
-  "moduleName": "wissenSystemFrontApp"
+  "moduleName": "WissenSystem"
 }

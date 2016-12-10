@@ -36,12 +36,12 @@
 											input.form-control(ng-model="newEvent.descripcion" type="text" placeholder="Descripción")
 
 									.form-group
-										md-checkbox(ng-model="newEvent.gran_final" ng-false-value="0" ng-true-value="1" ng-value="newEvent.gran_final")
+										md-checkbox(ng-model="newEvent.gran_final" ng-value="newEvent.gran_final")
 											| Gran final
 
-									.form-group
+									.form-group(style="display: none;")
 										label.control-label.col-md-3 Examen actual
-										md-select(ng-model="newEvent.examen_actual_id" placeholder="Selecciona...")
+										md-select(ng-model="newEvent.examen_actual_id" placeholder="Selecciona... (no sirve)")
 											md-option(value="1") Para pruebas
 											md-option(value="2") Para la final
 									.form-group
@@ -64,6 +64,14 @@
 										label.control-label.col-md-3 Precio 4
 										.col-md-9
 											input.form-control(ng-model="newEvent.precio4" type="number" placeholder="Precio4")
+
+										label.control-label.col-md-3 Precio 5
+										.col-md-9
+											input.form-control(ng-model="newEvent.precio5" type="number" placeholder="Precio5")
+
+										label.control-label.col-md-3 Precio 6
+										.col-md-9
+											input.form-control(ng-model="newEvent.precio6" type="number" placeholder="Precio6")
 								.col-md-4
 									
 									.form-group
@@ -105,7 +113,7 @@
 
 
 
-		md-whiteframe.md-whiteframe-z2.definicion-frame(layout ng-repeat="evento in USER.eventos"  style="padding: 10px")
+		md-whiteframe.md-whiteframe-z2.definicion-frame(layout ng-repeat="evento in USER.eventos"  style="padding: 10px; position: relative;")
 			span(flex="10") {{$index+1}}.
 			span(flex="90") {{evento.nombre}}
 
@@ -150,7 +158,7 @@
 											input.form-control(ng-model="currentEvent.descripcion" type="text" placeholder="Descripción")
 
 									.form-group
-										md-checkbox(ng-model="currentEvent.gran_final" ng-false-value="0" ng-true-value="1")
+										md-checkbox.ck-margin(ng-model="currentEvent.gran_final" ng-false-value="0" ng-true-value="1")
 											| Gran final
 
 									.form-group
@@ -160,7 +168,7 @@
 											md-option(value="2") Para la final
 									
 									.form-group
-										md-checkbox(ng-model="currentEvent.with_pay" ng-value="currentEvent.with_pay")
+										md-checkbox.ck-margin(ng-model="currentEvent.with_pay" ng-value="currentEvent.with_pay")
 											| Con pago
 
 									.form-group(ng-show="currentEvent.with_pay")
@@ -187,20 +195,20 @@
 
 
 									.form-group
-										md-checkbox(ng-model="currentEvent.actual" ng-value="currentEvent.actual")
+										md-checkbox.ck-margin(ng-model="currentEvent.actual" ng-value="currentEvent.actual")
 											| Evento actual
 
 									.form-group
-										md-checkbox(ng-model="currentEvent.enable_public_chat" ng-value="currentEvent.enable_public_chat")
+										md-checkbox.ck-margin(ng-model="currentEvent.enable_public_chat" ng-value="currentEvent.enable_public_chat")
 											| Habilitar chat público
 
 									.form-group
-										md-checkbox(ng-model="currentEvent.enable_private_chat" ng-value="currentEvent.enable_private_chat")
+										md-checkbox.ck-margin(ng-model="currentEvent.enable_private_chat" ng-value="currentEvent.enable_private_chat")
 											| Habilitar chat privado
 									
 									md-divider
 									.form-group
-										md-checkbox(ng-model="currentEvent.es_idioma_unico" ng-value="currentEvent.es_idioma_unico")
+										md-checkbox.ck-margin(ng-model="currentEvent.es_idioma_unico" ng-value="currentEvent.es_idioma_unico")
 											| Solo usar un idioma
 
 										md-select(placeholder="Seleccione idioma principal" ng-model="currentEvent.idioma_principal_id")
