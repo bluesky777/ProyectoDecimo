@@ -71,7 +71,7 @@
                     <ui-select ng-model="newUsu.imgUsuario" on-select="imagenSelect($item, $model)" theme="select2" style="width: 95%;">
                       <ui-select-match placeholder="Imagen usuario"> <img ng-src="{{imagesPath + $select.selected.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
                       <ui-select-choices repeat="imagen in imagenes | filter: {nombre: $select.search}"><img ng-src="{{imagesPath + imagen.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + imagen.nombre | highlight: $select.search"></small></ui-select-choices>
-                      <ui-select-no-choice><img ng-src="{{imagesPath + 'perfil/system/no-photo.jpg'}}" style="width:25px; height:25px;"><small ng-bind-html="' Sin foto '"></small></ui-select-no-choice>
+                      <ui-select-no-choice><img ng-src="{{imagesPath + 'perfil/system/avatars/no-photo.jpg'}}" style="width:25px; height:25px;"><small ng-bind-html="' Sin foto '"></small></ui-select-no-choice>
                     </ui-select>
                   </div>
                 </div>
@@ -180,7 +180,7 @@
                     <ui-select ng-model="currentUser.imgUsuario" on-select="imagenSelect($item, $model)" theme="select2" style="width: 95%;">
                       <ui-select-match placeholder="Imagen usuario"> <img ng-src="{{imagesPath + $select.selected.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
                       <ui-select-choices repeat="imagen in imagenes | filter: {nombre: $select.search}"><img ng-src="{{imagesPath + imagen.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + imagen.nombre | highlight: $select.search"></small></ui-select-choices>
-                      <ui-select-no-choice><img ng-src="{{imagesPath + 'perfil/system/no-photo.jpg'}}" style="width:25px; height:25px;"><small ng-bind-html="' Sin foto '"></small></ui-select-no-choice>
+                      <ui-select-no-choice><img ng-src="{{imagesPath + 'perfil/system/avatars/no-photo.jpg'}}" style="width:25px; height:25px;"><small ng-bind-html="' Sin foto '"></small></ui-select-no-choice>
                     </ui-select>
                   </div>
                 </div>
