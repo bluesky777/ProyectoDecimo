@@ -6,24 +6,41 @@
       <div class="panel-body">
         <md-content style="overflow: visible;">
           <md-tabs md-selected="config.informe_tab_actual" md-dynamic-height md-border-bottom>
-            <md-tab label="Pacientes" md-on-select="tabSeleccionado(0)">
-              <md-content style="overflow-y: visible; height: 300px" class="md-padding">
-                <!--h1.md-display-2 Tab One	-->
-                
-                <div class="form-group col-lg-4 col-sm-12 col-xs-12">
-                  <ui-select ng-model="seleccion.paciente" style="margin: 0!important;width: 100%; padding-bottom: 0!important">
-                    <ui-select-match placeholder="Pacientes" allow-clear="true">{{$select.selected.nombres + ' ' + $select.selected.apellidos}}</ui-select-match>
-                    <ui-select-choices repeat="paciente in pacientes | filter: $select.search">
-                      <div ng-bind-html="paciente.nombres + ' ' + paciente.apellidos | highlight: $select.search"></div>
-                    </ui-select-choices>
-                  </ui-select>
+            <md-tab label="Exámenes" md-selected="config.tab_seleccionado" md-on-select="tabSeleccionado(0)">
+              <md-content style="overflow-y: visible; height: 400px" class="md-padding">
+                <md-select placeholder="Elija un evento" ng-model="selected.evento_id" ng-change="cargar_categorias()">
+                  <md-option ng-repeat="event in eventos_infor" ng-value="event.id">Evento: <b>{{event.nombre}} ({{event.alias}})</b></md-option>
+                </md-select>
+                <md-checkbox ng-model="config.gran_final" aria-label="Gran final">Solo hechos en 'Gran final'</md-checkbox>
+                <div style="text-align: center;">
+                  <md-button ng-click="traerTodosLosExamenes()" class="md-raised">Traer todos los exámenes</md-button>
+                </div><br>
+                <select multiple="true" style="width: 150px; height: 150px; font-size: 9pt">
+                  <option ng-repeat="categoria in selected.categorias" ng-model="selected.categoria_id" ng-click="cargar_evaluaciones(categoria)">{{categoria.nombre}}</option>
+                </select>
+                <div class="div-lista">
+                  <div ng-repeat="evaluacion in selected.evaluaciones" ng-click="cargar_preguntas(evaluacion, $index)" ng-class="{'opcion-seleccionada': evaluacion.selected}"> <span ng-hide="evaluacion.actual">{{ ($index+1) + '. ' + evaluacion.descripcion }}</span><span ng-show="evaluacion.actual">{{ ($index+1) }}.  <b> ACTUAL:   </b> {{ evaluacion.descripcion }}</span></div>
                 </div>
-                <md-button ng-click="verPacientes()">Pacientes</md-button>
-                <md-button ng-click="verExamenIngreso()">Examen de ingreso</md-button>
+                <select multiple="true" style="width: 250px; height: 150px; font-size: 9pt; overflow: scroll">
+                  <option ng-repeat="pregunta in selected.preguntas" ng-model="selected.pregunta_id" ng-click="cmdClickPreguntaSelected(pregunta, $index)" ng-bind-html="($index+1) + '. ' + pregunta.enunciado"> </option>
+                </select>
+                <md-button ng-click="traerExamenesEntidades()" class="md-raised">Por entidades</md-button>
+                <md-button ng-click="traerExamenesEntidadesCategorias()" class="md-raised">Por entidades-categorías</md-button>
+                <md-button ng-click="traerExamenesCategorias()" class="md-raised">Por categorías</md-button>
+                <md-button ng-click="traerExamenesCategoria()" class="md-raised">Traer categoría</md-button>
+                <form>
+                  <div style="width: 300px;margin-top: 15px;" class="form-group">
+                    <div class="input-group">
+                      <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                      <input type="text" placeholder="Buscar" ng-model="searchExam" style="border-top: 1px solid #ccc; border-right: 1px solid #ccc;" class="form-control">
+                    </div>
+                  </div>
+                </form>
               </md-content>
             </md-tab>
-            <md-tab label="Usuarios" md-on-select="tabSeleccionado(1)">
+            <md-tab label="Usuarios" md-selected="config.tab_seleccionado" md-on-select="tabSeleccionado(1)">
               <md-content class="md-padding">
+                <h1 class="md-display-2">Tab One	</h1>
                 <md-button ng-click="verUsuarios()">Usuarios</md-button>
               </md-content>
             </md-tab>

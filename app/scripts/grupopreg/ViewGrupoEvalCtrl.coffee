@@ -12,7 +12,9 @@ angular.module('WissenSystem')
 			
 			$scope.quitando = true
 
-			evaluacion = $filter('filter')($scope.preguntasevaluacion2, {grupo_pregs_id: pregunta_king.id})[0]
+			console.log pregunta_king, evaluacion = $filter('filter')($scope.$parent.evaluaciones, {grupo_pregs_id: pregunta_king.id})
+
+			evaluacion = $filter('filter')($scope.$parent.evaluaciones, {grupo_pregs_id: pregunta_king.id})[0]
 
 			datos = 
 				pregunta_id: pregunta_king.id

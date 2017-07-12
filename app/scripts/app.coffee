@@ -54,13 +54,15 @@ angular.module('WissenSystem', [
   
   console.log 'hostname: ', location.hostname
   
+  ###
   if(location.hostname.match('lalvirtual.com'))
     dominio = 'http://lalvirtual.com/wissen/'
     
   else if(location.hostname.match('olimpiadaslibertad.com'))
     dominio = 'http://olimpiadaslibertad.com/'
-  
-  server = dominio + 'wissenLaravel/public/'
+  ###
+
+  server = dominio + '/wissenLaravel/public/'
   #server = ''
   frontapp = dominio + 'ws_dist/'
 

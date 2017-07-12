@@ -817,6 +817,26 @@ img.message-entilogo{
   overflow: hidden;
   text-overflow: ellipsis
 }
+.usuario-listado{
+    text-overflow: clip!important;
+    font-size: 9pt;
+}
+.ellipsis200, .ellipsis250, .ellipsis270, .ellipsis350{
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.ellipsis200{
+    width: 200px;
+}
+.ellipsis250{
+    width: 250px;
+    display: inline-block;
+}
+.ellipsis270{
+    width: 270px;
+}
+.ellipsis350{
+    width: 350px;
+}
 .text-center{
   text-align: center;
 }
@@ -1140,11 +1160,182 @@ header.fotoselectpc{
   border-bottom: 1px solid #ccc; border-bottom-style: dashed; background-color: #f8f8ff; 
   min-height: 50px!important;
 }
+
+@media print {
+
+
+    @page cartahorizontal{ 
+        -webkit-transform: rotate(-90deg);
+        -moz-transform:rotate(-90deg);
+        filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+        margin: 5mm 25mm 25mm 5mm;
+        background-color: #ff0000;
+    }
+    @page oficiohorizontal{ 
+        -webkit-transform: rotate(-90deg);
+        -moz-transform:rotate(-90deg);
+        filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+        margin: 5mm 25mm 25mm 5mm;
+        background-color: #ff0000;
+    }
+    @page cartavertical{ 
+        size: portrait; 
+        margin: 0cm !important;
+        padding: 0 !important;
+    }
+    
+
+    .page-vertical{
+        page: cartavertical;
+        width: 100%;
+        margin-bottom: 0px !important;
+        border: 0px;
+        counter-reset: numpagina;
+        
+        font-size: 12px;
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+    .page-carta-horizontal{
+        page: cartahorizontal;
+        width: 31cm;
+        margin-bottom: 0px;
+        border: 0px;
+        background-color: #ff0000;
+    }
+    .page-oficio-horizontal{
+        page: oficiohorizontal;
+        width: 31cm;
+        margin-bottom: 0px;
+        border: 0px;
+        background-color: #ff0000;
+    }
+
+    .popover{
+        display: none!important;
+
+        .arrow{
+          display: none!important;
+        } 
+    }
+    .popover-inner{
+        display: none!important;
+    }
+
+    .content-container{
+        margin-left: 0px!important;
+        background-color: #ff0000;
+    }
+    .page-dashboard{
+        padding: 0px!important;
+        margin: 0px!important;
+        background-color: #ff0000;
+
+    }
+
+    .row{
+      padding: 0px !important;
+      margin: 0px !important;
+    }
+
+    .exameningreso{
+      width: 100% !important;
+
+    }
+    table{
+        border: 1px solid #000!important;
+
+    }
+    table > thead > tr > td{
+        border-bottom-width: 2px!important;
+        border-bottom-color: #f00!important;
+        font-weight: bold;
+        -webkit-print-color-adjust: exact;
+    }
+    table > thead > tr{
+        background-color: #eee!important;
+        background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgeG1sbnM9Imh0d…0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2xlc3NoYXQtZ2VuZXJhdGVkKSIgLz48L3N2Zz4=)!important;
+        background-image: linear-gradient(to bottom, #f2f2f2 0, #fafafa 100%);
+        -webkit-print-color-adjust: exact;
+    }
+    .table-striped2 > tbody > tr:nth-of-type(odd) {
+        background-color: #ccc!important;
+    }
+    .table td, .table th {
+        background-color: inherit !important;
+    }
+    .table-bordered2 > thead > tr > th, .table-bordered2 > tbody > tr > th, .table-bordered2 > tfoot > tr > th, .table-bordered2 > thead > tr > td, .table-bordered2 > tbody > tr > td, .table-bordered2 > tfoot > tr > td {
+        border: 1px solid #000!important;
+    }
+
+
+    .comportamiento-boletin{
+        page-break-inside:avoid;
+    }
+    .salto-pagina, .resumen-perdidas, .footer-boletin {
+        page-break-after: always;
+    }
+    .page-wrap{
+      width: 100% !important;
+      font-size: 9pt !important;
+      margin: 0px !important;
+      padding: 0px !important;
+
+    }
+    .pintar{
+      background-color: red !important;
+    }
+    table thead th{
+      padding: -4px !important;
+      text-align: center;
+    }
+    .marg-pad-0{
+      margin: 0px !important;
+      padding: 0px !important;
+    }
+    .page-wrap > .row{
+      padding: 0px !important;
+      margin: 0px !important;
+    }
+    .margen{
+      margin: 4px !important;
+      text-align: center !important;
+    }
+    .body{
+      letter-spacing: 0px !important;
+    }
+    md-checkbox.md-default-theme[disabled].infocheck .md-label, md-checkbox[disabled].infocheck .md-label {
+      color: rgb(0,0,0);
+    }
+    md-checkbox.md-checked.infocheck .md-icon {
+     background-color: rgb(0,0,0);
+     border-color: black;
+    }
+    md-checkbox.md-default-theme[disabled].md-checked.infocheck .md-icon:after, md-checkbox[disabled].md-checked.infocheck .md-icon:after{
+      border-color: rgb(0, 0, 0);
+    }
+    md-checkbox.md-checked.infocheck .md-container:before{
+      background-color: rgb(63, 81, 181);
+    }
+    .sin-cortar{
+      page-break-inside: avoid;
+    }
+}
+
+
 /*
 .opcionesedit .input-group .form-control{
   float: none !important;
 }
 */
+
+
+.nombresellipsis{
+    white-space: nowrap;
+    //width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
 .ta-editor.form-control.editor-height, .ta-scroll-window.form-control.editor-height  {
     min-height: 30px !important;
     height: 60px;
@@ -1162,5 +1353,19 @@ header.fotoselectpc{
 .ta-root.focussed > .ta-scroll-window.form-control {
     background-color: white !important;
 }
+.div-lista{
+    width: 250px;
+    height: 150px;
+    font-size: 9pt;
+    overflow: scroll;
+    display: inline-block;
+    background-color: #fff;
+    border: 1px solid #999;
+}
+.opcion-seleccionada{
+    background-color: #5e73e8;
+    color: white;
+}
+
 
 

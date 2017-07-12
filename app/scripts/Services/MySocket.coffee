@@ -36,7 +36,7 @@ angular.module('WissenSystem')
 		SocketData.clientes = []
 	)
 	dataStream.onError((datos)->
-		console.log 'Error de Socket', datos
+		console.log 'Error de Socket'
 	)
 
 	dataStream.onMessage((message)->

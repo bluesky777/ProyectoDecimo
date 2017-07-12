@@ -6,25 +6,67 @@
 			.panel-body
 				md-content(style="overflow: visible;")
 					md-tabs(md-selected="config.informe_tab_actual" md-dynamic-height md-border-bottom)
-						md-tab(label="Pacientes" md-on-select="tabSeleccionado(0)")
-							md-content.md-padding(style="overflow-y: visible; height: 300px")
-								//h1.md-display-2 Tab One	
-
-
-								.form-group.col-lg-4.col-sm-12.col-xs-12
+						
+						md-tab(label="Exámenes" md-selected="config.tab_seleccionado" md-on-select="tabSeleccionado(0)")
+							md-content.md-padding(style="overflow-y: visible; height: 400px")
 								
-									ui-select(ng-model="seleccion.paciente" style="margin: 0!important;width: 100%; padding-bottom: 0!important")
-										ui-select-match(placeholder="Pacientes" allow-clear="true") {{$select.selected.nombres + ' ' + $select.selected.apellidos}}
-										ui-select-choices(repeat="paciente in pacientes | filter: $select.search")
-											div(ng-bind-html="paciente.nombres + ' ' + paciente.apellidos | highlight: $select.search")
+
+								md-select(placeholder="Elija un evento" ng-model="selected.evento_id" ng-change="cargar_categorias()")
+									md-option(ng-repeat="event in eventos_infor" ng-value="event.id")
+										| Evento: 
+										b {{event.nombre}} ({{event.alias}})
+
+								md-checkbox(ng-model="config.gran_final" aria-label="Gran final") Solo hechos en 'Gran final'
+
+								div(style="text-align: center;")
+									md-button.md-raised(ng-click="traerTodosLosExamenes()") Traer todos los exámenes
+
+								br
+
+								select(multiple="true" style="width: 150px; height: 150px; font-size: 9pt")
+									option(ng-repeat="categoria in selected.categorias" ng-model="selected.categoria_id" ng-click="cargar_evaluaciones(categoria)") {{categoria.nombre}}
+								
+								.div-lista
+									div(ng-repeat="evaluacion in selected.evaluaciones" ng-click="cargar_preguntas(evaluacion, $index)" ng-class="{'opcion-seleccionada': evaluacion.selected}") 
+										span(ng-hide="evaluacion.actual") {{ ($index+1) + '. ' + evaluacion.descripcion }}
+										span(ng-show="evaluacion.actual") {{ ($index+1) }}.  
+											b  ACTUAL:   
+											|  {{ evaluacion.descripcion }}
+				
+
+								select(multiple="true" style="width: 250px; height: 150px; font-size: 9pt; overflow: scroll")
+									option(ng-repeat="pregunta in selected.preguntas" ng-model="selected.pregunta_id" 
+										ng-click="cmdClickPreguntaSelected(pregunta, $index)" ng-bind-html="($index+1) + '. ' + pregunta.enunciado") 
+				
 
 
 								
-								md-button(ng-click="verPacientes()") Pacientes
-								md-button(ng-click="verExamenIngreso()") Examen de ingreso
+								
 
-						md-tab(label="Usuarios" md-on-select="tabSeleccionado(1)")
+								md-button.md-raised(ng-click="traerExamenesEntidades()") Por entidades
+
+								md-button.md-raised(ng-click="traerExamenesEntidadesCategorias()") Por entidades-categorías
+
+								md-button.md-raised(ng-click="traerExamenesCategorias()") Por categorías
+
+								md-button.md-raised(ng-click="traerExamenesCategoria()") Traer categoría
+
+
+								form
+									.form-group(style="width: 300px;margin-top: 15px;")
+										.input-group
+											.input-group-addon
+												i.fa.fa-search
+											input.form-control(type="text" placeholder="Buscar" ng-model="searchExam" style="border-top: 1px solid #ccc; border-right: 1px solid #ccc;")
+
+
+
+
+
+
+						md-tab(label="Usuarios" md-selected="config.tab_seleccionado" md-on-select="tabSeleccionado(1)")
 							md-content.md-padding
+								h1.md-display-2 Tab One	
 								md-button(ng-click="verUsuarios()") Usuarios
 
 
