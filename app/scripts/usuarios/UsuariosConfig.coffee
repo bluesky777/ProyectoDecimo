@@ -13,7 +13,7 @@ angular.module('WissenSystem')
 
 				data: 
 					pageTitle: 'Usuarios'
-					needed_permissions: [PERMISSIONS.can_edit_usuarios]
+					needed_permissions: [PERMISSIONS.can_edit_usuarios, PERMISSIONS.can_work_like_asesor]
 			})
 
 

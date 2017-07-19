@@ -205,7 +205,8 @@ angular.module('WissenSystem')
 
 	$scope.ok = ()->
 		$modalInstance.close('Cerrando...')
-		
+	$scope.cancel = ()->
+		$modalInstance.dismiss('cancel')
 
 ])
 

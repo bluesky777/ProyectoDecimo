@@ -62,7 +62,7 @@ angular.module('WissenSystem')
 						selected: $scope.evento_actual.idioma_principal_id
 					}
 			else
-				toastr.warning 'Pimero debes crear o seleccionar un evento actual'
+				toastr.warning 'Primero debes crear o seleccionar un evento actual'
 
 		$scope.comprobar_evento_actual()
 

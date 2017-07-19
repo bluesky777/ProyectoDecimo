@@ -97,11 +97,11 @@ angular.module('WissenSystem', [
   guest:          'guest'
 })
 .constant('PERMISSIONS', {
-  can_work_like_admin:            'can_work_like_admin'
-  can_work_like_teacher:          'can_work_like_teacher'
-  can_work_like_participante:     'can_work_like_participante'
-  can_work_like_tecnico:          'can_work_like_tecnico'
-  can_work_like_guest:            'can_work_like_guest'
+  can_work_like_admin:            'like_admin'
+  can_work_like_teacher:          'like_teacher'
+  can_work_like_participante:     'like_participante'
+  can_work_like_asesor:           'like_asesor'
+  can_work_like_guest:            'like_guest'
   can_accept_images:              'can_accept_images'
   can_edit_participantes:         'can_edit_participantes'
   can_edit_usuarios:              'can_edit_usuarios'

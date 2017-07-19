@@ -78,7 +78,7 @@ angular.module('WissenSystem')
 		$scope.el_evento_actual = ()->
 
 			if $scope.USER
-				if AuthService.isAuthorized('can_work_like_admin')
+				if AuthService.isAuthorized('can_work_like_admin') or AuthService.isAuthorized('like_asesor')
 					try
 
 						$scope.evento_actual = $filter('filter')($scope.USER.eventos, {id: $scope.USER.evento_selected_id})[0]

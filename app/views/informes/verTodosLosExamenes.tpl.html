@@ -1,8 +1,9 @@
 
 <div ng-class="{'page-carta-horizontal': config.orientacion=='carta_horizontal', 'page-oficio-horizontal': config.orientacion=='oficio_horizontal','page-vertical': config.orientacion=='vertical', 'salto-pagina': $parent.$last==false }" class="row body">
   <div class="col-lg-12 col-sm-12 col-xs-12 marg-pad-0 text-center">
-    <h2>Todos los exámenes</h2>
-    <h3>{{$parent.selected.evento}}</h3>
+    <h2 style="margin-top: 5px; margin-bottom: 0px">Exámenes por Entidades - Categorías</h2>
+    <h3 style="margin-top: 0px; margin-bottom: 0px">{{$parent.selected.evento.nombre}} ({{ $parent.selected.evento.alias }})</h3>
+    <hr>
   </div>
   <div class="col-lg-12 col-sm-12 col-xs-12 marg-pad-0">
     <table class="table-bordered table-bordered2 table-striped table-striped2">

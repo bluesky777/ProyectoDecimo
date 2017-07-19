@@ -2,9 +2,10 @@
 	
 
 	.col-lg-12.col-sm-12.col-xs-12.marg-pad-0.text-center
-		h2 Todos los exámenes
-		h3 {{$parent.selected.evento}}
+		h2(style="margin-top: 5px; margin-bottom: 0px") Exámenes por Entidades - Categorías
+		h3(style="margin-top: 0px; margin-bottom: 0px") {{$parent.selected.evento.nombre}} ({{ $parent.selected.evento.alias }})
 
+		hr
 
 
 	.col-lg-12.col-sm-12.col-xs-12.marg-pad-0

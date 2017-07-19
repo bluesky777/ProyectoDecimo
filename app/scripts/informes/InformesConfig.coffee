@@ -43,7 +43,68 @@ angular.module('WissenSystem')
 							Restangular.all('informes/todos-los-examenes').getList({gran_final: $stateParams.gran_final, evento_id: $stateParams.evento_id });
 						],
 			data: 
-				pageTitle: 'Usuarios - Feryz'
+				pageTitle: 'Todos los Examenes - Feryz'
+
+
+
+		.state 'panel.informes.ver_todos_los_examenes_por_entidades',
+			url: 'ver_todos_los_examenes_por_entidades?gran_final&evento_id'
+			params: {
+				gran_final: null
+				evento_id: null
+			}
+			views: 
+				'report_content':
+					templateUrl: "#{App.views}informes/verTodosLosExamenesPorEnt.tpl.html"
+					controller: 'VerTodosLosExamenesPorEntCtrl'
+					resolve:
+						entidades: ['Restangular', '$stateParams', (Restangular, $stateParams)->
+							parametros = {gran_final: $stateParams.gran_final, evento_id: $stateParams.evento_id }
+
+							if localStorage.requested_entidades
+								requested_entidades = JSON.parse(localStorage.requested_entidades)
+								
+								if requested_entidades.length > 0
+									parametros.requested_entidades = requested_entidades
+
+							Restangular.one('puestos/todos-examenes-ent').customPUT(parametros);
+						],
+			data: 
+				pageTitle: 'Todos los exámenes por entidades - Feryz'
+
+
+
+
+		.state 'panel.informes.ver_examenes_por_entidades_categorias',
+			url: 'ver_examenes_por_entidades_categorias?gran_final&evento_id'
+			params: {
+				gran_final: null
+				evento_id: null
+			}
+			views: 
+				'report_content':
+					templateUrl: "#{App.views}informes/verExamenesPorEntCateg.tpl.html"
+					controller: 'VerExamenesPorEntidadesCtrl'
+					resolve:
+						entidades: ['Restangular', '$stateParams', (Restangular, $stateParams)->
+							parametros = {gran_final: $stateParams.gran_final, evento_id: $stateParams.evento_id }
+
+							if localStorage.requested_entidades
+								requested_entidades = JSON.parse(localStorage.requested_entidades)
+								
+								if requested_entidades.length > 0
+									parametros.requested_entidades = requested_entidades
+
+							if localStorage.requested_categorias
+								requested_categorias = JSON.parse(localStorage.requested_categorias)
+
+								if requested_categorias.length > 0
+									parametros.requested_categorias = requested_categorias
+
+							Restangular.one('puestos/examenes-ent-categ').customPUT(parametros);
+						],
+			data: 
+				pageTitle: 'Exámenes por entidades - Feryz'
 
 
 

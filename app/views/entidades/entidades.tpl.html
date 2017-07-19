@@ -72,8 +72,8 @@
               <div flex>
                 <div class="form-group">
                   <label>Logo</label>
-                  <ui-select ng-model="currentEntidad.imgUsuario" style="width:100%" on-select="imagenSelect($item, $model)">
-                    <ui-select-match placeholder="Logo de entidad"> <img ng-src="{{ $select.selected.public?imgSystemPath:perfilPath }}{{ $select.selected.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
+                  <ui-select ng-model="currentEntidad.logo" style="width:100%" on-select="imagenSelect($item, $model)">
+                    <ui-select-match placeholder="Logo de entidad"> <img ng-src="{{ $select.selected.public?imgSystemPath:perfilPath }}{{ $select.selected.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre "></small></ui-select-match>
                     <ui-select-choices repeat="imagen in imagenes | filter: {nombre: $select.search}"><img ng-src="{{ imagen.public?imgSystemPath:perfilPath }}{{ imagen.nombre }}" style="width:25px; height:25px;"><small ng-bind-html="' ' + imagen.nombre | highlight: $select.search"></small></ui-select-choices>
                   </ui-select>
                 </div>

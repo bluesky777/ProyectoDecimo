@@ -13,6 +13,7 @@ angular.module('WissenSystem')
 	btGrid1 = '<a tooltip="Editar" tooltip-placement="left" class="btn btn-default btn-xs shiny icon-only info" ng-click="grid.appScope.editar(row.entity)"><i class="fa fa-edit "></i></a>'
 	btGrid2 = '<a tooltip="X Eliminar" tooltip-placement="right" class="btn btn-default btn-xs shiny icon-only danger" ng-click="grid.appScope.eliminar(row.entity)"><i class="fa fa-trash "></i></a>'
 
+	btGrid2 = if $scope.hasRoleOrPerm(['Admin']) then btGrid2 else ''
 
 	$scope.gridOptions = 
 		showGridFooter: true,
@@ -22,6 +23,7 @@ angular.module('WissenSystem')
 		columnDefs: [
 			{ field: 'id', displayName:'Id', width: 50, enableCellEdit: false, enableColumnMenu: false}
 			{ name: 'edit', displayName:'Edit', width: 70, enableSorting: false, enableFiltering: false, cellTemplate: btGrid1 + btGrid2, enableCellEdit: false, enableColumnMenu: false}
+			{ field: 'logo_nombre', displayName:'Logo', cellTemplate: "<img width=\"35px\" ng-src=\"{{grid.appScope.perfilPath + grid.getCellValue(row, col)}}\">", width: 40}
 			{ field: 'nombre', filter: {condition: uiGridConstants.filter.CONTAINS}, enableHiding: false }
 			{ field: 'alias', width: 70, filter: { condition: uiGridConstants.filter.CONTAINS }, displayName: 'Alias'}
 			{ field: 'lider_nombre', displayName:'Lider', filter: { condition: uiGridConstants.filter.CONTAINS }}
@@ -31,14 +33,12 @@ angular.module('WissenSystem')
 		onRegisterApi: ( gridApi ) ->
 			$scope.gridApi = gridApi
 			gridApi.edit.on.afterCellEdit($scope, (rowEntity, colDef, newValue, oldValue)->
-				console.log 'Fila editada, ', rowEntity, ' Column:', colDef, ' newValue:' + newValue + ' oldValue:' + oldValue ;
 				
 				if newValue != oldValue
-					Restangular.one('entidades/update', rowEntity.id).customPUT(rowEntity).then((r)->
+					Restangular.one('entidades/update').customPUT(rowEntity).then((r)->
 						toastr.success 'Entidad actualizada con éxito', 'Actualizado'
 					, (r2)->
 						toastr.error 'Cambio no guardado', 'Error'
-						console.log 'Falló al intentar guardar: ', r2
 					)
 				$scope.$apply()
 			)
@@ -54,9 +54,10 @@ angular.module('WissenSystem')
 
 
 	$scope.editar = (entidad)->
-		$scope.creando = false
-		$scope.editando = true
-		$scope.currentEntidad = entidad
+		$scope.creando 			= false
+		$scope.editando 		= true
+		$scope.currentEntidad 	= entidad
+		$scope.currentEntidad.logo = {id: entidad.logo_id, nombre: entidad.logo_nombre, publica: entidad.publica}
 
 	$scope.eliminar = (entidad)->
 		modalInstance = $modal.open({
@@ -109,8 +110,8 @@ angular.module('WissenSystem')
 	$scope.guardando_cambios = false
 	$scope.guardar_cambios = ()->
 		$scope.guardando_cambios = true
-		console.log $scope.currentEntidad.imgUsuario
-		$scope.currentEntidad.logo_id = $scope.currentEntidad.imgUsuario.id
+
+		$scope.currentEntidad.logo_id = $scope.currentEntidad.logo.id
 
 		Restangular.one('entidades/update').customPUT($scope.currentEntidad).then((r)->
 

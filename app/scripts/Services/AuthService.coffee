@@ -180,7 +180,7 @@ angular.module('WissenSystem')
 				return false; # Hay permisos requeridos pero el usuario no tiene ninguno
 			else
 				return true; # El usuarios no tiene permisos pero no se requiere ninguno
-
+		
 		newArr = []
 		_.each(neededPermissions, (elem)->
 			if (user.perms.indexOf(elem)) != -1

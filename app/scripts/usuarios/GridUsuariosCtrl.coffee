@@ -107,12 +107,48 @@ angular.module('WissenSystem')
 			)
 
 
+
 		btGrid1 = '<a tooltip="Editar" tooltip-placement="left" class="btn btn-default btn-xs " ng-click="grid.appScope.editar(row.entity)"><i class="fa fa-edit "></i></a>'
 		btGrid2 = '<a tooltip="X Eliminar" tooltip-placement="right" class="btn btn-xs btn-danger" ng-click="grid.appScope.eliminar(row.entity)"><i class="fa fa-trash "></i></a> '
 		btGrid3 = '<a tooltip="Seleccionar" tooltip-placement="right" class="btn btn-xs btn-info" ng-click="grid.appScope.seleccionar_fila(row.entity)"><i class="fa fa-check "></i></a>'
 		btGridP = '<a tooltip="Abrir en equipo" tooltip-placement="right" class="btn btn-xs btn-info" ng-click="grid.appScope.showSidenavSelectPC(row.entity)"><i class="fa fa-desktop "></i></a>'
 		btGrid4 = '<a tooltip="{{row.entity.entidad_id | nombreEntidad:grid.appScope.$parent.entidades:false}}" tooltip-placement="left" class="btn btn-xs shiny btn-info" ng-click="grid.appScope.seleccionar_entidad(row.entity)" ng-bind="row.entity.entidad_id | nombreEntidad:grid.appScope.$parent.entidades:true"></a>'
 		btGrid5 = '<a tooltip="Modificar roles" tooltip-placement="left" class="btn btn-xs btn-info" ng-click="grid.appScope.verRoles(row.entity)"><span ng-repeat="rol in row.entity.roles">{{rol.display_name}}-</span></a>'
+
+		botones = ''
+		if $scope.$parent.hasRoleOrPerm(['Admin'])
+			botones = btGrid1 + btGrid2 + btGrid3 + btGridP
+		else
+			botones = btGrid1 + btGrid3 + btGridP
+
+		# Quitamos unas columnas si es NO es admin
+		columnDefs = [
+			{ field: 'id', displayName:'Id', width: 60, enableCellEdit: false, enableColumnMenu: false}
+			{ name: 'edicion', displayName:'Edición', width: 130, enableSorting: false, enableFiltering: false, cellTemplate: botones, enableCellEdit: false, enableColumnMenu: false}
+			{ field: 'nombres', filter: {condition: uiGridConstants.filter.CONTAINS}, enableHiding: false }
+			{ field: 'apellidos', filter: { condition: uiGridConstants.filter.CONTAINS }}
+			{ field: 'sexo', displayName:'Sex', width: 60 }
+			{ field: 'username', filter: { condition: uiGridConstants.filter.CONTAINS }, displayName: 'Usuario'}
+			{ 
+				field: 'entidad_id', displayName:'Entidad', cellTemplate: btGrid4, enableCellEdit: false, 
+				filter: { 
+					condition: (searchTerm, cellValue)-> 
+						entidades = $scope.$parent.entidades
+						termino = searchTerm.toLowerCase()
+
+						res = $filter('nombreEntidad')(cellValue, entidades, true)
+						res = res.toLowerCase()
+						
+						res2 = $filter('nombreEntidad')(cellValue, entidades)
+						res2 = res2.toLowerCase()
+
+						return res.indexOf(termino) isnt -1 or res2.indexOf(termino) isnt -1
+				}
+			}
+		]
+
+		if $scope.$parent.hasRoleOrPerm(['Admin'])
+			columnDefs.push( { field: 'roles', displayName:'Roles', cellTemplate: btGrid5, enableCellEdit: false } )
 
 
 		$scope.gridOptions = 
@@ -124,31 +160,7 @@ angular.module('WissenSystem')
 			multiSelect: true, 
 			enableRowSelection: true,
 			enableSelectAll: true,
-			columnDefs: [
-				{ field: 'id', displayName:'Id', width: 60, enableCellEdit: false, enableColumnMenu: false}
-				{ name: 'edicion', displayName:'Edición', width: 130, enableSorting: false, enableFiltering: false, cellTemplate: btGrid1 + btGrid2 + btGrid3 + btGridP, enableCellEdit: false, enableColumnMenu: false}
-				{ field: 'nombres', filter: {condition: uiGridConstants.filter.CONTAINS}, enableHiding: false }
-				{ field: 'apellidos', filter: { condition: uiGridConstants.filter.CONTAINS }}
-				{ field: 'sexo', width: 60 }
-				{ field: 'username', filter: { condition: uiGridConstants.filter.CONTAINS }, displayName: 'Usuario'}
-				{ 
-					field: 'entidad_id', displayName:'Entidad', cellTemplate: btGrid4, enableCellEdit: false, 
-					filter: { 
-						condition: (searchTerm, cellValue)-> 
-							entidades = $scope.$parent.entidades
-							termino = searchTerm.toLowerCase()
-
-							res = $filter('nombreEntidad')(cellValue, entidades, true)
-							res = res.toLowerCase()
-							
-							res2 = $filter('nombreEntidad')(cellValue, entidades)
-							res2 = res2.toLowerCase()
-
-							return res.indexOf(termino) isnt -1 or res2.indexOf(termino) isnt -1
-					}
-				}
-				{ field: 'roles', displayName:'Roles', cellTemplate: btGrid5, enableCellEdit: false }
-			],
+			columnDefs: columnDefs,
 			#filterOptions: $scope.filterOptions,
 			onRegisterApi: ( gridApi ) ->
 
@@ -164,11 +176,17 @@ angular.module('WissenSystem')
 				gridApi.edit.on.afterCellEdit($scope, (rowEntity, colDef, newValue, oldValue)->
 					
 					if newValue != oldValue
-						Restangular.one('usuarios/update', rowEntity.id).customPUT(rowEntity).then((r)->
+						if colDef.field == "sexo"
+							if newValue != 'M' and newValue != 'F'
+								toastr.warning 'Debe usar M o F'
+								rowEntity.sexo = oldValue
+								$scope.$apply()
+								return
+						
+						Restangular.one('usuarios/update').customPUT(rowEntity).then((r)->
 							toastr.success 'Usuario actualizado con éxito', 'Actualizado'
 						, (r2)->
 							toastr.error 'Cambio no guardado', 'Error'
-							console.log 'Falló al intentar guardar: ', r2
 						)
 					$scope.$apply()
 				)
@@ -287,7 +305,6 @@ angular.module('WissenSystem')
 			$modalInstance.close(entidad.id)
 		, (r2)->
 			toastr.warning 'No se pudo cambiar entidad.', 'Problema'
-			console.log 'Error cambiando elemento: ', r2
 			$modalInstance.dismiss('Error')
 		)
 

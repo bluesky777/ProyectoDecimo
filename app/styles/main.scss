@@ -1116,7 +1116,7 @@ md-select.categoria md-select-value{
   width: 70px;
 }
 
-.puestos-table-content tr:hover .menu-puesto-exam{
+tr:hover .menu-puesto-exam{
   opacity: 1;
   right: 10px;
 }
@@ -1184,6 +1184,10 @@ header.fotoselectpc{
         padding: 0 !important;
     }
     
+    a:link:after,
+    a:visited:after {
+        content: "" !important;
+    }
 
     .page-vertical{
         page: cartavertical;

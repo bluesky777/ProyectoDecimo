@@ -2,8 +2,8 @@
 
 angular.module('WissenSystem')
 
-.controller('InformesCtrl', ['$scope', '$http', 'Restangular', '$state', '$rootScope', 'toastr', 'datos', '$filter', 
-	($scope, $http, Restangular, $state, $rootScope, toastr, datos, $filter) ->
+.controller('InformesCtrl', ['$scope', '$http', 'Restangular', '$state', '$rootScope', 'toastr', 'datos', '$filter', '$uibModal', 'App', 
+	($scope, $http, Restangular, $state, $rootScope, toastr, datos, $filter, $uibModal, App) ->
 
 		$scope.eventos_infor 		= datos.eventos
 		$scope.selected 			= {}
@@ -18,19 +18,26 @@ angular.module('WissenSystem')
 		if localStorage.config
 			$scope.config = JSON.parse(localStorage.config)
 
+		if localStorage.requested_entidades
+			$scope.selected.entidades = JSON.parse(localStorage.requested_entidades)
+
+		if localStorage.requested_categorias
+			$scope.selected.categorias = JSON.parse(localStorage.requested_categorias)
+
 
 		for evento in $scope.eventos_infor
 			if evento.actual
-				$scope.selected.evento_id = evento.id
-				$scope.selected.categorias = evento.categorias
+				$scope.selected.evento_id 	= evento.id
+				$scope.selected.evento 		= evento
+				$scope.selected.categorias_cargadas 	= evento.categorias
 
 
 
-		$scope.cargar_categorias = ()->
-
+		$scope.cargar_entidades_categorias = ()->
 			for evento in $scope.eventos_infor
-				if evento.actual
-					$scope.selected.categorias = evento.categorias
+				if evento.id == selected.evento_id
+					$scope.selected.evento 		= evento
+					$scope.selected.categorias_cargadas 	= evento.categorias
 
 
 
@@ -39,13 +46,17 @@ angular.module('WissenSystem')
 			$scope.selected.evaluaciones 	= []
 
 			for evaluac in categoria.evaluaciones
+				if evaluac.actual
+					$scope.selected.evaluacion = evaluac
+					evaluac.selected = true
+
 				$scope.selected.evaluaciones.push evaluac
 
 
 
 		$scope.cargar_preguntas = (evaluacion)->
-			$scope.selected.evaluacion = evaluacion
-			$scope.selected.preguntas = []
+			$scope.selected.evaluacion 	= evaluacion
+			$scope.selected.preguntas 	= []
 
 			for evalu in $scope.selected.evaluaciones
 				evalu.selected = if evaluacion==evalu then true else false
@@ -72,6 +83,12 @@ angular.module('WissenSystem')
 		$scope.$watch('config.gran_final', ()->
 			$scope.saveConfig()
 		)
+		$scope.$watch('config.todas_entidades', ()->
+			$scope.saveConfig()
+		)
+		$scope.$watch('config.todas_categorias', ()->
+			$scope.saveConfig()
+		)
 
 
 
@@ -79,24 +96,30 @@ angular.module('WissenSystem')
 		$scope.traerTodosLosExamenes = ()->
 			$state.go('panel.informes.ver_todos_los_examenes', {gran_final: $scope.config.gran_final, evento_id: $scope.selected.evento_id })
 				
+		$scope.traerTodosLosExamenesPorEntidades = ()->
+			if $scope.config.todas_entidades
+				delete localStorage.requested_entidades
+			else
+				localStorage.requested_entidades = JSON.stringify($scope.selected.entidades)
+			$state.go('panel.informes.ver_todos_los_examenes_por_entidades', {gran_final: $scope.config.gran_final, evento_id: $scope.selected.evento_id }, {reload: true})
+				
 
-		$scope.traerExamenesEntidades = ()->
-			Restangular.all('informes/examenes-entidades').getList({gran_final: $scope.gran_final}).then((r)->
-				$scope.entidades = r
-				$scope.mostrando = 'por_entidades';
-			, (r2)->
-				toastr.warning 'No se trajeron los exámenes por entidad', 'Problema'
-				console.log 'No se trajeron los exámenes por entidad', r2
-			)
-		
+
+
 		$scope.traerExamenesEntidadesCategorias = ()->
-			Restangular.all('informes/examenes-entidades-categorias').getList({gran_final: $scope.gran_final}).then((r)->
-				$scope.entidades = r
-				$scope.mostrando = 'por_entidades_categorias';
-			, (r2)->
-				toastr.warning 'No se trajeron los exámenes por entidad y categorías', 'Problema'
-				console.log 'No se trajeron los exámenes por entidad y categorías ', r2
-			)
+			
+			if $scope.config.todas_entidades
+				delete localStorage.requested_entidades
+			else
+				localStorage.requested_entidades = JSON.stringify($scope.selected.entidades)
+			
+			if $scope.config.todas_categorias
+				delete localStorage.requested_categorias
+			else
+				localStorage.requested_categorias = JSON.stringify($scope.selected.categorias)
+			
+			$state.go('panel.informes.ver_examenes_por_entidades_categorias', {gran_final: $scope.config.gran_final, evento_id: $scope.selected.evento_id }, {reload: true})
+		
 		
 		
 		$scope.traerExamenesCategorias = ()->
