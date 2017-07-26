@@ -83,10 +83,10 @@ sidenav-select-pc-dir#sidenavSelectPC
 								label Entidad
 								ui-select(ng-model="newUsu.entidad" theme="select2" style="width: 95%;")
 									ui-select-match(placeholder="Entidad") 
-										img(ng-src="{{imagesPath + $select.selected.logo_nombre}}" style="width:25px; height:25px;")
+										img(ng-src="{{perfilPath + $select.selected.logo_nombre}}" style="width:25px; height:25px;")
 										small(ng-bind-html="' ' + $select.selected.nombre")
 									ui-select-choices(repeat="entidad in entidades")
-										img(ng-src="{{imagesPath + entidad.logo_nombre}}" style="width:25px; height:25px;")
+										img(ng-src="{{perfilPath + entidad.logo_nombre}}" style="width:25px; height:25px;")
 										small(ng-bind-html="' ' + entidad.nombre | highlight: $select.search")
 
 
@@ -191,10 +191,10 @@ sidenav-select-pc-dir#sidenavSelectPC
 								label Entidad
 								ui-select(ng-model="currentUser.entidad" theme="select2" style="width: 95%;")
 									ui-select-match(placeholder="Entidad") 
-										img(ng-src="{{imagesPath + $select.selected.logo_nombre}}" style="width:25px; height:25px;")
+										img(ng-src="{{perfilPath + $select.selected.logo_nombre}}" style="width:25px; height:25px;")
 										small(ng-bind-html="' ' + $select.selected.nombre")
 									ui-select-choices(repeat="entidad in entidades")
-										img(ng-src="{{imagesPath + entidad.logo_nombre}}" style="width:25px; height:25px;")
+										img(ng-src="{{perfilPath + entidad.logo_nombre}}" style="width:25px; height:25px;")
 										small(ng-bind-html="' ' + entidad.nombre | highlight: $select.search")
 
 

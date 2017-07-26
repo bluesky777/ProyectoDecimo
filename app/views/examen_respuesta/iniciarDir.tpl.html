@@ -52,12 +52,14 @@
       <div class="panel-body">
         <uib-accordion close-others="false" ng-repeat="examen in examenes_puntajes | orderBy:'-id'">
           <uib-accordion-group heading="{{examen.categoria.nombre + ' - (Cod:' + examen.id + ') ' }}" ng-init="status.open = $first" is-open="status.open" tooltip="{{examen.evaluacion.descripcion}}">
+            <div> <b> <span ng-show="examen.gran_final" style="text-decoration: underline;">GRAN FINAL:    </span><span ng-hide="examen.gran_final" style="text-decoration: underline;">Eliminatoria:     </span>{{examen.categoria.nombre}} ({{examen.evaluacion.descripcion}})</b></div>
             <div>Preguntas: {{examen.cantidad_pregs}} </div>
             <div>Correctas: {{examen.correctas}} </div>
             <div>Incorrectas: {{examen.cantidad_pregs-examen.correctas}} </div>
-            <div>Terminado: {{examen.terminado}} </div>
+            <div>Terminado: <span ng-show="examen.terminado">Si </span><span ng-hide="examen.terminado">No </span></div>
             <div>Promedio: {{examen.promedio | number:1}}% </div>
-            <div style="text-align:right"><a ui-sref="panel.examen_respuesta({examen_respuesta_id: examen.id})" href="">Continuar</a></div>
+            <div style="text-align:right" ng-hide="examen.terminado"><a ui-sref="panel.examen_respuesta({examen_respuesta_id: examen.id})" href="">Continuar</a></div>
+            <hr>
           </uib-accordion-group>
         </uib-accordion>
       </div>

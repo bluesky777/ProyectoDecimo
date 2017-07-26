@@ -58,15 +58,15 @@
                 <label>Nombre:</label>
                 <input type="text" ng-model="currentEntidad.nombre" class="form-control">
               </div>
-              <div flex="40" flex-gt-lg="20" flex-sm="100">
+              <div flex="40" flex-gt-lg="20" flex-sm="100" style="padding-bottom: 0; margin-bottom: 0;">
                 <md-checkbox ng-model="seleccionar_lider" aria-label="¿Traducido?">Seleccionar lider</md-checkbox>
               </div>
-              <div flex ng-show="seleccionar_lider">
-                <md-select placeholder="Seleccione Lider" ng-model="currentEntidad.lider_id">
+              <div flex ng-show="seleccionar_lider" style="padding-top: 0; margin-top: 0">
+                <md-select placeholder="Seleccione Lider" ng-model="currentEntidad.lider_id" style="margin-top: 0;">
                   <md-option ng-repeat="usuario in usuarios" value="{{usuario.id}}">{{usuario.nombres}} {{usuario.apellidos}}</md-option>
                 </md-select>
               </div>
-              <div flex ng-show="!seleccionar_lider">
+              <div flex ng-show="!seleccionar_lider" style="padding-top: 0; margin-top: 0">
                 <input placeholder="Escriba Nombre del lider" type="text" ng-model="currentEntidad.lider_nombre" class="form-control">
               </div>
               <div flex>

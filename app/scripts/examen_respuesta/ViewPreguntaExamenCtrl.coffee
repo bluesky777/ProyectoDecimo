@@ -100,10 +100,12 @@ angular.module('WissenSystem')
 		idioma_id: 				pregunta_traduc.idioma_id
 		tipo_pregunta: 			preguntatop.tipo_pregunta
 		opcion_id: 				opcion.id
-		tiempo:					$rootScope.tiempo
+		tiempo:					$rootScope.tiempo_preg
 
 
 	$scope.ok = ()->
+		$rootScope.pause_tiempo = true
+		$scope.guardando 		= true
 
 		pregking = 'examenes_respuesta/responder-pregunta'
 		grupopreg = 'examenes_respuesta/responder-pregunta-agrupada'
@@ -111,10 +113,15 @@ angular.module('WissenSystem')
 		ruta = if agrupada then grupopreg else pregking
 		
 		Restangular.all(ruta).customPUT(datos).then((r)->
+			$rootScope.pause_tiempo = false
+			$rootScope.tiempo_preg 	= 0
+			$scope.guardando 		= false
+
 			$modalInstance.close(r)
 		, (r2)->
+			$rootScope.pause_tiempo = true
+			$scope.guardando 		= false
 			toastr.warning 'No se pudo guardar respuesta.', 'Problema'
-			console.log 'No se pudo guardar respuesta: ', r2
 		)
 		
 

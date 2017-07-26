@@ -9,5 +9,5 @@
 
 .modal-footer
 	md-button.md-raised(ng-click="cancel()") No
-	md-button.md-raised.md-primary(ng-click="ok()") Si 
+	md-button.md-raised.md-primary(ng-click="ok()" ng-disabled="guardando") Si 
 		i.fa.fa-check

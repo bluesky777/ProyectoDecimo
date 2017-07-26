@@ -29,11 +29,6 @@ angular.module('WissenSystem')
 		$scope.tema = actual
 
 
-	$scope.floatingSidebar = 0
-	$scope.toggleFloatingSidebar = ()->
-		$scope.floatingSidebar = if $scope.floatingSidebar then false else true
-
-
 	# Función para idiomas del sistema
 	$scope.idiomas_del_sistema = ()->
 		$scope.idiomas_usados = $filter('idiomas_del_sistema')($scope.idiomas)

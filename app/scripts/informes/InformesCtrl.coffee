@@ -6,17 +6,36 @@ angular.module('WissenSystem')
 	($scope, $http, Restangular, $state, $rootScope, toastr, datos, $filter, $uibModal, App) ->
 
 		$scope.eventos_infor 		= datos.eventos
-		$scope.selected 			= {}
+		$scope.selected 			= { entidades: [], categorias:[] }
 
 		$scope.sortType     = 'promedio'; 
 		$scope.sortReverse  = false;  
 		$scope.searchExam   = ''; 
-		$scope.gran_final	= true;
 
+
+		$scope.saveConfig = ()->
+			localStorage.config = JSON.stringify($scope.config)
 
 
 		if localStorage.config
+			if localStorage.config.gran_final 
+				$scope.config.gran_final = false
+			if localStorage.config.orientacion 
+				$scope.config.orientacion = 'vertical'
+			if localStorage.config.todas_entidades 
+				$scope.config.todas_entidades = false
+			if localStorage.config.todas_categorias 
+				$scope.config.todas_categorias = false
+
 			$scope.config = JSON.parse(localStorage.config)
+
+		else
+			$scope.config = 
+				gran_final: 		false
+				orientacion: 		'vertical'
+				todas_entidades:	false
+				todas_categorias: 	false
+			$scope.saveConfig()
 
 		if localStorage.requested_entidades
 			$scope.selected.entidades = JSON.parse(localStorage.requested_entidades)
@@ -69,9 +88,6 @@ angular.module('WissenSystem')
 
 
 
-
-		$scope.saveConfig = ()->
-			localStorage.config = JSON.stringify($scope.config)
 
 		$scope.tabSeleccionado = (tab)->
 			$scope.config.tab_seleccionado = tab

@@ -10,7 +10,46 @@ angular.module('WissenSystem')
 		#console.log '$scope.USER', $scope.USER
 		$scope.imagesPath = App.images
 
+		hoy = new Date().toJSON().slice(0,10)
+		
+		$scope.dataExport = {
+			#fecha_ini: new Date(hoy + ' 00:00:0000')
+			fecha_ini: new Date('2017-07-19 00:00:0000')
+			fecha_fin: new Date(hoy + ' 23:59:0000')
+		}
+
 		AuthService.verificar_acceso()
+
+
+
+
+
+		# Aquí exportaremos datos.
+		$scope.floatingSidebar = false
+		$scope.toggleFloatingSidebar = ()->
+			$scope.floatingSidebar = if $scope.floatingSidebar then false else true
+			$scope.cargarExamenesExport()
+
+		$scope.cargarExamenesExport = ()->
+			Restangular.one('exportar-importar/ver-cambios').customPUT({ fecha_ini: $scope.dataExport.fecha_ini, fecha_fin: $scope.dataExport.fecha_fin }).then((r)->
+				$scope.export_participantes = r
+			(r2)->
+				toastr.warning 'No se trajeron datos para exportar '
+			)
+
+		$scope.exportarExcel = ()->
+			Restangular.one('exportar-importar/exportar-excel').withHttpConfig({responseType: 'blob'}).customPUT({ fecha_ini: $scope.dataExport.fecha_ini, fecha_fin: $scope.dataExport.fecha_fin }).then((r)->
+				blob = new Blob([r], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+				objectUrl = URL.createObjectURL(blob);
+				window.open(objectUrl);
+				toastr.success 'Exportado'
+			(r2)->
+				toastr.warning 'No se pudo exportar '
+				console.log r2
+			)
+
+
+
 
 
 		$rootScope.$on '$stateChangeSuccess', (event, toState, toParams, fromState, fromParams)->

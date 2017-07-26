@@ -140,6 +140,9 @@ angular.module('WissenSystem')
 		# Configuramos tiempo y cantidad
 		# *************************************************
 
+		if !$scope.USER.evento_actual
+			$scope.USER.evento_actual = $scope.evento_actual
+
 		$scope.tiempo_max = if $scope.USER.evento_actual.gran_final then $rootScope.examen_actual.duracion_preg else ($rootScope.examen_actual.duracion_exam*60)
 
 
@@ -177,10 +180,16 @@ angular.module('WissenSystem')
 		preg_check = $filter('preguntaActual')($scope.examen_actual.preguntas)
 		if preg_check.length == 1
 			if preg_check[0].terminado
-				console.log 'Todas las respuestas contestadas', preg_check
-				toastr.success 'Examen terminado'
-				$rootScope.permiso_de_salir = true
-				$state.go 'panel'
+
+				# Marcaremos el examen como terminado
+				Restangular.all('examenes_respuesta/set-terminado').customPUT({ exa_id: $scope.examen_actual.examen_id }).then((r)->
+					toastr.success 'Examen terminado'
+					$rootScope.permiso_de_salir = true
+					$state.go 'panel'
+				, (r2)->
+					toastr.warning 'No se estableció como terminado.'
+				)
+				
 				return true
 		return false
 

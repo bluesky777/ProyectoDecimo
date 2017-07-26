@@ -81,8 +81,8 @@
               <div style="padding-left: 15px;" class="form-group">
                 <label>Entidad</label>
                 <ui-select ng-model="newUsu.entidad" theme="select2" style="width: 95%;">
-                  <ui-select-match placeholder="Entidad"> <img ng-src="{{imagesPath + $select.selected.logo_nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
-                  <ui-select-choices repeat="entidad in entidades"><img ng-src="{{imagesPath + entidad.logo_nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + entidad.nombre | highlight: $select.search"></small></ui-select-choices>
+                  <ui-select-match placeholder="Entidad"> <img ng-src="{{perfilPath + $select.selected.logo_nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
+                  <ui-select-choices repeat="entidad in entidades"><img ng-src="{{perfilPath + entidad.logo_nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + entidad.nombre | highlight: $select.search"></small></ui-select-choices>
                 </ui-select>
               </div>
               <md-select ng-model="newUsu.nivel_id" placeholder="Niveles" ng-change="cambiaNivelNewUsu()">
@@ -190,8 +190,8 @@
               <div style="padding-left: 15px;" class="form-group">
                 <label>Entidad</label>
                 <ui-select ng-model="currentUser.entidad" theme="select2" style="width: 95%;">
-                  <ui-select-match placeholder="Entidad"> <img ng-src="{{imagesPath + $select.selected.logo_nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
-                  <ui-select-choices repeat="entidad in entidades"><img ng-src="{{imagesPath + entidad.logo_nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + entidad.nombre | highlight: $select.search"></small></ui-select-choices>
+                  <ui-select-match placeholder="Entidad"> <img ng-src="{{perfilPath + $select.selected.logo_nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
+                  <ui-select-choices repeat="entidad in entidades"><img ng-src="{{perfilPath + entidad.logo_nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + entidad.nombre | highlight: $select.search"></small></ui-select-choices>
                 </ui-select>
               </div>
               <md-select ng-model="currentUser.nivel_id" placeholder="Niveles">
