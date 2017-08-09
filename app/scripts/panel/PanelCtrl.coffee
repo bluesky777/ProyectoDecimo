@@ -20,6 +20,9 @@ angular.module('WissenSystem')
 
 		AuthService.verificar_acceso()
 
+		$scope.file = {}
+		$scope.data = {}
+
 
 
 
@@ -37,7 +40,28 @@ angular.module('WissenSystem')
 				toastr.warning 'No se trajeron datos para exportar '
 			)
 
-		$scope.exportarExcel = ()->
+		$scope.exportarArchivo = ()->
+			filename = '1Examenes_exportados-Wissen.txt'
+
+			$scope.export_participantes = $filter('filter')( $scope.export_participantes, { exportar: 1 } )
+			
+			data = JSON.stringify($scope.export_participantes, undefined, '\t')
+			blob = new Blob([data], {type: 'text/plain'});
+			if (window.navigator && window.navigator.msSaveOrOpenBlob)
+				window.navigator.msSaveOrOpenBlob(blob, filename);
+
+			else
+				e = document.createEvent('MouseEvents')
+				a = document.createElement('a');
+
+				a.download = filename;
+				a.href = window.URL.createObjectURL(blob);
+				a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
+				e.initEvent('click', true, false, window,
+					0, 0, 0, 0, 0, false, false, false, false, 0, null);
+				a.dispatchEvent(e);
+
+			###
 			Restangular.one('exportar-importar/exportar-excel').withHttpConfig({responseType: 'blob'}).customPUT({ fecha_ini: $scope.dataExport.fecha_ini, fecha_fin: $scope.dataExport.fecha_fin }).then((r)->
 				blob = new Blob([r], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
 				objectUrl = URL.createObjectURL(blob);
@@ -47,9 +71,40 @@ angular.module('WissenSystem')
 				toastr.warning 'No se pudo exportar '
 				console.log r2
 			)
+			###
 
 
 
+		$scope.elegirArchivo = ()->
+			filename = 'Examenes_exportados-Wissen.json'
+			
+		$scope.myLoaded = (res)->
+			console.log(res)
+
+		$scope.myError = (error)->
+			console.log error
+
+		$scope.datos_json = ""
+		$scope.cargar_datos_json = (datos_json)->
+			array_usuarios = JSON.parse(datos_json)
+			Restangular.one('exportar-importar/revisar-datos').customPUT({ array_usuarios: array_usuarios }).then((r)->
+				$scope.array_usuarios = r
+			(r2)->
+				toastr.warning 'No se trajeron datos para exportar '
+			)
+
+		$scope.importarDatos = ()->
+			Restangular.one('exportar-importar/importar-datos').customPUT({ array_usuarios: $scope.array_usuarios }).then((r)->
+				toastr.success 'Importados con éxito: ' + r.importados
+			(r2)->
+				toastr.warning 'No se pudieron importar datos '
+			)
+
+			
+
+
+
+			
 
 
 		$rootScope.$on '$stateChangeSuccess', (event, toState, toParams, fromState, fromParams)->
@@ -179,5 +234,43 @@ angular.module('WissenSystem')
 		return
 	]
 )
+
+.directive('fileSelect', ['$window', ($window)->
+	return {
+		restrict: 'A',
+		require: 'ngModel',
+		link: (scope, el, attr, ctrl)->
+			fileReader = new $window.FileReader();
+
+			fileReader.onload = ()->
+
+				ctrl.$setViewValue(fileReader.result);
+				if (attr['fileLoaded'])
+					scope.$eval(attr['fileLoaded']);
+
+
+
+			fileReader.onprogress = (event)->
+				if ('fileProgress' in attr) 
+					scope.$eval(attr['fileProgress'], {'$total': event.total, '$loaded': event.loaded});
+
+			fileReader.onerror = ()->
+				if ('fileError' in attr)
+					scope.$eval(attr['fileError'], {'$error': fileReader.error});
+
+
+			fileType = attr['fileSelect'];
+
+			el.bind('change', (e)->
+				fileName = e.target.files[0];
+				console.log fileType, fileName
+				if (fileType == '' or fileType == 'text')
+					fileReader.readAsText(fileName);
+				else if (fileType == 'data')
+					#fileReader.readAsDataURL(fileName);
+					console.log fileReader.readAsText(fileName.name)
+			)
+	};
+]);
 
 
