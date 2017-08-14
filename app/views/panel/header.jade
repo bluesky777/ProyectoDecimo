@@ -155,9 +155,6 @@ ul.list-unstyled.right-elems.ng-scope
 					md-tab
 						md-tab-label Importar
 						md-tab-body
-							div(ng-if="false")
-								input.btn.btn-primary(type='file' ng-model="file.data" file-select="text" file-loaded="myLoaded()" file-error="myError($error)" 
-									style="float: right; margin-right: 30px; margin-bottom: 50px;" value="Elegir archivo") 
 							
 							hr
 							
@@ -205,6 +202,8 @@ ul.list-unstyled.right-elems.ng-scope
 
 								
 								.row(style="margin-top: 5px")
+									div(style="margin-left: 25px")
+										| {{ array_usuarios_import.length }} usuarios a importar
 									button.btn.btn-primary(ng-click="importarDatos()" style="float: right; margin-right: 30px") 
 										| Importar datos creando usuarios y modificando repetidos
 

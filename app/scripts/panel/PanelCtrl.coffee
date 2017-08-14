@@ -14,7 +14,7 @@ angular.module('WissenSystem')
 		
 		$scope.dataExport = {
 			#fecha_ini: new Date(hoy + ' 00:00:0000')
-			fecha_ini: new Date('2017-07-19 00:00:0000')
+			fecha_ini: new Date(hoy + ' 00:00:0000')
 			fecha_fin: new Date(hoy + ' 23:59:0000')
 		}
 
@@ -41,7 +41,7 @@ angular.module('WissenSystem')
 			)
 
 		$scope.exportarArchivo = ()->
-			filename = '1Examenes_exportados-Wissen.txt'
+			filename = 'Examenes_exportados-Wissen.txt'
 
 			$scope.export_participantes = $filter('filter')( $scope.export_participantes, { exportar: 1 } )
 			
@@ -61,40 +61,32 @@ angular.module('WissenSystem')
 					0, 0, 0, 0, 0, false, false, false, false, 0, null);
 				a.dispatchEvent(e);
 
-			###
-			Restangular.one('exportar-importar/exportar-excel').withHttpConfig({responseType: 'blob'}).customPUT({ fecha_ini: $scope.dataExport.fecha_ini, fecha_fin: $scope.dataExport.fecha_fin }).then((r)->
-				blob = new Blob([r], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
-				objectUrl = URL.createObjectURL(blob);
-				window.open(objectUrl);
-				toastr.success 'Exportado'
-			(r2)->
-				toastr.warning 'No se pudo exportar '
-				console.log r2
-			)
-			###
 
 
-
-		$scope.elegirArchivo = ()->
-			filename = 'Examenes_exportados-Wissen.json'
-			
-		$scope.myLoaded = (res)->
-			console.log(res)
-
-		$scope.myError = (error)->
-			console.log error
 
 		$scope.datos_json = ""
+		$scope.array_usuarios_import = 0
 		$scope.cargar_datos_json = (datos_json)->
-			array_usuarios = JSON.parse(datos_json)
-			Restangular.one('exportar-importar/revisar-datos').customPUT({ array_usuarios: array_usuarios }).then((r)->
+			$scope.array_usuarios_import = JSON.parse(datos_json)
+			Restangular.one('exportar-importar/revisar-datos').customPUT({ array_usuarios: $scope.array_usuarios_import }).then((r)->
 				$scope.array_usuarios = r
 			(r2)->
 				toastr.warning 'No se trajeron datos para exportar '
 			)
 
 		$scope.importarDatos = ()->
-			Restangular.one('exportar-importar/importar-datos').customPUT({ array_usuarios: $scope.array_usuarios }).then((r)->
+
+			acepta = confirm('¿Seguro que desea importar datos?')
+
+			if !acepta
+				return
+
+			for usu in $scope.array_usuarios_import
+				for dupli in $scope.array_usuarios
+					if usu.id == dupli.id
+						$scope.array_usuarios_import = $filter('filter')($scope.array_usuarios_import, { id: '!'+usu.id })
+
+			Restangular.one('exportar-importar/importar-datos').customPUT({ array_usuarios: $scope.array_usuarios_import }).then((r)->
 				toastr.success 'Importados con éxito: ' + r.importados
 			(r2)->
 				toastr.warning 'No se pudieron importar datos '
@@ -234,43 +226,4 @@ angular.module('WissenSystem')
 		return
 	]
 )
-
-.directive('fileSelect', ['$window', ($window)->
-	return {
-		restrict: 'A',
-		require: 'ngModel',
-		link: (scope, el, attr, ctrl)->
-			fileReader = new $window.FileReader();
-
-			fileReader.onload = ()->
-
-				ctrl.$setViewValue(fileReader.result);
-				if (attr['fileLoaded'])
-					scope.$eval(attr['fileLoaded']);
-
-
-
-			fileReader.onprogress = (event)->
-				if ('fileProgress' in attr) 
-					scope.$eval(attr['fileProgress'], {'$total': event.total, '$loaded': event.loaded});
-
-			fileReader.onerror = ()->
-				if ('fileError' in attr)
-					scope.$eval(attr['fileError'], {'$error': fileReader.error});
-
-
-			fileType = attr['fileSelect'];
-
-			el.bind('change', (e)->
-				fileName = e.target.files[0];
-				console.log fileType, fileName
-				if (fileType == '' or fileType == 'text')
-					fileReader.readAsText(fileName);
-				else if (fileType == 'data')
-					#fileReader.readAsDataURL(fileName);
-					console.log fileReader.readAsText(fileName.name)
-			)
-	};
-]);
-
 
