@@ -1,5 +1,5 @@
 
-<div class="categorias-container"> 
+<div ng-if="!EN_PRUEBAS" class="categorias-container"> 
   <div ng-repeat="categoria_traduc in SocketData.config.categorias_traduc " ng-class="{'categ-retirada': participantesDeCategoria(categoria_traduc).length == 0}" class="categ-container">
     <div class="title-categ-container">{{ categoria_traduc.nombre }}</div>
     <div class="participantes-container">
@@ -9,8 +9,28 @@
             <md-tooltip>{{ cliente.usuario.entidad.nombre }}</md-tooltip>
           </div>
           <div class="sc-info"> 
-            <h5 class="name nombresellipsis">{{cliente.usuario.nombres}} {{cliente.usuario.apellidos}}
+            <h5 class="name nombresellipsis">{{ $index + '. ' + cliente.usuario.nombres}} {{cliente.usuario.apellidos}}
               <md-tooltip>{{cliente.usuario.nombres}} {{cliente.usuario.apellidos}}</md-tooltip>
+            </h5>
+            <div class="alias-enti">{{cliente.usuario.entidad.alias}}</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div ng-if="EN_PRUEBAS" class="categorias-container"> 
+  <div ng-repeat="categoria_traduc in SocketData.config.categorias_traduc " ng-class="{'categ-retirada': participantesDeCategoria(categoria_traduc).length == 0}" style="width: auto" class="categ-container">
+    <div class="title-categ-container txt-borde-blanco">{{ categoria_traduc.nombre }}</div>
+    <div class="participantes-container">
+      <ul style="display: inline-flex;writing-mode: vertical-lr;flex-wrap: wrap;align-content: flex-start;height: 100%;">
+        <li ng-repeat="cliente in SocketData.clientes | filter:{'registrado':true, 'categsel':categoria_traduc.categoria_id }:true | orderParticipantes " ng-class="{'correct': cliente.answered=='correct', 'incorrect': cliente.answered=='incorrect' }" style="writing-mode: horizontal-tb; width: auto; background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; margin-right: 4px;" class="md-whiteframe-1dp sc-cliente">
+          <div style="border-radius: 8px 0 0 8px;" class="sc-cliente-imgs"><img ng-src="{{imagesPath + cliente.usuario.imagen_nombre}}" alt="{{cliente.usuario.username}}" class="img-perfil"><img ng-class="{'showing-logo-ent-part': SocketData.config.show_logo_entidad_partici}" ng-src="{{ imagesPath + cliente.usuario.entidad.logo}}" alt="{{cliente.usuario.username}}" class="img-entidad">
+            <md-tooltip>{{ cliente.usuario.entidad.nombre }}</md-tooltip>
+          </div>
+          <div class="sc-info"> 
+            <h5 style="font-weight: 700; font-size: 14pt; margin-bottom: 4px; margin-left: -4px;" class="name nombresellipsis">{{ ($index+1) + '. ' + cliente.usuario.nombres}} {{cliente.usuario.apellidos}}
+              <md-tooltip>{{ ($index+1) + '. ' + cliente.usuario.nombres}} {{cliente.usuario.apellidos}}</md-tooltip>
             </h5>
             <div class="alias-enti">{{cliente.usuario.entidad.alias}}</div>
           </div>

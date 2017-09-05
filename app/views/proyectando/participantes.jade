@@ -1,4 +1,4 @@
-.categorias-container 
+.categorias-container(ng-if="!EN_PRUEBAS") 
 
 	.categ-container(ng-repeat="categoria_traduc in SocketData.config.categorias_traduc "
 		ng-class="{'categ-retirada': participantesDeCategoria(categoria_traduc).length == 0}" )
@@ -18,8 +18,39 @@
 						md-tooltip {{ cliente.usuario.entidad.nombre }}
 
 					.sc-info 
-						h5.name.nombresellipsis {{cliente.usuario.nombres}} {{cliente.usuario.apellidos}}
+						h5.name.nombresellipsis {{ $index + '. ' + cliente.usuario.nombres}} {{cliente.usuario.apellidos}}
 							md-tooltip {{cliente.usuario.nombres}} {{cliente.usuario.apellidos}}
+						.alias-enti {{cliente.usuario.entidad.alias}}
+
+
+
+.categorias-container(ng-if="EN_PRUEBAS") 
+
+	.categ-container(ng-repeat="categoria_traduc in SocketData.config.categorias_traduc "
+		ng-class="{'categ-retirada': participantesDeCategoria(categoria_traduc).length == 0}" 
+		style="width: auto")
+
+		.title-categ-container.txt-borde-blanco
+			| {{ categoria_traduc.nombre }}
+
+		.participantes-container
+
+			ul(style="display: inline-flex;writing-mode: vertical-lr;flex-wrap: wrap;align-content: flex-start;height: 100%;")
+				
+				li.md-whiteframe-1dp.sc-cliente(ng-repeat="cliente in SocketData.clientes | filter:{'registrado':true, 'categsel':categoria_traduc.categoria_id }:true | orderParticipantes "   
+					ng-class="{'correct': cliente.answered=='correct', 'incorrect': cliente.answered=='incorrect' }"
+					style="writing-mode: horizontal-tb; width: auto; background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; margin-right: 4px;")
+					
+					.sc-cliente-imgs(style="border-radius: 8px 0 0 8px;")
+						
+						img.img-perfil(ng-src="{{imagesPath + cliente.usuario.imagen_nombre}}" alt="{{cliente.usuario.username}}")
+						
+						img.img-entidad(ng-class="{'showing-logo-ent-part': SocketData.config.show_logo_entidad_partici}" ng-src="{{ imagesPath + cliente.usuario.entidad.logo}}" alt="{{cliente.usuario.username}}")
+						md-tooltip {{ cliente.usuario.entidad.nombre }}
+
+					.sc-info 
+						h5.name.nombresellipsis(style="font-weight: 700; font-size: 14pt; margin-bottom: 4px; margin-left: -4px;") {{ ($index+1) + '. ' + cliente.usuario.nombres}} {{cliente.usuario.apellidos}}
+							md-tooltip {{ ($index+1) + '. ' + cliente.usuario.nombres}} {{cliente.usuario.apellidos}}
 						.alias-enti {{cliente.usuario.entidad.alias}}
 
 

@@ -42,6 +42,8 @@ angular.module('WissenSystem')
 			INSCRITO_EN: 'You are signed in:'
 			NO_ESTAS_INSCRITO: 'You are`t signed in any category.'
 			EXAM_HECHOS: 'Done Exams'
+
+			IMAGEN_TL: 'Image'
 		)
 		.translations('ES',
 			INICIO_MENU: 'Inicio'
@@ -62,6 +64,8 @@ angular.module('WissenSystem')
 			INSCRITO_EN: 'Estás inscrito en:'
 			NO_ESTAS_INSCRITO: 'No estás inscrito en ninguna categoría.'
 			EXAM_HECHOS: 'Exámenes hechos'
+
+			IMAGEN_TL: 'Imagen'
 
 		)
 		.translations('PT',
@@ -84,6 +88,8 @@ angular.module('WissenSystem')
 			NO_ESTAS_INSCRITO: 'Você não está registrado em qualquer categoria.'
 			EXAM_HECHOS: 'Testes feitos'
 
+			IMAGEN_TL: 'Image'
+
 		)
 		.translations('FR',
 			INICIO_MENU: 'Initiation'
@@ -104,6 +110,8 @@ angular.module('WissenSystem')
 			INSCRITO_EN: 'Vous êtes inscrit à:'
 			NO_ESTAS_INSCRITO: "Vous n'êtes pas inscrit dans aucune catégorie."
 			EXAM_HECHOS: 'Tests effectués'
+
+			IMAGEN_TL: 'Image'
 
 		)
 

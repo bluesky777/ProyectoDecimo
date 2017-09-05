@@ -757,8 +757,9 @@ img.message-entilogo{
     left: 20px;
   }
 }
+/*
 .clt-pc{
-  padding: 10px; 
+  padding: 5px; 
   margin: 5px; 
   display: inline-block;
   width: 150px;
@@ -779,7 +780,7 @@ img.message-entilogo{
   }
   
   .img-entidad, .img-perfil{
-    width: 100%; /* or any custom size */
+    width: 100%; 
     height: 100%; 
     object-fit: cover;
     transition: 0.2s;
@@ -802,6 +803,57 @@ img.message-entilogo{
 
 
 }
+*/
+
+.clt-pc{
+  padding: 5px; 
+  margin: 5px; 
+  width: 200px;
+  cursor: pointer;
+  position: relative;
+
+  header{
+    position: relative;
+    height: 60px;
+    margin-right: 2px;
+    display: block;
+    //border-left: 2px solid #fb6e52;
+    width: 70px;
+    overflow: hidden;
+    &:hover .img-perfil{
+      margin-top: -60px; 
+    }
+    &:hover .img-entidad{
+      margin-top: -20px; 
+    }
+  }
+  
+  .img-entidad, .img-perfil{
+    flex: 0 0 auto; 
+    //max-width: 100%;
+    max-height: 100%;
+    align-self: center;
+    margin: auto;
+    object-fit: scale-down;
+    transition: all 0.2s;
+  }
+  .img-entidad{
+    z-index: 10;
+
+  }
+  .img-perfil{
+    z-index: 20;
+  }
+
+  &:hover .opts-clt{
+    opacity: 1;
+    top: -20px;
+  }
+
+
+}
+
+
 .info{
   font-size: 9pt;
 }
@@ -877,6 +929,7 @@ img.message-entilogo{
   z-index: 50;
 }
 .opts-clt{
+  z-index: 555;
   opacity: 0;
   position: absolute;
   transition: all 0.2s;
@@ -922,14 +975,14 @@ md-sidenav md-input-container{
 .categ-container{
   width: 270px;
   display: inline-block;
-  margin-right: 5px;
+  padding-right: 5px;
   transition: all 0.3s;
   opacity: 1;
   position: relative;
   
 
   .title-categ-container{
-    font-size: 14pt;
+    font-size: 16pt;
     text-align: center;
     font-weight: bold;
   }
@@ -1370,6 +1423,11 @@ header.fotoselectpc{
     background-color: #5e73e8;
     color: white;
 }
-
-
+.txt-borde-blanco{
+  text-shadow: rgb(255, 255, 255) 3px 0px 0px, rgb(255, 255, 255) 2.83487px 0.981584px 0px, rgb(255, 255, 255) 2.35766px 1.85511px 0px, rgb(255, 255, 255) 1.62091px 2.52441px 0px, rgb(255, 255, 255) 0.705713px 2.91581px 0px, rgb(255, 255, 255) -0.287171px 2.98622px 0px, rgb(255, 255, 255) -1.24844px 2.72789px 0px, rgb(255, 255, 255) -2.07227px 2.16926px 0px, rgb(255, 255, 255) -2.66798px 1.37182px 0px, rgb(255, 255, 255) -2.96998px 0.42336px 0px, rgb(255, 255, 255) -2.94502px -0.571704px 0px, rgb(255, 255, 255) -2.59586px -1.50383px 0px, rgb(255, 255, 255) -1.96093px -2.27041px 0px, rgb(255, 255, 255) -1.11013px -2.78704px 0px, rgb(255, 255, 255) -0.137119px -2.99686px 0px, rgb(255, 255, 255) 0.850987px -2.87677px 0px, rgb(255, 255, 255) 1.74541px -2.43999px 0px, rgb(255, 255, 255) 2.44769px -1.73459px 0px, rgb(255, 255, 255) 2.88051px -0.838247px 0px;
+}
+.dropdown-menu{
+  max-height: 300px; 
+  overflow-y: auto; 
+}
 

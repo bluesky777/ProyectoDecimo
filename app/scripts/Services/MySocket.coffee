@@ -45,6 +45,8 @@ angular.module('WissenSystem')
 		switch message.comando 
 			when "conectado"
 				SocketData.conectado message.cliente
+				if message.yo_resource_id
+					Perfil.setResourceId message.yo_resource_id
 
 			when "validado"
 				Perfil.setResourceId message.yo.resourceId
@@ -90,6 +92,16 @@ angular.module('WissenSystem')
 				@mensajes.push message.mensaje
 				
 				$rootScope.$emit 'llegaCorrespondencia', {mensajes: @mensajes }
+
+			when "a_establecer_fondo"
+				SocketData.config.info_evento.img_name = message.img_name
+
+			when "a_mostrar_solo_fondo"
+				$state.transitionTo 'proyectando'
+
+			when "a_cambiar_teleprompter"
+				SocketData.config.info_evento.msg_teleprompter = message.msg_teleprompter
+				$state.transitionTo 'proyectando'
 
 			when "sesion_closed"
 				if message.clt.resourceId == Perfil.getResourceId()
@@ -228,6 +240,18 @@ angular.module('WissenSystem')
 	send_email = (mensaje)->
 		dataStream.send({ comando: 'correspondencia',  mensaje: mensaje })
 
+		
+	establecer_fondo = (img_name)->
+		dataStream.send({ comando: 'establecer_fondo',  img_name: img_name })
+
+		
+	mostrar_solo_fondo = (img_name)->
+		dataStream.send({ comando: 'mostrar_solo_fondo',  img_name: img_name })
+
+		
+	cambiar_teleprompter = (msg_teleprompter)->
+		dataStream.send({ comando: 'cambiar_teleprompter',  msg_teleprompter: msg_teleprompter })
+
 
 	send_email_to = (mensaje, clt)->
 		dataStream.send({ comando: 'correspondencia',  mensaje: mensaje, to: clt.resourceId })
@@ -324,6 +348,9 @@ angular.module('WissenSystem')
 		unregister:					unregister
 		got_qr: 					got_qr
 		send_email: 				send_email
+		establecer_fondo: 			establecer_fondo
+		mostrar_solo_fondo: 		mostrar_solo_fondo
+		cambiar_teleprompter: 		cambiar_teleprompter
 		send_email_to: 				send_email_to
 		get_clts: 					get_clts
 		cerrar_sesion: 				cerrar_sesion

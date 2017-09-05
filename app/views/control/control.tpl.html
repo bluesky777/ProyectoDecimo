@@ -2,121 +2,109 @@
 <div class="panel panel-default panel-hovered panel-stacked mb20">
   <div class="panel-heading">
       
-    Servidor
+    {{ 'SERVIDOR_TL' | translate }}
     <md-menu>
-      <button aria-label="Abrir menú" md-ink-ripple="" ng-click="openMenu($mdOpenMenu, $event)" class="btn btn-pink btn-xs right">Conexión  
+      <button aria-label="Abrir menú" md-ink-ripple="" ng-click="openMenu($mdOpenMenu, $event)" class="btn btn-pink btn-xs right">{{ 'CONEXIÓN_TL' | translate }}  
         <div class="fa fa-chevron-right"></div>
         <div class="md-ripple-container"></div>
       </button>
       <md-menu-content width="4">
         <md-menu-item>
-          <md-button ng-click="crearservidor($event)">Crear Servidor</md-button>
+          <md-button ng-click="crearservidor($event)">{{ 'ABRIR_SERVIDOR_TL' | translate }}  </md-button>
         </md-menu-item>
         <md-menu-item>
-          <md-button ng-click="CerrarServidor($event)">Cerrar Servidor</md-button>
+          <md-button ng-click="CerrarServidor($event)">{{ 'CERRAR_SERVIDOR_TL' | translate }}  </md-button>
         </md-menu-item>
         <md-menu-item>
-          <md-button ng-click="Conectar($event)">Conectar</md-button>
+          <md-button ng-click="Conectar($event)">{{ 'CONECTAR_TL' | translate }}  </md-button>
         </md-menu-item>
         <md-menu-divider></md-menu-divider>
         <md-menu-item>
-          <md-button ng-click="qrScanear()">QR Scanner</md-button>
+          <md-button ng-click="qrScanear()">{{ 'QR_SCANNER_TL' | translate }}  </md-button>
         </md-menu-item>
       </md-menu-content>
     </md-menu>
   </div>
   <div class="panel-body">
-    <div ng-class="{'cursor-unselect':deseleccionar}" class="clt-pc-container">
+    <div ng-class="{'cursor-unselect':deseleccionar}" style="position: relative;" class="clt-pc-container">
       <div class="options-clts btn-group">
         <button type="button" ng-model="deseleccionar" uib-btn-checkbox class="btn btn-default btn-xs deseleccionador">
           <icon class="fa fa-eye-slash"></icon>
-          <md-tooltip>Deseleccionar</md-tooltip>
+          <md-tooltip>{{ 'DESELECCIONAR_TL' | translate }} </md-tooltip>
         </button>
         <button type="button" ng-click="deseleccionarTodo()" class="btn btn-default btn-xs deseleccionador">A
           <icon class="fa fa-eye-slash"></icon>
-          <md-tooltip>Deseleccionar todo</md-tooltip>
+          <md-tooltip>{{ 'DESELECCIONAR_TODO_TL' | translate }} </md-tooltip>
         </button>
         <button type="button" ng-click="seleccionarTodo()" class="btn btn-default btn-xs deseleccionador">A
           <icon class="fa fa-eye"></icon>
-          <md-tooltip>Seleccionar todo</md-tooltip>
+          <md-tooltip>{{ 'SELECCIONAR_TODO_TL' | translate }} </md-tooltip>
         </button>
         <button type="button" ng-click="empezarExamenCltsSeleccionados()" class="btn btn-default btn-xs deseleccionador">
           <icon class="fa fa-play"></icon>
-          <md-tooltip>Empezar examen</md-tooltip>
+          <md-tooltip>{{ 'EMPEZAR_EXAMEN_TL' | translate }} </md-tooltip>
         </button>
         <button type="button" ng-click="nextQuestionCltsSeleccionados()" class="btn btn-danger btn-xs deseleccionador">
           <icon class="fa fa-arrow-right"></icon>
-          <md-tooltip>Siguiente pregunta</md-tooltip>
+          <md-tooltip>{{ 'SIGUIENTE_PREGUNTA_TL' | translate }} </md-tooltip>
         </button>
         <button type="button" ng-click="actualizarClts()" class="btn btn-default btn-xs deseleccionador">
           <icon class="fa fa-refresh"></icon>
-          <md-tooltip>Actualizar</md-tooltip>
+          <md-tooltip>{{ 'ACTUALIZAR_TL' | translate }} </md-tooltip>
         </button>
       </div>
-      <h4>Registrados</h4>
-      <ul>
-        <li ng-repeat="cliente in SocketData.clientes | filter:{'registrado':true}" ng-click="clickedClt($event, cliente)" ng-dblclick="showSidenavEditUsu(cliente)" ng-mouseover="sobreClt($event, cliente)" ng-class="{'seleccionado': cliente.seleccionado, 'cursor-unselect':deseleccionar }" class="md-whiteframe-1dp clt-pc unselectable">
-          <header><img ng-src="{{imagesPath + cliente.usuario.imagen_nombre}}" alt="{{cliente.usuario.username}}" class="img-perfil nodrag"><img ng-src="{{ imagesPath + cliente.usuario.entidad.logo}}" alt="{{cliente.usuario.username}}" class="img-entidad nodrag">
+      <h4>{{ 'REGISTRADOS_TL' | translate }} </h4>
+      <ul layout="row" layout-wrap>
+        <li ng-repeat="cliente in SocketData.clientes | filter:{'registrado':true}" layout="row" ng-click="clickedClt($event, cliente)" ng-dblclick="showSidenavEditUsu(cliente)" ng-mouseover="sobreClt($event, cliente)" ng-class="{'seleccionado': cliente.seleccionado, 'cursor-unselect':deseleccionar }" class="md-whiteframe-1dp clt-pc unselectable"> 
+          <header flex="30"><img ng-src="{{imagesPath + cliente.usuario.imagen_nombre}}" alt="{{cliente.usuario.username}}" style="" class="img-perfil nodrag"><img ng-src="{{ imagesPath + cliente.usuario.entidad.logo}}" alt="{{cliente.usuario.username}}" class="img-entidad nodrag">
             <md-tooltip>{{cliente.usuario.entidad.nombre}}</md-tooltip>
           </header>
-          <div ng-class="{'incorrect': cliente.answered=='incorrect', 'correct': cliente.answered=='correct' }" class="info"> 
-            <h5 class="name text-center nombresellipsis">{{cliente.usuario.nombres}} {{cliente.usuario.apellidos}}
+          <div flex="70" ng-class="{'incorrect': cliente.answered=='incorrect', 'correct': cliente.answered=='correct' }" class="info"> 
+            <h5 style="margin-top: 2px" class="name text-center nombresellipsis">{{cliente.usuario.nombres}} {{cliente.usuario.apellidos}}
               <md-tooltip>{{cliente.usuario.username}}</md-tooltip>
             </h5>
-            <div ng-hide="cliente.usuario.entidad.alias" style="color: white;" class="alias-enti">{{cliente.nombre_punto}}</div>
             <div ng-show="cliente.usuario.entidad.alias" class="alias-enti">{{cliente.usuario.entidad.alias}}</div>
             <h6 style="margin: 0px;">{{ cliente.nombre_punto }}</h6>
-            <md-menu>
-              <button aria-label="Abrir menú" ng-click="openMenuCateg($mdOpenMenu, $event)" class="btn btn-pink btn-xs right">
-                <!--span(ng-repeat=" cliente.usuario.inscripciones | categsInscritasDeUsuario:categorias_king:USER.idioma_main_id | filter:{selected:true} ") | {{categoriaking.nombre}} 
-                --><span ng-bind-html="categoriaSelect(cliente).nombre"></span>
-                <div class="fa fa-chevron-right"></div>
-                <div class="md-ripple-container"></div>
-              </button>
-              <md-menu-content width="4">
-                <md-menu-item ng-repeat="categoriatrad in categorias_traducidas">
-                  <md-button ng-click="cambiarCategSel(cliente, categoriatrad)">{{ categoriatrad.nombre }}</md-button>
-                </md-menu-item>
-                <md-menu-divider></md-menu-divider>
-                <md-menu-item>
-                  <md-button ng-click="empezarExamenCliente(cliente)">Empezar examen</md-button>
-                </md-menu-item>
-                <md-menu-item>
-                  <md-button ng-click="nextQuestionCliente(cliente)">Siguiente pregunta</md-button>
-                </md-menu-item>
-              </md-menu-content>
-            </md-menu>
           </div>
           <div class="opts-clt btn-group">
-            <button type="button" ng-click="cerrarSesion(cliente)" class="btn btn-default btn-xs deseleccionador">
-              <icon class="fa fa-sign-out"></icon>
-              <md-tooltip>Cerrar sesión</md-tooltip>
-            </button>
-            <button type="button" ng-click="showSidenavEditUsu(cliente)" class="btn btn-default btn-xs deseleccionador">
-              <icon class="fa fa-pencil"></icon>
-              <md-tooltip>Editar</md-tooltip>
-            </button>
+            <div uib-dropdown dropdown-append-to-body class="btn-group">
+              <button type="button" ng-click="cerrarSesion(cliente)" class="btn btn-default btn-xs deseleccionador">
+                <icon class="fa fa-sign-out"></icon>
+                <md-tooltip>{{ 'CERRAR_SESION_TL' | translate }} </md-tooltip>
+              </button>
+              <button type="button" ng-click="showSidenavEditUsu(cliente)" class="btn btn-default btn-xs deseleccionador">
+                <icon class="fa fa-pencil"></icon>
+                <md-tooltip>{{ 'EDITAR_TL' | translate }} </md-tooltip>
+              </button><a aria-label="Abrir menú" uib-dropdown-toggle class="btn btn-pink btn-xs right"><span ng-bind-html="categoriaSelect(cliente).nombre"></span>
+                <div class="fa fa-chevron-right"></div></a>
+              <ul uib-dropdown-menu aria-labelledby="simple-dropdown" class="dropdown-menu">
+                <li ng-repeat="categoriatrad in categorias_traducidas"><a ng-click="cambiarCategSel(cliente, categoriatrad)">{{ categoriatrad.nombre }}</a></li>
+                <li class="divider"></li>
+                <li><a ng-click="empezarExamenCliente(cliente)">{{ 'EMPEZAR_EXAMEN_TL' | translate }} </a></li>
+                <li><a ng-click="nextQuestionCliente(cliente)">{{ 'SIGUIENTE_PREGUNTA_TL' | translate }} </a></li>
+              </ul>
+            </div>
           </div>
         </li>
       </ul>
       <div class="disponibles-title">
-        <h4>Disponibles</h4>
+        <h4>{{ 'DISPONIBLES_TL' | translate }} </h4>
         <ul>
           <li ng-repeat="cliente in SocketData.clientes | filter:{'registrado':false} " ng-click="clickedClt($event, cliente)" ng-dblclick="showSidenavSelectUsu(cliente)" ng-mouseover="sobreClt($event, cliente)" ng-class="{'seleccionado': cliente.seleccionado, 'cursor-unselect':deseleccionar }" class="md-whiteframe-1dp clt-pc unselectable">
             <header ng-show="cliente.registrado"></header>
             <div class="info"> 
               <h5 ng-model="cliente.nombre_punto" contenteditable guardar-nombre-punto="guardarNombrePunto">{{ cliente.nombre_punto }}
-                <md-tooltip>Nombre de punto</md-tooltip>
+                <md-tooltip>{{ 'NOMBRE_DE_PUNTO_TL' | translate }} </md-tooltip>
               </h5>
             </div>
             <div class="opts-clt btn-group">
               <button type="button" ng-click="showSidenavSelectUsu(cliente)" class="btn btn-default btn-xs deseleccionador">
                 <icon class="fa fa-users"></icon>
-                <md-tooltip>Seleccionar un usuario</md-tooltip>
+                <md-tooltip>{{ 'SELECCIONAR_UN_USUARIO_TL' | translate }} </md-tooltip>
               </button>
               <button type="button" ng-click="guardarNombrePunto(cliente)" class="btn btn-default btn-xs deseleccionador">
                 <icon class="fa fa-save"></icon>
-                <md-tooltip>Guardar nombre de punto</md-tooltip>
+                <md-tooltip>{{ 'GUARDAR_NOMBRE_PUNTO_TL' | translate }} </md-tooltip>
               </button>
             </div>
           </li>
@@ -128,13 +116,13 @@
         <div class="row">
           <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12">
             <md-input-container flex-gt-sm style="margin-bottom: -20px; padding-bottom: 0px" class="md-block">
-              <label>Mensaje</label>
+              <label>{{ 'MENSAJE_TL' | translate }} </label>
               <input id="msg-especifico" type="text" ng-model="newMensaje">
-              <md-tooltip> Envía un mensaje</md-tooltip>
+              <md-tooltip> {{ 'ENVIA_UN_MENSAJE_TL' | translate }} </md-tooltip>
             </md-input-container>
           </div>
           <div class="col-lg-1 col-md-2 col-sm-2 col-xs-12">
-            <md-button aria-label="Enviar" type="submit" style="min-width:95%;  top: 7px;" class="md-raised">Enviar</md-button>
+            <md-button aria-label="Enviar" type="submit" style="min-width:95%;  top: 7px;" class="md-raised">{{ 'ENVIA_TL' | translate }} </md-button>
           </div>
         </div>
       </form>
@@ -146,7 +134,7 @@
 <div class="panel panel-default panel-hovered panel-stacked mb20">
   <div class="panel-heading">
       
-    Comandos
+    {{ 'COMANDOS_TL' | translate }} 
   </div>
   <div class="panel-body">
     <div class="row">
@@ -156,25 +144,66 @@
         </select>
         <select multiple="true" style="width: 250px; height: 150px; font-size: 9pt; overflow: scroll">
           <option ng-repeat="pregunta in cmdPreguntasTraduc" ng-model="cmdPreguntaSelected" ng-click="cmdClickPreguntaSelected(pregunta, $index)" ng-bind-html="($index+1) + '. ' + pregunta.enunciado"> </option>
-        </select><span style="font-weight: bold;">Preg: </span>{{ SocketData.config.info_evento.preg_actual }}
+        </select><span style="font-weight: bold;">{{ 'PREG_TL' | translate }}: </span>{{ SocketData.config.info_evento.preg_actual }}
         <input ng-model="SocketData.config.info_evento.preg_actual" type="number" style="width: 60px;">
-        <button ng-click="showQuestion()" class="btn btn-default">Mostrar pregunta</button>
-        <button ng-click="showPuntajeParticip()" class="btn btn-default">Mostrar puntaje</button>
-        <md-checkbox ng-click="toggleShowLogoEntidadParticipantes()" ng-true-value="1" ng-false-value="0" ng-model="cmdShowLogoEntidadPartici" aria-label="Mostrar logos">Mostrar logo entidades</md-checkbox>
+        <div class="btn-group">
+          <button ng-click="showQuestion()" class="btn btn-default">{{ 'MOSTRAR_PREGUNTA_TL' | translate }} </button>
+          <button ng-click="showPuntajeParticip()" class="btn btn-default">{{ 'MOSTRAR_PUNTAJE_TL' | translate }} </button>
+        </div>
+        <md-checkbox ng-click="toggleShowLogoEntidadParticipantes()" ng-true-value="1" ng-false-value="0" ng-model="cmdShowLogoEntidadPartici" aria-label="Mostrar logos">{{ 'MOSTRAR_LOGO_ENTIDADES_TL' | translate }} </md-checkbox>
       </div>
     </div>
-    <md-button ng-click="showParticipantes()" class="md-raised">Mostrar participantes</md-button>
-    <button ng-click="empezarExamen()" class="btn btn-primary">Empezar exámen  <i class="fa fa-play"></i></button>
-    <button ng-click="nextQuestion()" class="btn btn-danger">Siguiente pregunta  <i class="fa fa-arrow-right"></i></button>
+    <div style="margin-top: 10px;" class="row">
+      <div class="col-xs-12 col-md-7">
+        <button ng-click="showParticipantes()" class="btn btn-default"> <i class="fa fa-users"></i>{{ 'MOSTRAR_PARTICIPANTES_TL' | translate }} </button><a href="" ng-click="configurar_imagenes()" style="display: block; margin-top: 12px; margin-bottom: 8px" ng-hide="imagenes">{{ 'CONFIGURAR_FONDO_TL' | translate }} </a>
+      </div>
+    </div>
+    <div style="margin-top: 10px;" class="row">
+      <div class="col-xs-12 col-md-7">
+        <div style="padding-left: 15px;" ng-if="imagenes" class="form-group">
+          <label>{{ 'IMAGEN_TL' | translate }} </label>
+          <button type="button" ng-click="misImagenes()" style="float: right;margin-right: 20px;" class="btn btn-primary fa fa-image btn-xs"> Imágenes...</button>
+          <ui-select ng-model="fondo.imagen_seleccionada" on-select="imagenSelect($item, $model)" theme="select2" style="width: 95%;">
+            <ui-select-match placeholder="Imagen usuario"> <img ng-src="{{imagesPath + $select.selected.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
+            <ui-select-choices repeat="imagen in imagenes | filter: {nombre: $select.search}"><img ng-src="{{imagesPath + imagen.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + imagen.nombre | highlight: $select.search"></small></ui-select-choices>
+            <ui-select-no-choice><img ng-src="{{imagesPath + 'perfil/system/avatars/no-photo.jpg'}}" style="width:25px; height:25px;"><small ng-bind-html="' Sin foto '"></small></ui-select-no-choice>
+          </ui-select>
+          <div class="btn-group">
+            <button ng-click="establecer_fondo()" class="btn btn-default"> <i class="fa fa-image"></i>{{ 'ESTABLECER_FONDO_TL' | translate }} </button>
+            <button ng-click="mostrar_solo_fondo()" class="btn btn-default"> <i class="fa fa-image"></i>{{ 'MOSTRAR_SOLO_FONDO_TL' | translate }} </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-md-12">
+        <md-content>
+          <div style="margin-top: 15px;" class="form-group">
+            <div class="input-group">
+              <md-tooltip>{{ 'CAMBIAR_TELEPROMPTER_TL' | translate }}  </md-tooltip>
+              <input placeholder="Escriba mensaje" ng-model="msg_teleprompter" style="border: 1px solid #ccc; border-right: 0px;" class="form-control">
+              <div class="input-group-btn">
+                <button type="button" ng-click="cambiar_teleprompter()" style="height: 34px; border-left: 0px;" class="btn btn-default"> <i class="fa fa-align-left"></i></button>
+              </div>
+            </div>
+          </div>
+        </md-content>
+      </div>
+    </div>
+    <hr>
+    <div class="btn-group">
+      <button ng-click="empezarExamen()" class="btn btn-primary">{{ 'EMPEZAR_EXAMEN_TL' | translate }}   <i class="fa fa-play"></i></button>
+      <button ng-click="nextQuestion()" class="btn btn-danger">{{ 'SIGUIENTE_PREGUNTA_TL' | translate }}   <i class="fa fa-arrow-right"></i></button>
+    </div>
     <div class="row">
       <div class="col-xs-12 col-md-7">
         <md-content>
           <div style="width: 200px;margin-top: 15px;" class="form-group">
             <div class="input-group">
-              <md-tooltip>Enviar a los clientes seleccionados a una pregunta</md-tooltip>
+              <md-tooltip>{{ 'ENVIAR_CLIENTES_SELECCIONADOS_A_UNA_PREGUNTA_TL' | translate }}  </md-tooltip>
               <input type="number" min="1" placeholder="Número" ng-model="cmdNoPregunta" style="border: 1px solid #ccc; border-right: 0px;" class="form-control">
               <div class="input-group-btn">
-                <button type="button" ng-click="gotoNoQuestionClt()" style="height: 34px; border-left: 0px;" class="btn btn-default">Ir</button>
+                <button type="button" ng-click="gotoNoQuestionClt()" style="height: 34px; border-left: 0px;" class="btn btn-default">{{ 'IR_TL' | translate }} </button>
               </div>
             </div>
           </div>
@@ -184,7 +213,7 @@
   </div>
 </div>
 <!-- RESULTADOS, EXÁMENES, PUESTOS!!!!!!!-->
-<md-button ng-if="!show_result_table" ng-click="mostrar_result_table()" class="md-raised">Tabla de resultados</md-button>
+<md-button ng-if="!show_result_table" ng-click="mostrar_result_table()" class="md-raised">{{ 'TABLA_DE_RESULTADOS_TL' | translate }} </md-button>
 <puestos-dir ng-if="show_result_table"></puestos-dir>
 <!-- RESULTADOS, EXÁMENES, PUESTOS!!!!!!!-->
 
@@ -193,7 +222,7 @@
 <div class="panel panel-default panel-hovered panel-stacked mb20">
   <div class="panel-heading">
       
-    Chat público
+    {{ 'CHAT_PUBLICO_TL' | translate }} 
   </div>
   <div class="panel-body">
     <chat-container-dir></chat-container-dir>

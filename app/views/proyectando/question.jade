@@ -1,8 +1,8 @@
-h2(style="text-align: center; color: blue;") {{ SocketData.config.pregunta.nombre_categ + ' (' + SocketData.config.no_question + ' de ' + SocketData.config.pregunta.catidad_pregs + ')' }}
+h2.txt-borde-blanco(style="text-align: center; color: blue;") {{ SocketData.config.pregunta.nombre_categ + ' (' + SocketData.config.no_question + ' de ' + SocketData.config.pregunta.catidad_pregs + ')' }}
 
 div(style="font-size: 25pt;")
 
-	md-whiteframe.md-whiteframe-z2.definicion-frame(layout style="padding: 10px; position: relative")
+	md-whiteframe.md-whiteframe-z2.definicion-frame(layout style="padding: 10px; position: relative; background: white; opacity: 0.9")
 		span(style="font-weight: bold;") {{SocketData.config.no_question}}.   
 		span(ng-bind-html="SocketData.config.pregunta.enunciado")
 
@@ -25,7 +25,7 @@ div(style="font-size: 25pt;")
 
 	// Opciones de tipo ICFES
 	div.opciones(layout="row" layout-wrap layout-fill ng-if="SocketData.config.pregunta.tipo_pregunta=='Test'" 
-		style="padding-bottom: 32px; justify-content: center;")
+		style="padding-bottom: 32px; justify-content: center; opacity: 0.9;")
 		
 		md-whiteframe.pointer.md-whiteframe-z2.btn(ng-class="{'elegida':opcion.elegida}" 
 			ng-if="!opcion.nueva" flex="45" 

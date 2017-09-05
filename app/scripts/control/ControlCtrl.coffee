@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.controller('ControlCtrl', ['$scope', 'Restangular', 'toastr', '$state', '$window', 'MySocket', 'SocketData', '$rootScope', '$mdSidenav', '$filter',  ($scope, Restangular, toastr, $state, $window, MySocket, SocketData, $rootScope, $mdSidenav, $filter)->
+.controller('ControlCtrl', ['$scope', 'Restangular', 'toastr', '$state', '$window', 'MySocket', 'SocketData', '$rootScope', '$mdSidenav', '$filter', '$uibModal', 'App',  ($scope, Restangular, toastr, $state, $window, MySocket, SocketData, $rootScope, $mdSidenav, $filter, $modal, App)->
 
 
 	$scope.SocketData 				= SocketData
@@ -14,7 +14,41 @@ angular.module('WissenSystem')
 	$scope.cmdNoPregunta			= 1
 	$scope.cmdShowLogoEntidadPartici = false
 	$scope.show_result_table 		= true
+	$scope.fondo 					= {}
 
+
+
+	$scope.configurar_imagenes = ()->
+
+		Restangular.one('imagenes/usuarios').customGET().then((r)->
+			$scope.imagenes = r.imagenes
+		, (r2)->
+			toastr.error 'No se trajeron las imágenes.'
+		)
+		
+
+		$scope.misImagenes = ()->
+			
+			modalInstance = $modal.open({
+				templateUrl: App.views + 'preguntas/misImagenes.tpl.html'
+				controller: 'MisImagenes'
+				size: 'lg',
+				resolve: 
+					resolved_user: ()->
+						$scope.USER
+			})
+			modalInstance.result.then( (elem)->
+				$scope.imagenes.push elem
+			)
+
+	$scope.establecer_fondo = ()->
+		MySocket.establecer_fondo($scope.fondo.imagen_seleccionada.nombre)
+
+	$scope.mostrar_solo_fondo = ()->
+		MySocket.mostrar_solo_fondo($scope.fondo.imagen_seleccionada.nombre)
+
+	$scope.cambiar_teleprompter = ()->
+		MySocket.cambiar_teleprompter($scope.msg_teleprompter)
 
 	$scope.mostrar_result_table = ()->
 		$scope.show_result_table = true
