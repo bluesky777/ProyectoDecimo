@@ -1,4 +1,4 @@
-.panel.panel-default.panel-hovered.panel-stacked.mb20
+.panel.panel-default.panel-hovered.panel-stacked.mb20.mr--15-sm.ml--15-sm
 	.panel-heading   
 		| {{ 'SERVIDOR_TL' | translate }}
 
@@ -152,7 +152,7 @@ sidenav-select-usu-dir
 sidenav-edit-usu-dir
 
 
-.panel.panel-default.panel-hovered.panel-stacked.mb20
+.panel.panel-default.panel-hovered.panel-stacked.mb20.mr--15-sm.ml--15-sm
 	.panel-heading   
 		| {{ 'COMANDOS_TL' | translate }} 
 
@@ -178,9 +178,15 @@ sidenav-edit-usu-dir
 
 		.row(style="margin-top: 10px;")
 			.col-xs-12.col-md-7
-				button.btn.btn-default(ng-click="showParticipantes()") 
-					i.fa.fa-users
-					| {{ 'MOSTRAR_PARTICIPANTES_TL' | translate }} 
+				.btn-group
+					button.btn.btn-default(ng-click="showParticipantes()") 
+						i.fa.fa-users
+						| {{ 'MOSTRAR_PARTICIPANTES_TL' | translate }} 
+
+					button.btn.btn-default(ng-click="showBarras()") 
+						i.fa.fa-bar-chart
+						| {{ 'MOSTRAR_BARRAS_TL' | translate }} 
+
 		
 				a(href="" ng-click="configurar_imagenes()" style="display: block; margin-top: 12px; margin-bottom: 8px" ng-hide="imagenes") {{ 'CONFIGURAR_FONDO_TL' | translate }} 
 
@@ -233,11 +239,25 @@ sidenav-edit-usu-dir
 			.col-xs-12.col-md-7
 				md-content
 					.form-group(style="width: 200px;margin-top: 15px;")
+						| {{ 'ENVIAR_CLIENTES_SELECCIONADOS_A_UNA_PREGUNTA_TL' | translate }}: 
 						.input-group
 							md-tooltip {{ 'ENVIAR_CLIENTES_SELECCIONADOS_A_UNA_PREGUNTA_TL' | translate }}  
 							input.form-control(type="number" min="1" placeholder="Número" ng-model="cmdNoPregunta" style="border: 1px solid #ccc; border-right: 0px;")
 							.input-group-btn
 								button.btn.btn-default(type="button" ng-click="gotoNoQuestionClt()" style="height: 34px; border-left: 0px;") {{ 'IR_TL' | translate }} 
+
+
+
+		.row
+			.col-xs-12.col-md-7
+				md-content
+					.form-group(style="width: 200px;margin-top: 15px;")
+						| {{ 'LIBERAR_HASTA_PREGUNTA_TL' | translate }}: 
+						.input-group
+							md-tooltip Restrinja con 0 o -1
+							input.form-control(type="number" min="-1" placeholder="Número" ng-model="SocketData.config.info_evento.free_till_question" style="border: 1px solid #ccc; border-right: 0px;")
+							.input-group-btn
+								button.btn.btn-default(type="button" ng-click="liberar_hasta_pregunta()" style="height: 34px; border-left: 0px;") {{ 'IR_TL' | translate }} 
 
 
 
@@ -252,7 +272,7 @@ puestos-dir(ng-if="show_result_table")
 
 
 
-.panel.panel-default.panel-hovered.panel-stacked.mb20
+.panel.panel-default.panel-hovered.panel-stacked.mb20.mr--15-sm.ml--15-sm
 	.panel-heading   
 		| {{ 'CHAT_PUBLICO_TL' | translate }} 
 

@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.controller('ExamenRespuestaCtrl', ['$scope', 'Restangular', 'toastr', '$filter', 'AuthService', '$state', '$uibModal', 'App', '$rootScope', 'resolved_user', '$interval', '$timeout', 'MySocket', ($scope, Restangular, toastr, $filter, AuthService, $state, $modal, App, $rootScope, resolved_user, $interval, $timeout, MySocket)->
+.controller('ExamenRespuestaCtrl', ['$scope', 'Restangular', 'toastr', '$filter', 'AuthService', '$state', '$uibModal', 'App', '$rootScope', 'resolved_user', '$interval', '$timeout', 'MySocket', 'SocketData', ($scope, Restangular, toastr, $filter, AuthService, $state, $modal, App, $rootScope, resolved_user, $interval, $timeout, MySocket, SocketData)->
 
 	$scope.USER = resolved_user
 	$scope.imagesPath = App.images
@@ -35,7 +35,7 @@ angular.module('WissenSystem')
 
 
 		# *************************************************
-		# Evantos del examen
+		# Eventos del examen
 		# *************************************************
 
 		$scope.$on 'respuesta_elegida', (event, indice, valor)->
@@ -46,7 +46,16 @@ angular.module('WissenSystem')
 					$scope.opcion_eligida = 'Correcta'
 
 			if $scope.USER.evento_actual.gran_final
-				$scope.waiting_question = true
+				if SocketData.config.info_evento.free_till_question
+
+					if SocketData.config.info_evento.free_till_question > $scope.pregunta_actual # Solo "mayor que" pues la pregunta actual no ha avanzado en este punto
+						$scope.waiting_question = false
+						$scope.$broadcast 'next_question' # Para reiniciar el tiempo
+					else
+						$scope.waiting_question = true
+				else
+					$scope.waiting_question = true
+
 			$timeout(()->
 				$scope.pregunta_actual = $filter('noPregActual')($scope.examen_actual.preguntas)
 				$scope.pregunta_actual_porc = $scope.pregunta_actual / $scope.total_preguntas * 100
@@ -107,14 +116,9 @@ angular.module('WissenSystem')
 
 		destroy_next_question = $rootScope.$on 'next_question', (event)-> # Hay otro listening en TimerDir
 			if $scope.waiting_question != false
-				$scope.pregunta_actual = $filter('noPregActual')($scope.examen_actual.preguntas)
-				$scope.pregunta_actual_porc = $scope.pregunta_actual / $scope.total_preguntas * 100
+				$scope.siguiente_pregunta()
 				
-				pregtemp = $filter('preguntaActual')($scope.examen_actual.preguntas, $scope.pregunta_actual)[0]
-				pregunta = $filter('filter')($scope.examen_actual.preguntas, {pregunta_id: pregtemp.pregunta_id})[0]
-				console.log pregunta
-				$scope.waiting_question = false
-				$scope.$broadcast 'next_question'
+
 
 		destroy_goto_question_on = $rootScope.$on 'goto_question_no', (event, numero)->
 			if $scope.waiting_question != false
@@ -127,11 +131,18 @@ angular.module('WissenSystem')
 				$scope.$broadcast 'goto_question_no', numero
 
 
+		destroy_set_free_till_question_on = $rootScope.$on 'set_free_till_question', (event, free_till_question)->
+			if $scope.waiting_question != false
+				$scope.siguiente_pregunta()
+
+
+
 
 		$scope.$on('$destroy', ()->
 			window.onbeforeunload = undefined
 			destroy_next_question() # remove listener.
 			destroy_goto_question_on()
+			destroy_set_free_till_question_on()
 		);
 
 
@@ -151,6 +162,17 @@ angular.module('WissenSystem')
 		$scope.pregunta_actual_porc = $scope.pregunta_actual / $scope.total_preguntas * 100
 		
 
+
+
+	$scope.siguiente_pregunta = ()->
+		$scope.pregunta_actual = $filter('noPregActual')($scope.examen_actual.preguntas)
+		$scope.pregunta_actual_porc = $scope.pregunta_actual / $scope.total_preguntas * 100
+		
+		pregtemp = $filter('preguntaActual')($scope.examen_actual.preguntas, $scope.pregunta_actual)[0]
+		pregunta = $filter('filter')($scope.examen_actual.preguntas, {pregunta_id: pregtemp.pregunta_id})[0]
+		$scope.waiting_question = false
+		$scope.$broadcast 'next_question'
+		
 
 
 

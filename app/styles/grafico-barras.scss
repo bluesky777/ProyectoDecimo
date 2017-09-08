@@ -1,0 +1,110 @@
+.wrapper-grafico {
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 30px;
+    width: 90%;
+    font-family: Helvetica;
+    font-size: 12px;
+
+    .main-title { 
+        position: absolute;
+        border-left: solid 5px #333;
+        padding-left: 10px;
+        color: #333;
+        margin: 0 20px 20px 20px;
+        font-family: Impact, serif;
+        font-weight: normal;
+        text-transform: uppercase;
+        line-height: 1;
+        top: 0;
+    }
+
+    .main-title span { display: block;}
+    .main-title a { 
+        color: inherit;}
+
+    .main-title span { margin-bottom: 0;}
+    .main-title .span1 { font-size: 29px; text-align: left;}
+    .main-title .span2 { font-size: 45px; text-align: left;}
+    
+
+    #chart{
+        margin-top:120px;
+        width: 100%;
+        height: 300px;
+        padding: 5px;
+        border-bottom: 1px solid #888;
+        border-left: 1px solid #888;
+    }
+    @-webkit-keyframes bargrowth{
+      0%   {max-height: 0%;}
+      100%  {max-height: 100%;}
+    }
+    @keyframes bargrowth{
+      0%   {max-height: 0%;}
+      100%  {max-height: 100%;}
+    }
+    .bar{
+      -webkit-animation: bargrowth 1000ms ease;
+      animation: bargrowth 1000ms ease;
+      width: 30px;
+      
+    }
+    .barc1{
+        background: rgb(255, 15, 0);
+        box-shadow: 1px -1px rgb(204, 12, 0), 2px -2px rgb(204, 12, 0), 3px -3px rgb(204, 12, 0),   4px -4px rgb(204, 12, 0), 5px -5px rgb(204, 12, 0), 6px -6px rgb(204, 12, 0), 7px -7px  rgb(204, 12, 0), 8px -8px rgb(204, 12, 0), 9px -9px rgb(204, 12, 0), 10px -10px rgb(204, 12, 0);
+    }
+    .barc2{
+        background: #89b800;
+        box-shadow: 1px -1px #79a300, 2px -2px #79a300, 3px -3px #79a300,   4px -4px #79a300, 5px -5px #79a300, 6px -6px #79a300, 7px -7px   #79a300, 8px -8px #79a300, 9px -9px #79a300, 10px -10px #79a300;
+    }
+    .barc3{
+        background: rgb(42, 12, 208);
+        box-shadow: 1px -1px rgb(34, 10, 166), 2px -2px rgb(34, 10, 166), 3px -3px rgb(34, 10, 166),   4px -4px rgb(34, 10, 166), 5px -5px rgb(34, 10, 166), 6px -6px rgb(34, 10, 166), 7px -7px   rgb(34, 10, 166), 8px -8px rgb(34, 10, 166), 9px -9px rgb(34, 10, 166), 10px -10px rgb(34, 10, 166);
+    }
+    .barc4{
+        background: rgb(255, 158, 1);
+        box-shadow: 1px -1px rgb(204, 126, 1), 2px -2px rgb(204, 126, 1), 3px -3px rgb(204, 126, 1),   4px -4px rgb(204, 126, 1), 5px -5px rgb(204, 126, 1), 6px -6px rgb(204, 126, 1), 7px -7px  rgb(204, 126, 1), 8px -8px rgb(204, 126, 1), 9px -9px rgb(204, 126, 1), 10px -10px rgb(204, 126, 1);
+    }
+    .barc5{
+        background: rgb(248, 255, 1);
+        box-shadow: 1px -1px rgb(198, 204, 1), 2px -2px rgb(198, 204, 1), 3px -3px rgb(198, 204, 1),   4px -4px rgb(198, 204, 1), 5px -5px rgb(198, 204, 1), 6px -6px rgb(198, 204, 1), 7px -7px rgb(198, 204, 1), 8px -8px rgb(198, 204, 1), 9px -9px rgb(198, 204, 1), 10px -10px rgb(198, 204, 1);
+    }
+    .barc6{
+        background: rgb(138, 12, 207);
+        box-shadow: 1px -1px rgb(110, 10, 166), 2px -2px rgb(110, 10, 166), 3px -3px rgb(110, 10, 166),   4px -4px rgb(110, 10, 166), 5px -5px rgb(110, 10, 166), 6px -6px rgb(110, 10, 166), 7px -7px  rgb(110, 10, 166), 8px -8px rgb(110, 10, 166), 9px -9px rgb(110, 10, 166), 10px -10px rgb(110, 10, 166);
+    }
+    .barc7{
+        background: rgb(205, 13, 116);
+        box-shadow: 1px -1px rgb(164, 10, 93), 2px -2px rgb(164, 10, 93), 3px -3px rgb(164, 10, 93),   4px -4px rgb(164, 10, 93), 5px -5px rgb(164, 10, 93), 6px -6px rgb(164, 10, 93), 7px -7px   rgb(164, 10, 93), 8px -8px rgb(164, 10, 93), 9px -9px rgb(164, 10, 93), 10px -10px rgb(164, 10, 93);
+    }
+
+    .labels-barchart{
+        width: 105%;
+        height: 200px;
+
+        .text{
+            
+
+        }
+    }
+
+    .etiqueta-grafico{
+        margin-left: -5px;
+        margin-top: 40px;
+        text-align: right;
+
+        display: block;
+        fill: rgb(0, 0, 0);
+        font-family: Verdana;
+        font-size: 11px;
+        opacity: 1;
+        text-anchor: middle;
+        transform: rotate(-80deg);
+        line-height: 90%;
+    }
+
+
+}
+
+

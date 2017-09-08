@@ -1,6 +1,6 @@
 
 <div ng-if="$state.is('panel')" class="row">
-  <div class="col-md-12">
+  <div class="col-md-12 pl0-sm pr0-sm">
     <div class="panel panel-default panel-hovered panel-stacked mb20">
       <div class="panel-body">
         <div ng-bind-html=" eventoactual.nombre " class="titulo-3d"></div>
@@ -18,7 +18,7 @@
   </div>
 </div>
 <div ng-if="hasRoleOrPerm('Pantalla')" class="row">
-  <div class="col-md-6">
+  <div class="col-md-6 pl0-sm pr0-sm">
     <div class="panel panel-default panel-hovered panel-stacked mb20">
       <div class="panel-heading">
          
@@ -31,7 +31,7 @@
   </div>
 </div>
 <div ng-if="!hasRoleOrPerm('Pantalla')" class="row">
-  <div class="col-md-6">
+  <div class="col-md-6 pl0-sm pr0-sm">
     <div class="panel panel-default panel-hovered panel-stacked mb20">
       <div class="panel-heading"> 
         <div ng-switch on="user.inscripciones.length &gt; 0"> 
@@ -44,7 +44,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-6">
+  <div class="col-md-6 pl0-sm pr0-sm">
     <div class="panel panel-default panel-hovered panel-stacked mb20">
       <div class="panel-heading"> 
         <div ng-bind-html="('EXAM_HECHOS' | translate)"> </div>

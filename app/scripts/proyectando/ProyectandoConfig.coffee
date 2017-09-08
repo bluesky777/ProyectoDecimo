@@ -33,6 +33,19 @@ angular.module('WissenSystem')
 					#needed_permissions: [PERMISSIONS.can_edit_usuarios]
 			})
 
+
+			.state('proyectando.grafico_barras', { #- Estado admin.
+				url: '^/grafico_barras'
+				views:
+					'contenido_panel':
+						templateUrl: "#{App.views}proyectando/grafico_barras.tpl.html"
+						controller: 'GraficoBarrasCtrl'
+
+				data: 
+					pageTitle: 'Gráfico de participantes'
+					#needed_permissions: [PERMISSIONS.can_edit_usuarios]
+			})
+
 			.state('proyectando.question', { #- Estado admin.
 				url: '^/question'
 				views:

@@ -8,6 +8,7 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 
 
 @import "base.scss";
+@import "grafico-barras.scss";
 @import "bootstrap-theme.scss";
 @import "select2.scss";
 
@@ -718,6 +719,21 @@ img.message-entilogo{
       max-width: 85%;
   }
 }
+
+@media screen and (max-width: 720px){
+  .pl0-sm {
+      padding-left: 0 !important;
+  }
+  .pr0-sm {
+      padding-right: 0 !important;
+  }
+  .mr--15-sm {
+      margin-right: -15px;
+  }
+  .ml--15-sm {
+      margin-left: -15px;
+  }
+}
 .pane-chat-tile {
   background-image: url("../images/system/fondowhs.png");
   position: absolute;
@@ -833,7 +849,7 @@ img.message-entilogo{
     //max-width: 100%;
     max-height: 100%;
     align-self: center;
-    margin: auto;
+    margin-top: 0px;
     object-fit: scale-down;
     transition: all 0.2s;
   }
@@ -990,6 +1006,7 @@ md-sidenav md-input-container{
     margin-bottom: 5px;
     width: 100%;
     display: inline-block;
+    background-color: rgba(255, 255, 255, 0.9);
   }
   .sc-cliente.correct{
     background-color: #4f4aff;

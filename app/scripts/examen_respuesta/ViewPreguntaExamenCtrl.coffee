@@ -93,19 +93,21 @@ angular.module('WissenSystem')
 
 	$scope.examen_actual = examen_actual
 	
-	datos = 
-		examen_actual_id: 		examen_actual.examen_id
-		pregunta_top_id: 		preguntatop.id
-		pregunta_sub_id: 		pregunta_traduc.id
-		idioma_id: 				pregunta_traduc.idioma_id
-		tipo_pregunta: 			preguntatop.tipo_pregunta
-		opcion_id: 				opcion.id
-		tiempo:					$rootScope.tiempo_preg
-
-
 	$scope.ok = ()->
-		$rootScope.pause_tiempo = true
+
 		$scope.guardando 		= true
+		$rootScope.pause_tiempo = true
+
+
+		datos = 
+			examen_actual_id: 		examen_actual.examen_id
+			pregunta_top_id: 		preguntatop.id
+			pregunta_sub_id: 		pregunta_traduc.id
+			idioma_id: 				pregunta_traduc.idioma_id
+			tipo_pregunta: 			preguntatop.tipo_pregunta
+			opcion_id: 				opcion.id
+			tiempo:					$rootScope.tiempo_preg
+
 
 		pregking = 'examenes_respuesta/responder-pregunta'
 		grupopreg = 'examenes_respuesta/responder-pregunta-agrupada'

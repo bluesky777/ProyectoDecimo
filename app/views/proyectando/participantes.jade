@@ -1,30 +1,4 @@
-.categorias-container(ng-if="!EN_PRUEBAS") 
-
-	.categ-container(ng-repeat="categoria_traduc in SocketData.config.categorias_traduc "
-		ng-class="{'categ-retirada': participantesDeCategoria(categoria_traduc).length == 0}" )
-		.title-categ-container
-			| {{ categoria_traduc.nombre }}
-
-		.participantes-container
-
-			ul
-				li.md-whiteframe-1dp.sc-cliente(ng-repeat="cliente in SocketData.clientes | filter:{'registrado':true, 'categsel':categoria_traduc.categoria_id }:true | orderParticipantes "   
-					ng-class="{'correct': cliente.answered=='correct', 'incorrect': cliente.answered=='incorrect' }")
-					.sc-cliente-imgs
-						
-						img.img-perfil(ng-src="{{imagesPath + cliente.usuario.imagen_nombre}}" alt="{{cliente.usuario.username}}")
-						
-						img.img-entidad(ng-class="{'showing-logo-ent-part': SocketData.config.show_logo_entidad_partici}" ng-src="{{ imagesPath + cliente.usuario.entidad.logo}}" alt="{{cliente.usuario.username}}")
-						md-tooltip {{ cliente.usuario.entidad.nombre }}
-
-					.sc-info 
-						h5.name.nombresellipsis {{ $index + '. ' + cliente.usuario.nombres}} {{cliente.usuario.apellidos}}
-							md-tooltip {{cliente.usuario.nombres}} {{cliente.usuario.apellidos}}
-						.alias-enti {{cliente.usuario.entidad.alias}}
-
-
-
-.categorias-container(ng-if="EN_PRUEBAS") 
+.categorias-container
 
 	.categ-container(ng-repeat="categoria_traduc in SocketData.config.categorias_traduc "
 		ng-class="{'categ-retirada': participantesDeCategoria(categoria_traduc).length == 0}" 
@@ -39,7 +13,7 @@
 				
 				li.md-whiteframe-1dp.sc-cliente(ng-repeat="cliente in SocketData.clientes | filter:{'registrado':true, 'categsel':categoria_traduc.categoria_id }:true | orderParticipantes "   
 					ng-class="{'correct': cliente.answered=='correct', 'incorrect': cliente.answered=='incorrect' }"
-					style="writing-mode: horizontal-tb; width: auto; background-color: rgba(255, 255, 255, 0.9); border-radius: 8px; margin-right: 4px;")
+					style="writing-mode: horizontal-tb; width: auto; border-radius: 8px; margin-right: 4px;")
 					
 					.sc-cliente-imgs(style="border-radius: 8px 0 0 8px;")
 						

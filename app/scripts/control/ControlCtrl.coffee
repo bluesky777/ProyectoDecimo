@@ -189,6 +189,9 @@ angular.module('WissenSystem')
 
 	$scope.showParticipantes = ()->
 		MySocket.sc_show_participantes($scope.categorias_traducidas)
+	
+	$scope.showBarras = ()->
+		MySocket.sc_show_barras()
 
 	$scope.showQuestion = ()->
 		MySocket.sc_show_question($scope.cmdNoPregSelected, $scope.cmdPreguntaSelected)
@@ -214,6 +217,7 @@ angular.module('WissenSystem')
 
 
 
+
 	$scope.cmdClickPreguntaSelected = (pregunta, indice)->
 		$scope.cmdNoPregSelected 		= indice + 1
 		$scope.cmdPreguntaSelected 		= pregunta
@@ -224,9 +228,10 @@ angular.module('WissenSystem')
 	$scope.nextQuestion = ()->
 		MySocket.sc_next_question() # El modelo no cambia hasta salir de esta función
 
+		SocketData.config.info_evento.preg_actual 	= SocketData.config.info_evento.preg_actual + 1
 		pregunta = $scope.cmdPreguntasTraduc[SocketData.config.info_evento.preg_actual]
+
 		if pregunta
-			SocketData.config.info_evento.preg_actual 	= SocketData.config.info_evento.preg_actual + 1
 			MySocket.sc_show_question(SocketData.config.info_evento.preg_actual, pregunta)
 		else
 			toastr.warning 'No hay categoría seleccionada'
@@ -250,6 +255,10 @@ angular.module('WissenSystem')
 				MySocket.sc_goto_question_no_clt(cliente, $scope.cmdNoPregunta) # El modelo no cambia hasta salir de esta función
 		if cant == 0
 			toastr.warning 'Primero debes seleccionar al menos un participante'
+
+
+	$scope.liberar_hasta_pregunta = ()->
+		MySocket.liberar_hasta_pregunta(SocketData.config.info_evento.free_till_question)
 
 
 	MySocket.get_clts()

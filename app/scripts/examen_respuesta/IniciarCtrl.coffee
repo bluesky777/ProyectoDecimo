@@ -42,7 +42,7 @@ angular.module('WissenSystem')
 		if $scope.eventoactual.gran_final
 			categorias_king = $filter('categsInscritasDeUsuario')($scope.user.inscripciones, $scope.categorias_king, $scope.user.idioma_main_id) 
 			$scope.user.categsel = categoria.categoria_id
-			console.log '$scope.user.categsel', $scope.user.categsel
+
 			for cat in categorias_king
 				cat.selected = false
 			categoria.selected = true

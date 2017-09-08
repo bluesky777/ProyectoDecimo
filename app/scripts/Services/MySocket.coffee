@@ -152,6 +152,10 @@ angular.module('WissenSystem')
 				SocketData.config.categorias_traduc = message.categorias_traduc
 				$state.go('proyectando.participantes')
 
+			when "sc_show_barras"
+				get_clts()
+				$state.go('proyectando.grafico_barras')
+
 			when "sc_show_question"
 				SocketData.config.pregunta 			= message.pregunta
 				SocketData.config.no_question 		= message.no_question
@@ -190,6 +194,9 @@ angular.module('WissenSystem')
 				SocketData.set_waiting()
 				$rootScope.$emit 'goto_question_no', message.numero
 
+			when "set_free_till_question" # Dar libertad al participante de responder hasta esta pregunta
+				SocketData.config.info_evento.free_till_question = message.free_till_question
+				$rootScope.$emit 'set_free_till_question', message.free_till_question # Si estaba esperando pregunta, con esto arranca
 
 					
 	)
@@ -293,6 +300,9 @@ angular.module('WissenSystem')
 	sc_show_participantes = (categorias_traduc)->
 		dataStream.send({ comando: 'sc_show_participantes', categorias_traduc: categorias_traduc })
 
+	sc_show_barras = ()->
+		dataStream.send({ comando: 'sc_show_barras' })
+
 	sc_show_question = (no_question, pregunta)->
 		dataStream.send({ comando: 'sc_show_question', no_question: no_question, pregunta: pregunta })
 
@@ -328,6 +338,10 @@ angular.module('WissenSystem')
 		client.answered = 'waiting'
 		dataStream.send({ comando: 'goto_question_no_clt', resourceId: cliente.resourceId, numero: numero })
 
+	liberar_hasta_pregunta = (numero)->
+		dataStream.send({ comando: 'liberar_hasta_pregunta', numero: numero })
+		SocketData.config.info_evento.preg_actual = numero
+
 
 
 
@@ -362,6 +376,7 @@ angular.module('WissenSystem')
 		empezar_examen:				empezar_examen
 		empezar_examen_cliente:		empezar_examen_cliente
 		sc_show_participantes:		sc_show_participantes
+		sc_show_barras:				sc_show_barras
 		sc_show_question:			sc_show_question
 		sc_reveal_answer:			sc_reveal_answer
 		sc_show_logo_entidad_partici:	sc_show_logo_entidad_partici
@@ -371,6 +386,7 @@ angular.module('WissenSystem')
 		sc_next_question:			sc_next_question
 		sc_next_question_cliente:	sc_next_question_cliente
 		sc_goto_question_no_clt:	sc_goto_question_no_clt
+		liberar_hasta_pregunta:		liberar_hasta_pregunta
 	}
 
 	return methods
