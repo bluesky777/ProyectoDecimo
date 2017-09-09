@@ -92,6 +92,10 @@ a:hover, a:focus {
 
 .textblue{
   color: #00F !important;
+
+  textarea{
+    color: #00F !important;    
+  }
 }
 
 .md-toast {
@@ -158,7 +162,10 @@ a:hover, a:focus {
 }
 .add-opcion{
   border-color: #86e6c8 !important;
-  background: #86e6c8 !important
+  background: #86e6c8 !important;
+  height: 40px !important; 
+  overflow: hidden !important; 
+  margin-top: 20px;
 }
 
 
@@ -989,7 +996,7 @@ md-sidenav md-input-container{
   padding: 15px 5px 0px 5px;
 }
 .categ-container{
-  width: 270px;
+  //width: 270px;
   display: inline-block;
   padding-right: 5px;
   transition: all 0.3s;
@@ -1058,6 +1065,9 @@ md-sidenav md-input-container{
   padding-left: 4px;
   transition: all 0.5s;
   opacity: 1;
+}
+.ancho-sc-info{
+  width: 300px;
 }
 .showing-logo-ent-part{
   left: 0px!important;

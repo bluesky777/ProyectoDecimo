@@ -23,6 +23,12 @@ angular.module('WissenSystem')
 
 		$scope.inicializar()
 
+
+		$scope.is_it_new = (opcion)->
+			return opcion.nueva
+
+
+
 		
 		# Configuración para el sortable
 		$scope.sortableOptions =

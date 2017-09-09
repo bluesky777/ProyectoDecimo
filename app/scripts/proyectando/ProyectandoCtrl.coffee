@@ -16,6 +16,10 @@ angular.module('WissenSystem')
 		AuthService.verificar_acceso()
 
 
+		$scope.categorias_traducidas = $filter('categoriasTraducidas')($scope.USER.categorias_evento, $scope.USER.idioma_main_id)
+
+
+
 
 		
 		$rootScope.reload = ()->

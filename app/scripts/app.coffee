@@ -46,7 +46,14 @@ angular.module('WissenSystem', [
       localStorage.setItem('dominio', ip)
 
     else
-      dominio = 'http://' + localStorage.getItem('dominio') + '/'
+      if localStorage.servidor_por_puerto
+        if localStorage.servidor_por_puerto > 0
+          dominio = 'http://' + localStorage.getItem('dominio') + ':' + localStorage.servidor_por_puerto + '/'
+        else
+          dominio = 'http://' + localStorage.getItem('dominio') + '/'
+      else
+        localStorage.servidor_por_puerto = 0
+        dominio = 'http://' + localStorage.getItem('dominio') + '/'
   else
     alert 'El navegador no soporta LocalStorage'
 
@@ -62,7 +69,7 @@ angular.module('WissenSystem', [
     dominio = 'http://olimpiadaslibertad.com/'
   ###
 
-  server = dominio + '/wissenLaravel/public/'
+  server = dominio + 'wissenLaravel/public/'
   #server = ''
   frontapp = dominio + 'ws_dist/'
 

@@ -227,7 +227,7 @@ angular.module('WissenSystem')
 			else
 				return 1
 		)
-		console.log filtered
+
 		return filtered;
 ])
 

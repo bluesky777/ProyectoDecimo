@@ -16,6 +16,7 @@ angular.module('WissenSystem')
 
 
 
+
 	$scope.incializar = ()->
 
 		if !$rootScope.examen_actual

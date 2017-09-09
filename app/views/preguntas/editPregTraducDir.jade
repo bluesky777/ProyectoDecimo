@@ -5,7 +5,7 @@ a.btn-tag.btn-tag-info(md-ink-ripple ng-if="!pregunta_traduc.is_preg")
 	button.btn.btn-primary.fa.fa-image.btn-xs(type="button" ng-click="misImagenes()" style="float: right;")  Imágenes...
 
 	text-angular-toolbar(name="mytoolbar" ta-toolbar-group-class="btn-group btn-group-xs")
-	text-angular(ng-model="pregunta_traduc.enunciado" ta-target-toolbars='mytoolbar')
+	text-angular(ng-model="pregunta_traduc.enunciado" ta-target-toolbars='mytoolbar' ta-show-html="true")
 	//div(text-angular ta-toolbar-group-class="btn-group btn-group-xs" ng-model="pregunta_traduc.enunciado")
 
 	div(ng-show="!pregunta_traduc.mostrar_ayuda")
@@ -29,9 +29,13 @@ a.btn-tag.btn-tag-info(md-ink-ripple ng-if="!pregunta_traduc.is_preg")
 			//input.form-control(type="text" ng-model="opcion.definicion" ng-class="{ 'textblue':opcion.is_correct, 'add-opcion':opcion.nueva }" 
 				ng-focus="addButtonNewOpcion(pregunta_traduc, opcion)" ng-disable="opcion.creando")
 
-			text-angular(ng-model="opcion.definicion" ta-target-toolbars='mytoolbar' ng-class="{ 'textblue':opcion.is_correct, 'add-opcion':opcion.nueva }" 
+			text-angular(ng-model="opcion.definicion" ta-show-html="true" ng-if="!opcion.nueva" ta-target-toolbars='mytoolbar' ng-class="{ 'textblue':opcion.is_correct }" 
 				ng-focus="addButtonNewOpcion(pregunta_traduc, opcion)" ta-text-editor-class="form-control editor-height" ta-html-editor-class="form-control editor-height" ng-disable="opcion.creando")
 			
+			text-angular(ng-model="opcion.definicion" ta-show-html="false" ng-if="opcion.nueva" ta-target-toolbars='mytoolbar'
+				ng-focus="addButtonNewOpcion(pregunta_traduc, opcion)" ta-text-editor-class="form-control editor-height add-opcion" ta-html-editor-class="form-control editor-height add-opcion" ng-disable="opcion.creando")
+			
+
 			span.input-group-btn(ng-show="!opcion.nueva")
 				
 				md-button.md-icon-button.md-warn(type="button" aria-label="Quitar" ng-click="deleteOption(pregunta_traduc, opcion)")

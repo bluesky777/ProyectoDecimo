@@ -149,7 +149,6 @@ angular.module('WissenSystem')
 				
 			when "sc_show_participantes"
 				get_clts()
-				SocketData.config.categorias_traduc = message.categorias_traduc
 				$state.go('proyectando.participantes')
 
 			when "sc_show_barras"
@@ -297,8 +296,8 @@ angular.module('WissenSystem')
 	empezar_examen_cliente = (resourceId)->
 		dataStream.send({ comando: 'empezar_examen_cliente', resourceId: resourceId })
 
-	sc_show_participantes = (categorias_traduc)->
-		dataStream.send({ comando: 'sc_show_participantes', categorias_traduc: categorias_traduc })
+	sc_show_participantes = ()->
+		dataStream.send({ comando: 'sc_show_participantes' })
 
 	sc_show_barras = ()->
 		dataStream.send({ comando: 'sc_show_barras' })

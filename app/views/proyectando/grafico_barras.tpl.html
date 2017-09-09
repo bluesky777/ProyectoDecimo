@@ -1,7 +1,7 @@
 
 <div class="grafico-container">
   <div layout="column" class="wrapper-grafico">
-    <h1 class="main-title"><span class="span1">Progreso de participantes</span></h1>
+    <h1 class="txt-borde-blanco">Progreso de participantes</h1>
     <div id="chart" layout="row" layout-align="space-around end">
       <div style="height: {{ calc_porcentaje(cliente.respondidas) }}%; " ng-repeat="cliente in participantes" class="bar barc{{ calc_indice($index+1) }}">
         <text>{{cliente.respondidas}}</text>

@@ -1,11 +1,12 @@
 
 angular.module('WissenSystem')
 
-.controller('ParticipantesCtrl', ['$scope', '$rootScope', 'AuthService', 'Perfil', 'App', 'SocketData', 'toastr', '$translate', '$filter', '$uibModal', 'MySocket' 
-	($scope, $rootScope, AuthService, Perfil, App, SocketData, toastr, $translate, $filter, $modal, MySocket) ->
+.controller('ParticipantesCtrl', ['$scope', '$rootScope', 'App', 'SocketData', '$filter', 'MySocket', '$timeout' 
+	($scope, $rootScope, App, SocketData, $filter, MySocket, $timeout) ->
 
 		MySocket.get_clts()
 		$scope.SocketData = SocketData
+
 
 		$scope.participantesDeCategoria = (categoria_traduc)->
 			return $filter('filter')(SocketData.clientes, {'registrado':true, 'categsel':categoria_traduc.categoria_id }, true)
@@ -13,8 +14,8 @@ angular.module('WissenSystem')
 		return
 	]
 )
-.controller('GraficoBarrasCtrl', ['$scope', '$rootScope', 'AuthService', 'Perfil', 'App', 'SocketData', 'toastr', '$translate', '$filter', '$uibModal', 'MySocket' 
-	($scope, $rootScope, AuthService, Perfil, App, SocketData, toastr, $translate, $filter, $modal, MySocket) ->
+.controller('GraficoBarrasCtrl', ['$scope', '$rootScope', 'App', 'SocketData', '$filter', 'MySocket' 
+	($scope, $rootScope, App, SocketData, $filter, MySocket) ->
 
 		MySocket.get_clts()
 		$scope.SocketData = SocketData
@@ -61,15 +62,18 @@ angular.module('WissenSystem')
 			if porcentaje == 0
 				return 1
 			else
-				return porcentaje
+				if porcentaje > 100
+					return 100
+				else
+					return porcentaje
 
 
 
 		return
 	]
 )
-.controller('SCPuntajeParticipCtrl', ['$scope', '$rootScope', 'AuthService', 'Perfil', 'App', 'SocketData', 'toastr', '$translate', '$filter', '$uibModal', 'MySocket' 
-	($scope, $rootScope, AuthService, Perfil, App, SocketData, toastr, $translate, $filter, $modal, MySocket) ->
+.controller('SCPuntajeParticipCtrl', ['$scope', '$rootScope', 'Perfil', 'App', 'SocketData', 'toastr', '$translate', '$filter', '$uibModal', 'MySocket' 
+	($scope, $rootScope, Perfil, App, SocketData, toastr, $translate, $filter, $modal, MySocket) ->
 
 		$scope.SocketData = SocketData
 		

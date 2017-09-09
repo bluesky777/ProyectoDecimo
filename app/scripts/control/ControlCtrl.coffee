@@ -188,7 +188,7 @@ angular.module('WissenSystem')
 				
 
 	$scope.showParticipantes = ()->
-		MySocket.sc_show_participantes($scope.categorias_traducidas)
+		MySocket.sc_show_participantes()
 	
 	$scope.showBarras = ()->
 		MySocket.sc_show_barras()

@@ -89,7 +89,6 @@ angular.module('WissenSystem')
 		$scope.guardando = true
 
 		Restangular.one('entidades/store').customPOST($scope.newEntidad).then((r)->
-			console.log('Entidad guardado', r)
 			$scope.gridOptions.data.push r
 			$scope.guardando = false
 			$scope.creando = false
@@ -117,7 +116,7 @@ angular.module('WissenSystem')
 
 			$scope.guardando_cambios = false
 			$scope.editando = false
-			toastr.success 'Entidad guardada con éxito.', 'Creado'
+			toastr.success 'Entidad guardada con éxito.', 'Guardada'
 
 			# Reiniciamos las variables del nuevo entidad.
 			$scope.newEntidad = {
