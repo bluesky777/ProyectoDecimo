@@ -91,7 +91,7 @@ angular.module('WissenSystem')
 				$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.get('xtoken')
 
 				Perfil.setUser user
-				MySocket.registrar(user)
+				MySocket.emit('loguear', {usuario: user} )
 
 				#console.log 'Usuario traido: ', user
 
@@ -134,7 +134,7 @@ angular.module('WissenSystem')
 
 			login = Restangular.one('login/verificar').post().then((usuario)->
 
-				MySocket.registrar(usuario)
+				MySocket.emit('loguear', {usuario: usuario} )
 				$rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
 				Perfil.setUser usuario
 				d.resolve usuario

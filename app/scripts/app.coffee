@@ -26,7 +26,7 @@ angular.module('WissenSystem', [
   'ja.qr'
   'ngclipboard'
   'camera'
-  'ngWebSocket'
+  #'ngWebSocket'
   'toastr'
   'ui.select'
   'restangular'

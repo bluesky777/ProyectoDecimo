@@ -1,9 +1,10 @@
 angular.module('WissenSystem')
 
-.controller('ControlCtrl', ['$scope', 'Restangular', 'toastr', '$state', '$window', 'MySocket', 'SocketData', '$rootScope', '$mdSidenav', '$filter', '$uibModal', 'App',  ($scope, Restangular, toastr, $state, $window, MySocket, SocketData, $rootScope, $mdSidenav, $filter, $modal, App)->
+.controller('ControlCtrl', ['$scope', 'Restangular', 'toastr', '$state', '$window', 'MySocket', 'SocketData', 'SocketClientes', '$rootScope', '$mdSidenav', '$filter', '$uibModal', 'App', '$timeout',  ($scope, Restangular, toastr, $state, $window, MySocket, SocketData, SocketClientes, $rootScope, $mdSidenav, $filter, $modal, App, $timeout)->
 
 
 	$scope.SocketData 				= SocketData
+	$scope.SocketClientes 			= SocketClientes
 	$scope.cltdisponible_selected 	= {}
 	$scope.categorias_king 			= []
 	$scope.categorias_traducidas 	= []
@@ -16,6 +17,11 @@ angular.module('WissenSystem')
 	$scope.show_result_table 		= true
 	$scope.fondo 					= {}
 
+
+
+	MySocket.on('take:usuarios', (data)->
+		console.log 'Llegaron los usuarios'
+	)
 
 
 	$scope.configurar_imagenes = ()->
@@ -110,19 +116,19 @@ angular.module('WissenSystem')
 
 	$scope.enviarMensaje = ()->
 		if $scope.newMensaje != ''
-			for cliente in SocketData.clientes
+			for cliente in SocketClientes.clientes
 				if cliente.seleccionado
 					MySocket.send_email_to $scope.newMensaje, cliente
 			$scope.newMensaje = ''
 
 
 	$scope.deseleccionarTodo = ()->
-		for cliente in SocketData.clientes
+		for cliente in SocketClientes.clientes
 			if cliente.seleccionado
 				cliente.seleccionado = false
 
 	$scope.seleccionarTodo = ()->
-		for cliente in SocketData.clientes
+		for cliente in SocketClientes.clientes
 			if !cliente.seleccionado
 				cliente.seleccionado = true
 
@@ -182,7 +188,7 @@ angular.module('WissenSystem')
 		MySocket.empezar_examen_cliente(cliente.resourceId)
 
 	$scope.empezarExamenCltsSeleccionados = ()->
-		for cliente in SocketData.clientes
+		for cliente in SocketClientes.clientes
 			if cliente.seleccionado
 				MySocket.empezar_examen_cliente(cliente.resourceId) # El modelo no cambia hasta salir de esta función
 				
@@ -242,14 +248,14 @@ angular.module('WissenSystem')
 		MySocket.sc_next_question_cliente(cliente) # El modelo no cambia hasta salir de esta función
 
 	$scope.nextQuestionCltsSeleccionados = ()->
-		for cliente in SocketData.clientes
+		for cliente in SocketClientes.clientes
 			if cliente.seleccionado
 				MySocket.sc_next_question_cliente(cliente) # El modelo no cambia hasta salir de esta función
 
 
 	$scope.gotoNoQuestionClt = ()->
 		cant = 0
-		for cliente in SocketData.clientes
+		for cliente in SocketClientes.clientes
 			if cliente.seleccionado # Debo quitar el comentario!!!!!
 				cant = cant + 1
 				MySocket.sc_goto_question_no_clt(cliente, $scope.cmdNoPregunta) # El modelo no cambia hasta salir de esta función
@@ -262,6 +268,10 @@ angular.module('WissenSystem')
 
 
 	MySocket.get_clts()
+
+
+
+		
 
 
 

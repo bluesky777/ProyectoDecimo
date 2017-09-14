@@ -12,6 +12,16 @@
 						label Nombre de equipo
 						input(type="text" ng-model="in_evento_actual.ip")
 						md-tooltip  Ingresa un nombre fácil de identificar
+				
+				div(ng-show="registered_boolean")
+					h4(style="text-align: center; background-color: #d4d4ff;") Registrado
+					md-button(ng-click="desregistrar()") Desregistrar
+						md-tooltip Que ya no sea equipo oficial
+
+				div(ng-hide="registered_boolean")
+					h4(style="text-align: center; color: red") NO Registrado
+					md-button(ng-click="registrar()") Registrar
+						md-tooltip Registrar como equipo oficial
 					
 
 
@@ -21,10 +31,10 @@
 		.form-head.mb20
 			h1.site-logo.h2.mb5.mt5.text-center.text-uppercase.text-bold
 				a(href="") Wissen 
-					span(ng-show="MySocket.readyState() == 3 && in_evento_actual.gran_final" style="color: red;")
+					span(ng-show="!MySocket.readyState() && in_evento_actual.gran_final" style="color: red;")
 						icon.fa.fa-warning(style="font-size: 30px;")
 						md-tooltip Desconectado del chat...
-					span(ng-show="MySocket.readyState() == 1")
+					span(ng-show="MySocket.readyState()")
 						icon.fa.fa-fighter-jet(style="font-size: 30px;")
 						md-tooltip Conectado al chat
 
@@ -82,6 +92,10 @@
 						.btn-group
 							button.btn.btn-purple(type="submit")
 								span.fa.fa-check  Aplicar
+
+			div.clearfix.text-center.small
+				h4(ng-show="registered_boolean") Registrado
+				h4(ng-hide="registered_boolean" style="color: red") NO Registrado
 
 
 

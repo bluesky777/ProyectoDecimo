@@ -56,24 +56,24 @@
 
 
 			
-			h4 {{ 'REGISTRADOS_TL' | translate }} 
+			h4 {{ 'REGISTRADOS_CONECTADOS_TL' | translate }}: {{SocketClientes.registrados_logueados.length}} 
 
 			ul(layout="row" layout-wrap)
-				li.md-whiteframe-1dp.clt-pc.unselectable(ng-repeat="cliente in SocketData.clientes | filter:{'registrado':true}" layout="row" ng-click="clickedClt($event, cliente)"  
+				li.md-whiteframe-1dp.clt-pc.unselectable(ng-repeat="cliente in SocketClientes.registrados_logueados" layout="row" ng-click="clickedClt($event, cliente)"  
 					ng-dblclick="showSidenavEditUsu(cliente)" ng-mouseover="sobreClt($event, cliente)" ng-class="{'seleccionado': cliente.seleccionado, 'cursor-unselect':deseleccionar }")  
 					
 					header(flex="30")
-						img.img-perfil.nodrag(ng-src="{{imagesPath + cliente.usuario.imagen_nombre}}" alt="{{cliente.usuario.username}}"
+						img.img-perfil.nodrag(ng-src="{{imagesPath + cliente.user_data.imagen_nombre}}" alt="{{cliente.user_data.username}}"
 							style="")
 						
-						img.img-entidad.nodrag(ng-src="{{ imagesPath + cliente.usuario.entidad.logo}}" alt="{{cliente.usuario.username}}")
-						md-tooltip {{cliente.usuario.entidad.nombre}}
+						img.img-entidad.nodrag(ng-src="{{ imagesPath + cliente.user_data.entidad.logo}}" alt="{{cliente.user_data.username}}")
+						md-tooltip {{cliente.user_data.entidad.nombre}}
 
 					.info(flex="70" ng-class="{'incorrect': cliente.answered=='incorrect', 'correct': cliente.answered=='correct' }") 
-						h5.name.text-center.nombresellipsis(style="margin-top: 2px") {{cliente.usuario.nombres}} {{cliente.usuario.apellidos}}
-							md-tooltip {{cliente.usuario.username}}
+						h5.name.text-center.nombresellipsis(style="margin-top: 2px") {{cliente.user_data.nombres}} {{cliente.user_data.apellidos}}
+							md-tooltip {{cliente.user_data.username}}
 						
-						.alias-enti(ng-show="cliente.usuario.entidad.alias") {{cliente.usuario.entidad.alias}}
+						.alias-enti(ng-show="cliente.user_data.entidad.alias") {{cliente.user_data.entidad.alias}}
 						h6(style="margin: 0px;") {{ cliente.nombre_punto }}
 
 					.opts-clt.btn-group
@@ -110,16 +110,39 @@
 
 			
 			.disponibles-title
-				h4 {{ 'DISPONIBLES_TL' | translate }} 
+				h4 {{ 'DISPONIBLES_TL' | translate }}: {{SocketClientes.registrados_no_logged.length}}  
 
 				ul
-					li.md-whiteframe-1dp.clt-pc.unselectable(ng-repeat="cliente in SocketData.clientes | filter:{'registrado':false} " ng-click="clickedClt($event, cliente)" 
+					li.md-whiteframe-1dp.clt-pc.unselectable(ng-repeat="cliente in SocketClientes.registrados_no_logged " ng-click="clickedClt($event, cliente)" 
 						ng-dblclick="showSidenavSelectUsu(cliente)" ng-mouseover="sobreClt($event, cliente)" ng-class="{'seleccionado': cliente.seleccionado, 'cursor-unselect':deseleccionar }")
-						header(ng-show="cliente.registrado")
-							
+						
 						.info 
 							h5(ng-model="cliente.nombre_punto" contenteditable guardar-nombre-punto="guardarNombrePunto") {{ cliente.nombre_punto }}
 								md-tooltip {{ 'NOMBRE_DE_PUNTO_TL' | translate }} 
+
+						.opts-clt.btn-group
+							button.btn.btn-default.btn-xs.deseleccionador(type="button" ng-click="showSidenavSelectUsu(cliente)")
+								icon.fa.fa-users
+								md-tooltip {{ 'SELECCIONAR_UN_USUARIO_TL' | translate }} 
+							button.btn.btn-default.btn-xs.deseleccionador(type="button" ng-click="guardarNombrePunto(cliente)")
+								icon.fa.fa-save
+								md-tooltip {{ 'GUARDAR_NOMBRE_PUNTO_TL' | translate }} 
+
+
+			
+			.disponibles-title
+				h4 {{ 'SIN_REGISTRAR_TL' | translate }}: {{SocketClientes.sin_registrar.length}} 
+
+				ul(layout="row" layout-wrap)
+					li.md-whiteframe-1dp.clt-pc.unselectable(ng-repeat="cliente in SocketClientes.sin_registrar " layout="row" ng-click="clickedClt($event, cliente)" style="width: auto;" 
+						ng-dblclick="showSidenavSelectUsu(cliente)" ng-mouseover="sobreClt($event, cliente)" ng-class="{'seleccionado': cliente.seleccionado, 'cursor-unselect':deseleccionar }")
+						
+						.info(flex) 
+							h5(ng-model="cliente.nombre_punto" contenteditable guardar-nombre-punto="guardarNombrePunto" style="margin: 5px 0px;") {{ cliente.nombre_punto }}
+								md-tooltip {{ 'NOMBRE_DE_PUNTO_TL' | translate }} 
+
+							.alias-enti(ng-show="cliente.user_data.entidad.alias") {{cliente.user_data.entidad.alias}}
+							h6(style="margin: 0px; font-size: 7pt") {{cliente.user_data.nombres}} {{cliente.user_data.apellidos}}
 
 						.opts-clt.btn-group
 							button.btn.btn-default.btn-xs.deseleccionador(type="button" ng-click="showSidenavSelectUsu(cliente)")

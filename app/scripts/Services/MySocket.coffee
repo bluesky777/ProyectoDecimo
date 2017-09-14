@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.factory('MySocket', ['$websocket', 'App', '$q', '$rootScope', 'Perfil', '$interval', '$cookies', '$http', '$state', 'SocketData', '$filter', ($websocket, App, $q, $rootScope, Perfil, $interval, $cookies, $http, $state, SocketData, $filter) ->
+.factory('MySocket', ['App', '$q', '$rootScope', 'Perfil', '$interval', '$cookies', '$http', '$state', 'SocketData', 'SocketClientes', '$filter', (App, $q, $rootScope, Perfil, $interval, $cookies, $http, $state, SocketData, SocketClientes, $filter) ->
 
 	#Open a WebSocket connection
 	# Verifico que no tenga puerto asignado
@@ -12,20 +12,81 @@ angular.module('WissenSystem')
 	else
 		dominioSolo 	= dominioSplit[0]
 
-	url 		= 'ws://' + dominioSolo + ':8787'
-	dataStream 	= $websocket(url, {reconnectIfNotNormalClose: true})
 
-	clientes = []
-	@usuarios_all = []
-	datos = {}
+	url 		= 'ws://' + dominioSolo + ':8787'
+	socket = io.connect('localhost:8787');
+
 	@mensajes = []
 
+
+
+
+	socket.on('te_conectaste', (data)->
+		SocketData.conectado data.datos
+		Perfil.setResourceId data.datos.resourceId
+		registered = if localStorage.getItem('registered_boolean') == null then false else localStorage.getItem('registered_boolean') 
+		registered = if registered=='false' then false else true
+		Perfil.setResgistered(registered)
+
+		if Perfil.User().id
+			@emit('loguear', {usuario: Perfil.User(), registered: registered } )
+		else
+			nombre_p = if localStorage.getItem('nombre_punto') == null then false else localStorage.getItem('nombre_punto') 
+			if nombre_p
+				@emit('reconocer:punto:registered', { nombre_punto: nombre_p, registered: registered })
+			else
+				@emit('reconocer:punto:registered', { nombre_punto: nombre_p, registered: registered })
+				#$rootScope.$emit 'reconocido:mi_nombre_punto', {nombre_punto: data.datos.nombre_punto }
+	);
+	socket.on('logueado:yo', (data)->
+		console.log 'Me validó el chat'
+	);
+	socket.on('logueado:alguien', (data)->
+		SocketData.logueado data.clt
+		$rootScope.$emit 'clt_registrado', {clientes: SocketClientes.clientes }
+	);
+
+	socket.on('user:left', (data)->
+		SocketData.desconectar data.resourceId
+		$rootScope.$emit 'desconectado:alguien', {clientes: SocketClientes.clientes }
+	);
+
+
+	socket.on('conectado:alguien', (data)->
+		client = SocketData.cliente data.clt.resourceId
+		if client
+			SocketData.actualizar_clt data.clt
+		else
+			console.log('Nuevo conectado', data.clt);
+			SocketData.conectado(data.clt)
+			$rootScope.$emit 'clt_registrado', {clientes: SocketClientes.clientes }
+	);
+	socket.on('take:clientes', (data)->
+		SocketData.fix_clientes(data.clts)
+		SocketData.config.info_evento 	= data.info_evento
+	);
+	socket.on('take:usuarios', (data)->
+		SocketData.usuarios_all = data.usuarios
+	);
+	socket.on('reconocido:punto:registered', (data)->
+		cliente 				= SocketData.cliente data.resourceId
+		cliente.nombre_punto 	= $filter('clearhtml')(data.nombre_punto)
+		cliente.registered 		= data.registered
+		SocketData.actualizar_clt cliente
+
+		if cliente.resourceId == Perfil.getResourceId()
+			$rootScope.$emit 'reconocido:mi_nombre_punto', {nombre_punto: data.nombre_punto }
+	);
+
+	socket.on('unregistered', (data)->
+		SocketData.actualizar_clt data.client # Viene el cliente con sus propiedades ya arregladas para unregistrar
+	);
 
 
 	############################################
 	# Eventos del Socket
 
-
+	###
 	dataStream.onOpen((datos)->
 		if Perfil.User().id
 			registrar(Perfil.User())
@@ -68,9 +129,7 @@ angular.module('WissenSystem')
 					SocketData.clientes.push(message.clt)
 					$rootScope.$emit 'clt_registrado', {clientes: SocketData.clientes }
 
-			when "unregistered"
-				SocketData.actualizar_clt message.client # Viene el cliente con sus propiedades ya arregladas para unregistrar
-
+			
 			when "take_clts"
 				SocketData.clientes = message.clts
 				SocketData.config.info_evento = message.info_evento
@@ -122,12 +181,6 @@ angular.module('WissenSystem')
 			when "take_usuarios"
 				SocketData.usuarios_all = message.usuarios
 				
-			when "enter"
-				if message.token
-					$cookies.put('xtoken', message.token)
-					$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.get('xtoken')
-					$state.go 'panel'
-
 			when "change_the_categ_selected"
 				client = SocketData.cliente Perfil.getResourceId()
 				client.categsel = message.categsel
@@ -199,81 +252,104 @@ angular.module('WissenSystem')
 
 					
 	)
-
+	###
 	#  / Eventos del Socket 
 	############################################
 
 
 
+		
+	io_on = (eventName, callback)->
+		socket.on(eventName, ()->
+			args = arguments
+			$rootScope.$apply( ()->
+				callback.apply(socket, args)
+			);
+		);
+
+	emit = (eventName, data, callback)->
+		socket.emit(eventName, data, ()->
+			args = arguments;
+			$rootScope.$apply( ()->
+				if callback
+					callback.apply(socket, args);
+			);
+		)
 
 		
-	registrar = (usuario)->
-		nombre_p = if localStorage.getItem('nombre_punto') == null then false else localStorage.getItem('nombre_punto')
-		dataStream.send({ comando: 'registrar',  usuario: usuario, nombre_punto: nombre_p })
+	registrar = (registrar_boolean, cliente)->
+		if cliente
+			@emit('registrar', { registrar_boolean: registrar_boolean })
+		else
+			@emit('registrar', { cliente: cliente, registrar_boolean: registrar_boolean })
 
 
 	unregister = ()->
-		console.log "Entra para unregistrar"
-		dataStream.send({ comando: 'unregister' })
+		@emit('unregister')
 
 
 	conectar = (qr)->
 		nombre_p = if localStorage.getItem('nombre_punto') == null then false else localStorage.getItem('nombre_punto') 
 		if qr
-			dataStream.send({ comando: 'conectar',  qr: qr, nombre_punto: nombre_p })
+			@emit('conectar',  { qr: qr, nombre_punto: nombre_p })
 		else
-			dataStream.send({ comando: 'conectar', nombre_punto: nombre_p })
+			@emit('conectar', { nombre_punto: nombre_p })
 
 
 	got_qr = (qr, usuario_id)->
 		if usuario_id
-			datos = { comando: 'got_qr',  qr: qr, 'usuario_id': usuario_id, from_token: $cookies.get('xtoken') }
-			dataStream.send(datos)
+			datos = { qr: qr, 'usuario_id': usuario_id, from_token: $cookies.get('xtoken') }
+			@emit.send('got_qr', datos)
 		else
-			dataStream.send({ comando: 'got_qr',  qr: qr, from_token: $cookies.get('xtoken') })
+			@emit.send('got_qr', { qr: qr, from_token: $cookies.get('xtoken') })
 
 	let_him_enter = (usuario_id, resourceId)->
 		if usuario_id
-			datos = { comando: 'let_him_enter', 'usuario_id': usuario_id, from_token: $cookies.get('xtoken'), resourceId: resourceId }
-			dataStream.send(datos)
+			@emit('let_him_enter', { 'usuario_id': usuario_id, from_token: $cookies.get('xtoken'), resourceId: resourceId })
+
 
 
 	get_clts = ()->
-		datos = { comando: 'get_clts' }
-		dataStream.send(datos)
+		if socket.connected
+			@emit('get_clts')
+		else
+			SocketClientes.cliente 					= []
+			SocketClientes.registrados_logueados 	= []
+			SocketClientes.registrados_no_logged 	= []
+			SocketClientes.sin_registrar 			= []
 
-		
+
 	send_email = (mensaje)->
-		dataStream.send({ comando: 'correspondencia',  mensaje: mensaje })
+		@emit('correspondencia', { mensaje: mensaje })
 
-		
+
 	establecer_fondo = (img_name)->
-		dataStream.send({ comando: 'establecer_fondo',  img_name: img_name })
+		@emit('establecer_fondo', { img_name: img_name })
 
-		
+
 	mostrar_solo_fondo = (img_name)->
-		dataStream.send({ comando: 'mostrar_solo_fondo',  img_name: img_name })
+		@emit('mostrar_solo_fondo', { img_name: img_name })
 
-		
+
 	cambiar_teleprompter = (msg_teleprompter)->
-		dataStream.send({ comando: 'cambiar_teleprompter',  msg_teleprompter: msg_teleprompter })
+		@emit('cambiar_teleprompter', { msg_teleprompter: msg_teleprompter })
 
 
 	send_email_to = (mensaje, clt)->
-		dataStream.send({ comando: 'correspondencia',  mensaje: mensaje, to: clt.resourceId })
+		@emit('correspondencia', { mensaje: mensaje, to: clt.resourceId })
 
 	cerrar_sesion = (resourceId)->
-		dataStream.send({ comando: 'cerrar_sesion',  resourceId: resourceId })
+		@emit('cerrar_sesion', { resourceId: resourceId })
 
 	guardar_nombre_punto = (resourceId, nombre)->
 		nombre = $filter('clearhtml')(nombre)
-		dataStream.send({ comando: 'guardar_nombre_punto',  resourceId: resourceId, nombre: nombre })
+		@emit('guardar_nombre_punto', { resourceId: resourceId, nombre: nombre })
 
 	get_usuarios = ()->
 		#console.log SocketData.usuarios_all.length
 		if SocketData.usuarios_all.length == 0
 			xtoken = $cookies.get('xtoken')
-			dataStream.send({ comando: 'get_usuarios',  from_token: xtoken })
+			@emit('get_usuarios', { from_token: xtoken })
 
 	change_a_categ_selected = (resourceId, categoria_id)->
 		client = SocketData.cliente resourceId
@@ -348,15 +424,14 @@ angular.module('WissenSystem')
 	############################################
 	# Metodos externos
 	methods = {
-		clientes: 					clientes,
 		usuarios_all: 				@usuarios_all,
 		mensajes: ()->
 			@mensajes
 		conectar: 					conectar,
 		readyState: ()->
-			dataStream.readyState
-		getClts: ()->
-			dataStream.send({ comando: 'get_clts' })
+			socket.connected
+		on: 						io_on
+		emit: 						emit
 		registrar: 					registrar
 		unregister:					unregister
 		got_qr: 					got_qr
@@ -393,9 +468,9 @@ angular.module('WissenSystem')
 ])
 
 
-.factory('SocketData', ['$websocket', 'App', '$rootScope', '$filter', ($websocket, App, $rootScope, $filter) ->
+.factory('SocketData', ['SocketClientes', '$rootScope', '$filter', (SocketClientes, $rootScope, $filter) ->
 	
-	@clientes		= []
+	@cliente_to_show		= []
 	usuarios_all	= []
 	mensajes		= []
 	@clt_selected	= {}
@@ -407,39 +482,143 @@ angular.module('WissenSystem')
 		info_evento: { examen_iniciado: false, preg_actual: 0 }
 
 
-	desconectar = (clt)->
-		@clientes = $filter('filter')(@clientes, {resourceId: '!'+clt.resourceId})
+	desconectar = (resourceId)=>
+		SocketClientes.clientes 				= $filter('filter')(SocketClientes.clientes, {resourceId: '!'+resourceId})
+		SocketClientes.sin_registrar 			= $filter('filter')(SocketClientes.sin_registrar, {resourceId: '!'+resourceId})
+		SocketClientes.registrados_logueados 	= $filter('filter')(SocketClientes.registrados_logueados, {resourceId: '!'+resourceId})
+		SocketClientes.registrados_no_logged 	= $filter('filter')(SocketClientes.registrados_no_logged, {resourceId: '!'+resourceId})
+		console.log 'desconectado  ', SocketClientes.clientes
+
+		
 
 
-	cliente = (resourceId)->
-		for clt in @clientes
+	cliente = (resourceId)=>
+		for clt in SocketClientes.clientes
 			if clt.resourceId == resourceId
 				return clt
 		return false
 
 
-	actualizar_clt = (client, propiedad)->
-		for clt, indice in @clientes
+	actualizar_clt = (client, propiedad)=>
+		for clt, indice in SocketClientes.clientes
 			if clt.resourceId == client.resourceId
-				@clientes.splice indice, 1, client
+				SocketClientes.clientes.splice indice, 1, client
 
 		return false
 
 
-	conectado = (client)->
-		added = false
-		for clt in @clientes
-			if clt.resourceId == client.resourceId
-				added = true
-		
-		if not added
-			@clientes.push client
+
+	fix_clientes = (clientes)=>
+		SocketClientes.clientes = clientes
+		SocketClientes.registrados_logueados.splice(0, SocketClientes.registrados_logueados.length)
+		SocketClientes.registrados_no_logged.splice(0, SocketClientes.registrados_no_logged.length)
+		SocketClientes.sin_registrar.splice(0, SocketClientes.sin_registrar.length)
+
+		for client in SocketClientes.clientes
+			if client.registered
+				if client.logged
+					SocketClientes.registrados_logueados.push(client)
+				else
+					SocketClientes.registrados_no_logged.push(client)
+			else
+				SocketClientes.sin_registrar.push(client)
+
 		return true
 
-	set_waiting = ()->
-		for clt, indice in @clientes
-			clt.answered = 'waiting'
 
+	conectado = (client)=>
+		added 	= false
+		index 	= 0
+
+		for clt, indice in SocketClientes.clientes
+			if clt.resourceId == client.resourceId
+				added 	= true
+				index 	= indice
+					
+		if not added
+			SocketClientes.clientes.push client
+			if client.registered
+				SocketClientes.registrados_no_logged.push client
+			else
+				SocketClientes.sin_registrar.push client
+
+
+		return true
+
+
+	logueado = (client)=>
+		console.log('logueando', client)
+		if client.registered
+			found 		= false
+			index 		= 0
+			for clt, indice in SocketClientes.registrados_no_logged
+				if clt.resourceId == client.resourceId
+					found 		= true
+					index 		= indice
+
+			if found
+				SocketClientes.registrados_no_logged.splice index, 1
+
+				for clt, indice in SocketClientes.clientes
+					if clt.resourceId == client.resourceId
+						SocketClientes.clientes.splice indice, 1, client
+
+				for clt, indice in SocketClientes.registrados_logueados
+					if clt.resourceId == client.resourceId
+						SocketClientes.registrados_logueados.push client
+				
+
+
+		else
+			ya_logueado = false
+			for clt, indice in SocketClientes.sin_registrar
+				if clt.resourceId == client.resourceId
+					if clt.logged
+						ya_logueado = true
+						index 		= indice
+					
+			if not ya_logueado
+				for clt, indice in SocketClientes.clientes
+					if clt.resourceId == client.resourceId
+						SocketClientes.clientes.splice indice, 1, client
+		
+		return true
+
+	deslogueado = (client)=>
+		is_logueado 	= false
+		index 			= 0
+
+		for clt, indice in SocketClientes.clientes
+			if clt.resourceId == client.resourceId and clt.logged == client.logged
+				is_logueado 	= true
+				index 			= indice
+					
+		if is_logueado
+			SocketClientes.clientes.splice index, 1, client
+			
+			if client.registered
+				if client.logged 
+					SocketClientes.registrados_logueados.push client
+					SocketClientes.registrados_no_logged.splice index, 1
+				else
+					SocketClientes.registrados_no_logged.push client
+					SocketClientes.registrados_logueados.splice index, 1
+			else
+				SocketClientes.sin_registrar.splice index, 1, client
+
+		else
+			SocketClientes.clientes.push client
+			if client.registered
+				SocketClientes.sin_registrar.push client
+			else
+				SocketClientes.sin_registrar.splice index, 1, client
+
+
+		return true
+
+	set_waiting = ()=>
+		for clt, indice in SocketClientes.clientes
+			clt.answered = 'waiting'
 		return false
 
 
@@ -448,13 +627,15 @@ angular.module('WissenSystem')
 
 
 	methods = {
-		clientes: 					@clientes,
 		usuarios_all: 				usuarios_all,
 		mensajes: 					mensajes
 		desconectar: 				desconectar
 		token_auth:					token_auth
 		cliente:					cliente
+		fix_clientes: 				fix_clientes
 		conectado:					conectado
+		logueado:					logueado
+		deslogueado:				deslogueado
 		actualizar_clt:				actualizar_clt
 		config:						config
 		set_waiting:				set_waiting
@@ -464,4 +645,19 @@ angular.module('WissenSystem')
 	return methods
 
 
+])
+
+.factory('SocketClientes', ['$rootScope', ($rootScope) ->
+	
+	@clientes 					= []
+	@registrados_logueados 		= []
+	@registrados_no_logged 		= []
+	@sin_registrar 				= []
+
+	{
+		clientes: 					@clientes,
+		registrados_logueados: 		@registrados_logueados,
+		registrados_no_logged: 		@registrados_no_logged,
+		sin_registrar: 				@sin_registrar,
+	}
 ])

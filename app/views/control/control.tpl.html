@@ -53,17 +53,17 @@
           <md-tooltip>{{ 'ACTUALIZAR_TL' | translate }} </md-tooltip>
         </button>
       </div>
-      <h4>{{ 'REGISTRADOS_TL' | translate }} </h4>
+      <h4>{{ 'REGISTRADOS_CONECTADOS_TL' | translate }}: {{SocketClientes.registrados_logueados.length}} </h4>
       <ul layout="row" layout-wrap>
-        <li ng-repeat="cliente in SocketData.clientes | filter:{'registrado':true}" layout="row" ng-click="clickedClt($event, cliente)" ng-dblclick="showSidenavEditUsu(cliente)" ng-mouseover="sobreClt($event, cliente)" ng-class="{'seleccionado': cliente.seleccionado, 'cursor-unselect':deseleccionar }" class="md-whiteframe-1dp clt-pc unselectable"> 
-          <header flex="30"><img ng-src="{{imagesPath + cliente.usuario.imagen_nombre}}" alt="{{cliente.usuario.username}}" style="" class="img-perfil nodrag"><img ng-src="{{ imagesPath + cliente.usuario.entidad.logo}}" alt="{{cliente.usuario.username}}" class="img-entidad nodrag">
-            <md-tooltip>{{cliente.usuario.entidad.nombre}}</md-tooltip>
+        <li ng-repeat="cliente in SocketClientes.registrados_logueados" layout="row" ng-click="clickedClt($event, cliente)" ng-dblclick="showSidenavEditUsu(cliente)" ng-mouseover="sobreClt($event, cliente)" ng-class="{'seleccionado': cliente.seleccionado, 'cursor-unselect':deseleccionar }" class="md-whiteframe-1dp clt-pc unselectable"> 
+          <header flex="30"><img ng-src="{{imagesPath + cliente.user_data.imagen_nombre}}" alt="{{cliente.user_data.username}}" style="" class="img-perfil nodrag"><img ng-src="{{ imagesPath + cliente.user_data.entidad.logo}}" alt="{{cliente.user_data.username}}" class="img-entidad nodrag">
+            <md-tooltip>{{cliente.user_data.entidad.nombre}}</md-tooltip>
           </header>
           <div flex="70" ng-class="{'incorrect': cliente.answered=='incorrect', 'correct': cliente.answered=='correct' }" class="info"> 
-            <h5 style="margin-top: 2px" class="name text-center nombresellipsis">{{cliente.usuario.nombres}} {{cliente.usuario.apellidos}}
-              <md-tooltip>{{cliente.usuario.username}}</md-tooltip>
+            <h5 style="margin-top: 2px" class="name text-center nombresellipsis">{{cliente.user_data.nombres}} {{cliente.user_data.apellidos}}
+              <md-tooltip>{{cliente.user_data.username}}</md-tooltip>
             </h5>
-            <div ng-show="cliente.usuario.entidad.alias" class="alias-enti">{{cliente.usuario.entidad.alias}}</div>
+            <div ng-show="cliente.user_data.entidad.alias" class="alias-enti">{{cliente.user_data.entidad.alias}}</div>
             <h6 style="margin: 0px;">{{ cliente.nombre_punto }}</h6>
           </div>
           <div class="opts-clt btn-group">
@@ -88,14 +88,37 @@
         </li>
       </ul>
       <div class="disponibles-title">
-        <h4>{{ 'DISPONIBLES_TL' | translate }} </h4>
+        <h4>{{ 'DISPONIBLES_TL' | translate }}: {{SocketClientes.registrados_no_logged.length}}  </h4>
         <ul>
-          <li ng-repeat="cliente in SocketData.clientes | filter:{'registrado':false} " ng-click="clickedClt($event, cliente)" ng-dblclick="showSidenavSelectUsu(cliente)" ng-mouseover="sobreClt($event, cliente)" ng-class="{'seleccionado': cliente.seleccionado, 'cursor-unselect':deseleccionar }" class="md-whiteframe-1dp clt-pc unselectable">
-            <header ng-show="cliente.registrado"></header>
+          <li ng-repeat="cliente in SocketClientes.registrados_no_logged " ng-click="clickedClt($event, cliente)" ng-dblclick="showSidenavSelectUsu(cliente)" ng-mouseover="sobreClt($event, cliente)" ng-class="{'seleccionado': cliente.seleccionado, 'cursor-unselect':deseleccionar }" class="md-whiteframe-1dp clt-pc unselectable">
             <div class="info"> 
               <h5 ng-model="cliente.nombre_punto" contenteditable guardar-nombre-punto="guardarNombrePunto">{{ cliente.nombre_punto }}
                 <md-tooltip>{{ 'NOMBRE_DE_PUNTO_TL' | translate }} </md-tooltip>
               </h5>
+            </div>
+            <div class="opts-clt btn-group">
+              <button type="button" ng-click="showSidenavSelectUsu(cliente)" class="btn btn-default btn-xs deseleccionador">
+                <icon class="fa fa-users"></icon>
+                <md-tooltip>{{ 'SELECCIONAR_UN_USUARIO_TL' | translate }} </md-tooltip>
+              </button>
+              <button type="button" ng-click="guardarNombrePunto(cliente)" class="btn btn-default btn-xs deseleccionador">
+                <icon class="fa fa-save"></icon>
+                <md-tooltip>{{ 'GUARDAR_NOMBRE_PUNTO_TL' | translate }} </md-tooltip>
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="disponibles-title">
+        <h4>{{ 'SIN_REGISTRAR_TL' | translate }}: {{SocketClientes.sin_registrar.length}} </h4>
+        <ul layout="row" layout-wrap>
+          <li ng-repeat="cliente in SocketClientes.sin_registrar " layout="row" ng-click="clickedClt($event, cliente)" style="width: auto;" ng-dblclick="showSidenavSelectUsu(cliente)" ng-mouseover="sobreClt($event, cliente)" ng-class="{'seleccionado': cliente.seleccionado, 'cursor-unselect':deseleccionar }" class="md-whiteframe-1dp clt-pc unselectable">
+            <div flex class="info"> 
+              <h5 ng-model="cliente.nombre_punto" contenteditable guardar-nombre-punto="guardarNombrePunto" style="margin: 5px 0px;">{{ cliente.nombre_punto }}
+                <md-tooltip>{{ 'NOMBRE_DE_PUNTO_TL' | translate }} </md-tooltip>
+              </h5>
+              <div ng-show="cliente.user_data.entidad.alias" class="alias-enti">{{cliente.user_data.entidad.alias}}</div>
+              <h6 style="margin: 0px; font-size: 7pt">{{cliente.user_data.nombres}} {{cliente.user_data.apellidos}}</h6>
             </div>
             <div class="opts-clt btn-group">
               <button type="button" ng-click="showSidenavSelectUsu(cliente)" class="btn btn-default btn-xs deseleccionador">

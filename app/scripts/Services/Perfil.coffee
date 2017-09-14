@@ -20,11 +20,17 @@ angular.module('WissenSystem')
 		user.imagen_id = imagen_id
 		user.imagen_nombre = imagen_nombre
 
-	setResourceId: (resourceI)->
-		resourceId = resourceI
+	setResourceId: (resourceId)->
+		resourceId = resourceId
 
 	getResourceId: ()->
 		resourceId
+
+	setResgistered: (registered_boolean)->
+		user.registered = registered_boolean
+
+	getRegistered: ()->
+		user.registered
 
 	deleteUser: ()->
 		user = {}

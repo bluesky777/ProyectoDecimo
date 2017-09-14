@@ -14,18 +14,28 @@ angular.module('WissenSystem')
 	$scope.usuarios_all 		= []
 	$scope.selectedUser 		= {}
 
+	
+	$scope.registered_boolean 	= if localStorage.getItem('registered_boolean') then localStorage.getItem('registered_boolean') else false
+	$scope.registered_boolean 	= if $scope.registered_boolean == 'true' then true else false
+
 
 	# Traemos evento actual.
 	$scope.in_evento_actual.qr = ''
 	if !$scope.in_evento_actual.nombre
 		Restangular.one('welcome').customGET().then((r)->
-			$scope.in_evento_actual = r
-			$scope.in_evento_actual.ip = if localStorage.getItem('nombre_punto') then localStorage.getItem('nombre_punto') else $scope.in_evento_actual.ip
-			MySocket.conectar(r.qr)
+			$scope.in_evento_actual 	= r
+			$scope.in_evento_actual.ip 	= if localStorage.getItem('nombre_punto') then localStorage.getItem('nombre_punto') else $scope.in_evento_actual.ip
+			MySocket.emit('guardar:mi_qr:resourceId', {qr: r.qr})
 
 		, (r2)->
 			toastr.warning 'No se trae el evento principal'
 		)
+
+
+
+	MySocket.on('te_conectaste', (data)->
+		console.log SocketData.clientes
+	)
 
 
 	$scope.credentials = 
@@ -34,6 +44,23 @@ angular.module('WissenSystem')
 
 
 	cfpLoadingBar.complete()
+
+
+	MySocket.on('enter', (data)->
+		if data.usuario
+			Restangular.one('qr/validar-usuario').customPUT({user_id: data.usuario.id, token_auth: data.from_token }).then((r)->
+				if r.token
+					SocketData.usuarios_all = []
+					$cookies.put('xtoken', r.token)
+					$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.get('xtoken')
+					$state.go 'panel'
+					location.refresh()
+			, (r2)->
+				toastr.warning 'No se pudo ingresar'
+				console.log 'No se pudo ingresar ', r2
+			)
+	);
+
 
 	$scope.login = ()->
 
@@ -45,6 +72,15 @@ angular.module('WissenSystem')
 		, (r2)->
 			console.log 'Promise de login_credentials rechazada', r2
 		)
+
+	$scope.registrar = ()->
+		localStorage.setItem('registered_boolean', true)
+		location.reload(true);
+
+
+	$scope.desregistrar = ()->
+		localStorage.setItem('registered_boolean', false)
+		location.reload(true);
 
 
 	$scope.entrar_como_invitado = ()->
@@ -141,6 +177,11 @@ angular.module('WissenSystem')
 		if datos.resourceId == Perfil.getResourceId()
 			localStorage.setItem('nombre_punto', datos.nombre)
 			$scope.in_evento_actual.ip = datos.nombre
+
+
+	$rootScope.$on 'reconocido:mi_nombre_punto', (ev, datos)->
+		localStorage.setItem('nombre_punto', datos.nombre_punto)
+		$scope.in_evento_actual.ip = datos.nombre_punto
 
 
 

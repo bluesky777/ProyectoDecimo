@@ -14,13 +14,25 @@
             <md-tooltip> Ingresa un nombre fácil de identificar</md-tooltip>
           </md-input-container>
         </form>
+        <div ng-show="registered_boolean">
+          <h4 style="text-align: center; background-color: #d4d4ff;">Registrado</h4>
+          <md-button ng-click="desregistrar()">Desregistrar
+            <md-tooltip>Que ya no sea equipo oficial</md-tooltip>
+          </md-button>
+        </div>
+        <div ng-hide="registered_boolean">
+          <h4 style="text-align: center; color: red">NO Registrado</h4>
+          <md-button ng-click="registrar()">Registrar
+            <md-tooltip>Registrar como equipo oficial</md-tooltip>
+          </md-button>
+        </div>
       </div>
     </div></span>
   <div class="auth-container">
     <div class="form-head mb20">
-      <h1 class="site-logo h2 mb5 mt5 text-center text-uppercase text-bold"><a href="">Wissen <span ng-show="MySocket.readyState() == 3 &amp;&amp; in_evento_actual.gran_final" style="color: red;">
+      <h1 class="site-logo h2 mb5 mt5 text-center text-uppercase text-bold"><a href="">Wissen <span ng-show="!MySocket.readyState() &amp;&amp; in_evento_actual.gran_final" style="color: red;">
             <icon style="font-size: 30px;" class="fa fa-warning"></icon>
-            <md-tooltip>Desconectado del chat...</md-tooltip></span><span ng-show="MySocket.readyState() == 1">
+            <md-tooltip>Desconectado del chat...</md-tooltip></span><span ng-show="MySocket.readyState()">
             <icon style="font-size: 30px;" class="fa fa-fighter-jet"></icon>
             <md-tooltip>Conectado al chat</md-tooltip></span></a></h1>
       <h5 class="text-normal h5 text-center">Pon a prueba tu conocimiento</h5>
@@ -71,6 +83,10 @@
             </div>
           </div>
         </form>
+      </div>
+      <div class="clearfix text-center small">
+        <h4 ng-show="registered_boolean">Registrado</h4>
+        <h4 ng-hide="registered_boolean" style="color: red">NO Registrado</h4>
       </div>
     </div>
   </div>
