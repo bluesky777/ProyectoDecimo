@@ -11,7 +11,7 @@
 
 			ul(style="display: inline-flex;writing-mode: vertical-lr;flex-wrap: wrap;align-content: flex-start;height: 100%;")
 				
-				li.md-whiteframe-1dp.sc-cliente(ng-repeat="cliente in SocketData.clientes | filter:{'registrado':true, 'categsel':categoria_traduc.categoria_id }:true | orderParticipantes "   
+				li.md-whiteframe-1dp.sc-cliente(ng-repeat="cliente in SocketClientes.clientes | filter:{'registrado':true, 'categsel':categoria_traduc.categoria_id }:true | orderParticipantes "   
 					ng-class="{'correct': cliente.answered=='correct', 'incorrect': cliente.answered=='incorrect' }"
 					style="writing-mode: horizontal-tb; width: auto; border-radius: 8px; margin-right: 4px; max-height: 60px;")
 					

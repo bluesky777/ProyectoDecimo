@@ -101,7 +101,7 @@
 
 
 	.auth-container(style="margin-top: 150px; max-width: 450px;padding-left: 0px;padding-right: 0px")
-		span(ng-show="SocketData.usuarios_all.length == 0")
+		span(ng-show="SocketClientes.usuarios_all.length == 0")
 			.form-head.mb20
 				h1.site-logo.h2.mb5.mt5.text-center.text-uppercase.text-bold
 					a(href="") Código QR
@@ -111,7 +111,7 @@
 			.form-container(style="text-align: center;")
 				qr(text="in_evento_actual.qr" size="300" ng-if="in_evento_actual.qr")
 		
-		span(ng-show="SocketData.usuarios_all.length > 0")
+		span(ng-show="SocketClientes.usuarios_all.length > 0")
 
 			section
 				md-subheader.md-primary Usuarios
@@ -121,7 +121,7 @@
 					button.btn.btn-primary(type="button" ng-click="ingresar_seleccionado()") Ingresar
 				md-list.md-dense 
 
-					md-list-item.md-2-line(ng-repeat="usuario in SocketData.usuarios_all | filter:filtro | orderBy:'nombres' " ng-click="seleccionarUsu(usuario)")
+					md-list-item.md-2-line(ng-repeat="usuario in SocketClientes.usuarios_all | filter:filtro | orderBy:'nombres' " ng-click="seleccionarUsu(usuario)")
 						img.md-avatar(ng-src="{{imagesPath + usuario.imagen_nombre}}" alt="{{usuario.username}}")
 						.md-list-item-text
 							h3 {{ ($index+1) + '. ' + usuario.nombres + ' ' + usuario.apellidos}}

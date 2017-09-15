@@ -9,7 +9,7 @@ angular.module('WissenSystem')
 		
 
 ])
-.controller('SidenavSelectUsuCtrl', ['$scope', 'Restangular', 'toastr', 'MySocket', 'SocketData', '$mdSidenav',  ($scope, Restangular, toastr, MySocket, SocketData, $mdSidenav)->
+.controller('SidenavSelectUsuCtrl', ['$scope', 'Restangular', 'toastr', 'MySocket', 'SocketData', 'SocketClientes', '$mdSidenav',  ($scope, Restangular, toastr, MySocket, SocketData, SocketClientes, $mdSidenav)->
 	$scope.selectedUser 		= {}
 
 
@@ -33,7 +33,7 @@ angular.module('WissenSystem')
 		if usuario.seleccionado 
 			$scope.selectedUser = usuario
 
-			for user in SocketData.usuarios_all
+			for user in SocketClientes.usuarios_all
 				if user.id != usuario.id
 					user.seleccionado = false
 
@@ -41,7 +41,7 @@ angular.module('WissenSystem')
 		if usuario.seleccionado 
 			$scope.selectedUser = usuario
 
-			for user in SocketData.usuarios_all
+			for user in SocketClientes.usuarios_all
 				if user.id != usuario.id
 					user.seleccionado = false
 

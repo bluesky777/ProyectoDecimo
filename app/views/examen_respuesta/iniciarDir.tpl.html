@@ -3,12 +3,10 @@
   <div class="col-md-12 pl0-sm pr0-sm">
     <div class="panel panel-default panel-hovered panel-stacked mb20">
       <div class="panel-body">
-        <div ng-bind-html=" eventoactual.nombre " class="titulo-3d"></div>
-        <div ng-switch on="eventoactual.gran_final" style="text-align: center;"><span ng-switch-when="1">
+        <div ng-bind-html=" evento_actual.nombre " class="titulo-3d"></div>
+        <div ng-switch on="evento_actual.gran_final" style="text-align: center;"><span ng-switch-when="1">
             <h3 ng-bind-html="'GRAN_FINAL' | translate" class="text-light">¡Gran final!</h3>
-            <md-whiteframe ng-show="user.categsel" layout layout-align="center center" class="md-whiteframe-z2">
-              <!--h2(ng-repeat="categoriaking in user | categsInscritasDeUsuario:categorias_king:user.idioma_main_id | filter:{selected:true} " style="margin-bottom: 20px;")| {{categoriaking.nombre}} 
-              -->
+            <md-whiteframe ng-show="USER.categsel" layout layout-align="center center" class="md-whiteframe-z2">
               <h2 ng-bind-html="categoriaSelect().nombre" style="margin-bottom: 20px;"></h2>
             </md-whiteframe></span>
           <h3 ng-switch-default ng-bind-html="'ELIMINATORIAS' | translate" class="text-light">Eliminatorias</h3>
@@ -34,13 +32,13 @@
   <div class="col-md-6 pl0-sm pr0-sm">
     <div class="panel panel-default panel-hovered panel-stacked mb20">
       <div class="panel-heading"> 
-        <div ng-switch on="user.inscripciones.length &gt; 0"> 
+        <div ng-switch on="USER.inscripciones.length &gt; 0"> 
           <div ng-switch-when="true" ng-bind-html="('INSCRITO_EN' | translate)"> </div>
           <div ng-switch-default ng-bind-html="('NO_ESTAS_INSCRITO' | translate)"> </div>
         </div>
       </div>
       <div class="panel-body">
-        <md-button ng-click="iniciarExamen(categoriaking)" ng-repeat="categoriaking in user.inscripciones | categsInscritasDeUsuario:categorias_king:user.idioma_main_id:categoriaSelect().categoria_id " ng-class="{'md-primary': categoriaking.selected }" style="width: 100%;" class="md-raised col-md-12">{{categoriaking.nombre}}</md-button>
+        <md-button ng-click="iniciarExamen(categoriaking)" ng-repeat="categoriaking in USER.inscripciones | categsInscritasDeUsuario:categorias_king:USER.idioma_main_id:categoriaSelect().categoria_id " ng-class="{'md-primary': categoriaking.selected }" style="width: 100%;" class="md-raised col-md-12">{{categoriaking.nombre}}</md-button>
       </div>
     </div>
   </div>

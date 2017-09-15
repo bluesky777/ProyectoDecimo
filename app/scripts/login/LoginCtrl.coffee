@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('WissenSystem')
-.controller('LoginCtrl', ['$scope', '$state', '$mdDialog', 'AUTH_EVENTS', 'AuthService', '$stateParams', 'Restangular', '$cookies', 'Perfil', 'App', 'cfpLoadingBar', 'toastr', 'MySocket', 'SocketData', '$rootScope', '$http', ($scope, $state, $mdDialog, AUTH_EVENTS, AuthService, $stateParams, Restangular, $cookies, Perfil, App, cfpLoadingBar, toastr, MySocket, SocketData, $rootScope, $http)->
+.controller('LoginCtrl', ['$scope', '$state', '$mdDialog', 'AUTH_EVENTS', 'AuthService', '$stateParams', 'Restangular', '$cookies', 'Perfil', 'App', 'cfpLoadingBar', 'toastr', 'MySocket', 'SocketData', 'SocketClientes', '$rootScope', '$http', ($scope, $state, $mdDialog, AUTH_EVENTS, AuthService, $stateParams, Restangular, $cookies, Perfil, App, cfpLoadingBar, toastr, MySocket, SocketData, SocketClientes, $rootScope, $http)->
 	
 	
 	$scope.logoPath 			= 'images/MyVc-1.gif'
@@ -11,6 +11,7 @@ angular.module('WissenSystem')
 	$scope.dominio 				= localStorage.getItem('dominio')
 	$scope.MySocket 			= MySocket
 	$scope.SocketData 			= SocketData
+	$scope.SocketClientes 		= SocketClientes
 	$scope.usuarios_all 		= []
 	$scope.selectedUser 		= {}
 
@@ -34,7 +35,7 @@ angular.module('WissenSystem')
 
 
 	MySocket.on('te_conectaste', (data)->
-		console.log SocketData.clientes
+		console.log SocketClientes.clientes
 	)
 
 
@@ -50,11 +51,10 @@ angular.module('WissenSystem')
 		if data.usuario
 			Restangular.one('qr/validar-usuario').customPUT({user_id: data.usuario.id, token_auth: data.from_token }).then((r)->
 				if r.token
-					SocketData.usuarios_all = []
+					SocketClientes.usuarios_all = []
 					$cookies.put('xtoken', r.token)
 					$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.get('xtoken')
 					$state.go 'panel'
-					location.refresh()
 			, (r2)->
 				toastr.warning 'No se pudo ingresar'
 				console.log 'No se pudo ingresar ', r2
@@ -147,7 +147,7 @@ angular.module('WissenSystem')
 		if usuario.seleccionado 
 			$scope.selectedUser = usuario
 
-			for user in SocketData.usuarios_all
+			for user in $scope.usuarios_all
 				if user.id != usuario.id
 					user.seleccionado = false
 
@@ -155,7 +155,7 @@ angular.module('WissenSystem')
 		if $scope.selectedUser.id
 			Restangular.one('qr/validar-usuario').customPUT({user_id: $scope.selectedUser.id, token_auth: SocketData.token_auth }).then((r)->
 				if r.token
-					SocketData.usuarios_all = []
+					$scope.usuarios_all = []
 					$cookies.put('xtoken', r.token)
 					$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.get('xtoken')
 					$state.go 'panel'

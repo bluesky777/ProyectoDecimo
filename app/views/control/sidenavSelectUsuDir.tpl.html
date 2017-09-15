@@ -13,7 +13,7 @@
         <button type="button" ng-click="ingresar_seleccionado()" class="btn btn-primary">Ingresar</button>
       </md-subheader>
       <md-list class="md-dense"> 
-        <md-list-item ng-repeat="usuario in SocketData.usuarios_all | filter:filtro | orderBy:'nombres' " ng-click="seleccionarUsu(usuario)" ng-dblclick="ingresar_seleccionado(usuario)" class="md-2-line"><img ng-src="{{imagesPath + usuario.imagen_nombre}}" alt="{{usuario.username}}" class="md-avatar">
+        <md-list-item ng-repeat="usuario in SocketClientes.usuarios_all | filter:filtro | orderBy:'nombres' " ng-click="seleccionarUsu(usuario)" ng-dblclick="ingresar_seleccionado(usuario)" class="md-2-line"><img ng-src="{{imagesPath + usuario.imagen_nombre}}" alt="{{usuario.username}}" class="md-avatar">
           <div class="md-list-item-text">
             <h3>{{ ($index+1) + '. ' + usuario.nombres + ' ' + usuario.apellidos}}</h3>
             <h4>{{ usuario.nombre_entidad }}</h4>

@@ -197,7 +197,7 @@ angular.module('WissenSystem')
 			)
 
 		$scope.logout = ()->
-			MySocket.unregister()
+			MySocket.desloguear()
 			AuthService.logout()
 			$scope.in_evento_actual = {}
 
@@ -220,6 +220,13 @@ angular.module('WissenSystem')
 			(r2)->
 				console.log 'No se trajeron los eventos.'
 			)
+
+
+
+		$rootScope.$on('logueado:yo:agregado_a_arrays', (ev, client)->
+			$scope.USER.categsel = client.categsel
+		);  
+
 
 
 				

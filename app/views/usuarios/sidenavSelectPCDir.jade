@@ -12,7 +12,7 @@ md-sidenav.md-sidenav-right.md-whiteframe-4dp(md-component-id="sidenavSelectPC" 
 					input(type="text" ng-model="filtro" )
 				button.btn.btn-primary(type="button" ng-click="ingresar_seleccionado()") Ingresar
 			md-list.md-dense 
-				span(ng-repeat="cliente in SocketData.clientes | filter:filtro | orderBy:'nombre_punto'")
+				span(ng-repeat="cliente in SocketClientes.clientes | filter:filtro | orderBy:'nombre_punto'")
 					md-list-item.md-2-line.itemselectpc-busy(ng-if="cliente.registrado")
 						
 						header.fotoselectpc

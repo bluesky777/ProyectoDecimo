@@ -13,13 +13,13 @@ angular.module('WissenSystem')
 	$scope.isLoginPage = false
 
 
-	$scope.navFull = true
+	$scope.navFull = false
 	$scope.toggleNav = ()->
 		$scope.navFull = !$scope.navFull
-		$rs.navOffCanvas = !$rs.navOffCanvas
+		$scope.navOffCanvas = !$scope.navOffCanvas
 		console.log("navOffCanvas: "+$scope.navOffCanvas)
 		$timeout(()->
-			$rs.$broadcast("c3.resize")
+			$scope.$broadcast("c3.resize")
 		, 260)
 
 

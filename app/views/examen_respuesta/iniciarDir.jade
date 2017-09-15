@@ -2,13 +2,12 @@
 	.col-md-12.pl0-sm.pr0-sm
 		.panel.panel-default.panel-hovered.panel-stacked.mb20
 			.panel-body
-				.titulo-3d(ng-bind-html=" eventoactual.nombre ")
-				div(ng-switch on="eventoactual.gran_final" style="text-align: center;")
+				.titulo-3d(ng-bind-html=" evento_actual.nombre ")
+				div(ng-switch on="evento_actual.gran_final" style="text-align: center;")
 					span(ng-switch-when="1")
 						h3.text-light(ng-bind-html="'GRAN_FINAL' | translate") ¡Gran final!
-						md-whiteframe.md-whiteframe-z2(ng-show="user.categsel" layout layout-align="center center")
-							//h2(ng-repeat="categoriaking in user | categsInscritasDeUsuario:categorias_king:user.idioma_main_id | filter:{selected:true} " style="margin-bottom: 20px;")
-								| {{categoriaking.nombre}} 
+						md-whiteframe.md-whiteframe-z2(ng-show="USER.categsel" layout layout-align="center center")
+
 							h2(ng-bind-html="categoriaSelect().nombre" style="margin-bottom: 20px;")
 					h3.text-light(ng-switch-default ng-bind-html="'ELIMINATORIAS' | translate") Eliminatorias
 
@@ -31,14 +30,14 @@
 	.col-md-6.pl0-sm.pr0-sm
 		.panel.panel-default.panel-hovered.panel-stacked.mb20
 			.panel-heading 
-				div(ng-switch on="user.inscripciones.length > 0") 
+				div(ng-switch on="USER.inscripciones.length > 0") 
 					div(ng-switch-when="true" ng-bind-html="('INSCRITO_EN' | translate)" ) 
 					div(ng-switch-default ng-bind-html="('NO_ESTAS_INSCRITO' | translate)" ) 
 
 			
 			.panel-body
 
-				md-button.md-raised.col-md-12(ng-click="iniciarExamen(categoriaking)" ng-repeat="categoriaking in user.inscripciones | categsInscritasDeUsuario:categorias_king:user.idioma_main_id:categoriaSelect().categoria_id "
+				md-button.md-raised.col-md-12(ng-click="iniciarExamen(categoriaking)" ng-repeat="categoriaking in USER.inscripciones | categsInscritasDeUsuario:categorias_king:USER.idioma_main_id:categoriaSelect().categoria_id "
 					ng-class="{'md-primary': categoriaking.selected }" style="width: 100%;")
 					| {{categoriaking.nombre}}
 

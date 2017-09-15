@@ -4,7 +4,7 @@
     <div class="message-container">
       <div class="pane-chat-tile"></div>
       <div class="message-list">
-        <div ng-repeat="mensaje in mensajes" class="msg">
+        <div ng-repeat="mensaje in SocketClientes.mensajes" class="msg">
           <div ng-class="{'message-in': mensaje.from.usuario.id!=$parent.$parent.USER.id, 'message-out': mensaje.from.usuario.id==$parent.$parent.USER.id}" class="message-chat">
             <div ng-show="mensaje.from.usuario.id!=$parent.$parent.USER.id" class="message-author">
               <div class="pointer">{{ mensaje.from.usuario.nombres }}  {{ mensaje.from.usuario.apellidos }} </div>

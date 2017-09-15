@@ -134,12 +134,14 @@ angular.module('WissenSystem')
 
 .filter('secondsToDateTime', [ ->
 	(input, horas) ->
+		if not input
+			return ''
+			
 		z = (n)->
 			if n < 10
 				return '0' + n
 			else
 				return '' + n
-				
 		seconds = input % 60;
 
 		if horas

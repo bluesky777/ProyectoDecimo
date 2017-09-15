@@ -8,7 +8,7 @@
       </div>
     </div>
     <div layout="row" layout-align="space-around start" class="labels-barchart">
-      <text ng-repeat="cliente in SocketData.clientes | filter:participantes_en_categorias()">
+      <text ng-repeat="cliente in SocketClientes.clientes | filter:participantes_en_categorias()">
         <div class="etiqueta-grafico">{{cliente.usuario.nombres}}</div>
       </text>
     </div>

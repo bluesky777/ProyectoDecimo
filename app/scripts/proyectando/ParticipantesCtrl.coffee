@@ -9,7 +9,7 @@ angular.module('WissenSystem')
 
 
 		$scope.participantesDeCategoria = (categoria_traduc)->
-			return $filter('filter')(SocketData.clientes, {'registrado':true, 'categsel':categoria_traduc.categoria_id }, true)
+			return $filter('filter')(SocketClientes.clientes, {'registrado':true, 'categsel':categoria_traduc.categoria_id }, true)
 		
 		return
 	]
@@ -25,7 +25,7 @@ angular.module('WissenSystem')
 
 		$scope.$watch('SocketData', ()->
 
-			$scope.participantes = $filter('filter')(SocketData.clientes, (item)->
+			$scope.participantes = $filter('filter')(SocketClientes.clientes, (item)->
 				return item.categsel > 0;
 			)
 		, true)

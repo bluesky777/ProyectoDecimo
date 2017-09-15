@@ -1,18 +1,24 @@
+.row.hidden-print(style="margin-bottom: 20px")
+	textarea(ng-model="texto_informativo" ng-model-options="{ updateOn: 'blur' }" 
+		style="width: 100%; height: 100px; " ng-change="cambia_texto_informativo()")
+
 .row.body(ng-class="{'page-carta-horizontal': config.orientacion=='carta_horizontal', 'page-oficio-horizontal': config.orientacion=='oficio_horizontal','page-vertical': config.orientacion=='vertical', 'salto-pagina': $parent.$last==false }")
 	
 
 	.col-lg-12.col-sm-12.col-xs-12.marg-pad-0.text-center
 		h2(style="margin-top: 5px; margin-bottom: 0px") Exámenes por Entidades - Categorías
-		h3(style="margin-top: 0px; margin-bottom: 0px") {{$parent.selected.evento.nombre}} ({{ $parent.selected.evento.alias }})
-
-		hr
 
 
 	.col-lg-12.col-sm-12.col-xs-12.marg-pad-0
 		div(ng-repeat="entidad in entidades")
 			
-			md-whiteframe.md-whiteframe-z2.definicion-frame(layout style="padding: 10px; margin: 15px; display: block; ")
-				h4.center
+			h3.text-center(style="margin-top: 0px; margin-bottom: 0px") {{$parent.selected.evento.nombre}} ({{ $parent.selected.evento.alias }})
+
+			hr(style="margin: 0;")
+				
+			
+			md-whiteframe.md-whiteframe-z2.definicion-frame(layout style="padding: 10px; margin: 15px; display: block; page-break-after: always; padding-top: 0px;")
+				h4.center(style="margin-bottom: 0px")
 					img(ng-src="{{ imagesPath + entidad.logo_nombre }}" style="width: 35px")  
 					|  {{ entidad.nombre_entidad }} - {{ entidad.alias_entidad }}
 					md-tooltip {{ entidad.lider_nombre }}
@@ -20,11 +26,11 @@
 
 				div(ng-repeat="categoria in entidad.categorias" ng-init="sortType = 'promedio'; sortReverse = true")
 
-					h5.center(style="margin-top: 10px;") 
+					h5.center(style="margin-top: 0px;") 
 						| {{ categoria.nombre_categ }} - {{ categoria.abrev_categ }}
 						md-tooltip {{ categoria.descripcion_categ }}
 
-					table.table-bordered.table-bordered2.table-striped.table-striped2
+					table.table-bordered.table-bordered2.table-striped.table-striped2(style="width: 100%; margin-bottom: 10px;")
 						thead
 							th(style="padding-right: 15px;") 
 								a(href="" ng-click="sortType = 'examen_id'; sortReverse = !sortReverse")
@@ -34,7 +40,6 @@
 								md-tooltip Código de examen
 							th(style="padding-right: 15px;") 
 								| No
-								md-tooltip Indice
 							th 
 								a(href="" ng-click="sortType = 'nombres'; sortReverse = !sortReverse")
 									| Participante
@@ -87,6 +92,69 @@
 											a.btn.btn-danger.btn-xs(href="" ng-click="eliminarExamen(examen)")
 												i.fa.fa-times
 												md-tooltip Eliminar examen
+
+
+				h5.center(style="margin-top: 0px;") 
+					| FINALISTAS
+
+
+					table.table-bordered.table-bordered2.table-striped.table-striped2(style="width: 100%;")
+						thead
+							th.center(style="padding-right: 15px;") 
+								| No
+							th.center(style="padding-right: 15px;") 
+								a(href="")
+									| Categ
+							th.center 
+								a(href="")
+									| Participante
+							th.center 
+								a(href="")
+									| Fecha
+								md-tooltip Fecha realizado
+							th.center 
+								a(href="")
+									| Tiempo
+								md-tooltip Duración del examen
+							th.center 
+								| Pregs
+							th.center Buenas
+								md-tooltip Correctas
+							th.center 
+								a(href="")
+									| Puntaje
+						
+						tbody
+							tr(ng-repeat="examen in entidad.finalistas" )
+								td.center(style="font-size: 7pt;") {{ $index +1 }}
+								td.center(style="font-size: 7pt;") {{ examen.abrev_categ }}
+								td.center 
+									.ellipsis200.usuario-listado 
+										| {{ examen.nombres + ' ' + examen.apellidos }}
+
+								td.center(style="font-size: 7pt;") {{ examen.examen_at }}
+								td.center(style="font-size: 7pt;") {{ examen.resultados.tiempo | secondsToDateTime:true }}
+								td.center {{ examen.resultados.cantidad_pregs }}
+								td.center {{ examen.resultados.correctas }}
+									md-tooltip Correctas
+								td.center.td-contenedora {{ examen.resultados.promedio | decimales_if:1 }}%
+									.menu-puesto-exam.hidden-print 
+										.btn-group
+											a.btn.btn-default.btn-xs(href="" ng-click="mostrarPuesto(examen, $index +1, entidad)")
+												i.fa.fa-child
+												md-tooltip Mostrar en pantalla
+											a.btn.btn-danger.btn-xs(href="" ng-click="eliminarExamen(examen)")
+												i.fa.fa-times
+												md-tooltip Eliminar examen
+
+
+				div(style="border: 1px solid #ccc; padding: 10px; font-size: 14pt")
+					span.center(ng-bind-html="texto_informativo" style="border: 0px; width: 100%; ")
+
+
+
+
+
 
 
 

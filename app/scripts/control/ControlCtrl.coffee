@@ -116,7 +116,15 @@ angular.module('WissenSystem')
 
 	$scope.enviarMensaje = ()->
 		if $scope.newMensaje != ''
-			for cliente in SocketClientes.clientes
+			for cliente in SocketClientes.registrados_logueados
+				if cliente.seleccionado
+					MySocket.send_email_to $scope.newMensaje, cliente
+
+			for cliente in SocketClientes.registrados_no_logged
+				if cliente.seleccionado
+					MySocket.send_email_to $scope.newMensaje, cliente
+
+			for cliente in SocketClientes.sin_registrar
 				if cliente.seleccionado
 					MySocket.send_email_to $scope.newMensaje, cliente
 			$scope.newMensaje = ''

@@ -12,7 +12,7 @@
         </md-input-container>
         <button type="button" ng-click="ingresar_seleccionado()" class="btn btn-primary">Ingresar</button>
       </md-subheader>
-      <md-list class="md-dense"> <span ng-repeat="cliente in SocketData.clientes | filter:filtro | orderBy:'nombre_punto'">
+      <md-list class="md-dense"> <span ng-repeat="cliente in SocketClientes.clientes | filter:filtro | orderBy:'nombre_punto'">
           <md-list-item ng-if="cliente.registrado" class="md-2-line itemselectpc-busy">
             <header class="fotoselectpc"><img ng-src="{{imagesPath + cliente.usuario.imagen_nombre}}" alt="{{cliente.usuario.username}}" class="img-perfil nodrag"><img ng-src="{{ imagesPath + cliente.usuario.entidad.logo}}" alt="{{cliente.usuario.username}}" class="img-entidad nodrag">
               <md-tooltip>{{cliente.usuario.entidad.nombre}}</md-tooltip>

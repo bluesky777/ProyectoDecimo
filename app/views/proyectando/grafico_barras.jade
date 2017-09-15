@@ -10,7 +10,7 @@
 
 
 		.labels-barchart(layout="row" layout-align="space-around start")
-			text(ng-repeat="cliente in SocketData.clientes | filter:participantes_en_categorias()")
+			text(ng-repeat="cliente in SocketClientes.clientes | filter:participantes_en_categorias()")
 				.etiqueta-grafico {{cliente.usuario.nombres}}
 			
 
