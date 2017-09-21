@@ -91,7 +91,9 @@ angular.module('WissenSystem')
 				$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.get('xtoken')
 
 				Perfil.setUser user
-				MySocket.emit('loguear', {usuario: user} )
+				registered = if localStorage.getItem('registered_boolean') == null then false else localStorage.getItem('registered_boolean') 
+				registered = if registered=='false' then false else true
+				MySocket.emit('loguear', {usuario: user, registered: registered, nombre_punto: localStorage.nombre_punto} )
 
 				#console.log 'Usuario traido: ', user
 
@@ -133,8 +135,9 @@ angular.module('WissenSystem')
 			$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.get('xtoken')
 
 			login = Restangular.one('login/verificar').post().then((usuario)->
-
-				MySocket.emit('loguear', {usuario: usuario} )
+				registered = if localStorage.getItem('registered_boolean') == null then false else localStorage.getItem('registered_boolean') 
+				registered = if registered=='false' then false else true
+				MySocket.emit('loguear', {usuario: usuario, registered: registered, nombre_punto: localStorage.nombre_punto} )
 				$rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
 				Perfil.setUser usuario
 				d.resolve usuario

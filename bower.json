@@ -36,7 +36,8 @@
     "angular-qr": "latest",
     "textAngular": "^1.5.4",
     "ngclipboard": "^1.1.1",
-    "socket.io-client": "^2.0.3"
+    "socket.io-client": "^2.0.3",
+    "angular-web-notification": "^1.2.24"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.0"

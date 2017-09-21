@@ -30,6 +30,7 @@ angular.module('WissenSystem', [
   'toastr'
   'ui.select'
   'restangular'
+  'angular-web-notification'
 ])
 
 #- Valores que usaremos para nuestro proyecto

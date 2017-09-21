@@ -1456,5 +1456,8 @@ header.fotoselectpc{
 .dropdown-menu{
   max-height: 300px; 
   overflow-y: auto; 
+  li{
+    cursor: pointer;
+  }
 }
 

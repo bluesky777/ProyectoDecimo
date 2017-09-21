@@ -14,13 +14,13 @@
             <md-tooltip> Ingresa un nombre fácil de identificar</md-tooltip>
           </md-input-container>
         </form>
-        <div ng-show="registered_boolean">
+        <div ng-show="bring_registered_boolean()">
           <h4 style="text-align: center; background-color: #d4d4ff;">Registrado</h4>
           <md-button ng-click="desregistrar()">Desregistrar
             <md-tooltip>Que ya no sea equipo oficial</md-tooltip>
           </md-button>
         </div>
-        <div ng-hide="registered_boolean">
+        <div ng-hide="bring_registered_boolean()">
           <h4 style="text-align: center; color: red">NO Registrado</h4>
           <md-button ng-click="registrar()">Registrar
             <md-tooltip>Registrar como equipo oficial</md-tooltip>

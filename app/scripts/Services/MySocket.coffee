@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.factory('MySocket', ['App', '$q', '$rootScope', 'Perfil', '$interval', '$cookies', '$http', '$state', 'SocketData', 'SocketClientes', '$filter', (App, $q, $rootScope, Perfil, $interval, $cookies, $http, $state, SocketData, SocketClientes, $filter) ->
+.factory('MySocket', ['App', '$q', '$rootScope', 'Perfil', '$interval', '$cookies', '$http', '$state', 'SocketData', 'SocketClientes', '$filter', 'webNotification', (App, $q, $rootScope, Perfil, $interval, $cookies, $http, $state, SocketData, SocketClientes, $filter, webNotification) ->
 
 	#Open a WebSocket connection
 	# Verifico que no tenga puerto asignado
@@ -26,7 +26,7 @@ angular.module('WissenSystem')
 		Perfil.setRegistered(registered)
 
 		if Perfil.User().id
-			@emit('loguear', {usuario: Perfil.User(), registered: registered } )
+			@emit('loguear', {usuario: Perfil.User(), registered: registered, nombre_punto: localStorage.nombre_punto} )
 		else
 			nombre_p = if localStorage.getItem('nombre_punto') == null then false else localStorage.getItem('nombre_punto') 
 			if nombre_p
@@ -36,18 +36,27 @@ angular.module('WissenSystem')
 				#$rootScope.$emit 'reconocido:mi_nombre_punto', {nombre_punto: data.datos.nombre_punto }
 	);
 	socket.on('logueado:yo', (data)->
+		if SocketClientes.categorias_king.length == 0
+			if data.categorias_king
+				SocketClientes.categorias_king = data.categorias_king
+
+		SocketData.config.info_evento = data.info_evento
 		Perfil.setResourceId data.yo.resourceId
 		$rootScope.$emit('logueado:yo:agregado_a_arrays', data.yo)
 		SocketData.logueado data.yo
 	);
 	socket.on('logueado:alguien', (data)->
+		if SocketClientes.categorias_king.length == 0
+			if data.categorias_king
+				SocketClientes.categorias_king = data.categorias_king
 		SocketData.logueado data.clt
-		$rootScope.$emit 'clt_registrado', {clientes: SocketClientes.clientes }
+		$rootScope.$apply()
 	);
 
 	socket.on('user:left', (data)->
 		SocketData.desconectar data.resourceId
-		$rootScope.$emit 'desconectado:alguien', {clientes: SocketClientes.clientes }
+		#$rootScope.$emit 'desconectado:alguien', {clientes: SocketClientes.clientes }
+		$rootScope.$apply()
 	);
 
 
@@ -62,6 +71,14 @@ angular.module('WissenSystem')
 	socket.on('take:clientes', (data)->
 		SocketData.fix_clientes(data.clts)
 		SocketData.config.info_evento 	= data.info_evento
+
+		if $state.is('proyectando.grafico_barras')
+			SocketClientes.participantes = []
+			for client in SocketClientes.clientes
+				if client.categsel > 0
+					SocketClientes.participantes.push(client)
+
+		$rootScope.$apply()
 	);
 	socket.on('take:usuarios', (data)->
 		SocketClientes.usuarios_all = data.usuarios
@@ -73,11 +90,13 @@ angular.module('WissenSystem')
 		SocketData.actualizar_clt cliente
 
 		if cliente.resourceId == Perfil.getResourceId()
-			$rootScope.$emit 'reconocido:mi_nombre_punto', {nombre_punto: data.nombre_punto }
+			$rootScope.$emit 'reconocido:mi_nombre_punto', {nombre_punto: data.nombre_punto } # En LoginCtrl
 	);
 
 	socket.on('deslogueado', (data)->
-		SocketData.deslogueado data.client # Viene el cliente con sus propiedades ya arregladas para unregistrar
+		# No actualiza la lista de clientes registrados en control a menos que le de get_clts() # bueno, tal vez si
+		#SocketData.deslogueado data.client # Viene el cliente con sus propiedades ya arregladas para unregistrar
+		get_clts()
 	);
 	socket.on('got_your_qr', (data)->
 		if data.seleccionar
@@ -101,10 +120,26 @@ angular.module('WissenSystem')
 
 	socket.on('correspondencia', (data)->
 		SocketClientes.mensajes.push data.mensaje
-		$rootScope.$emit 'llegaCorrespondencia'
+
+		webNotification.showNotification(data.mensaje.from.user_data.nombres + ' ' + data.mensaje.from.user_data.apellidos, {
+			body: data.mensaje.texto,
+			icon: 'images/system/favicon-myvc.ico',
+			autoClose: 6000 
+		}, (error, hide)->
+			if (error) 
+				console.log('Unable to show notification: ' + error.message);
+			else
+				setTimeout(()->
+					console.log('Hiding notification....');
+					hide();
+				, 6000);
+		)
+
+		$rootScope.$emit 'llegaCorrespondencia' # En chatContainerDir
 	);
 	socket.on('a_establecer_fondo', (data)->
 		SocketData.config.info_evento.img_name = data.img_name
+		$rootScope.$apply()
 	);
 
 	socket.on('a_mostrar_solo_fondo', (data)->
@@ -114,6 +149,7 @@ angular.module('WissenSystem')
 	socket.on('a_cambiar_teleprompter', (data)->
 		SocketData.config.info_evento.msg_teleprompter = data.msg_teleprompter
 		$state.transitionTo 'proyectando'
+		$rootScope.$apply()
 	);
 
 	socket.on('sesion_closed', (data)->
@@ -128,6 +164,25 @@ angular.module('WissenSystem')
 			delete $http.defaults.headers.common['Authorization']
 	);
 
+	socket.on('cerrar:tu_sesion', (data)->
+		$rootScope.$emit 'me_desloguearon'	# En PanelCtrl
+	);
+
+	socket.on('me_registraron', (data)->
+		localStorage.registered_boolean = true
+		client 				= SocketData.cliente(Perfil.getResourceId())
+		client.registered 	= true
+		SocketData.actualizar_clt(client)
+		$rootScope.$apply()
+	);
+	socket.on('me_desregistraron', (data)->
+		localStorage.registered_boolean = false
+		client 				= SocketData.cliente(Perfil.getResourceId())
+		client.registered 	= false
+		SocketData.actualizar_clt(client)
+		$rootScope.$apply()
+	);
+
 	socket.on('nombre_punto_cambiado', (data)->
 		client 					= SocketData.cliente data.resourceId
 		client.nombre_punto 	= $filter('clearhtml')(data.nombre)
@@ -137,55 +192,75 @@ angular.module('WissenSystem')
 		SocketClientes.usuarios_all = data.usuarios
 	);
 
+	# Siendo participante, me ordenan que cambie mi categoría
 	socket.on('change_the_categ_selected', (data)->
 		client 				= SocketData.cliente Perfil.getResourceId()
-		client.categsel 	= data.categsel
-		SocketData.actualizar_clt client, data.categsel
-		$rootScope.$emit 'categ_selected_change', data.categsel
+		SocketData.cambiar_mi_categsel(data.categsel, data.categsel_nombre, data.categsel_abrev)
+		$rootScope.$emit 'categ_selected_change', data.categsel # En IniciarCtrl
 	);
 	socket.on('change_a_categ_selected', (data)->
-		client 				= SocketData.cliente data.resourceId
-		client.categsel 	= data.categsel
-		SocketData.actualizar_clt client, data.categsel
+		client 						= SocketData.cliente data.resourceId
+		client.categsel 			= data.categsel
+		client.categsel_id 			= data.categsel
+		client.categsel_nombre 		= data.categsel_nombre
+		client.categsel_abrev 		= data.categsel_abrev
+		SocketData.actualizar_clt client
 	);
 
 	socket.on('a_categ_selected_change', (data)->
-		client 				= SocketData.cliente data.resourceId
-		client.categsel 	= data.categsel
+		client 						= SocketData.cliente data.resourceId
+		client.categsel 			= data.categsel
+		client.categsel_id 			= data.categsel
+		client.categsel_nombre 		= data.categsel_nombre
+		client.categsel_abrev 		= data.categsel_abrev
 		SocketData.actualizar_clt client
 	);
 	socket.on('empezar_examen', (data)->
-		$rootScope.$emit 'empezar_examen'
+		$rootScope.$emit 'empezar_examen' # En IniciarCtrl
 	);
 	socket.on('sc_show_participantes', (data)->
-		get_clts()
-		$state.go('proyectando.participantes')
+		rolesFound = $filter('filter')(Perfil.User().roles, {name: 'Pantalla'})
+		if rolesFound
+			if rolesFound.length > 0
+				get_clts()
+				if $state.is('proyectando.participantes')
+					$rootScope.$apply()
+				else
+					$state.go('proyectando.participantes')
 	);
 	socket.on('sc_show_barras', (data)->
 		get_clts()
+		
+		SocketClientes.participantes = []
+		for client in SocketClientes.clientes
+			if client.categsel > 0
+				SocketClientes.participantes.push(client)
 		$state.go('proyectando.grafico_barras')
+		$rootScope.$apply()
 	);
 	socket.on('sc_show_question', (data)->
 		SocketData.config.pregunta 			= data.pregunta
 		SocketData.config.no_question 		= data.no_question
 		SocketData.config.reveal_answer 	= false 
 		$state.go('proyectando.question')
+		console.log SocketData.config
+		$rootScope.$apply()
 	);
 	socket.on('sc_show_logo_entidad_partici', (data)->
 		SocketData.config.show_logo_entidad_partici = data.valor
 	);
 	socket.on('sc_show_puntaje_particip', (data)->
-		SocketData.config.cliente_to_show = message.cliente
+		SocketData.config.cliente_to_show = data.cliente
 		$state.go('proyectando.puntaje_particip')
+		$rootScope.$apply()
 	);
 	socket.on('sc_show_puntaje_examen', (data)->
-		SocketData.config.puntaje_to_show = message.examen
+		SocketData.config.puntaje_to_show = data.examen
 		$state.go('proyectando.puntaje_particip')
+		$rootScope.$apply()
 	);
 	socket.on('sc_answered', (data)-> # Me avisan que alguien respondió algo
-		client = SocketData.cliente data.resourceId
-		client = data.cliente
-		SocketData.actualizar_clt client
+		get_clts()
 
 		if data.resourceId != Perfil.getResourceId()
 			if data.cliente.answered == 'correct'
@@ -198,19 +273,22 @@ angular.module('WissenSystem')
 	);
 	socket.on('next_question', (data)-> # Me avisan que alguien respondió algo
 		SocketData.set_waiting()
+		$rootScope.$apply()
 		$rootScope.$emit 'next_question'
 	);
 	socket.on('goto_question_no', (data)-> # Me avisan que alguien respondió algo
 		SocketData.set_waiting()
-		$rootScope.$emit 'goto_question_no', message.numero
+		$rootScope.$emit 'goto_question_no', data.numero
 	);
 	socket.on('set_free_till_question', (data)-> # Me avisan que alguien respondió algo
-		SocketData.config.info_evento.free_till_question = message.free_till_question
-		$rootScope.$emit 'set_free_till_question', message.free_till_question # Si estaba esperando pregunta, con esto arranca
+		SocketData.config.info_evento.free_till_question = data.free_till_question
+		$rootScope.$emit 'set_free_till_question', data.free_till_question # En ExamenRespuestaCtrl y ParticipantesCtrl, Si estaba esperando pregunta, con esto arranca
 	);
 
 
-		
+	#on enter() #en LoginCtrl y PanelCtrl
+
+
 	io_on = (eventName, callback)->
 		socket.on(eventName, ()->
 			args = arguments
@@ -237,7 +315,9 @@ angular.module('WissenSystem')
 
 
 	desloguear = ()->
-		@emit('desloguear')
+		registered = if localStorage.getItem('registered_boolean') == null then false else localStorage.getItem('registered_boolean') 
+		registered = if registered=='false' then false else true
+		@emit('desloguear', {registered: registered, nombre_punto: localStorage.nombre_punto})
 
 
 	conectar = (qr)->
@@ -263,7 +343,7 @@ angular.module('WissenSystem')
 
 	get_clts = ()->
 		if socket.connected
-			@emit('get_clts')
+			socket.emit('get_clts')
 		else
 			SocketClientes.cliente 					= []
 			SocketClientes.registrados_logueados 	= []
@@ -290,8 +370,14 @@ angular.module('WissenSystem')
 	send_email_to = (mensaje, clt)->
 		@emit('correspondencia', { mensaje: mensaje, to: clt.resourceId })
 
-	cerrar_sesion = (resourceId)->
-		@emit('cerrar_sesion', { resourceId: resourceId })
+	cerrar_sesion_a = (resourceId)->
+		@emit('cerrar_sesion_a', { resourceId: resourceId })
+
+	registrar_a = (resourceId)->
+		@emit('registrar_a', { resourceId: resourceId })
+
+	desregistrar_a = (resourceId)->
+		@emit('desregistrar_a', { resourceId: resourceId })
 
 	guardar_nombre_punto = (resourceId, nombre)->
 		nombre = $filter('clearhtml')(nombre)
@@ -304,17 +390,22 @@ angular.module('WissenSystem')
 			@emit('get_usuarios', { from_token: xtoken })
 
 	change_a_categ_selected = (resourceId, categoria_id)->
-		client = SocketData.cliente resourceId
+		client 			= SocketData.cliente resourceId
 		client.categsel = categoria_id
+
+		categsel_n = $filter('categSelectedDeUsuario')(client.user_data.inscripciones, SocketClientes.categorias_king, Perfil.User().idioma_main_id, client.categsel)
+		if categsel_n.length > 0 
+			client.categsel_nombre 	= categsel_n[0].nombre
+			client.categsel_abrev 	= categsel_n[0].abrev
+			client.categsel_id 		= categsel_n[0].categoria_id
+
 		SocketData.actualizar_clt client, categoria_id
-		@emit('change_a_categ_selected',  { resourceId: resourceId, categsel: categoria_id })
+
+		@emit('change_a_categ_selected',  { resourceId: resourceId, categsel: categoria_id, categsel_nombre: client.categsel_nombre, categsel_abrev: client.categsel_abrev })
 
 	# El participante selecciona una categoría por su cuenta y llama a esta función
-	change_my_categ_selected = (categoria_id)->
-		client = SocketData.cliente(Perfil.getResourceId())
-		client.categsel = categoria_id
-		SocketData.actualizar_clt(client, categoria_id)
-		@emit('warn_my_categ_selected', { categsel: categoria_id })
+	change_my_categ_selected = (categoria_id, nombre, abrev)->
+		@emit('warn_my_categ_selected', { categsel: categoria_id, categsel_nombre: nombre, categsel_abrev: abrev })
 
 	empezar_examen = ()->
 		@emit('empezar_examen')
@@ -351,7 +442,7 @@ angular.module('WissenSystem')
 
 	sc_next_question = ()->
 		SocketData.set_waiting()
-		@emit({ 'next_question' })
+		@emit('next_question')
 		audio = new Audio('/sounds/Siguiente.wav');
 		audio.play();
 
@@ -391,7 +482,9 @@ angular.module('WissenSystem')
 		cambiar_teleprompter: 		cambiar_teleprompter
 		send_email_to: 				send_email_to
 		get_clts: 					get_clts
-		cerrar_sesion: 				cerrar_sesion
+		cerrar_sesion_a: 			cerrar_sesion_a
+		registrar_a: 				registrar_a
+		desregistrar_a: 			desregistrar_a
 		guardar_nombre_punto:		guardar_nombre_punto
 		get_usuarios:				get_usuarios
 		let_him_enter:				let_him_enter

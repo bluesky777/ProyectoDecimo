@@ -1,7 +1,7 @@
 angular.module('WissenSystem')
 
 
-.factory('SocketData', ['SocketClientes', '$rootScope', '$filter', '$q', (SocketClientes, $rootScope, $filter, $q) ->
+.factory('SocketData', ['SocketClientes', '$rootScope', '$filter', '$q', 'Perfil', (SocketClientes, $rootScope, $filter, $q, Perfil) ->
 	
 	@cliente_to_show		= []
 	@clt_selected	= {}
@@ -10,7 +10,7 @@ angular.module('WissenSystem')
 		pregunta: {}, 
 		reveal_answer: false, 
 		show_logo_entidad_partici: false 
-		info_evento: { examen_iniciado: false, preg_actual: 0 }
+		info_evento: { examen_iniciado: false, preg_actual: 0, free_till_question: -1, img_name: '' }
 
 
 	desconectar = (resourceId)=>
@@ -18,7 +18,7 @@ angular.module('WissenSystem')
 		SocketClientes.sin_registrar 			= $filter('filter')(SocketClientes.sin_registrar, {resourceId: '!'+resourceId})
 		SocketClientes.registrados_logueados 	= $filter('filter')(SocketClientes.registrados_logueados, {resourceId: '!'+resourceId})
 		SocketClientes.registrados_no_logged 	= $filter('filter')(SocketClientes.registrados_no_logged, {resourceId: '!'+resourceId})
-		console.log 'desconectado  ', SocketClientes.clientes
+		#console.log 'desconectado  ', SocketClientes.clientes
 
 		
 
@@ -42,7 +42,19 @@ angular.module('WissenSystem')
 		return d.promise
 
 
-	actualizar_clt = (client, propiedad)=>
+	cambiar_mi_categsel = (categsel_id, categsel_nombre, categsel_abrev)=>
+		client = cliente(Perfil.getResourceId())
+		client.categsel 			= categsel_id
+		client.categsel_id 			= categsel_id
+		client.categsel_nombre 		= categsel_nombre
+		client.categsel_abrev 		= categsel_abrev
+
+		actualizar_clt(client)
+				
+
+
+
+	actualizar_clt = (client)=>
 		for clt, indice in SocketClientes.clientes
 			if clt.resourceId == client.resourceId
 				SocketClientes.clientes.splice indice, 1, client
@@ -66,6 +78,15 @@ angular.module('WissenSystem')
 
 
 	fix_clientes = (clientes)=>
+		for client in clientes
+			categsel_n = $filter('categSelectedDeUsuario')(client.user_data.inscripciones, SocketClientes.categorias_king, Perfil.User().idioma_main_id, client.categsel)
+			if categsel_n.length > 0 
+				client.categsel_nombre 	= categsel_n[0].nombre
+				client.categsel_abrev 	= categsel_n[0].abrev
+				client.categsel_id 		= categsel_n[0].categoria_id
+
+
+
 		SocketClientes.clientes = clientes
 		SocketClientes.registrados_logueados.splice(0, SocketClientes.registrados_logueados.length)
 		SocketClientes.registrados_no_logged.splice(0, SocketClientes.registrados_no_logged.length)
@@ -104,38 +125,35 @@ angular.module('WissenSystem')
 
 
 	logueado = (client)=>
-		
+
+		categsel_n = $filter('categSelectedDeUsuario')(client.user_data.inscripciones, SocketClientes.categorias_king, Perfil.User().idioma_main_id, client.categsel)
+		if categsel_n.length > 0 
+			client.categsel_nombre 		= categsel_n[0].nombre
+			client.categsel_abrev 	= categsel_n[0].abrev
+			client.categsel_id 		= categsel_n[0].categoria_id
+
+
 		if client.registered
-			found 		= false
-			index 		= 0
 			for clt, indice in SocketClientes.registrados_no_logged
 				if clt.resourceId == client.resourceId
-					found 		= true
-					index 		= indice
+					SocketClientes.registrados_no_logged.splice indice, 1
 
-			if found
-				SocketClientes.registrados_no_logged.splice index, 1
+			for clt, indice in SocketClientes.registrados_logueados
+				if clt.resourceId == client.resourceId
+					SocketClientes.registrados_logueados.splice(indice, 1, client)
 
-				for clt, indice in SocketClientes.registrados_logueados
-					if clt.resourceId == client.resourceId
-						SocketClientes.registrados_logueados.push client
-				
 
 
 		else
-			ya_logueado = false
-
+			found 	= false
 			for clt, indice in SocketClientes.sin_registrar
 				if clt.resourceId == client.resourceId
-					if clt.logged
-						ya_logueado = true
-						index 		= indice
-					
-			if not ya_logueado
-				for clt, indice in SocketClientes.sin_registrar
-					if clt.resourceId == client.resourceId
-						SocketClientes.sin_registrar.splice indice, 1, client
+					SocketClientes.sin_registrar.splice(indice, 1, client)
+					found 	= true
+			if not found
+				SocketClientes.sin_registrar.push(client)
 		
+		# Ahora lo buscamos en el array de todos los clientes
 		found 		= false
 		index 		= 0
 		for clt, indice in SocketClientes.clientes
@@ -145,6 +163,7 @@ angular.module('WissenSystem')
 		if found
 			SocketClientes.clientes.splice index, 1, client
 
+		
 
 		return true
 
@@ -183,6 +202,10 @@ angular.module('WissenSystem')
 	set_waiting = ()=>
 		for clt, indice in SocketClientes.clientes
 			clt.answered = 'waiting'
+		for clt, indice in SocketClientes.registrados_logueados
+			clt.answered = 'waiting'
+		for clt, indice in SocketClientes.sin_registrar
+			clt.answered = 'waiting'
 		return false
 
 
@@ -195,6 +218,7 @@ angular.module('WissenSystem')
 		token_auth:					token_auth
 		cliente:					cliente
 		get_cliente:				get_cliente
+		cambiar_mi_categsel:		cambiar_mi_categsel
 		fix_clientes: 				fix_clientes
 		conectado:					conectado
 		logueado:					logueado
@@ -218,6 +242,8 @@ angular.module('WissenSystem')
 	@sin_registrar 				= []
 	@usuarios_all				= []
 	@mensajes					= []
+	@categorias_king			= []
+	@participantes				= []
 
 	{
 		clientes: 					@clientes,
@@ -226,5 +252,7 @@ angular.module('WissenSystem')
 		sin_registrar: 				@sin_registrar,
 		usuarios_all: 				@usuarios_all,
 		mensajes: 					@mensajes
+		categorias_king: 			@categorias_king
+		participantes: 				@participantes
 	}
 ])

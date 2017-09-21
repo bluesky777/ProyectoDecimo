@@ -1,34 +1,39 @@
 
 angular.module('WissenSystem')
 
-.controller('ParticipantesCtrl', ['$scope', '$rootScope', 'App', 'SocketData', '$filter', 'MySocket', '$timeout' 
-	($scope, $rootScope, App, SocketData, $filter, MySocket, $timeout) ->
+.controller('ParticipantesCtrl', ['$scope', '$rootScope', 'App', 'SocketData', 'SocketClientes', '$filter', 'MySocket', '$timeout' 
+	($scope, $rootScope, App, SocketData, SocketClientes, $filter, MySocket, $timeout) ->
 
 		MySocket.get_clts()
-		$scope.SocketData = SocketData
+		$scope.SocketData 		= SocketData
+		$scope.SocketClientes 	= SocketClientes
 
 
 		$scope.participantesDeCategoria = (categoria_traduc)->
-			return $filter('filter')(SocketClientes.clientes, {'registrado':true, 'categsel':categoria_traduc.categoria_id }, true)
+			return $filter('filter')(SocketClientes.clientes, {logged :true, 'categsel':categoria_traduc.categoria_id }, true)
 		
 		return
 	]
 )
-.controller('GraficoBarrasCtrl', ['$scope', '$rootScope', 'App', 'SocketData', '$filter', 'MySocket' 
-	($scope, $rootScope, App, SocketData, $filter, MySocket) ->
+.controller('GraficoBarrasCtrl', ['$scope', '$rootScope', 'App', 'SocketData', 'SocketClientes', '$filter', 'MySocket' 
+	($scope, $rootScope, App, SocketData, SocketClientes, $filter, MySocket) ->
 
 		MySocket.get_clts()
 		$scope.SocketData = SocketData
 
 		$scope.participantes = []
 
-
+		###
 		$scope.$watch('SocketData', ()->
 
 			$scope.participantes = $filter('filter')(SocketClientes.clientes, (item)->
 				return item.categsel > 0;
 			)
 		, true)
+		###
+
+		$scope.participantes_actuales = ()->
+			return SocketClientes.participantes
 
 		$scope.participantes_en_categorias = ()->
 			return (item)->
@@ -67,6 +72,15 @@ angular.module('WissenSystem')
 				else
 					return porcentaje
 
+
+
+
+		destroy_set_free_till_question_on = $rootScope.$on 'set_free_till_question', (event, free_till_question)->
+			$scope.$apply()
+
+		$scope.$on('$destroy', ()->
+			destroy_set_free_till_question_on()
+		);
 
 
 		return

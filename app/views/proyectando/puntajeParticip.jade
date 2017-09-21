@@ -6,7 +6,7 @@
 			//div(style="font-size: 15pt; font-weight: bold; position: absolute; left: calc(50% - 20px);")
 				| {{ SocketData.config.puntaje_to_show.alias_entidad }}
 
-	.puntaje-content(style="padding-top: 40px; padding-left: 30px;")
+	.puntaje-content(style="")
 		.indexHead
 		div( ng-show="SocketData.config.puntaje_to_show")
 			.row
@@ -16,14 +16,17 @@
 						span(style="margin-left: -40px;") puesto - {{ SocketData.config.puntaje_to_show.nombre_categ }}
 
 			.row
-				.col-md-6.col-sm-6.col-xs-6
-					h1(style="line-height: 5; width: 140%; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; text-shadow: 4px 4px 2px rgba(150, 150, 150, 1);")
+				.col-md-7.col-sm-7.col-xs-7
+					h1.txt-borde-blanco(style="margin-top: 50px; color: blue; margin-bottom: 0px; width: 140%; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; font-weight: 900;")
 						| {{ SocketData.config.puntaje_to_show.nombres + ' ' + SocketData.config.puntaje_to_show.apellidos }}
-				.col-md-6.col-sm-6.col-xs-6.center
+					h1.txt-borde-blanco(style="width: 140%; margin-top: 0px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;")
+						| {{ SocketData.config.puntaje_to_show.alias_entidad }}
+				
+				.col-md-5.col-sm-5.col-xs-5.center
 					img(ng-src="{{ imagesPath + SocketData.config.puntaje_to_show.imagen_nombre }}" style="width: 200px")
 
 			.row
-				.col-md-6.col-sm-6.col-xs-6(style="font-size:20pt;margin-top: 40px")
+				.col-md-6.col-sm-6.col-xs-6.txt-borde-blanco(style="font-size:20pt; line-height: 1.2;")
 					| Preguntas: {{ SocketData.config.puntaje_to_show.resultados.cantidad_pregs }}
 					br 
 					| Incorrectas: {{ SocketData.config.puntaje_to_show.resultados.cantidad_pregs - SocketData.config.puntaje_to_show.resultados.correctas }}
@@ -35,7 +38,7 @@
 					| Tiempo: {{ SocketData.config.puntaje_to_show.resultados.tiempo | secondsToDateTime:true }}
 
 				.col-md-6.col-sm-6.col-xs-6.center
-					h1(style="font-size:80pt; color: white; text-shadow: 4px 4px 2px rgb(21, 33, 33);") {{ SocketData.config.puntaje_to_show.resultados.promedio | decimales_if:1 }}%
+					h1(style="font-size:80pt; color: white; text-shadow: 4px 4px 2px rgb(21, 33, 33); margin-top: 10px;") {{ SocketData.config.puntaje_to_show.resultados.promedio | decimales_if:1 }}%
 
 					
 

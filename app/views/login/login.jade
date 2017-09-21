@@ -13,12 +13,12 @@
 						input(type="text" ng-model="in_evento_actual.ip")
 						md-tooltip  Ingresa un nombre fácil de identificar
 				
-				div(ng-show="registered_boolean")
+				div(ng-show="bring_registered_boolean()")
 					h4(style="text-align: center; background-color: #d4d4ff;") Registrado
 					md-button(ng-click="desregistrar()") Desregistrar
 						md-tooltip Que ya no sea equipo oficial
 
-				div(ng-hide="registered_boolean")
+				div(ng-hide="bring_registered_boolean()")
 					h4(style="text-align: center; color: red") NO Registrado
 					md-button(ng-click="registrar()") Registrar
 						md-tooltip Registrar como equipo oficial

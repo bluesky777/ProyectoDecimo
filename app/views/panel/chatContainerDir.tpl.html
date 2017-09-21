@@ -5,9 +5,9 @@
       <div class="pane-chat-tile"></div>
       <div class="message-list">
         <div ng-repeat="mensaje in SocketClientes.mensajes" class="msg">
-          <div ng-class="{'message-in': mensaje.from.usuario.id!=$parent.$parent.USER.id, 'message-out': mensaje.from.usuario.id==$parent.$parent.USER.id}" class="message-chat">
-            <div ng-show="mensaje.from.usuario.id!=$parent.$parent.USER.id" class="message-author">
-              <div class="pointer">{{ mensaje.from.usuario.nombres }}  {{ mensaje.from.usuario.apellidos }} </div>
+          <div ng-class="{'message-in': mensaje.from.user_data.id!=$parent.$parent.USER.id, 'message-out': mensaje.from.user_data.id==$parent.$parent.USER.id}" class="message-chat">
+            <div ng-show="mensaje.from.user_data.id!=$parent.$parent.USER.id" class="message-author">
+              <div class="pointer">{{ mensaje.from.user_data.nombres }}  {{ mensaje.from.user_data.apellidos }} </div>
             </div>
             <div class="message-text">
               <div class="emojitext selectable-text">
@@ -16,7 +16,7 @@
               </div>
             </div>
             <div class="message-meta">
-              <div ng-show="mensaje.from.usuario.entidad.nombre" class="message-entidad">{{ mensaje.from.usuario.entidad.nombre }}</div><img ng-src="{{ imagesPath + mensaje.from.usuario.entidad.logo}}" class="message-entilogo">
+              <div ng-show="mensaje.from.user_data.entidad.nombre" class="message-entidad">{{ mensaje.from.user_data.entidad.nombre }}</div><img ng-src="{{ imagesPath + mensaje.from.user_data.entidad.logo}}" class="message-entilogo">
             </div>
           </div>
         </div>

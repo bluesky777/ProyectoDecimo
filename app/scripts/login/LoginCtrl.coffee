@@ -16,8 +16,9 @@ angular.module('WissenSystem')
 	$scope.selectedUser 		= {}
 
 	
-	$scope.registered_boolean 	= if localStorage.getItem('registered_boolean') then localStorage.getItem('registered_boolean') else false
-	$scope.registered_boolean 	= if $scope.registered_boolean == 'true' then true else false
+	$scope.bring_registered_boolean = ()->
+		$scope.registered_boolean 	= if localStorage.getItem('registered_boolean') then localStorage.getItem('registered_boolean') else false
+		$scope.registered_boolean 	= if $scope.registered_boolean == 'true' then true else false
 
 
 	# Traemos evento actual.
@@ -54,7 +55,10 @@ angular.module('WissenSystem')
 					SocketClientes.usuarios_all = []
 					$cookies.put('xtoken', r.token)
 					$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.get('xtoken')
-					$state.go 'panel'
+					if $state.is 'panel'
+						location.reload(true);
+					else
+						$state.go 'panel'
 			, (r2)->
 				toastr.warning 'No se pudo ingresar'
 				console.log 'No se pudo ingresar ', r2

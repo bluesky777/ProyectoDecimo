@@ -5,7 +5,7 @@
 
 
 		#chart(layout="row" layout-align="space-around end")
-			.bar(class="barc{{ calc_indice($index+1) }}" style="height: {{ calc_porcentaje(cliente.respondidas) }}%; " ng-repeat="cliente in participantes")
+			.bar(class="barc{{ calc_indice($index+1) }}" style="height: {{ calc_porcentaje(cliente.respondidas) }}%; " ng-repeat="cliente in participantes_actuales()")
 				text {{cliente.respondidas}}
 
 

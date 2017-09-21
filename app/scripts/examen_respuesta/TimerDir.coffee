@@ -71,7 +71,7 @@ angular.module('WissenSystem')
 
 
 	$scope.$on 'next_question', (event)->
-		$rootScope.tiempo = -1
+		$rootScope.tiempo = 0
 		$scope.tiempo = $rootScope.tiempo;  
 
 		if $scope.$parent.USER.evento_actual.gran_final
@@ -79,7 +79,7 @@ angular.module('WissenSystem')
 
 
 	$scope.$on 'goto_question_no', (event)->
-		$rootScope.tiempo = -1
+		$rootScope.tiempo = 0
 		$scope.tiempo = $rootScope.tiempo;  
 
 		if $scope.$parent.USER.evento_actual.gran_final

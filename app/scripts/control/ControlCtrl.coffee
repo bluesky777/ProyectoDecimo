@@ -23,6 +23,18 @@ angular.module('WissenSystem')
 		console.log 'Llegaron los usuarios'
 	)
 
+	$scope.registrados_logueados = ()->
+		return SocketClientes.registrados_logueados
+
+	$scope.registrados_no_logged = ()->
+		return SocketClientes.registrados_no_logged
+
+	$scope.sin_registrar = ()->
+		return SocketClientes.sin_registrar
+
+	$scope.all_clientes = ()->
+		return SocketClientes.clientes
+
 
 	$scope.configurar_imagenes = ()->
 
@@ -61,8 +73,9 @@ angular.module('WissenSystem')
 
 
 	Restangular.all('evaluaciones/categorias-con-preguntas').getList().then((r)->
-		$scope.categorias_king = r
-		$scope.categorias_traducidas = $filter('categoriasTraducidas')($scope.categorias_king, $scope.USER.idioma_main_id)
+		$scope.categorias_king 			= r
+		SocketClientes.categorias_king 	= r
+		$scope.categorias_traducidas 	= $filter('categoriasTraducidas')($scope.categorias_king, $scope.USER.idioma_main_id)
 	, (r2)->
 		toastr.warning 'No se trajeron las categorias del evento', 'Problema'
 	)
@@ -85,7 +98,7 @@ angular.module('WissenSystem')
 		$mdOpenMenu(ev);
 
 	$scope.showSidenavEditUsu = (cliente)->
-		$scope.clt_to_edit = cliente.usuario
+		$scope.clt_to_edit = cliente.user_data
 		$mdSidenav('sidenavEditusu').toggle()
 			.then( ()->
 				console.log("toggle is done");
@@ -94,7 +107,7 @@ angular.module('WissenSystem')
 	$scope.showSidenavSelectUsu = (cliente)->
 		$scope.cltdisponible_selected = cliente
 		MySocket.get_usuarios()
-		$scope.clt_to_edit = cliente.usuario
+		$scope.clt_to_edit = cliente.user_data
 		$mdSidenav('sidenavSelectusu').toggle()
 			.then( ()->
 				#console.log("toggle  is done");
@@ -163,21 +176,47 @@ angular.module('WissenSystem')
 				cliente.seleccionado = true
 
 
-	$scope.cerrarSesion = (cliente)->
-		res = confirm "¿Cerrar sesión a " + cliente.usuario.nombres + "?"
+	$scope.cerrar_sesion_a = (cliente)->
+		res = confirm "¿Cerrar sesión a " + cliente.user_data.nombres + "?"
 		if res 
-			MySocket.cerrar_sesion(cliente.resourceId)
+			MySocket.cerrar_sesion_a(cliente.resourceId)
+
+
+	$scope.registrar_a = (cliente)->
+		res = confirm "¿Establecer como equipo oficial a " + cliente.nombre_punto + "?"
+		if res 
+			MySocket.registrar_a(cliente.resourceId)
+
+
+	$scope.desregistrar_a = (cliente)->
+		res = confirm "El equipo " + cliente.nombre_punto + " dejará de ser oficial, ¿está seguro?"
+		if res 
+			MySocket.desregistrar_a(cliente.resourceId)
 
 
 	$scope.categoriaSelect = (cliente)->
-		categorias = $filter('categSelectedDeUsuario')(cliente.usuario, $scope.categorias_king, $scope.USER.idioma_main_id, cliente.categsel)
-		if categorias.length > 0
-			return categorias[0]
+		#console.log cliente
+		if cliente
+			categorias = $filter('categSelectedDeUsuario')(cliente.user_data.inscripciones, $scope.categorias_king, $scope.USER.idioma_main_id, cliente.categsel)
+			if categorias.length > 0
+				return categorias[0]
+			else
+				return {}
 		else
 			return {}
 
+
+	$scope.selec_opc_in_question = (opcion)->
+		MySocket.selec_opc_in_question(opcion)
+		
+
 	$scope.cambiarCategSel = (cliente, categoria)->
-		MySocket.change_a_categ_selected(cliente.resourceId, categoria.categoria_id)
+		found = false
+		for inscripcion in cliente.user_data.inscripciones
+			if categoria.categoria_id == inscripcion.categoria_id
+				found = true
+		if found
+			MySocket.change_a_categ_selected(cliente.resourceId, categoria.categoria_id)
 
 
 	$scope.empezarExamen = (cliente)->
@@ -273,6 +312,16 @@ angular.module('WissenSystem')
 
 	$scope.liberar_hasta_pregunta = ()->
 		MySocket.liberar_hasta_pregunta(SocketData.config.info_evento.free_till_question)
+
+
+
+	$rootScope.$on('take:clientes', ()->
+		$timeout(()->
+			$scope.$apply()
+		, 1000)
+		
+	)
+
 
 
 	MySocket.get_clts()

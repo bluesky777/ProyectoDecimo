@@ -8,7 +8,7 @@
 						h3.text-light(ng-bind-html="'GRAN_FINAL' | translate") ¡Gran final!
 						md-whiteframe.md-whiteframe-z2(ng-show="USER.categsel" layout layout-align="center center")
 
-							h2(ng-bind-html="categoriaSelect().nombre" style="margin-bottom: 20px;")
+							h2(ng-bind-html="categoriaSelect().categsel_nombre" style="margin-bottom: 20px;")
 					h3.text-light(ng-switch-default ng-bind-html="'ELIMINATORIAS' | translate") Eliminatorias
 
 
@@ -22,7 +22,7 @@
 			.panel-body
 				
 				md-button.md-raised.md-primary.col-md-12(ng-click="iniciarProyeccion()" style="width: 100%;")
-					| Iniciar proyección
+					| Iniciar proyección 
 
 
 
@@ -36,8 +36,7 @@
 
 			
 			.panel-body
-
-				md-button.md-raised.col-md-12(ng-click="iniciarExamen(categoriaking)" ng-repeat="categoriaking in USER.inscripciones | categsInscritasDeUsuario:categorias_king:USER.idioma_main_id:categoriaSelect().categoria_id "
+				md-button.md-raised.col-md-12(ng-click="iniciarExamen(categoriaking)" ng-repeat="categoriaking in USER.inscripciones | categsInscritasDeUsuario:categorias_king:USER.idioma_main_id:categoriaSelect().categsel_id "
 					ng-class="{'md-primary': categoriaking.selected }" style="width: 100%;")
 					| {{categoriaking.nombre}}
 

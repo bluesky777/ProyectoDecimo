@@ -2,8 +2,8 @@
 
 angular.module('WissenSystem')
 
-.controller('PanelCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'AuthService', 'Perfil', 'App', 'resolved_user', 'toastr', '$translate', '$filter', '$uibModal', 'MySocket', 'Fullscreen' 
-	($scope, $http, Restangular, $state, $cookies, $rootScope, AuthService, Perfil, App, resolved_user, toastr, $translate, $filter, $modal, MySocket, Fullscreen) ->
+.controller('PanelCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'AuthService', 'Perfil', 'App', 'resolved_user', 'toastr', '$translate', '$filter', '$uibModal', 'MySocket', 'Fullscreen', 'SocketClientes' 
+	($scope, $http, Restangular, $state, $cookies, $rootScope, AuthService, Perfil, App, resolved_user, toastr, $translate, $filter, $modal, MySocket, Fullscreen, SocketClientes) ->
 
 
 		$scope.USER = resolved_user
@@ -212,6 +212,7 @@ angular.module('WissenSystem')
 
 
 
+
 		# Traemos los eventos
 		$scope.traerEventos = ()->
 			Restangular.all('eventos').getList().then((r)->
@@ -226,6 +227,27 @@ angular.module('WissenSystem')
 		$rootScope.$on('logueado:yo:agregado_a_arrays', (ev, client)->
 			$scope.USER.categsel = client.categsel
 		);  
+
+
+		$rootScope.$on('me_desloguearon', (ev, client)->
+			$scope.logout()
+		);  
+
+
+		MySocket.on('enter', (data)->
+			if data.usuario
+				Restangular.one('qr/validar-usuario').customPUT({user_id: data.usuario.id, token_auth: data.from_token }).then((r)->
+					if r.token
+						SocketClientes.usuarios_all = []
+						$cookies.put('xtoken', r.token)
+						$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.get('xtoken')
+						location.reload(true);
+				, (r2)->
+					toastr.warning 'No se pudo ingresar'
+					console.log 'No se pudo ingresar ', r2
+				)
+		);
+
 
 
 

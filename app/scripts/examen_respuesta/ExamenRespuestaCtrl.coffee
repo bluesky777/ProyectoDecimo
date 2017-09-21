@@ -24,6 +24,7 @@ angular.module('WissenSystem')
 			$state.transitionTo 'panel' 
 		else if !$rootScope.examen_actual.id
 			console.log 'Examen no válido', $rootScope.examen_actual
+			$rootScope.permiso_de_salir = true
 			$state.transitionTo 'panel' 
 
 
@@ -47,6 +48,7 @@ angular.module('WissenSystem')
 					$scope.opcion_eligida = 'Correcta'
 
 			if $scope.USER.evento_actual.gran_final
+
 				if SocketData.config.info_evento.free_till_question
 
 					if SocketData.config.info_evento.free_till_question > $scope.pregunta_actual # Solo "mayor que" pues la pregunta actual no ha avanzado en este punto
@@ -133,8 +135,11 @@ angular.module('WissenSystem')
 
 
 		destroy_set_free_till_question_on = $rootScope.$on 'set_free_till_question', (event, free_till_question)->
-			if $scope.waiting_question != false
-				$scope.siguiente_pregunta()
+			$scope.$apply()
+			if SocketData.config.info_evento.free_till_question
+				if SocketData.config.info_evento.free_till_question >= $scope.pregunta_actual and $scope.waiting_question != false
+				
+					$scope.siguiente_pregunta()
 
 
 

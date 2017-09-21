@@ -27,7 +27,7 @@ angular.module('WissenSystem')
 
 
 	$translateProvider.translations('EN',
-		SERVIDOR_TL: 'Server'
+		CLIENTES_CONECTADOS_TL: 'Conected clients'
 		CONEXIÓN_TL: 'Connection'
 		ABRIR_SERVIDOR_TL: 'Open server'
 		CERRAR_SERVIDOR_TL: 'Close server'
@@ -69,7 +69,7 @@ angular.module('WissenSystem')
 		CHAT_PUBLICO_TL: 'Public chat'
 	)
 	.translations('ES',
-		SERVIDOR_TL: 'Servidor'
+		CLIENTES_CONECTADOS_TL: 'Clientes conectados'
 		CONEXIÓN_TL: 'Conexión'
 		ABRIR_SERVIDOR_TL: 'Abrir servidor'
 		CERRAR_SERVIDOR_TL: 'Cerrar servidor'

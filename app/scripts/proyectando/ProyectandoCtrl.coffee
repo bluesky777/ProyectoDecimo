@@ -2,8 +2,8 @@
 
 angular.module('WissenSystem')
 
-.controller('ProyectandoCtrl', ['$scope', '$http', '$state', '$stateParams', '$rootScope', 'AuthService', 'Perfil', 'App', 'resolved_user', 'toastr', '$translate', '$filter', '$uibModal', 'MySocket', 'SocketData', 'Fullscreen' 
-	($scope, $http, $state, $stateParams, $rootScope, AuthService, Perfil, App, resolved_user, toastr, $translate, $filter, $modal, MySocket, SocketData, Fullscreen) ->
+.controller('ProyectandoCtrl', ['$scope', 'Restangular', '$state', '$stateParams', '$rootScope', 'AuthService', 'App', 'resolved_user', '$filter', 'MySocket', 'SocketData', 'Fullscreen' 
+	($scope, Restangular, $state, $stateParams, $rootScope, AuthService, App, resolved_user, $filter, MySocket, SocketData, Fullscreen) ->
 
 		$scope.SocketData = SocketData
 		$scope.examen = SocketData.config.puntaje_to_show
@@ -20,7 +20,6 @@ angular.module('WissenSystem')
 
 
 
-
 		
 		$rootScope.reload = ()->
 			$state.go $state.current, $stateParams, {reload: true}
@@ -31,6 +30,24 @@ angular.module('WissenSystem')
 		$scope.openMenu = ($mdOpenMenu, ev)->
 			originatorEv = ev
 			$mdOpenMenu(ev)
+
+		
+		$scope.logout = ()->
+			MySocket.desloguear()
+			AuthService.logout()
+			$scope.in_evento_actual = {}
+
+			Restangular.one('login/logout').customPUT().then((r)->
+				console.log 'Desconectado con éxito: ', r
+			, (r2)->
+				console.log 'Error desconectando!', r2
+			)
+
+			#$state.go 'login'
+
+		$rootScope.$on('me_desloguearon', (ev, client)->
+			$scope.logout()
+		);  
 
 
 				

@@ -7,16 +7,16 @@
 
 			.message-list
 				.msg(ng-repeat="mensaje in SocketClientes.mensajes")
-					.message-chat(ng-class="{'message-in': mensaje.from.usuario.id!=$parent.$parent.USER.id, 'message-out': mensaje.from.usuario.id==$parent.$parent.USER.id}")
-						.message-author(ng-show="mensaje.from.usuario.id!=$parent.$parent.USER.id")
+					.message-chat(ng-class="{'message-in': mensaje.from.user_data.id!=$parent.$parent.USER.id, 'message-out': mensaje.from.user_data.id==$parent.$parent.USER.id}")
+						.message-author(ng-show="mensaje.from.user_data.id!=$parent.$parent.USER.id")
 							.pointer
-								| {{ mensaje.from.usuario.nombres }}  {{ mensaje.from.usuario.apellidos }} 
+								| {{ mensaje.from.user_data.nombres }}  {{ mensaje.from.user_data.apellidos }} 
 						.message-text
 							.emojitext.selectable-text 
 								| {{ mensaje.texto }}
 						.message-meta
-							.message-entidad(ng-show="mensaje.from.usuario.entidad.nombre") {{ mensaje.from.usuario.entidad.nombre }}
-							img.message-entilogo(ng-src="{{ imagesPath + mensaje.from.usuario.entidad.logo}}") 
+							.message-entidad(ng-show="mensaje.from.user_data.entidad.nombre") {{ mensaje.from.user_data.entidad.nombre }}
+							img.message-entilogo(ng-src="{{ imagesPath + mensaje.from.user_data.entidad.logo}}") 
 
 
 
