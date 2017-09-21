@@ -239,16 +239,16 @@ sidenav-edit-usu-dir
 
 					ul.dropdown-menu(uib-dropdown-menu aria-labelledby="simple-dropdown")
 						li
-							a(ng-click="selec_opc_in_question('A')") Seleccionar A
+							a(ng-click="selec_opc_in_question(0)") Seleccionar A
 						li
-							a(ng-click="selec_opc_in_question('B')") Seleccionar B
+							a(ng-click="selec_opc_in_question(1)") Seleccionar B
 						li
-							a(ng-click="selec_opc_in_question('C')") Seleccionar C
+							a(ng-click="selec_opc_in_question(2)") Seleccionar C
 						li
-							a(ng-click="selec_opc_in_question('D')") Seleccionar D
+							a(ng-click="selec_opc_in_question(3)") Seleccionar D
 						li.divider
 						li
-							a(ng-click="empezarExamenCliente(cliente)") Revelar correcta
+							a(ng-click="sc_reveal_answer()") Revelar correcta
 
 				
 					//button.btn.btn-default(ng-click="showPuntajeParticip()") {{ 'MOSTRAR_PUNTAJE_TL' | translate }} 

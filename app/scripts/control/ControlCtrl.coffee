@@ -206,8 +206,28 @@ angular.module('WissenSystem')
 			return {}
 
 
+	$scope.opcion_seleccionada = -1
+
 	$scope.selec_opc_in_question = (opcion)->
+		$scope.opcion_seleccionada = opcion
 		MySocket.selec_opc_in_question(opcion)
+		
+
+	$scope.sc_reveal_answer = ()->
+		if $scope.opcion_seleccionada < 0
+			alert('Primero debes elegir opción.')
+			return
+
+		MySocket.sc_reveal_answer()
+
+		for opcion, indice in $scope.cmdPreguntaSelected.opciones
+			if indice == $scope.opcion_seleccionada
+				if opcion.is_correct
+					audio = new Audio('/sounds/Revelada_correcta.wav');
+					audio.play();
+				else
+					audio = new Audio('/sounds/Revalada_incorrecta.wav');
+					audio.play();		
 		
 
 	$scope.cambiarCategSel = (cliente, categoria)->

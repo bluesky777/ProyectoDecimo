@@ -126,12 +126,50 @@ a:hover, a:focus {
     color: #fff;
   }
 }
-.opciones md-whiteframe.elegida {
-  background: #3f51b5;
-  color: #fff;
-  padding-left: 10px;
 
+@keyframes color_opcion_acertada_change
+  {
+    0%   {background: #ccc;}
+    20%  {background: #3f51b5;}
+    40%  {background: #ccc;}
+    60%  {background: #3f51b5;}
+    80%  {background: #ccc;}
+    100% {background: #3f51b5;}
+  }
+@keyframes color_opcion_no_acertada_change
+  {
+    0%   {background: #ccc;}
+    20%  {background: #E91E63;}
+    40%  {background: #ccc;}
+    60%  {background: #E91E63;}
+    80%  {background: #ccc;}
+    100% {background: #E91E63;}
+  }
+.opciones {
+  
+  .elegida {
+    background: #3f51b5;
+    color: #fff;
+    padding-left: 10px;
+  }
+
+  .revelada_acertada {
+    background: #3f51b5;
+    color: #fff;
+    padding-left: 10px;
+    animation: color_opcion_acertada_change 1s;
+    //background: #ca2a71;
+
+  }
+  .revelada_no_acertada {
+    background: #E91E63;
+    color: #fff;
+    padding-left: 10px;
+    animation: color_opcion_no_acertada_change 1s;
+
+  }
 }
+
 .opciones md-whiteframe.correcta-revelada {
   background: #ca2a71;
   color: #fff;

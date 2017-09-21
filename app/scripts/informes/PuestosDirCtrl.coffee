@@ -72,13 +72,15 @@ angular.module('WissenSystem')
 				
 
 		$scope.mostrarPuesto = (examen, puesto, entidad)->
-			examen.puesto = puesto
+			examen_send = {}
+			angular.copy(examen, examen_send)
+			examen_send.puesto = puesto
 			if entidad
-				examen.logo_nombre 		= entidad.logo_nombre
-				examen.alias_entidad 	= entidad.alias_entidad
-				examen.nombre_entidad 	= entidad.nombre_entidad
-				examen.lider_nombre 	= entidad.lider_nombre
-			MySocket.sc_show_puntaje_examen(examen)
+				examen_send.logo_nombre 		= entidad.logo_nombre
+				examen_send.alias_entidad 	= entidad.alias_entidad
+				examen_send.nombre_entidad 	= entidad.nombre_entidad
+				examen_send.lider_nombre 	= entidad.lider_nombre
+			MySocket.sc_show_puntaje_examen(examen_send)
 
 
 		$scope.eliminarExamen = (examen)->

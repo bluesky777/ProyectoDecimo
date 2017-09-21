@@ -204,12 +204,12 @@
           <button ng-click="showQuestion()" class="btn btn-default"> <i class="fa fa-question-circle"></i>{{ 'MOSTRAR_PREGUNTA_TL' | translate }} </button><a aria-label="Abrir menú" uib-dropdown-toggle class="btn btn-default right"><span>{{cliente.categsel_abrev}}</span>
             <div class="fa fa-chevron-right"></div></a>
           <ul uib-dropdown-menu aria-labelledby="simple-dropdown" class="dropdown-menu">
-            <li><a ng-click="selec_opc_in_question('A')">Seleccionar A</a></li>
-            <li><a ng-click="selec_opc_in_question('B')">Seleccionar B</a></li>
-            <li><a ng-click="selec_opc_in_question('C')">Seleccionar C</a></li>
-            <li><a ng-click="selec_opc_in_question('D')">Seleccionar D</a></li>
+            <li><a ng-click="selec_opc_in_question(0)">Seleccionar A</a></li>
+            <li><a ng-click="selec_opc_in_question(1)">Seleccionar B</a></li>
+            <li><a ng-click="selec_opc_in_question(2)">Seleccionar C</a></li>
+            <li><a ng-click="selec_opc_in_question(3)">Seleccionar D</a></li>
             <li class="divider"></li>
-            <li><a ng-click="empezarExamenCliente(cliente)">Revelar correcta</a></li>
+            <li><a ng-click="sc_reveal_answer()">Revelar correcta</a></li>
           </ul>
           <!--button.btn.btn-default(ng-click="showPuntajeParticip()") {{ 'MOSTRAR_PUNTAJE_TL' | translate }} -->
         </div>

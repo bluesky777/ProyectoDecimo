@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.factory('MySocket', ['App', '$q', '$rootScope', 'Perfil', '$interval', '$cookies', '$http', '$state', 'SocketData', 'SocketClientes', '$filter', 'webNotification', (App, $q, $rootScope, Perfil, $interval, $cookies, $http, $state, SocketData, SocketClientes, $filter, webNotification) ->
+.factory('MySocket', ['App', '$q', '$rootScope', 'Perfil', '$timeout', '$cookies', '$http', '$state', 'SocketData', 'SocketClientes', '$filter', 'webNotification', (App, $q, $rootScope, Perfil, $timeout, $cookies, $http, $state, SocketData, SocketClientes, $filter, webNotification) ->
 
 	#Open a WebSocket connection
 	# Verifico que no tenga puerto asignado
@@ -215,9 +215,11 @@ angular.module('WissenSystem')
 		client.categsel_abrev 		= data.categsel_abrev
 		SocketData.actualizar_clt client
 	);
+
 	socket.on('empezar_examen', (data)->
 		$rootScope.$emit 'empezar_examen' # En IniciarCtrl
 	);
+
 	socket.on('sc_show_participantes', (data)->
 		rolesFound = $filter('filter')(Perfil.User().roles, {name: 'Pantalla'})
 		if rolesFound
@@ -228,6 +230,7 @@ angular.module('WissenSystem')
 				else
 					$state.go('proyectando.participantes')
 	);
+
 	socket.on('sc_show_barras', (data)->
 		get_clts()
 		
@@ -238,27 +241,34 @@ angular.module('WissenSystem')
 		$state.go('proyectando.grafico_barras')
 		$rootScope.$apply()
 	);
+
 	socket.on('sc_show_question', (data)->
 		SocketData.config.pregunta 			= data.pregunta
 		SocketData.config.no_question 		= data.no_question
 		SocketData.config.reveal_answer 	= false 
 		$state.go('proyectando.question')
-		console.log SocketData.config
 		$rootScope.$apply()
 	);
+
+	#socket.on('selec_opc_in_question' ... 		En SCQuestionCtrl
+	#socket.on('sc_reveal_answer' ... 			En SCQuestionCtrl
+
 	socket.on('sc_show_logo_entidad_partici', (data)->
 		SocketData.config.show_logo_entidad_partici = data.valor
 	);
+
 	socket.on('sc_show_puntaje_particip', (data)->
 		SocketData.config.cliente_to_show = data.cliente
 		$state.go('proyectando.puntaje_particip')
 		$rootScope.$apply()
 	);
+
 	socket.on('sc_show_puntaje_examen', (data)->
 		SocketData.config.puntaje_to_show = data.examen
 		$state.go('proyectando.puntaje_particip')
 		$rootScope.$apply()
 	);
+
 	socket.on('sc_answered', (data)-> # Me avisan que alguien respondió algo
 		get_clts()
 
@@ -269,17 +279,19 @@ angular.module('WissenSystem')
 			else
 				audio = new Audio('/sounds/Error.wav');
 				audio.play();
-
 	);
+
 	socket.on('next_question', (data)-> # Me avisan que alguien respondió algo
 		SocketData.set_waiting()
 		$rootScope.$apply()
 		$rootScope.$emit 'next_question'
 	);
+
 	socket.on('goto_question_no', (data)-> # Me avisan que alguien respondió algo
 		SocketData.set_waiting()
 		$rootScope.$emit 'goto_question_no', data.numero
 	);
+
 	socket.on('set_free_till_question', (data)-> # Me avisan que alguien respondió algo
 		SocketData.config.info_evento.free_till_question = data.free_till_question
 		$rootScope.$emit 'set_free_till_question', data.free_till_question # En ExamenRespuestaCtrl y ParticipantesCtrl, Si estaba esperando pregunta, con esto arranca
@@ -424,17 +436,34 @@ angular.module('WissenSystem')
 	sc_show_question = (no_question, pregunta)->
 		@emit('sc_show_question', { no_question: no_question, pregunta: pregunta })
 
+	selec_opc_in_question = (opcion)->
+		@emit('selec_opc_in_question', { opcion: opcion })
+
 	sc_reveal_answer = ()->
 		@emit('sc_reveal_answer')
 
 	sc_show_logo_entidad_partici = (valor)->
 		@emit('sc_show_logo_entidad_partici', { valor: valor })
 
-	sc_show_puntaje_particip = (client)->
-		@emit('sc_show_puntaje_particip', { cliente: client })
+	sc_show_puntaje_particip = (client)-> # No está funcionando
+		if client.puesto = 1
+			$timeout(()->
+				@emit('sc_show_puntaje_particip', { cliente: client })
+			, 1800)
+			audio = new Audio('/sounds/Siguiente.wav');
+			audio.play();
+		else
+			@emit('sc_show_puntaje_particip', { cliente: client })
 
 	sc_show_puntaje_examen = (examen)->
-		@emit('sc_show_puntaje_examen', { examen: examen })
+		if examen.puesto == 1
+			$timeout(()=>
+				@emit('sc_show_puntaje_examen', { examen: examen })
+			, 1800)
+			audio = new Audio('/sounds/Primer_lugar.wav');
+			audio.play();
+		else
+			@emit('sc_show_puntaje_examen', { examen: examen })
 
 	sc_answered = (valor, tiempo)->
 		resourceId = Perfil.getResourceId()
@@ -495,6 +524,7 @@ angular.module('WissenSystem')
 		sc_show_participantes:		sc_show_participantes
 		sc_show_barras:				sc_show_barras
 		sc_show_question:			sc_show_question
+		selec_opc_in_question:		selec_opc_in_question
 		sc_reveal_answer:			sc_reveal_answer
 		sc_show_logo_entidad_partici:	sc_show_logo_entidad_partici
 		sc_show_puntaje_particip:	sc_show_puntaje_particip
