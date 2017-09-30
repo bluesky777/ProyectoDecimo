@@ -19,6 +19,7 @@ angular.module('WissenSystem')
 	$scope.bring_registered_boolean = ()->
 		$scope.registered_boolean 	= if localStorage.getItem('registered_boolean') then localStorage.getItem('registered_boolean') else false
 		$scope.registered_boolean 	= if $scope.registered_boolean == 'true' then true else false
+		return $scope.registered_boolean
 
 
 	# Traemos evento actual.
@@ -34,10 +35,6 @@ angular.module('WissenSystem')
 		)
 
 
-
-	MySocket.on('te_conectaste', (data)->
-		console.log SocketClientes.clientes
-	)
 
 
 	$scope.credentials = 
@@ -61,7 +58,7 @@ angular.module('WissenSystem')
 						$state.go 'panel'
 			, (r2)->
 				toastr.warning 'No se pudo ingresar'
-				console.log 'No se pudo ingresar ', r2
+				console.log 'No se validó el token para este usuario ', r2
 			)
 	);
 

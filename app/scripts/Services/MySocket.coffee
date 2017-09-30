@@ -21,8 +21,12 @@ angular.module('WissenSystem')
 	socket.on('te_conectaste', (data)->
 		SocketData.conectado data.datos
 		Perfil.setResourceId data.datos.resourceId
-		registered = if localStorage.getItem('registered_boolean') == null then false else localStorage.getItem('registered_boolean') 
-		registered = if registered=='false' then false else true
+
+		if !localStorage.getItem('registered_boolean')
+			localStorage.registered_boolean = false
+
+		registered = if localStorage.getItem('registered_boolean') then localStorage.getItem('registered_boolean')  else false 
+		registered = if registered=='false' then false else registered
 		Perfil.setRegistered(registered)
 
 		if Perfil.User().id
@@ -460,7 +464,7 @@ angular.module('WissenSystem')
 			$timeout(()=>
 				@emit('sc_show_puntaje_examen', { examen: examen })
 			, 1800)
-			audio = new Audio('/sounds/Primer_lugar.wav');
+			audio = new Audio('sounds/Primer_lugar.wav');
 			audio.play();
 		else
 			@emit('sc_show_puntaje_examen', { examen: examen })

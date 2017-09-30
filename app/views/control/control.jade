@@ -73,7 +73,10 @@
 						h5.name.text-center.nombresellipsis(style="margin-top: 2px") {{cliente.user_data.nombres}} {{cliente.user_data.apellidos}}
 							md-tooltip {{cliente.user_data.username}}
 						
-						.alias-enti(ng-show="cliente.user_data.entidad.alias") {{cliente.user_data.entidad.alias}}
+						.alias-enti(ng-show="cliente.user_data.entidad.alias") 
+							span(ng-show="cliente.respondidas" style="font-weight: bold") ({{ cliente.respondidas }}) 
+							span{{cliente.user_data.entidad.alias}}
+							
 						h6(style="margin: 0px;") {{ cliente.nombre_punto }}
 
 					.opts-clt.btn-group
@@ -115,8 +118,8 @@
 			.disponibles-title
 				h4 {{ 'DISPONIBLES_TL' | translate }}: {{SocketClientes.registrados_no_logged.length}}  
 
-				ul
-					li.md-whiteframe-1dp.clt-pc.unselectable(ng-repeat="cliente in registrados_no_logged() " ng-click="clickedClt($event, cliente)" 
+				ul(layout="row" layout-wrap)
+					li.md-whiteframe-1dp.clt-pc.unselectable(ng-repeat="cliente in registrados_no_logged() " layout="row" ng-click="clickedClt($event, cliente)" style="width: auto;" 
 						ng-dblclick="showSidenavSelectUsu(cliente)" ng-mouseover="sobreClt($event, cliente)" ng-class="{'seleccionado': cliente.seleccionado, 'cursor-unselect':deseleccionar }")
 						
 						.info 
@@ -144,7 +147,9 @@
 						ng-dblclick="showSidenavSelectUsu(cliente)" ng-mouseover="sobreClt($event, cliente)" ng-class="{'seleccionado': cliente.seleccionado, 'cursor-unselect':deseleccionar }")
 						
 						.info(flex) 
-							h5(ng-model="cliente.nombre_punto" contenteditable guardar-nombre-punto="guardarNombrePunto" style="margin: 5px 0px;") {{ cliente.nombre_punto }} 
+							h5(ng-model="cliente.nombre_punto" contenteditable guardar-nombre-punto="guardarNombrePunto" style="margin: 5px 0px;") 
+								span {{ cliente.nombre_punto }} 
+								span(ng-show="cliente.respondidas") ({{ cliente.respondidas }}) 
 								md-tooltip {{ 'NOMBRE_DE_PUNTO_TL' | translate }} 
 
 							.alias-enti(ng-show="cliente.user_data.entidad.alias") {{cliente.user_data.entidad.alias}}
@@ -192,7 +197,7 @@
 
 
 		.message-form
-			form(ng-submit="enviarMensaje()")
+			form(ng-submit="enviarMensajeTo()")
 				.row
 					.col-lg-10.col-md-9.col-sm-9.col-xs-12
 						md-input-container.md-block(flex-gt-sm style="margin-bottom: -20px; padding-bottom: 0px")
@@ -246,6 +251,10 @@ sidenav-edit-usu-dir
 							a(ng-click="selec_opc_in_question(2)") Seleccionar C
 						li
 							a(ng-click="selec_opc_in_question(3)") Seleccionar D
+						li
+							a(ng-click="selec_opc_in_question(4)") Seleccionar E
+						li
+							a(ng-click="selec_opc_in_question(5)") Seleccionar F
 						li.divider
 						li
 							a(ng-click="sc_reveal_answer()") Revelar correcta

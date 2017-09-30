@@ -127,7 +127,6 @@ angular.module('WissenSystem')
 	authService.login_from_token = ()->
 
 		d = $q.defer();
-
 		if !Perfil.User().id #or Perfil.User().id == undefined
 
 			#Perfil.setUser {id: 99999}
@@ -161,6 +160,7 @@ angular.module('WissenSystem')
 		authService.borrarToken()
 		Perfil.deleteUser()
 		$state.transitionTo 'login'
+
 
 	authService.borrarToken = ()->
 		$cookies.remove('xtoken')

@@ -1,8 +1,58 @@
 angular.module('WissenSystem')
 
-.controller('ViewPreguntaCtrl', ['$scope', 'App', 'Restangular', '$state', '$cookies', '$rootScope', '$location', '$anchorScroll', '$uibModal', '$filter',
-	($scope, App, Restangular, $state, $cookies, $rootScope, $location, $anchorScroll, $modal, $filter) ->
+.controller('ViewPreguntaCtrl', ['$scope', 'App', 'Restangular', '$state', '$cookies', '$rootScope', '$location', '$anchorScroll', '$uibModal', '$filter', 'MySocket',
+	($scope, App, Restangular, $state, $cookies, $rootScope, $location, $anchorScroll, $modal, $filter, MySocket) ->
 		
+
+		$scope.enviar_pregunta_pantalla = (pg_pregunta)->
+			
+			categ_found = {}
+			for categ in $scope.$parent.categorias
+				if categ.id == parseInt($scope.$parent.categoria)
+					categ_found = categ
+					categ_found = $filter('catsByIdioma')(categ.categorias_traducidas, $scope.$parent.idiomaPreg.selected)
+					if categ_found.length > 0
+						categ_found = categ_found[0]				
+
+			pregunta = 
+				descrip_categ: 		categ_found.descripcion
+				enunciado: 			pg_pregunta.enunciado
+				id: 				pg_pregunta.pg_id
+				idioma: 			categ_found.idioma
+				idioma_id: 			pg_pregunta.idioma_id
+				nombre_categ:		categ_found.nombre
+				cantidad_pregs:		-1
+				opciones: 			pg_pregunta.opciones
+				pregunta_id: 		pg_pregunta.pg_id
+				tipo_pregunta: 		pg_pregunta.tipo_pregunta
+
+			$scope.pregunta_mostrada = pregunta
+			MySocket.sc_show_question(-1, pregunta)
+
+
+		$scope.opcion_seleccionada = -1
+		$scope.selec_opc_in_question = (opcion)->
+			$scope.opcion_seleccionada = opcion
+			MySocket.selec_opc_in_question(opcion)
+			
+		$scope.sc_reveal_answer = ()->
+			if $scope.opcion_seleccionada < 0
+				alert('Primero debes elegir opción.')
+				return
+
+			MySocket.sc_reveal_answer()
+
+			for opcion, indice in $scope.pregunta_mostrada.opciones
+				if indice == $scope.opcion_seleccionada
+					if opcion.is_correct
+						audio = new Audio('/sounds/Revelada_correcta.wav');
+						audio.play();
+					else
+						audio = new Audio('/sounds/Revalada_incorrecta.wav');
+						audio.play();		
+			
+
+
 		$scope.elegirOpcion = (pregunta, opcion)->
 			angular.forEach pregunta.opciones, (opt)->
 				opt.elegida = false

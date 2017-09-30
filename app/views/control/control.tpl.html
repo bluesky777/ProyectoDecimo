@@ -63,7 +63,7 @@
             <h5 style="margin-top: 2px" class="name text-center nombresellipsis">{{cliente.user_data.nombres}} {{cliente.user_data.apellidos}}
               <md-tooltip>{{cliente.user_data.username}}</md-tooltip>
             </h5>
-            <div ng-show="cliente.user_data.entidad.alias" class="alias-enti">{{cliente.user_data.entidad.alias}}</div>
+            <div ng-show="cliente.user_data.entidad.alias" class="alias-enti"> <span ng-show="cliente.respondidas" style="font-weight: bold">({{ cliente.respondidas }}) </span><span>{{cliente.user_data.entidad.alias}}</span></div>
             <h6 style="margin: 0px;">{{ cliente.nombre_punto }}</h6>
           </div>
           <div class="opts-clt btn-group">
@@ -93,8 +93,8 @@
       </ul>
       <div class="disponibles-title">
         <h4>{{ 'DISPONIBLES_TL' | translate }}: {{SocketClientes.registrados_no_logged.length}}  </h4>
-        <ul>
-          <li ng-repeat="cliente in registrados_no_logged() " ng-click="clickedClt($event, cliente)" ng-dblclick="showSidenavSelectUsu(cliente)" ng-mouseover="sobreClt($event, cliente)" ng-class="{'seleccionado': cliente.seleccionado, 'cursor-unselect':deseleccionar }" class="md-whiteframe-1dp clt-pc unselectable">
+        <ul layout="row" layout-wrap>
+          <li ng-repeat="cliente in registrados_no_logged() " layout="row" ng-click="clickedClt($event, cliente)" style="width: auto;" ng-dblclick="showSidenavSelectUsu(cliente)" ng-mouseover="sobreClt($event, cliente)" ng-class="{'seleccionado': cliente.seleccionado, 'cursor-unselect':deseleccionar }" class="md-whiteframe-1dp clt-pc unselectable">
             <div class="info"> 
               <h5 ng-model="cliente.nombre_punto" contenteditable guardar-nombre-punto="guardarNombrePunto">{{ cliente.nombre_punto }}
                 <md-tooltip>{{ 'NOMBRE_DE_PUNTO_TL' | translate }} </md-tooltip>
@@ -122,7 +122,7 @@
         <ul layout="row" layout-wrap>
           <li ng-repeat="cliente in sin_registrar() " layout="row" ng-click="clickedClt($event, cliente)" style="width: auto;" ng-dblclick="showSidenavSelectUsu(cliente)" ng-mouseover="sobreClt($event, cliente)" ng-class="{'seleccionado': cliente.seleccionado, 'cursor-unselect':deseleccionar }" class="md-whiteframe-1dp clt-pc unselectable">
             <div flex class="info"> 
-              <h5 ng-model="cliente.nombre_punto" contenteditable guardar-nombre-punto="guardarNombrePunto" style="margin: 5px 0px;">{{ cliente.nombre_punto }} 
+              <h5 ng-model="cliente.nombre_punto" contenteditable guardar-nombre-punto="guardarNombrePunto" style="margin: 5px 0px;"> <span>{{ cliente.nombre_punto }} </span><span ng-show="cliente.respondidas">({{ cliente.respondidas }}) </span>
                 <md-tooltip>{{ 'NOMBRE_DE_PUNTO_TL' | translate }} </md-tooltip>
               </h5>
               <div ng-show="cliente.user_data.entidad.alias" class="alias-enti">{{cliente.user_data.entidad.alias}}</div>
@@ -166,7 +166,7 @@
       </div>
     </div>
     <div class="message-form">
-      <form ng-submit="enviarMensaje()">
+      <form ng-submit="enviarMensajeTo()">
         <div class="row">
           <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12">
             <md-input-container flex-gt-sm style="margin-bottom: -20px; padding-bottom: 0px" class="md-block">
@@ -208,6 +208,8 @@
             <li><a ng-click="selec_opc_in_question(1)">Seleccionar B</a></li>
             <li><a ng-click="selec_opc_in_question(2)">Seleccionar C</a></li>
             <li><a ng-click="selec_opc_in_question(3)">Seleccionar D</a></li>
+            <li><a ng-click="selec_opc_in_question(4)">Seleccionar E</a></li>
+            <li><a ng-click="selec_opc_in_question(5)">Seleccionar F</a></li>
             <li class="divider"></li>
             <li><a ng-click="sc_reveal_answer()">Revelar correcta</a></li>
           </ul>

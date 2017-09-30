@@ -127,20 +127,25 @@ angular.module('WissenSystem')
 		$window.open(url,'_blank')
 		return true
 
-	$scope.enviarMensaje = ()->
+	$scope.enviarMensajeTo = ()->
+		sent = false
 		if $scope.newMensaje != ''
 			for cliente in SocketClientes.registrados_logueados
 				if cliente.seleccionado
 					MySocket.send_email_to $scope.newMensaje, cliente
+					sent = true
 
 			for cliente in SocketClientes.registrados_no_logged
 				if cliente.seleccionado
 					MySocket.send_email_to $scope.newMensaje, cliente
+					sent = true
 
 			for cliente in SocketClientes.sin_registrar
 				if cliente.seleccionado
 					MySocket.send_email_to $scope.newMensaje, cliente
-			$scope.newMensaje = ''
+					sent = true
+			if sent
+				$scope.newMensaje = ''
 
 
 	$scope.deseleccionarTodo = ()->
@@ -284,7 +289,7 @@ angular.module('WissenSystem')
 							preguntatraduc.tipo_pregunta 	= preguntasking.tipo_pregunta
 							preguntatraduc.nombre_categ 	= categoria.nombre
 							preguntatraduc.descrip_categ 	= evaluac.descripcion
-							preguntatraduc.catidad_pregs 	= evaluac.preguntas_evaluacion.length
+							preguntatraduc.cantidad_pregs 	= evaluac.preguntas_evaluacion.length
 
 							$scope.cmdPreguntasTraduc.push preguntatraduc
 

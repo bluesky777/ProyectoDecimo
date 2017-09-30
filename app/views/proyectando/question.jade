@@ -1,9 +1,10 @@
-h2.txt-borde-blanco(style="text-align: center; color: blue;") {{ SocketData.config.pregunta.nombre_categ + ' (' + SocketData.config.no_question + ' de ' + SocketData.config.pregunta.catidad_pregs + ')' }}
+h2.txt-borde-blanco(ng-show="SocketData.config.pregunta.cantidad_pregs == -1" style="text-align: center; color: blue;") {{ SocketData.config.pregunta.nombre_categ }}
+h2.txt-borde-blanco(ng-hide="SocketData.config.pregunta.cantidad_pregs == -1" style="text-align: center; color: blue;") {{ SocketData.config.pregunta.nombre_categ + ' (' + SocketData.config.no_question + ' de ' + SocketData.config.pregunta.cantidad_pregs + ')' }}
 
 div(style="font-size: 25pt;")
 
 	md-whiteframe.md-whiteframe-z2.definicion-frame(layout style="padding: 10px; position: relative; background: white; opacity: 0.9")
-		span(style="font-weight: bold;") {{SocketData.config.no_question}}.   
+		span(style="font-weight: bold;" ng-hide="SocketData.config.no_question == -1") {{SocketData.config.no_question}}.   
 		span(ng-bind-html="SocketData.config.pregunta.enunciado")
 
 		div(ng-show="SocketData.config.pregunta.ayuda" ng-click="toggleMostrarAyuda(SocketData.config.pregunta)" ng-class="{'ayuda-preg-showed': SocketData.config.pregunta.mostrar_ayuda, 'ayuda-preg-hidded':!SocketData.config.pregunta.mostrar_ayuda}")

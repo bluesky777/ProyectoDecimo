@@ -3,13 +3,13 @@
   <div layout="column" class="wrapper-grafico">
     <h1 class="txt-borde-blanco">Progreso de participantes</h1>
     <div id="chart" layout="row" layout-align="space-around end">
-      <div style="height: {{ calc_porcentaje(cliente.respondidas) }}%; " ng-repeat="cliente in participantes_actuales()" class="bar barc{{ calc_indice($index+1) }}">
+      <div ng-repeat="cliente in participantes_actuales()" style="height: {{ calc_porcentaje(cliente.respondidas) }}%; " class="bar barc{{ calc_indice($index+1) }}">
         <text>{{cliente.respondidas}}</text>
       </div>
     </div>
     <div layout="row" layout-align="space-around start" class="labels-barchart">
-      <text ng-repeat="cliente in SocketClientes.clientes | filter:participantes_en_categorias()">
-        <div class="etiqueta-grafico">{{cliente.usuario.nombres}}</div>
+      <text ng-repeat="cliente in participantes_actuales()">
+        <div class="etiqueta-grafico">{{cliente.user_data.nombres}}</div>
       </text>
     </div>
   </div>

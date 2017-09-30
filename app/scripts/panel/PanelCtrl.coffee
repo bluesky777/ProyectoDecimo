@@ -203,8 +203,10 @@ angular.module('WissenSystem')
 
 			Restangular.one('login/logout').customPUT().then((r)->
 				console.log 'Desconectado con éxito: ', r
+				location.reload(true);
 			, (r2)->
 				console.log 'Error desconectando!', r2
+				location.reload(true);
 			)
 
 			#$state.go 'login'

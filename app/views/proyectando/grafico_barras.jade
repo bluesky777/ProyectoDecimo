@@ -5,13 +5,13 @@
 
 
 		#chart(layout="row" layout-align="space-around end")
-			.bar(class="barc{{ calc_indice($index+1) }}" style="height: {{ calc_porcentaje(cliente.respondidas) }}%; " ng-repeat="cliente in participantes_actuales()")
+			.bar(class="barc{{ calc_indice($index+1) }}" ng-repeat="cliente in participantes_actuales()" style="height: {{ calc_porcentaje(cliente.respondidas) }}%; ")
 				text {{cliente.respondidas}}
 
 
 		.labels-barchart(layout="row" layout-align="space-around start")
-			text(ng-repeat="cliente in SocketClientes.clientes | filter:participantes_en_categorias()")
-				.etiqueta-grafico {{cliente.usuario.nombres}}
+			text(ng-repeat="cliente in participantes_actuales()")
+				.etiqueta-grafico {{cliente.user_data.nombres}}
 			
 
 
