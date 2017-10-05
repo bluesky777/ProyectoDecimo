@@ -43,7 +43,7 @@ angular.module('WissenSystem')
 							Restangular.all('informes/todos-los-examenes').getList({gran_final: $stateParams.gran_final, evento_id: $stateParams.evento_id });
 						],
 			data: 
-				pageTitle: 'Todos los Examenes - Feryz'
+				pageTitle: 'Todos los Examenes - Wissen'
 
 
 
@@ -70,7 +70,7 @@ angular.module('WissenSystem')
 							Restangular.one('puestos/todos-examenes-ent').customPUT(parametros);
 						],
 			data: 
-				pageTitle: 'Todos los exámenes por entidades - Feryz'
+				pageTitle: 'Todos los exámenes por entidades - Wissen'
 
 
 
@@ -104,7 +104,42 @@ angular.module('WissenSystem')
 							Restangular.one('puestos/examenes-ent-categ').customPUT(parametros);
 						],
 			data: 
-				pageTitle: 'Exámenes por entidades - Feryz'
+				pageTitle: 'Exámenes por entidades - Wissen'
+
+
+
+
+
+		.state 'panel.informes.ver_examenes_por_categorias',
+			url: 'ver_examenes_por_categorias?gran_final&evento_id'
+			params: {
+				gran_final: null
+				evento_id: null
+			}
+			views: 
+				'report_content':
+					templateUrl: "#{App.views}informes/verExamenesPorCategorias.tpl.html"
+					controller: 'VerExamenesPorCategoriasCtrl'
+					resolve:
+						categorias: ['Restangular', '$stateParams', (Restangular, $stateParams)->
+							parametros = {gran_final: $stateParams.gran_final, evento_id: $stateParams.evento_id }
+
+							if localStorage.requested_entidades
+								requested_entidades = JSON.parse(localStorage.requested_entidades)
+								
+								if requested_entidades.length > 0
+									parametros.requested_entidades = requested_entidades
+
+							if localStorage.requested_categorias
+								requested_categorias = JSON.parse(localStorage.requested_categorias)
+
+								if requested_categorias.length > 0
+									parametros.requested_categorias = requested_categorias
+
+							Restangular.one('puestos/examenes-categorias').customPUT(parametros);
+						],
+			data: 
+				pageTitle: 'Exámenes por categorías - Wissen'
 
 
 

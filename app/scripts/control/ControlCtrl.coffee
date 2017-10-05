@@ -167,6 +167,33 @@ angular.module('WissenSystem')
 
 
 
+	###
+		GARGAR RESULTADOS
+	###
+
+	$scope.cargar_resultados = ()->
+		MySocket.get_clts()
+		
+		ids = []
+
+		for partic in SocketClientes.clientes
+			if partic.logged and partic.categsel>0
+				ids.push partic.user_data.id
+
+		Restangular.one('puestos/examenes-ejecutandose').customPUT({ids: ids}).then((r)->
+			$scope.examenes_cargados = r
+		, (r2)->
+			toastr.warning 'No se trajeron los exámenes', 'Problema'
+			console.log 'No se trajeron los exámenes ', r2
+		)
+
+
+	$scope.sc_mostrar_resultados_actuales = ()->
+		MySocket.sc_mostrar_resultados_actuales(examenes_cargados: $scope.examenes_cargados)
+
+
+
+
 	$scope.clickedClt = (event, cliente)->
 		if $scope.deseleccionar
 			cliente.seleccionado = false
@@ -249,7 +276,7 @@ angular.module('WissenSystem')
 		toastr.info "Examen empezado"
 		SocketData.config.info_evento.preg_actual 	= 1
 
-		pregunta = $scope.cmdPreguntasTraduc[SocketData.config.info_evento.preg_actual]
+		pregunta = $scope.cmdPreguntasTraduc[0]
 		if pregunta
 			MySocket.sc_show_question(SocketData.config.info_evento.preg_actual, pregunta)
 		else
@@ -307,7 +334,7 @@ angular.module('WissenSystem')
 		MySocket.sc_next_question() # El modelo no cambia hasta salir de esta función
 
 		SocketData.config.info_evento.preg_actual 	= SocketData.config.info_evento.preg_actual + 1
-		pregunta = $scope.cmdPreguntasTraduc[SocketData.config.info_evento.preg_actual]
+		pregunta = $scope.cmdPreguntasTraduc[ SocketData.config.info_evento.preg_actual - 1 ]
 
 		if pregunta
 			MySocket.sc_show_question(SocketData.config.info_evento.preg_actual, pregunta)

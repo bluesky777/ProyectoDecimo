@@ -1381,7 +1381,8 @@ header.fotoselectpc{
         -webkit-print-color-adjust: exact;
     }
     .table-striped2 > tbody > tr:nth-of-type(odd) {
-        background-color: #ccc!important;
+        //background-color: #ccc!important;
+        background-color: #e6e1ff!important;
     }
     .table td, .table th {
         background-color: inherit !important;

@@ -139,13 +139,19 @@ angular.module('WissenSystem')
 		
 		
 		$scope.traerExamenesCategorias = ()->
-			Restangular.all('informes/examenes-categorias').getList({gran_final: $scope.gran_final}).then((r)->
-				$scope.categorias = r
-				$scope.mostrando = 'por_categorias';
-			, (r2)->
-				toastr.warning 'No se trajeron los exámenes por entidad y categorías', 'Problema'
-				console.log 'No se trajeron los exámenes por entidad y categorías ', r2
-			)
+			
+			if $scope.config.todas_entidades
+				delete localStorage.requested_entidades
+			else
+				localStorage.requested_entidades = JSON.stringify($scope.selected.entidades)
+			
+			if $scope.config.todas_categorias
+				delete localStorage.requested_categorias
+			else
+				localStorage.requested_categorias = JSON.stringify($scope.selected.categorias)
+			
+			$state.go('panel.informes.ver_examenes_por_categorias', {gran_final: $scope.config.gran_final, evento_id: $scope.selected.evento_id }, {reload: true})
+		
 
 		$scope.traerExamenesCategoria = ()->
 			if $scope.$parent.cmdCategSelected.id

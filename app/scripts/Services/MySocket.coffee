@@ -259,6 +259,7 @@ angular.module('WissenSystem')
 
 	socket.on('sc_show_logo_entidad_partici', (data)->
 		SocketData.config.show_logo_entidad_partici = data.valor
+		$rootScope.$apply()
 	);
 
 	socket.on('sc_show_puntaje_particip', (data)->
@@ -489,6 +490,11 @@ angular.module('WissenSystem')
 		client.answered = 'waiting'
 		@emit('goto_question_no_clt', { resourceId: cliente.resourceId, numero: numero })
 
+	
+	sc_mostrar_resultados_actuales = (examenes_cargados)->
+		@emit('sc_mostrar_resultados_actuales', { examenes_cargados: examenes_cargados })
+
+
 	liberar_hasta_pregunta = (numero)->
 		@emit('liberar_hasta_pregunta', { numero: numero })
 		SocketData.config.info_evento.preg_actual = numero
@@ -537,6 +543,7 @@ angular.module('WissenSystem')
 		sc_next_question:			sc_next_question
 		sc_next_question_cliente:	sc_next_question_cliente
 		sc_goto_question_no_clt:	sc_goto_question_no_clt
+		sc_mostrar_resultados_actuales: sc_mostrar_resultados_actuales
 		liberar_hasta_pregunta:		liberar_hasta_pregunta
 	}
 

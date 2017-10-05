@@ -220,9 +220,15 @@
     </div>
     <div style="margin-top: 10px;" class="row">
       <div class="col-xs-12 col-md-7">
-        <div class="btn-group">
-          <button ng-click="showParticipantes()" class="btn btn-default"> <i class="fa fa-users"></i>{{ 'MOSTRAR_PARTICIPANTES_TL' | translate }} </button>
+        <div uib-dropdown class="btn-group">
           <button ng-click="showBarras()" class="btn btn-default"> <i class="fa fa-bar-chart"></i>{{ 'MOSTRAR_BARRAS_TL' | translate }} </button>
+          <button ng-click="showParticipantes()" class="btn btn-default"> <i class="fa fa-users"></i>{{ 'MOSTRAR_PARTICIPANTES_TL' | translate }} </button><a aria-label="Abrir menú" uib-dropdown-toggle class="btn btn-default right"><span>{{cliente.categsel_abrev}}</span>
+            <div class="fa fa-chevron-right"></div></a>
+          <ul uib-dropdown-menu aria-labelledby="simple-dropdown" class="dropdown-menu">
+            <li><a ng-click="cargar_resultados()">Cargar resultados actuales</a></li>
+            <li><a ng-click="sc_mostrar_resultados_actuales()"> 
+                <div class="fa fa-screen"> </div><span>  Mostrar resultados</span></a></li>
+          </ul>
         </div><a href="" ng-click="configurar_imagenes()" style="display: block; margin-top: 12px; margin-bottom: 8px" ng-hide="imagenes">{{ 'CONFIGURAR_FONDO_TL' | translate }} </a>
       </div>
     </div>

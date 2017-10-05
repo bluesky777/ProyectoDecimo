@@ -46,8 +46,13 @@ angular.module('WissenSystem')
 			})
 			modalInstance.result.then( (elem)->
 				$scope.imagenes.push elem
-				$scope.newUsu.imgUsuario = $scope.imagenes[$scope.imagenes.length - 1]
-				$scope.currentUser.imgUsuario = $scope.imagenes[$scope.imagenes.length - 1]
+				$scope.newUsu.imagen_id 			= elem.id
+				$scope.newUsu.imagen_nombre 		= elem.imagen_nombre
+				$scope.newUsu.imgUsuario 			= elem
+
+				$scope.currentUser.imagen_id 		= elem.id
+				$scope.currentUser.imagen_nombre 	= elem.imagen_nombre
+				$scope.currentUser.imgUsuario 		= elem
 			)
 
 

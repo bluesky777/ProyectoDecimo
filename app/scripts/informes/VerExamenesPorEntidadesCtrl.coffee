@@ -45,3 +45,44 @@ angular.module('WissenSystem')
 )
 
 
+
+
+.controller('VerExamenesPorCategoriasCtrl', ['$scope', 'Restangular', 'toastr', '$filter', '$uibModal', 'App', 'categorias',  
+	($scope, Restangular, toastr, $filter, $uibModal, App, categorias) ->
+
+		hay = localStorage.txt_informativo_por_categorias
+		if hay
+			$scope.texto_informativo = hay
+		else
+			 $scope.texto_informativo = "<center><b>La Unión Colombiana del Norte</b> les agradece grandemente por participar de estas olimpiadas. <b>SIGAMOS MEJORANDO</b>, todo esto es en pro de la educación Adventista. Oremos para que el próximo año sea aún mejor. ¡Dios los bendiga! </center>"
+
+		$scope.cambia_texto_informativo = ()->
+			localStorage.txt_informativo_por_categorias = $scope.texto_informativo
+
+
+		finalistas = []
+
+		for categoria in categorias
+
+			categoria.examenes = $filter('orderObjectBy')(categoria.examenes, 'promedio', true)
+			el_mejor 	= {}
+			angular.copy(categoria.examenes[0], el_mejor)
+			el_mejor.nombre_categ 	= categoria.nombre_categ
+			el_mejor.abrev_categ 	= categoria.abrev_categ
+
+			if not el_mejor.resultados
+				el_mejor.resultados = { promedio: 0 }
+
+			finalistas.push(el_mejor)
+
+
+		$scope.finalistas = finalistas
+		$scope.categorias = categorias
+
+
+
+
+	]
+)
+
+

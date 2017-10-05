@@ -266,14 +266,26 @@ sidenav-edit-usu-dir
 
 		.row(style="margin-top: 10px;")
 			.col-xs-12.col-md-7
-				.btn-group
-					button.btn.btn-default(ng-click="showParticipantes()") 
-						i.fa.fa-users
-						| {{ 'MOSTRAR_PARTICIPANTES_TL' | translate }} 
+				.btn-group(uib-dropdown)
 
 					button.btn.btn-default(ng-click="showBarras()") 
 						i.fa.fa-bar-chart
 						| {{ 'MOSTRAR_BARRAS_TL' | translate }} 
+					button.btn.btn-default(ng-click="showParticipantes()") 
+						i.fa.fa-users
+						| {{ 'MOSTRAR_PARTICIPANTES_TL' | translate }} 
+
+					a.btn.btn-default.right(aria-label="Abrir menú" uib-dropdown-toggle)
+						span {{cliente.categsel_abrev}}
+						.fa.fa-chevron-right
+
+					ul.dropdown-menu(uib-dropdown-menu aria-labelledby="simple-dropdown")
+						li
+							a(ng-click="cargar_resultados()") Cargar resultados actuales
+						li
+							a(ng-click="sc_mostrar_resultados_actuales()") 
+								.fa.fa-screen  
+								span   Mostrar resultados
 
 		
 				a(href="" ng-click="configurar_imagenes()" style="display: block; margin-top: 12px; margin-bottom: 8px" ng-hide="imagenes") {{ 'CONFIGURAR_FONDO_TL' | translate }} 
