@@ -221,13 +221,13 @@ sidenav-edit-usu-dir
 
 	.panel-body
 		.row
-			.col-xs-12.col-sm-4.col-md-3.col-lg-2(style="height: 150px; font-size: 9pt; border: solid 1px #ccc; padding: 0px")
+			.col-xs-12.col-sm-4.col-md-3.col-lg-2(style="height: 150px; font-size: 9pt; border: solid 1px #ccc; padding: 0px" ng-show="categorias_king.length > 1")
 				div(ng-repeat="categoria in categorias_king" ng-click="cmdClickCategSelected(categoria)" ng-class="{seleccionada: categoria.seleccionada }") 
 					| {{categoria.nombre}}
 
-			.col-xs-12.col-sm-8.col-md-9.col-lg-10(style="height: 150px; font-size: 9pt; overflow: scroll; border: solid 1px #ccc; padding: 0px")
+			.list-preg-opts.col-xs-12.col-sm-8.col-md-9.col-lg-10(style="height: 150px; font-size: 9pt; overflow: scroll; border: solid 1px #ccc; padding: 0px")
 				div(ng-repeat="pregunta in cmdPreguntasTraduc" ng-click="cmdClickPreguntaSelected(pregunta, $index)" 
-					ng-bind-html="($index+1) + '. ' + pregunta.enunciado"  ng-class="{seleccionada: pregunta.seleccionada }" style="height: 35px; width: 160%; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;") 
+					ng-bind-html="($index+1) + '. ' + pregunta.enunciado"  ng-class="{seleccionada: pregunta.seleccionada }" style="width: 160%; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;") 
 
 
 		.row
@@ -242,29 +242,36 @@ sidenav-edit-usu-dir
 						i.fa.fa-question-circle
 						| {{ 'MOSTRAR_PREGUNTA_TL' | translate }} 
 
-					a.btn.btn-default.right(aria-label="Abrir menú" uib-dropdown-toggle)
-						span {{cliente.categsel_abrev}}
-						.fa.fa-chevron-right
+					button.btn.btn-default(ng-click="sc_reveal_answer()") 
+						i.fa.fa-rss
+						| Revelar
+						md-tooltip Revelar correcta
 
-					ul.dropdown-menu(uib-dropdown-menu aria-labelledby="simple-dropdown")
-						li
-							a(ng-click="selec_opc_in_question(0)") Seleccionar A
-						li
-							a(ng-click="selec_opc_in_question(1)") Seleccionar B
-						li
-							a(ng-click="selec_opc_in_question(2)") Seleccionar C
-						li
-							a(ng-click="selec_opc_in_question(3)") Seleccionar D
-						li
-							a(ng-click="selec_opc_in_question(4)") Seleccionar E
-						li
-							a(ng-click="selec_opc_in_question(5)") Seleccionar F
-						li.divider
-						li
-							a(ng-click="sc_reveal_answer()") Revelar correcta
-
-				
-					//button.btn.btn-default(ng-click="showPuntajeParticip()") {{ 'MOSTRAR_PUNTAJE_TL' | translate }} 
+					button.btn.btn-default(ng-click="selec_opc_in_question(0)") 
+						i.fa.fa-hand-o-up
+						| A
+						md-tooltip Seleccionar opción A
+					button.btn.btn-default(ng-click="selec_opc_in_question(1)") 
+						i.fa.fa-hand-o-up
+						| B
+						md-tooltip Seleccionar B
+					button.btn.btn-default(ng-click="selec_opc_in_question(2)") 
+						i.fa.fa-hand-o-up
+						| C
+						md-tooltip Seleccionar C
+					button.btn.btn-default(ng-click="selec_opc_in_question(3)") 
+						i.fa.fa-hand-o-up
+						| D
+						md-tooltip Seleccionar D
+					button.btn.btn-default(ng-click="selec_opc_in_question(4)") 
+						i.fa.fa-hand-o-up
+						| E
+						md-tooltip Seleccionar E
+					button.btn.btn-default(ng-click="selec_opc_in_question(5)") 
+						i.fa.fa-hand-o-up
+						| F
+						md-tooltip Seleccionar F
+ 
 				br
 				hr
 				md-checkbox(ng-click="toggleShowLogoEntidadParticipantes()" ng-true-value="1" ng-false-value="0" ng-model="cmdShowLogoEntidadPartici" aria-label="Mostrar logos") {{ 'MOSTRAR_LOGO_ENTIDADES_TL' | translate }} 
@@ -272,7 +279,7 @@ sidenav-edit-usu-dir
 				md-checkbox(ng-model="silenciar_respuestas" aria-label="Silenciar respuestas") Silenciar respuestas
 
 				md-checkbox(ng-model="silenciar_todo" aria-label="Silenciar todo") Silenciar todo
-
+				hr
 		.row(style="margin-top: 10px;")
 			.col-xs-12.col-md-7
 				.btn-group(uib-dropdown)

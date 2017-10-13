@@ -46,16 +46,16 @@ angular.module('WissenSystem')
 			$scope.gridApi.selection.clearSelectedRows()
 			$scope.gridApi.selection.selectRow(row)
 
-			$scope.$parent.currentUser = row
-			$scope.$parent.currentUser.imgUsuario = {id: $scope.$parent.currentUser.imagen_id, nombre: $scope.$parent.currentUser.imagen_nombre}
+			$scope.$parent.currentUser 				= row
+			$scope.$parent.currentUser.imgUsuario 	= {id: $scope.$parent.currentUser.imagen_id, nombre: $scope.$parent.currentUser.imagen_nombre}
 
 			for entid in $scope.$parent.entidades
 				if entid.id == $scope.$parent.currentUser.entidad_id
 					$scope.$parent.currentUser.entidad = entid
 
-			$scope.$parent.currentUser.nivel_id = parseInt($scope.$parent.currentUser.nivel_id)
-			$scope.currentusers = [row]
-			$scope.$parent.editando = true
+			$scope.$parent.currentUser.nivel_id 	= parseInt($scope.$parent.currentUser.nivel_id)
+			$scope.currentusers 					= [row]
+			$scope.$parent.editando 				= true
 			
 			# Me tocó copiarlo pues se acumulaban las inscripciones
 			categoriasking_copy = []
@@ -85,6 +85,12 @@ angular.module('WissenSystem')
 			)
 
 
+		$scope.$on('usuarioEliminadoEnParentEditar' , (event, usuario)->
+			$scope.usuarios = $filter('filter')($scope.usuarios, {id: '!'+usuario.id})
+			$scope.gridOptions.data = $scope.usuarios
+		)
+
+
 
 		$scope.verRoles = (row)->
 
@@ -108,88 +114,133 @@ angular.module('WissenSystem')
 
 
 
-		btGrid1 = '<a tooltip="Editar" tooltip-placement="left" class="btn btn-default btn-xs " ng-click="grid.appScope.editar(row.entity)"><i class="fa fa-edit "></i></a>'
-		btGrid2 = '<a tooltip="X Eliminar" tooltip-placement="right" class="btn btn-xs btn-danger" ng-click="grid.appScope.eliminar(row.entity)"><i class="fa fa-trash "></i></a> '
-		btGrid3 = '<a tooltip="Seleccionar" tooltip-placement="right" class="btn btn-xs btn-info" ng-click="grid.appScope.seleccionar_fila(row.entity)"><i class="fa fa-check "></i></a>'
-		btGridP = '<a tooltip="Abrir en equipo" tooltip-placement="right" class="btn btn-xs btn-info" ng-click="grid.appScope.showSidenavSelectPC(row.entity)"><i class="fa fa-desktop "></i></a>'
-		btGrid4 = '<a tooltip="{{row.entity.entidad_id | nombreEntidad:grid.appScope.$parent.entidades:false}}" tooltip-placement="left" class="btn btn-xs shiny btn-info" ng-click="grid.appScope.seleccionar_entidad(row.entity)" ng-bind="row.entity.entidad_id | nombreEntidad:grid.appScope.$parent.entidades:true"></a>'
-		btGrid5 = '<a tooltip="Modificar roles" tooltip-placement="left" class="btn btn-xs btn-info" ng-click="grid.appScope.verRoles(row.entity)"><span ng-repeat="rol in row.entity.roles">{{rol.display_name}}-</span></a>'
+		btGrid1 = '<a class="btn btn-default btn-xs " ng-click="grid.appScope.editar(row.entity)"><i class="fa fa-edit "></i> <md-tooltip md-direction="left">Editar</md-tooltip> </a>'
+		btGrid2 = if ($(window).width() > 800) then '<a tooltip="X Eliminar" tooltip-placement="right" class="btn btn-xs btn-danger" ng-click="grid.appScope.eliminar(row.entity)"><i class="fa fa-trash "></i></a> ' else ''
+		btGrid3 = '<a class="btn btn-xs btn-info" ng-click="grid.appScope.seleccionar_fila(row.entity)"><i class="fa fa-check "></i></a>'
+		btGridP = '<a class="btn btn-xs btn-info" ng-click="grid.appScope.showSidenavSelectPC(row.entity)"><i class="fa fa-desktop "></i> <md-tooltip md-direction="right">Abrir en equipo</md-tooltip> </a>'
+		btGrid4 = '<a class="btn btn-xs shiny btn-info" ng-click="grid.appScope.seleccionar_entidad(row.entity)" ng-bind="row.entity.entidad_id | nombreEntidad:grid.appScope.$parent.entidades:true"> <md-tooltip md-direction="left">{{row.entity.entidad_id | nombreEntidad:grid.appScope.$parent.entidades:false}}</md-tooltip> </a>'
+		btGrid5 = '<a class="btn btn-xs btn-info" ng-click="grid.appScope.verRoles(row.entity)"><span ng-repeat="rol in row.entity.roles">{{rol.display_name}}-</span>  <md-tooltip md-direction="left">Modificar roles</md-tooltip> </a>'
 
-		botones = ''
+		botones = btGrid1 + btGrid2 + btGrid3 + btGridP # ''
+		###
 		if $scope.$parent.hasRoleOrPerm(['Admin'])
-			botones = btGrid1 + btGrid2 + btGrid3 + btGridP
+			botones = 
 		else
 			botones = btGrid1 + btGrid3 + btGridP
+		###
 
 		# Quitamos unas columnas si es NO es admin
-		columnDefs = [
-			{ field: 'id', displayName:'Id', width: 60, enableCellEdit: false, enableColumnMenu: false}
-			{ name: 'edicion', displayName:'Edición', width: 130, enableSorting: false, enableFiltering: false, cellTemplate: botones, enableCellEdit: false, enableColumnMenu: false}
-			{ field: 'nombres', filter: {condition: uiGridConstants.filter.CONTAINS}, enableHiding: false }
-			{ field: 'apellidos', filter: { condition: uiGridConstants.filter.CONTAINS }}
-			{ field: 'sexo', displayName:'Sex', width: 60 }
-			{ field: 'username', filter: { condition: uiGridConstants.filter.CONTAINS }, displayName: 'Usuario'}
-			{ 
-				field: 'entidad_id', displayName:'Entidad', cellTemplate: btGrid4, enableCellEdit: false, 
+		columnDefs = []
+
+		if ($(window).width() > 800)
+			columnDefs.push( { field: 'id', displayName:'Id', width: 50, enableCellEdit: false } )
+
+		if ($(window).width() > 800)
+			columnDefs.push( { name: 'edicion', displayName:'Edición', width: 130, enableSorting: false, enableFiltering: false, cellTemplate: botones, enableCellEdit: false, enableColumnMenu: false} )
+		else
+			columnDefs.push( { name: 'edicion', displayName:'Edición', width: 100, enableSorting: false, enableFiltering: false, cellTemplate: botones, enableCellEdit: false, enableColumnMenu: false} )
+		
+		columnDefs.push( { 
+			field: 'nombres', filter: {condition: uiGridConstants.filter.CONTAINS}, enableHiding: false 
+			filter: {
+				condition: (searchTerm, cellValue)->
+					termino 	= window.removeAccents(searchTerm).toLowerCase()
+					find 		= window.removeAccents(cellValue).toLowerCase()
+					return (find.indexOf(termino) isnt -1)
+			} 
+		} )
+
+		columnDefs.push( { 
+			field: 'apellidos', filter: { condition: uiGridConstants.filter.CONTAINS }
+			filter: {
+				condition: (searchTerm, cellValue)->
+					termino 	= window.removeAccents(searchTerm).toLowerCase()
+					find 		= window.removeAccents(cellValue).toLowerCase()
+					return (find.indexOf(termino) isnt -1)
+			} 
+		} )
+		
+		if ($(window).width() > 800)
+			columnDefs.push( { field: 'sexo', displayName:'Sex', width: 50 } )
+		
+		columnDefs.push( { field: 'username', filter: { condition: uiGridConstants.filter.CONTAINS }, displayName: 'Usuario'} )
+		columnDefs.push( { 
+				field: 'entidad_id', displayName:'Entidad', cellTemplate: btGrid4, enableCellEdit: false,
+				sortingAlgorithm: (a, b, rowA, rowB)->
+					# No funcionaaaaaa
+					if (a == b) then return 0
+					if (a < b) then return 1
+					return 1
+				, 
 				filter: { 
 					condition: (searchTerm, cellValue)-> 
-						entidades = $scope.$parent.entidades
-						termino = searchTerm.toLowerCase()
+						entidades 	= $scope.$parent.entidades
+						termino 	= window.removeAccents(searchTerm).toLowerCase()
 
 						res = $filter('nombreEntidad')(cellValue, entidades, true)
-						res = res.toLowerCase()
+						res = window.removeAccents(res).toLowerCase()
 						
 						res2 = $filter('nombreEntidad')(cellValue, entidades)
-						res2 = res2.toLowerCase()
+						res2 = window.removeAccents(res2).toLowerCase()
 
-						return res.indexOf(termino) isnt -1 or res2.indexOf(termino) isnt -1
+						return (res.indexOf(termino) isnt -1) or (res2.indexOf(termino) isnt -1)
 				}
 			}
-		]
+		)
 
-		if $scope.$parent.hasRoleOrPerm(['Admin'])
+
+		if $scope.$parent.hasRoleOrPerm(['Admin']) and $(window).width() > 800
 			columnDefs.push( { field: 'roles', displayName:'Roles', cellTemplate: btGrid5, enableCellEdit: false } )
 
 
-		$scope.gridOptions = 
-			showGridFooter: true,
-			enableSorting: true,
-			enableFiltering: true,
-			#enebleGridColumnMenu: false,
-			selectedItems: $scope.currentusers,
-			multiSelect: true, 
-			enableRowSelection: true,
-			enableSelectAll: true,
-			columnDefs: columnDefs,
-			#filterOptions: $scope.filterOptions,
-			onRegisterApi: ( gridApi ) ->
 
-				$scope.gridApi = gridApi
+		if ($(window).width() <= 800)
+			$scope.gridOptions = 
+				multiSelect: false,
+				enebleGridColumnMenu: false,
+				enableRowHeaderSelection: false
+		else
+			$scope.gridOptions = 
+				selectedItems: $scope.currentusers,
+				multiSelect: true, 
+				enableSelectAll: true,
+				
 
-				gridApi.selection.on.rowSelectionChanged($scope, (rows)->
-					$scope.currentusers = gridApi.selection.getSelectedRows()
-				)
-				gridApi.selection.on.rowSelectionChangedBatch($scope, (rows)->
-					$scope.currentusers = gridApi.selection.getSelectedRows()
-				)
+		$scope.gridOptions.showGridFooter 	= true
+		$scope.gridOptions.enableSorting 	= true
+		$scope.gridOptions.enableFiltering 	= true
+		$scope.gridOptions.enableRowSelection 	= true
+		$scope.gridOptions.columnDefs 		= columnDefs
+		$scope.gridOptions.onRegisterApi 	= ( gridApi ) ->
 
-				gridApi.edit.on.afterCellEdit($scope, (rowEntity, colDef, newValue, oldValue)->
+			$scope.gridApi = gridApi
+
+			gridApi.selection.on.rowSelectionChanged($scope, (rows)->
+				$scope.currentusers = gridApi.selection.getSelectedRows()
+			)
+			gridApi.selection.on.rowSelectionChangedBatch($scope, (rows)->
+				$scope.currentusers = gridApi.selection.getSelectedRows()
+			)
+
+			gridApi.edit.on.afterCellEdit($scope, (rowEntity, colDef, newValue, oldValue)->
+				
+				if newValue != oldValue
+					if colDef.field == "sexo"
+						if newValue != 'M' and newValue != 'F'
+							toastr.warning 'Debe usar M o F'
+							rowEntity.sexo = oldValue
+							$scope.$apply()
+							return
 					
-					if newValue != oldValue
-						if colDef.field == "sexo"
-							if newValue != 'M' and newValue != 'F'
-								toastr.warning 'Debe usar M o F'
-								rowEntity.sexo = oldValue
-								$scope.$apply()
-								return
-						
-						Restangular.one('usuarios/update').customPUT(rowEntity).then((r)->
-							toastr.success 'Usuario actualizado con éxito', 'Actualizado'
-						, (r2)->
-							toastr.error 'Cambio no guardado', 'Error'
-						)
-					$scope.$apply()
-				)
+					Restangular.one('usuarios/update').customPUT(rowEntity).then((r)->
+						toastr.success 'Usuario actualizado con éxito', 'Actualizado'
+					, (r2)->
+						toastr.error 'Cambio no guardado', 'Error'
+					)
+				$scope.$apply()
+			)
+
+
 
 
 		Restangular.all('usuarios').getList().then((data)->

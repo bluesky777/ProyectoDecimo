@@ -4,6 +4,7 @@
     <h1 class="md-toolbar-tools">Seleccione equipo</h1>
   </md-toolbar>
   <md-content layout-padding>
+    <h4>{{ SocketData.clt_selected.nombres + ' ' + SocketData.clt_selected.apellidos }}</h4>
     <section>
       <md-subheader class="md-primary"> 
         <md-input-container flex class="filtrarusuario">
@@ -12,7 +13,7 @@
         </md-input-container>
         <button type="button" ng-click="ingresar_seleccionado()" class="btn btn-primary">Ingresar</button>
       </md-subheader>
-      <md-list class="md-dense"> <span ng-repeat="cliente in SocketClientes.clientes | filter:filtro | orderBy:'nombre_punto'">
+      <md-list class="md-dense"> <span ng-repeat="cliente in all_clientes() | filter:filtro | orderBy:'nombre_punto'">
           <md-list-item ng-if="cliente.registrado" class="md-2-line itemselectpc-busy">
             <header class="fotoselectpc"><img ng-src="{{imagesPath + cliente.usuario.imagen_nombre}}" alt="{{cliente.usuario.username}}" class="img-perfil nodrag"><img ng-src="{{ imagesPath + cliente.usuario.entidad.logo}}" alt="{{cliente.usuario.username}}" class="img-entidad nodrag">
               <md-tooltip>{{cliente.usuario.entidad.nombre}}</md-tooltip>

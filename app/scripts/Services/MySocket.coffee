@@ -290,7 +290,6 @@ angular.module('WissenSystem')
 		get_clts()
 
 		if not $state.includes('proyectando') 
-			console.log $rootScope.silenciar_respuestas , $rootScope.silenciar_todo 
 			if !$rootScope.silenciar_respuestas 
 				if !$rootScope.silenciar_todo
 					if data.resourceId != Perfil.getResourceId()

@@ -84,6 +84,9 @@ angular.module('WissenSystem')
 		$scope.categorias_king 			= r
 		SocketClientes.categorias_king 	= r
 		$scope.categorias_traducidas 	= $filter('categoriasTraducidas')($scope.categorias_king, $scope.USER.idioma_main_id)
+
+		if $scope.categorias_king.length == 1
+			$scope.cmdClickCategSelected($scope.categorias_king[0])
 	, (r2)->
 		toastr.warning 'No se trajeron las categorias del evento', 'Problema'
 	)
@@ -258,15 +261,16 @@ angular.module('WissenSystem')
 			return
 
 		MySocket.sc_reveal_answer()
-
-		for opcion, indice in $scope.cmdPreguntaSelected.opciones
-			if indice == $scope.opcion_seleccionada
-				if opcion.is_correct
-					audio = new Audio('/sounds/Revelada_correcta.wav');
-					audio.play();
-				else
-					audio = new Audio('/sounds/Revalada_incorrecta.wav');
-					audio.play();		
+		
+		if !$rootScope.silenciar_todo
+			for opcion, indice in $scope.cmdPreguntaSelected.opciones
+				if indice == $scope.opcion_seleccionada
+					if opcion.is_correct
+						audio = new Audio('/sounds/Revelada_correcta.wav');
+						audio.play();
+					else
+						audio = new Audio('/sounds/Revalada_incorrecta.wav');
+						audio.play();		
 		
 
 	$scope.cambiarCategSel = (cliente, categoria)->

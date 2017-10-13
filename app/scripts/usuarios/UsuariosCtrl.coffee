@@ -34,6 +34,22 @@ angular.module('WissenSystem')
 		)
 		
 
+		$scope.eliminarUsuario = ()->
+
+			modalInstance = $modal.open({
+				templateUrl: App.views + 'usuarios/removeUsuario.tpl.html'
+				controller: 'RemoveUsuarioCtrl'
+				resolve: 
+					usuario: ()->
+						$scope.currentUser
+					entidades: ()->
+						$scope.$parent.entidades
+			})
+			modalInstance.result.then( (usuario)->
+				$scope.$broadcast('usuarioEliminadoEnParentEditar', usuario)
+			)
+
+
 		$scope.misImagenes = ()->
 			
 			modalInstance = $modal.open({

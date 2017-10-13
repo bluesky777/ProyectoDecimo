@@ -9,16 +9,29 @@ angular.module('WissenSystem')
 		
 
 ])
-.controller('SidenavSelectPCCtrl', ['$scope', 'Restangular', 'toastr', 'MySocket', 'SocketData', '$mdSidenav',  ($scope, Restangular, toastr, MySocket, SocketData, $mdSidenav)->
-	$scope.selectedUser 		= {}
+.controller('SidenavSelectPCCtrl', ['$scope', '$rootScope', 'Restangular', 'toastr', 'MySocket', 'SocketData', 'SocketClientes', '$mdSidenav',  ($scope, $rootScope, Restangular, toastr, MySocket, SocketData, SocketClientes, $mdSidenav)->
+	
+	$scope.selectedUser 		= {}	
+	$scope.SocketData 			= SocketData
+
 	
 	MySocket.get_clts()
-	$scope.SocketData = SocketData
+
+	$rootScope.$on('take:clientes', ()->
+		$timeout(()->
+			$scope.$apply()
+		, 1000)
+		
+	)
+
 
 	$scope.ingresar_seleccionado = (computer)->
 		MySocket.let_him_enter(SocketData.clt_selected.id, computer.resourceId)
 		$scope.cerrar_sidenav()
 	
+	$scope.all_clientes = ()->
+		return SocketClientes.clientes
+
 	
 		
 	$scope.cerrar_sidenav = ()->

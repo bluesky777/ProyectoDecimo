@@ -3,7 +3,7 @@
 <sidenav-select-pc-dir id="sidenavSelectPC"></sidenav-select-pc-dir>
 <div ng-show="creando" class="row">
   <div class="col-sm-12 col-md-12">
-    <div class="panel panel-default panel-hovered panel-stacked mb20">
+    <div class="panel panel-default panel-hovered panel-stacked mb20 mr--15-sm ml--15-sm"> 
       <div class="panel-heading">
           
         Nuevo
@@ -112,7 +112,7 @@
 </div>
 <div ng-show="editando" class="row">
   <div class="col-sm-12 col-md-12">
-    <div class="panel panel-default panel-hovered panel-stacked mb20">
+    <div class="panel panel-default panel-hovered panel-stacked mb20 mr--15-sm ml--15-sm">
       <div class="panel-heading">
           
         Editar a {{currentUser.nombres}}
@@ -211,6 +211,7 @@
             </div>
           </div>
           <div class="clearfix right">
+            <md-button type="button" ng-click="eliminarUsuario()" ng-disabled="eliminando" class="md-warn">Eliminar</md-button>
             <md-button type="submit" ng-disabled="guardando" class="md-primary">Guardar</md-button>
             <md-button type="button" ng-click="cancelarEdicion()" class="md-default">Cancelar</md-button>
           </div>
@@ -220,7 +221,7 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-sm-12 col-md-12">
+  <div class="col-sm-12 col-md-12 mr--15-sm ml--15-sm">
     <grid-usuarios currentusers="currentUsers" nivelesking="niveles_king" usuarios="usuarios" categoriasking="categorias_king2" idioma="$parent.evento_actual.idioma_principal_id"></grid-usuarios>
   </div>
 </div>

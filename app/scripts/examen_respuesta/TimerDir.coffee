@@ -46,7 +46,6 @@ angular.module('WissenSystem')
 					$rootScope.tiempo_preg 	= diff_preg
 					#$scope.tiempo 			= $rootScope.tiempo
 					$scope.tiempo_seg 		= Math.floor(diff_exam / 1000)
-					console.log $rootScope.tiempo, $scope.tiempo_seg
 
 					n = new Date(diff_exam); #llevar todo a milisegundos 
 

@@ -6,7 +6,7 @@ sidenav-select-pc-dir#sidenavSelectPC
 .row(ng-show="creando")
 	.col-sm-12.col-md-12
 		
-		.panel.panel-default.panel-hovered.panel-stacked.mb20
+		.panel.panel-default.panel-hovered.panel-stacked.mb20.mr--15-sm.ml--15-sm 
 			.panel-heading   
 				| Nuevo
 
@@ -116,7 +116,7 @@ sidenav-select-pc-dir#sidenavSelectPC
 .row(ng-show="editando")
 	.col-sm-12.col-md-12
 		
-		.panel.panel-default.panel-hovered.panel-stacked.mb20
+		.panel.panel-default.panel-hovered.panel-stacked.mb20.mr--15-sm.ml--15-sm
 			.panel-heading   
 				| Editar a {{currentUser.nombres}}
 
@@ -217,12 +217,13 @@ sidenav-select-pc-dir#sidenavSelectPC
 
 
 					.clearfix.right
+						md-button.md-warn(type="button" ng-click="eliminarUsuario()" ng-disabled="eliminando") Eliminar
 						md-button.md-primary(type="submit" ng-disabled="guardando") Guardar
 						md-button.md-default(type="button" ng-click="cancelarEdicion()") Cancelar
 
 
 .row
-	.col-sm-12.col-md-12
+	.col-sm-12.col-md-12.mr--15-sm.ml--15-sm
 
 		
 		grid-usuarios(currentusers="currentUsers" nivelesking="niveles_king" usuarios="usuarios" categoriasking="categorias_king2" idioma="$parent.evento_actual.idioma_principal_id")
