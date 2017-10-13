@@ -11,7 +11,10 @@
                 <md-select placeholder="Elija un evento" ng-model="selected.evento_id" ng-change="cargar_entidades_categorias()">
                   <md-option ng-repeat="event in eventos_infor" ng-value="event.id">Evento: <b>{{event.nombre}} ({{event.alias}})</b></md-option>
                 </md-select>
-                <md-checkbox ng-model="config.gran_final" aria-label="Gran final">Solo exámenes hechos en 'Gran final'</md-checkbox>
+                <div style="text-align: center;">
+                  <md-button ng-click="cargarResultados()" class="md-raised">Cargar resultados</md-button>
+                </div>
+                <md-checkbox ng-model="config.gran_final" aria-label="Gran final">Solo exámenes hechos de forma 'Dirigida'</md-checkbox>
                 <div style="text-align: center;">
                   <md-button ng-click="traerTodosLosExamenes()" class="md-raised">Traer todos los exámenes</md-button>
                 </div>

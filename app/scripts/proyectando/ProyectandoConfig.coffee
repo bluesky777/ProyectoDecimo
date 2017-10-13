@@ -34,6 +34,19 @@ angular.module('WissenSystem')
 			})
 
 
+
+			.state('proyectando.puntajes_actuales', { 
+				url: '^/puntajes_actuales'
+				views:
+					'contenido_panel':
+						templateUrl: "#{App.views}proyectando/puntajes_actuales.tpl.html"
+						controller: 'PuntajesActualesCtrl'
+
+				data: 
+					pageTitle: 'Puntajes actuales'
+			})
+
+
 			.state('proyectando.grafico_barras', { #- Estado admin.
 				url: '^/grafico_barras'
 				views:

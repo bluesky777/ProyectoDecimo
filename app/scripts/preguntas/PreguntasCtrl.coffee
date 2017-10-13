@@ -16,11 +16,12 @@ angular.module('WissenSystem')
 		$scope.preguntaEdit = {}
 		$scope.contenidoEdit = {}
 
-		$scope.showDetail 	= false
-		$scope.showOptions 	= false
-		$scope.showCorrects = false
-		$scope.categoria 	= 0
-		$scope.evaluacion_id = 0
+		$scope.showDetail 		= false
+		$scope.showSelectables 	= false
+		$scope.showOptions 		= false
+		$scope.showCorrects 	= false
+		$scope.categoria 		= 0
+		$scope.evaluacion_id 	= 0
 		$scope.preguntas_evaluacion = []
 
 		$scope.categorias 	= []

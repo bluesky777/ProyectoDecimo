@@ -109,7 +109,16 @@ angular.module('WissenSystem')
 
 
 
+		$scope.cargarResultados = ()->
+			Restangular.one('puestos/calcular-resultados').customPUT({ gran_final: $scope.config.gran_final, evento_id: $scope.selected.evento_id }).then((r)->
+				toastr.success 'Calculados con éxito'
+			, (r2)->
+				toastr.error 'No se pudo calcular'
+			)
+				
+
 		$scope.traerTodosLosExamenes = ()->
+			console.log 'Entra'
 			$state.go('panel.informes.ver_todos_los_examenes', {gran_final: $scope.config.gran_final, evento_id: $scope.selected.evento_id })
 				
 		$scope.traerTodosLosExamenesPorEntidades = ()->

@@ -38,12 +38,23 @@
         <div class="row">
           <div class="col-lg-12">
             <div style="margin-bottom: 20px;" class="btn-group">
+              <label ng-model="showSelectables" uib-btn-checkbox class="btn btn-primary"> <span class="fa fa-check-square-o"></span></label>
               <label ng-model="showOptions" uib-btn-checkbox class="btn btn-primary">Ver opciones</label>
               <label ng-model="showCorrects" uib-btn-checkbox class="btn btn-primary">Revelar correctas</label>
             </div>
             <button ng-click="cambiarRutaImagenes()" style="margin-bottom: 20px;" class="btn btn-default">Rutas</button>
           </div>
         </div>
+        <div ng-show="showSelectables" class="row">
+          <div class="col-lg-12">
+            <div aria-label="..." class="btn-group">
+              <button type="button" ng-click="eliminarPreguntas()" class="btn btn-default"> <i class="fa fa-trash"></i>Eliminar preguntas</button>
+              <button type="button" ng-click="asignarAEvaluacion()" class="btn btn-default"><i class="fa fa-clipboard"></i>Asignar a Evaluación</button>
+              <button type="button" ng-click="cambiarPreguntasACategoria()" class="btn btn-default"><i class="fa fa-eye"></i>Cambiar de categoría</button>
+            </div>
+          </div>
+        </div>
+        <add-pregunta ng-show="inicializado &amp;&amp; !showSelectables"></add-pregunta>
         <div id="edicionking">
           <!-- Editar una pregunta-->
           <edit-pregunta ng-if="editando"></edit-pregunta>
@@ -54,7 +65,7 @@
           <view-pregunta ng-if="pg_pregunta.is_preg"></view-pregunta>
           <view-grupo ng-if="!pg_pregunta.is_preg"></view-grupo>
         </div>
-        <add-pregunta ng-show="inicializado"></add-pregunta>
+        <add-pregunta ng-show="inicializado &amp;&amp; !showSelectables"></add-pregunta>
       </div>
     </div>
   </div>

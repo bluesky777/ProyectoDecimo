@@ -163,9 +163,9 @@ angular.module('WissenSystem')
 		)
 
 		sortTiempo = (a, b)->
-			if a.resultados.tiempo > b.resultados.tiempo
+			if a.res_tiempo > b.res_tiempo
 				return if reverse then 1 else -1
-			else if a.resultados.tiempo == b.resultados.tiempo
+			else if a.res_tiempo == b.res_tiempo
 				return 0
 			else
 				return if reverse then -1 else 1
@@ -173,17 +173,25 @@ angular.module('WissenSystem')
 		filtered.sort( (a, b)->
 			switch tipo 
 				when 'promedio'
-					if a.resultados.promedio > b.resultados.promedio
-						return if reverse then -1 else 1
-					else if a.resultados.promedio == b.resultados.promedio
-						return sortTiempo(a, b)
+					if a.res_by_promedio
+						if a.res_promedio > b.res_promedio
+							return if reverse then -1 else 1
+						else if a.res_promedio == b.res_promedio
+							return sortTiempo(a, b)
+						else
+							return if reverse then 1 else -1
 					else
-						return if reverse then 1 else -1
+						if a.res_puntos > b.res_puntos
+							return if reverse then -1 else 1
+						else if a.res_puntos == b.res_puntos
+							return sortTiempo(a, b)
+						else
+							return if reverse then 1 else -1
 						
 				when 'cantidad_pregs'
-					if a.resultados.cantidad_pregs > b.resultados.cantidad_pregs
+					if a.res_cant_pregs > b.res_cant_pregs
 						return if reverse then -1 else 1
-					else if a.resultados.cantidad_pregs == b.resultados.cantidad_pregs
+					else if a.res_cant_pregs == b.res_cant_pregs
 						return sortTiempo(a, b)
 					else
 						return if reverse then 1 else -1
@@ -229,6 +237,52 @@ angular.module('WissenSystem')
 			else
 				return 1
 		)
+
+		return filtered;
+])
+
+
+
+.filter('orderPuntajesActuales', [ ->
+	(items) ->
+		if not items
+			return
+
+		if items.length == 0
+			return
+
+		filtered = [];
+		angular.forEach(items, (item)->
+			filtered.push(item);
+		)
+
+		sortTiempo = (a, b)->
+			if a.tiempo > b.tiempo
+				return 1
+			else if a.tiempo == b.tiempo
+				return 0
+			else
+				return -1
+				
+		console.log items[0]
+		if items[0].res_by_promedio
+			filtered.sort( (a, b)->
+				if a.res_promedio > b.res_promedio
+					return -1
+				else if a.res_promedio == b.res_promedio
+					return sortTiempo(a, b)
+				else
+					return 1
+			)
+		else
+			filtered.sort( (a, b)->
+				if a.res_puntos > b.res_puntos
+					return -1
+				else if a.res_puntos == b.res_puntos
+					return sortTiempo(a, b)
+				else
+					return 1
+			)
 
 		return filtered;
 ])

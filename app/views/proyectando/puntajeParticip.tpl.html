@@ -24,9 +24,9 @@
         <div class="col-md-5 col-sm-5 col-xs-5 center"><img ng-src="{{ imagesPath + SocketData.config.puntaje_to_show.imagen_nombre }}" style="width: 200px"></div>
       </div>
       <div class="row">
-        <div style="font-size:20pt; line-height: 1.2;" class="col-md-6 col-sm-6 col-xs-6 txt-borde-blanco">Preguntas: {{ SocketData.config.puntaje_to_show.resultados.cantidad_pregs }}<br>Incorrectas: {{ SocketData.config.puntaje_to_show.resultados.cantidad_pregs - SocketData.config.puntaje_to_show.resultados.correctas }}<br>Correctas: {{ SocketData.config.puntaje_to_show.resultados.correctas }}<br>Tiempo: {{ SocketData.config.puntaje_to_show.resultados.tiempo | secondsToDateTime:true }}</div>
+        <div style="font-size:20pt; line-height: 1.2;" class="col-md-6 col-sm-6 col-xs-6 txt-borde-blanco">Preguntas: {{ SocketData.config.puntaje_to_show.res_cant_pregs }}<br>Incorrectas: {{ SocketData.config.puntaje_to_show.res_cant_pregs - SocketData.config.puntaje_to_show.res_correctas }}<br>Correctas: {{ SocketData.config.puntaje_to_show.res_correctas }}<br>{{ SocketData.config.puntaje_to_show.res_tiempo_format }}</div>
         <div class="col-md-6 col-sm-6 col-xs-6 center">
-          <h1 style="font-size:80pt; color: white; text-shadow: 4px 4px 2px rgb(21, 33, 33); margin-top: 10px;">{{ SocketData.config.puntaje_to_show.resultados.promedio | decimales_if:1 }}%</h1>
+          <h1 style="font-size:80pt; color: white; text-shadow: 4px 4px 2px rgb(21, 33, 33); margin-top: 10px;"> <span ng-show="SocketData.config.puntaje_to_show.res_by_promedio">{{ SocketData.config.puntaje_to_show.res_promedio | decimales_if:1 }}%</span><span ng-hide="SocketData.config.puntaje_to_show.res_by_promedio">{{ SocketData.config.puntaje_to_show.res_puntos }}</span></h1>
         </div>
       </div>
     </div>

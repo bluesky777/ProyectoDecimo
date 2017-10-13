@@ -1,5 +1,6 @@
 
-<md-whiteframe layout style="padding: 10px" class="md-whiteframe-z2 definicion-frame"><span flex="5">{{$index+1}}.</span><span ng-bind-html="pg_pregunta.enunciado" flex="95"></span>
+<md-whiteframe layout style="padding: 10px" class="md-whiteframe-z2 definicion-frame"><span flex="5" ng-show="showSelectables"> 
+    <input type="checkbox" ng-model="pregunta.seleccionada"></span><span flex="5">{{$index+1}}.</span><span ng-bind-html="pg_pregunta.enunciado" flex="95"></span>
   <div ng-show="pg_pregunta.ayuda &amp;&amp; pg_pregunta.showDetail" ng-click="toggleMostrarAyuda(pg_pregunta)" ng-class="{'ayuda-preg-showed': pg_pregunta.mostrar_ayuda, 'ayuda-preg-hidded':!pg_pregunta.mostrar_ayuda}"><a ng-show="!pg_pregunta.mostrar_ayuda"><i class="fa fa-anchor"></i></a><span ng-show="pg_pregunta.mostrar_ayuda">{{pg_pregunta.ayuda}}</span></div>
   <div layout="row" class="btn-container-edit">
     <div aria-label="..." class="btn-group">

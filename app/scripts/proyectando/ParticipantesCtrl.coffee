@@ -15,6 +15,17 @@ angular.module('WissenSystem')
 		return
 	]
 )
+.controller('PuntajesActualesCtrl', ['$scope', '$rootScope', 'App', 'SocketData', 'SocketClientes', '$filter', 'MySocket', '$timeout' 
+	($scope, $rootScope, App, SocketData, SocketClientes, $filter, MySocket, $timeout) ->
+		$scope.examenes_cargados = ()->
+			if $rootScope.examenes_cargados
+				return $rootScope.examenes_cargados
+			else
+				return []
+
+		return
+	]
+)
 .controller('GraficoBarrasCtrl', ['$scope', '$rootScope', 'App', 'SocketData', 'SocketClientes', '$filter', 'MySocket' 
 	($scope, $rootScope, App, SocketData, SocketClientes, $filter, MySocket) ->
 

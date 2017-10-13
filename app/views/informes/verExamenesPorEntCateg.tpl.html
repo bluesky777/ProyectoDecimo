@@ -58,12 +58,12 @@
                   </div>
                 </td>
                 <td style="font-size: 7pt;">{{ examen.examen_at }}</td>
-                <td style="font-size: 7pt;">{{ examen.resultados.tiempo | secondsToDateTime:true }}</td>
-                <td>{{ examen.resultados.cantidad_pregs }}</td>
-                <td>{{ examen.resultados.correctas }}
+                <td style="font-size: 7pt;">{{ examen.res_tiempo_format }}</td>
+                <td>{{ examen.res_cant_pregs }}</td>
+                <td>{{ examen.res_correctas }}
                   <md-tooltip>Correctas</md-tooltip>
                 </td>
-                <td class="td-contenedora">{{ examen.resultados.promedio | decimales_if:1 }}%
+                <td class="td-contenedora"> <span ng-show="examen.res_by_promedio">{{ examen.res_promedio | decimales_if:1 }}%</span><span ng-hide="examen.res_by_promedio">{{ examen.res_puntos }}</span>
                   <div class="menu-puesto-exam hidden-print"> 
                     <div class="btn-group"><a href="" ng-click="mostrarPuesto(examen, $index +1, entidad)" class="btn btn-default btn-xs"><i class="fa fa-child"></i>
                         <md-tooltip>Mostrar en pantalla</md-tooltip></a><a href="" ng-click="eliminarExamen(examen)" class="btn btn-danger btn-xs"><i class="fa fa-times"></i>
@@ -111,12 +111,12 @@
                   </div>
                 </td>
                 <td style="font-size: 7pt;" class="center">{{ examen.examen_at }}</td>
-                <td style="font-size: 7pt;" class="center">{{ examen.resultados.tiempo | secondsToDateTime:true }}</td>
-                <td class="center">{{ examen.resultados.cantidad_pregs }}</td>
-                <td class="center">{{ examen.resultados.correctas }}
+                <td style="font-size: 7pt;" class="center">{{ examen.res_tiempo_format }}</td>
+                <td class="center">{{ examen.res_cant_pregs }}</td>
+                <td class="center">{{ examen.res_correctas }}
                   <md-tooltip>Correctas</md-tooltip>
                 </td>
-                <td class="center td-contenedora">{{ examen.resultados.promedio | decimales_if:1 }}%
+                <td class="center td-contenedora"> <span ng-show="examen.res_by_promedio">{{ examen.res_promedio | decimales_if:1 }}%</span><span ng-hide="examen.res_by_promedio">{{ examen.res_puntos }}</span>
                   <div class="menu-puesto-exam hidden-print"> 
                     <div class="btn-group"><a href="" ng-click="mostrarPuesto(examen, $index +1, entidad)" class="btn btn-default btn-xs"><i class="fa fa-child"></i>
                         <md-tooltip>Mostrar en pantalla</md-tooltip></a><a href="" ng-click="eliminarExamen(examen)" class="btn btn-danger btn-xs"><i class="fa fa-times"></i>

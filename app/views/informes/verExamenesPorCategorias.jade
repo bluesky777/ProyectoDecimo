@@ -81,11 +81,14 @@
 									| {{ examen.alias_entidad }}
 
 							td(style="font-size: 7pt;") {{ examen.examen_at }}
-							td(style="font-size: 7pt;") {{ examen.resultados.tiempo | secondsToDateTime:true }}
-							td {{ examen.resultados.cantidad_pregs }}
-							td {{ examen.resultados.correctas }}
+							td(style="font-size: 7pt;") {{ examen.res_tiempo_format }}
+							td {{ examen.res_cant_pregs }}
+							td {{ examen.res_correctas }}
 								md-tooltip Correctas
-							td.td-contenedora {{ examen.resultados.promedio | decimales_if:1 }}%
+							td.td-contenedora
+								span(ng-show="examen.res_by_promedio") {{ examen.res_promedio | decimales_if:1 }}%
+								span(ng-hide="examen.res_by_promedio") {{ examen.res_puntos }}
+
 								.menu-puesto-exam.hidden-print 
 									.btn-group
 										a.btn.btn-default.btn-xs(href="" ng-click="mostrarPuesto(examen, $index +1, entidad)")
@@ -112,6 +115,9 @@
 								| Participante
 						th.center 
 							a(href="")
+								| Ent
+						th.center 
+							a(href="")
 								| Fecha
 							md-tooltip Fecha realizado
 						th.center 
@@ -134,12 +140,13 @@
 								.ellipsis200.usuario-listado 
 									| {{ examen.nombres + ' ' + examen.apellidos }}
 
+							td.center(style="font-size: 7pt;") {{ examen.alias_entidad }}
 							td.center(style="font-size: 7pt;") {{ examen.examen_at }}
-							td.center(style="font-size: 7pt;") {{ examen.resultados.tiempo | secondsToDateTime:true }}
-							td.center {{ examen.resultados.cantidad_pregs }}
-							td.center {{ examen.resultados.correctas }}
+							td.center(style="font-size: 7pt;") {{ examen.res_tiempo_format }}
+							td.center {{ examen.res_cant_pregs }}
+							td.center {{ examen.res_correctas }}
 								md-tooltip Correctas
-							td.center.td-contenedora {{ examen.resultados.promedio | decimales_if:1 }}%
+							td.center.td-contenedora {{ examen.res_promedio | decimales_if:1 }}%
 								.menu-puesto-exam.hidden-print 
 									.btn-group
 										a.btn.btn-default.btn-xs(href="" ng-click="mostrarPuesto(examen, $index +1, entidad)")

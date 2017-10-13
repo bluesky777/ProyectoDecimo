@@ -192,13 +192,18 @@
   </div>
   <div class="panel-body">
     <div class="row">
-      <div class="col-xs-12 col-md-7">
-        <select multiple="true" style="width: 150px; height: 150px; font-size: 9pt">
-          <option ng-repeat="categoria in categorias_king" ng-model="cmdCategSelected" ng-click="cmdClickCategSelected(categoria)">{{categoria.nombre}}</option>
-        </select>
-        <select multiple="true" style="width: 250px; height: 150px; font-size: 9pt; overflow: scroll">
-          <option ng-repeat="pregunta in cmdPreguntasTraduc" ng-model="cmdPreguntaSelected" ng-click="cmdClickPreguntaSelected(pregunta, $index)" ng-bind-html="($index+1) + '. ' + pregunta.enunciado"> </option>
-        </select><br><span style="font-weight: bold;">{{ 'PREG_TL' | translate }}: </span>{{ SocketData.config.info_evento.preg_actual }}
+      <div style="height: 150px; font-size: 9pt; border: solid 1px #ccc; padding: 0px" class="col-xs-12 col-sm-4 col-md-3 col-lg-2">
+        <div ng-repeat="categoria in categorias_king" ng-click="cmdClickCategSelected(categoria)" ng-class="{seleccionada: categoria.seleccionada }">
+           
+          {{categoria.nombre}}
+        </div>
+      </div>
+      <div style="height: 150px; font-size: 9pt; overflow: scroll; border: solid 1px #ccc; padding: 0px" class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
+        <div ng-repeat="pregunta in cmdPreguntasTraduc" ng-click="cmdClickPreguntaSelected(pregunta, $index)" ng-bind-html="($index+1) + '. ' + pregunta.enunciado" ng-class="{seleccionada: pregunta.seleccionada }" style="height: 35px; width: 160%; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;"> </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-md-7"><span style="font-weight: bold;">{{ 'PREG_TL' | translate }}: </span>{{ SocketData.config.info_evento.preg_actual }}
         <input ng-model="SocketData.config.info_evento.preg_actual" type="number" style="width: 60px;">
         <div uib-dropdown class="btn-group">
           <button ng-click="showQuestion()" class="btn btn-default"> <i class="fa fa-question-circle"></i>{{ 'MOSTRAR_PREGUNTA_TL' | translate }} </button><a aria-label="Abrir menú" uib-dropdown-toggle class="btn btn-default right"><span>{{cliente.categsel_abrev}}</span>
@@ -214,8 +219,11 @@
             <li><a ng-click="sc_reveal_answer()">Revelar correcta</a></li>
           </ul>
           <!--button.btn.btn-default(ng-click="showPuntajeParticip()") {{ 'MOSTRAR_PUNTAJE_TL' | translate }} -->
-        </div>
+        </div><br>
+        <hr>
         <md-checkbox ng-click="toggleShowLogoEntidadParticipantes()" ng-true-value="1" ng-false-value="0" ng-model="cmdShowLogoEntidadPartici" aria-label="Mostrar logos">{{ 'MOSTRAR_LOGO_ENTIDADES_TL' | translate }} </md-checkbox>
+        <md-checkbox ng-model="silenciar_respuestas" aria-label="Silenciar respuestas">Silenciar respuestas</md-checkbox>
+        <md-checkbox ng-model="silenciar_todo" aria-label="Silenciar todo">Silenciar todo</md-checkbox>
       </div>
     </div>
     <div style="margin-top: 10px;" class="row">
@@ -225,9 +233,9 @@
           <button ng-click="showParticipantes()" class="btn btn-default"> <i class="fa fa-users"></i>{{ 'MOSTRAR_PARTICIPANTES_TL' | translate }} </button><a aria-label="Abrir menú" uib-dropdown-toggle class="btn btn-default right"><span>{{cliente.categsel_abrev}}</span>
             <div class="fa fa-chevron-right"></div></a>
           <ul uib-dropdown-menu aria-labelledby="simple-dropdown" class="dropdown-menu">
-            <li><a ng-click="cargar_resultados()">Cargar resultados actuales</a></li>
+            <li><a ng-click="cargar_resultados()">1. Cargar resultados actuales</a></li>
             <li><a ng-click="sc_mostrar_resultados_actuales()"> 
-                <div class="fa fa-screen"> </div><span>  Mostrar resultados</span></a></li>
+                <div class="fa fa-screen"> </div><span> 2. Mostrar resultados</span></a></li>
           </ul>
         </div><a href="" ng-click="configurar_imagenes()" style="display: block; margin-top: 12px; margin-bottom: 8px" ng-hide="imagenes">{{ 'CONFIGURAR_FONDO_TL' | translate }} </a>
       </div>
@@ -255,7 +263,7 @@
           <div style="margin-top: 15px;" class="form-group">
             <div class="input-group">
               <md-tooltip>{{ 'CAMBIAR_TELEPROMPTER_TL' | translate }}  </md-tooltip>
-              <input placeholder="Escriba mensaje" ng-model="msg_teleprompter" style="border: 1px solid #ccc; border-right: 0px;" class="form-control">
+              <input placeholder="Escriba mensaje a mostrar" ng-model="msg_teleprompter" style="border: 1px solid #ccc; border-right: 0px;" class="form-control">
               <div class="input-group-btn">
                 <button type="button" ng-click="cambiar_teleprompter()" style="height: 34px; border-left: 0px;" class="btn btn-default"> <i class="fa fa-align-left"></i></button>
               </div>
@@ -271,8 +279,8 @@
     </div>
     <div class="row">
       <div class="col-xs-12 col-md-7">
-        <md-content>
-          <div style="width: 200px;margin-top: 15px;" class="form-group">{{ 'ENVIAR_CLIENTES_SELECCIONADOS_A_UNA_PREGUNTA_TL' | translate }}: 
+        <md-content><a href="" ng-click="enviar_clientes_a_preg = true" style="display: block; margin-top: 12px; margin-bottom: 8px" ng-hide="enviar_clientes_a_preg">Enviar clientes a pregunta... </a>
+          <div style="width: 200px;margin-top: 15px;" ng-show="enviar_clientes_a_preg" class="form-group">{{ 'ENVIAR_CLIENTES_SELECCIONADOS_A_UNA_PREGUNTA_TL' | translate }}: 
             <div class="input-group">
               <md-tooltip>{{ 'ENVIAR_CLIENTES_SELECCIONADOS_A_UNA_PREGUNTA_TL' | translate }}  </md-tooltip>
               <input type="number" min="1" placeholder="Número" ng-model="cmdNoPregunta" style="border: 1px solid #ccc; border-right: 0px;" class="form-control">

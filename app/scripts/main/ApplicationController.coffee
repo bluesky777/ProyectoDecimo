@@ -50,9 +50,12 @@ angular.module('WissenSystem')
 		$scope.idiomas_del_sistema()
 	(r2)->
 		if r2.status == 404
+			###
 			answer = confirm("Si es la primera vez, debes actializar la página ¿Actualizar ahora?")
 			if (answer)
 				location.reload()
+			###
+			location.reload()
 		else
 			console.log 'No se trajeron los idiomas del sistema.', r2
 	)

@@ -78,20 +78,22 @@
 
 							td {{ examen.abrev_categ }}
 							td(style="font-size: 7pt;") {{ examen.examen_at }}
-							td(style="font-size: 7pt;") {{ examen.resultados.tiempo | secondsToDateTime:true }}
-							td {{ examen.resultados.cantidad_pregs }}
-							td {{ examen.resultados.correctas }}
+							td(style="font-size: 7pt;") {{ examen.res_tiempo | secondsToDateTime:true }}
+							td {{ examen.res_cant_pregs }}
+							td {{ examen.res_correctas }}
 								md-tooltip Correctas
-							td.td-contenedora {{ examen.resultados.promedio | decimales_if:1 }}%
+							td.td-contenedora 
+								span(ng-show="examen.res_by_promedio") {{ examen.res_promedio | decimales_if:1 }}%
+								span(ng-hide="examen.res_by_promedio") {{ examen.res_puntos }}
 
-									.menu-puesto-exam 
-										.btn-group
-											a.btn.btn-default.btn-xs(href="" ng-click="mostrarPuesto(examen, $index +1)")
-												i.fa.fa-child
-												md-tooltip Mostrar en pantalla
-											a.btn.btn-danger.btn-xs(href="" ng-click="eliminarExamen(examen)")
-												i.fa.fa-times
-												md-tooltip Eliminar examen
+								.menu-puesto-exam 
+									.btn-group
+										a.btn.btn-default.btn-xs(href="" ng-click="mostrarPuesto(examen, $index +1)")
+											i.fa.fa-child
+											md-tooltip Mostrar en pantalla
+										a.btn.btn-danger.btn-xs(href="" ng-click="eliminarExamen(examen)")
+											i.fa.fa-times
+											md-tooltip Eliminar examen
 
 
 

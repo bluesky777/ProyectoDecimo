@@ -2,6 +2,7 @@ angular.module('WissenSystem')
 
 .factory('MySocket', ['App', '$q', '$rootScope', 'Perfil', '$timeout', '$cookies', '$http', '$state', 'SocketData', 'SocketClientes', '$filter', 'webNotification', (App, $q, $rootScope, Perfil, $timeout, $cookies, $http, $state, SocketData, SocketClientes, $filter, webNotification) ->
 
+
 	#Open a WebSocket connection
 	# Verifico que no tenga puerto asignado
 	dominioSplit 	= localStorage.getItem('dominio').split(':')
@@ -235,6 +236,17 @@ angular.module('WissenSystem')
 					$state.go('proyectando.participantes')
 	);
 
+	socket.on('sc_mostrar_resultados_actuales', (data)->
+		rolesFound = $filter('filter')(Perfil.User().roles, {name: 'Pantalla'})
+		if rolesFound
+			if rolesFound.length > 0
+				$rootScope.examenes_cargados = data.examenes_cargados
+				if $state.is('proyectando.puntajes_actuales')
+					$rootScope.$apply()
+				else
+					$state.go('proyectando.puntajes_actuales')
+	);
+
 	socket.on('sc_show_barras', (data)->
 		get_clts()
 		
@@ -277,13 +289,17 @@ angular.module('WissenSystem')
 	socket.on('sc_answered', (data)-> # Me avisan que alguien respondió algo
 		get_clts()
 
-		if data.resourceId != Perfil.getResourceId()
-			if data.cliente.answered == 'correct'
-				audio = new Audio('/sounds/Pin.wav');
-				audio.play();
-			else
-				audio = new Audio('/sounds/Error.wav');
-				audio.play();
+		if not $state.includes('proyectando') 
+			console.log $rootScope.silenciar_respuestas , $rootScope.silenciar_todo 
+			if !$rootScope.silenciar_respuestas 
+				if !$rootScope.silenciar_todo
+					if data.resourceId != Perfil.getResourceId()
+						if data.cliente.answered == 'correct'
+							audio = new Audio('/sounds/Pin.wav');
+							audio.play();
+						else
+							audio = new Audio('/sounds/Error.wav');
+							audio.play();
 	);
 
 	socket.on('next_question', (data)-> # Me avisan que alguien respondió algo
@@ -426,8 +442,9 @@ angular.module('WissenSystem')
 
 	empezar_examen = ()->
 		@emit('empezar_examen')
-		audio = new Audio('/sounds/Sirviendo.wav');
-		audio.play();
+		if !$rootScope.silenciar_todo
+			audio = new Audio('/sounds/Sirviendo.wav');
+			audio.play();
 
 	empezar_examen_cliente = (resourceId)->
 		@emit('empezar_examen_cliente', { resourceId: resourceId })
@@ -455,8 +472,9 @@ angular.module('WissenSystem')
 			$timeout(()->
 				@emit('sc_show_puntaje_particip', { cliente: client })
 			, 1800)
-			audio = new Audio('/sounds/Siguiente.wav');
-			audio.play();
+			if !$rootScope.silenciar_todo
+				audio = new Audio('/sounds/Siguiente.wav');
+				audio.play();
 		else
 			@emit('sc_show_puntaje_particip', { cliente: client })
 
@@ -465,8 +483,9 @@ angular.module('WissenSystem')
 			$timeout(()=>
 				@emit('sc_show_puntaje_examen', { examen: examen })
 			, 1800)
-			audio = new Audio('sounds/Primer_lugar.wav');
-			audio.play();
+			if !$rootScope.silenciar_todo
+				audio = new Audio('sounds/Primer_lugar.wav');
+				audio.play();
 		else
 			@emit('sc_show_puntaje_examen', { examen: examen })
 
@@ -477,8 +496,9 @@ angular.module('WissenSystem')
 	sc_next_question = ()->
 		SocketData.set_waiting()
 		@emit('next_question')
-		audio = new Audio('/sounds/Siguiente.wav');
-		audio.play();
+		if !$rootScope.silenciar_todo
+			audio = new Audio('/sounds/Siguiente.wav');
+			audio.play();
 
 	sc_next_question_cliente = (cliente)->
 		client = SocketData.cliente(cliente.resourceId)

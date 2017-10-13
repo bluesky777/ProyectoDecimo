@@ -18,6 +18,14 @@ angular.module('WissenSystem')
 	$scope.fondo 					= {}
 
 
+	$rootScope.silenciar_todo 			= if localStorage.getItem('silenciar_todo') then localStorage.getItem('silenciar_todo') else false
+	$rootScope.silenciar_todo 			= if $rootScope.silenciar_todo == 'true' then true else false
+	$scope.silenciar_todo 				= $rootScope.silenciar_todo
+
+	$rootScope.silenciar_respuestas 	= if localStorage.getItem('silenciar_respuestas') then localStorage.getItem('silenciar_respuestas') else false
+	$rootScope.silenciar_respuestas 	= if $rootScope.silenciar_respuestas == 'true' then true else false
+	$scope.silenciar_respuestas 		= $rootScope.silenciar_respuestas
+
 
 	MySocket.on('take:usuarios', (data)->
 		console.log 'Llegaron los usuarios'
@@ -177,8 +185,9 @@ angular.module('WissenSystem')
 		ids = []
 
 		for partic in SocketClientes.clientes
-			if partic.logged and partic.categsel>0
-				ids.push partic.user_data.id
+			if partic.examen_actual_id
+				ids.push partic.examen_actual_id
+
 
 		Restangular.one('puestos/examenes-ejecutandose').customPUT({ids: ids}).then((r)->
 			$scope.examenes_cargados = r
@@ -189,7 +198,7 @@ angular.module('WissenSystem')
 
 
 	$scope.sc_mostrar_resultados_actuales = ()->
-		MySocket.sc_mostrar_resultados_actuales(examenes_cargados: $scope.examenes_cargados)
+		MySocket.sc_mostrar_resultados_actuales($scope.examenes_cargados)
 
 
 
@@ -215,15 +224,13 @@ angular.module('WissenSystem')
 
 
 	$scope.registrar_a = (cliente)->
-		res = confirm "¿Establecer como equipo oficial a " + cliente.nombre_punto + "?"
-		if res 
-			MySocket.registrar_a(cliente.resourceId)
+		toastr.info "Ahora es un equipo oficial", cliente.nombre_punto
+		MySocket.registrar_a(cliente.resourceId)
 
 
 	$scope.desregistrar_a = (cliente)->
-		res = confirm "El equipo " + cliente.nombre_punto + " dejará de ser oficial, ¿está seguro?"
-		if res 
-			MySocket.desregistrar_a(cliente.resourceId)
+		toastr.info "Deja de ser oficial", cliente.nombre_punto
+		MySocket.desregistrar_a(cliente.resourceId)
 
 
 	$scope.categoriaSelect = (cliente)->
@@ -305,6 +312,11 @@ angular.module('WissenSystem')
 		MySocket.sc_show_puntaje_particip($scope.cmdCategSelected)
 
 	$scope.cmdClickCategSelected = (categoria)->
+		for categ in $scope.categorias_king
+			categ.seleccionada = false
+
+		categoria.seleccionada = true
+
 		$scope.cmdCategSelected = categoria
 		$scope.cmdPreguntasTraduc = []
 
@@ -324,11 +336,26 @@ angular.module('WissenSystem')
 
 
 	$scope.cmdClickPreguntaSelected = (pregunta, indice)->
+		for pregu in $scope.cmdPreguntasTraduc
+			pregu.seleccionada = false
+
+		pregunta.seleccionada = true
 		$scope.cmdNoPregSelected 		= indice + 1
 		$scope.cmdPreguntaSelected 		= pregunta
 
 	$scope.toggleShowLogoEntidadParticipantes = ()->
 		MySocket.sc_show_logo_entidad_partici(!$scope.cmdShowLogoEntidadPartici) # El modelo no cambia hasta salir de esta función
+
+	$scope.$watch('silenciar_respuestas', (newVal, oldVal)->
+		$rootScope.silenciar_respuestas 	= newVal
+		localStorage.silenciar_respuestas 	= newVal
+	)
+
+	$scope.$watch('silenciar_todo', (newVal, oldVal)->
+		$rootScope.silenciar_todo 		= newVal
+		localStorage.silenciar_todo 	= newVal
+	)
+	
 
 	$scope.nextQuestion = ()->
 		MySocket.sc_next_question() # El modelo no cambia hasta salir de esta función

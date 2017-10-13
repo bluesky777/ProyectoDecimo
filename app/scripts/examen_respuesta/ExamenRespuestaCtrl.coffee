@@ -2,14 +2,14 @@ angular.module('WissenSystem')
 
 .controller('ExamenRespuestaCtrl', ['$scope', 'Restangular', 'toastr', '$filter', 'AuthService', '$state', '$uibModal', 'App', '$rootScope', 'resolved_user', '$interval', '$timeout', 'MySocket', 'SocketData', ($scope, Restangular, toastr, $filter, AuthService, $state, $modal, App, $rootScope, resolved_user, $interval, $timeout, MySocket, SocketData)->
 
-	$scope.USER = resolved_user
-	$scope.imagesPath = App.images
-	$scope.pregunta_actual = 0
+	$scope.USER 				= resolved_user
+	$scope.imagesPath 			= App.images
+	$scope.pregunta_actual 		= 0
 	$scope.pregunta_actual_porc = 0
-	$scope.total_preguntas = 0
+	$scope.total_preguntas 		= 0
+	$scope.waiting_question 	= false
+	$scope.opcion_eligida 		= ''
 	$scope.cambiarTema('theme-one')
-	$scope.waiting_question = false
-	$scope.opcion_eligida 	= ''
 
 	AuthService.verificar_acceso()
 
@@ -26,6 +26,9 @@ angular.module('WissenSystem')
 			console.log 'Examen no válido', $rootScope.examen_actual
 			$rootScope.permiso_de_salir = true
 			$state.transitionTo 'panel' 
+
+
+		MySocket.emit('set_my_examen_id', { examen_actual_id: $rootScope.examen_actual.examen_id })
 
 
 		$scope.categoria_traducida = $filter('categoriasTraducidas')([$rootScope.examen_actual.categoria], $scope.USER.idioma_main_id)
@@ -161,7 +164,7 @@ angular.module('WissenSystem')
 			$scope.USER.evento_actual = $scope.evento_actual
 
 		$scope.tiempo_max = if $scope.USER.evento_actual.gran_final then $rootScope.examen_actual.duracion_preg else ($rootScope.examen_actual.duracion_exam*60)
-
+		console.log $scope.tiempo_max, '$scope.tiempo_max'
 
 		$scope.pregunta_actual = $filter('noPregActual')($scope.examen_actual.preguntas)
 		$scope.total_preguntas = $filter('cantPregsEvaluacion')($scope.examen_actual.preguntas)

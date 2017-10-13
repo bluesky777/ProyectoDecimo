@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.controller('IniciarCtrl', ['$scope', 'Restangular', 'toastr', '$filter', 'AuthService', '$state', '$uibModal', 'App', 'SocketData', 'MySocket', 'Perfil', '$rootScope', ($scope, Restangular, toastr, $filter, AuthService, $state, $modal, App, SocketData, MySocket, Perfil, $rootScope)->
+.controller('IniciarCtrl', ['$scope', 'Restangular', 'toastr', '$filter', 'AuthService', '$state', '$uibModal', 'App', 'SocketData', 'MySocket', 'Perfil', '$rootScope', '$interval', ($scope, Restangular, toastr, $filter, AuthService, $state, $modal, App, SocketData, MySocket, Perfil, $rootScope, $interval)->
 
 	
 	$scope.$state 				= $state
@@ -8,6 +8,8 @@ angular.module('WissenSystem')
 	$scope.examenes_puntajes 	= []
 	$scope.hasRoleOrPerm 		= AuthService.hasRoleOrPerm
 
+
+	$interval.cancel($rootScope.promiseInterval) # Tal vez volví a esta pantalla de inicio después de un examen que no ha detenido el tiempo
 
 
 	$scope.traer_categorias_evento = ()->

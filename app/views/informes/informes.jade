@@ -16,7 +16,11 @@
 										| Evento: 
 										b {{event.nombre}} ({{event.alias}})
 
-								md-checkbox(ng-model="config.gran_final" aria-label="Gran final") Solo exámenes hechos en 'Gran final'
+								div(style="text-align: center;")
+									md-button.md-raised(ng-click="cargarResultados()") Cargar resultados
+
+
+								md-checkbox(ng-model="config.gran_final" aria-label="Gran final") Solo exámenes hechos de forma 'Dirigida'
 
 								div(style="text-align: center;")
 									md-button.md-raised(ng-click="traerTodosLosExamenes()") Traer todos los exámenes
