@@ -28,7 +28,19 @@
     </div>
   </div>
 </div>
-<div ng-if="!hasRoleOrPerm('Pantalla')" class="row">
+<div ng-if="hasRoleOrPerm('Presentador')" class="row">
+  <div class="col-md-6 pl0-sm pr0-sm">
+    <div class="panel panel-default panel-hovered panel-stacked mb20">
+      <div class="panel-body">
+        <div id="pregunta-en-pantalla">
+          <!-- Pregunta que se está mostrando en pantalla-->
+          <pregunta-en-pantalla ng-show="SocketData.config.pregunta.id"></pregunta-en-pantalla>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div ng-if="!hasRoleOrPerm('Pantalla') &amp;&amp; !hasRoleOrPerm('Presentador')" class="row">
   <div class="col-md-6 pl0-sm pr0-sm">
     <div class="panel panel-default panel-hovered panel-stacked mb20">
       <div class="panel-heading"> 

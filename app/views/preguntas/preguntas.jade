@@ -36,7 +36,7 @@
 				.row
 					.col-lg-12
 						.btn-group(style="margin-bottom: 20px;")
-							label.btn.btn-primary(ng-model="showSelectables" uib-btn-checkbox) 
+							label.btn.btn-primary(ng-model="showSelectables" uib-btn-checkbox style="height: 33px;") 
 								span.fa.fa-check-square-o
 							label.btn.btn-primary(ng-model="showOptions" uib-btn-checkbox) Ver opciones
 							label.btn.btn-primary(ng-model="showCorrects" uib-btn-checkbox) Revelar correctas
@@ -65,6 +65,11 @@
 					edit-pregunta(ng-if="editando")
 					// Editar un grupo
 					edit-contenido(ng-if="editandoContenido")
+
+
+				#pregunta-en-pantalla
+					// Pregunta que se está mostrando en pantalla
+					pregunta-en-pantalla(ng-show="SocketData.config.pregunta.id")
 
 
 				div(ng-repeat="pg_pregunta in pg_preguntas | filter:preg_buscar " 

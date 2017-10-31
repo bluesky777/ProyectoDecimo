@@ -242,35 +242,36 @@ sidenav-edit-usu-dir
 						i.fa.fa-question-circle
 						| {{ 'MOSTRAR_PREGUNTA_TL' | translate }} 
 
-					button.btn.btn-default(ng-click="sc_reveal_answer()") 
-						i.fa.fa-rss
-						| Revelar
-						md-tooltip Revelar correcta
+					span(ng-if="false") // Esto es para borrar
+						button.btn.btn-default(ng-click="sc_reveal_answer()") 
+							i.fa.fa-rss
+							| Revelar
+							md-tooltip Revelar correcta
 
-					button.btn.btn-default(ng-click="selec_opc_in_question(0)") 
-						i.fa.fa-hand-o-up
-						| A
-						md-tooltip Seleccionar opción A
-					button.btn.btn-default(ng-click="selec_opc_in_question(1)") 
-						i.fa.fa-hand-o-up
-						| B
-						md-tooltip Seleccionar B
-					button.btn.btn-default(ng-click="selec_opc_in_question(2)") 
-						i.fa.fa-hand-o-up
-						| C
-						md-tooltip Seleccionar C
-					button.btn.btn-default(ng-click="selec_opc_in_question(3)") 
-						i.fa.fa-hand-o-up
-						| D
-						md-tooltip Seleccionar D
-					button.btn.btn-default(ng-click="selec_opc_in_question(4)") 
-						i.fa.fa-hand-o-up
-						| E
-						md-tooltip Seleccionar E
-					button.btn.btn-default(ng-click="selec_opc_in_question(5)") 
-						i.fa.fa-hand-o-up
-						| F
-						md-tooltip Seleccionar F
+						button.btn.btn-default(ng-click="selec_opc_in_question(0)") 
+							i.fa.fa-hand-o-up
+							| A
+							md-tooltip Seleccionar opción A
+						button.btn.btn-default(ng-click="selec_opc_in_question(1)") 
+							i.fa.fa-hand-o-up
+							| B
+							md-tooltip Seleccionar B
+						button.btn.btn-default(ng-click="selec_opc_in_question(2)") 
+							i.fa.fa-hand-o-up
+							| C
+							md-tooltip Seleccionar C
+						button.btn.btn-default(ng-click="selec_opc_in_question(3)") 
+							i.fa.fa-hand-o-up
+							| D
+							md-tooltip Seleccionar D
+						button.btn.btn-default(ng-click="selec_opc_in_question(4)") 
+							i.fa.fa-hand-o-up
+							| E
+							md-tooltip Seleccionar E
+						button.btn.btn-default(ng-click="selec_opc_in_question(5)") 
+							i.fa.fa-hand-o-up
+							| F
+							md-tooltip Seleccionar F
  
 				br
 				hr
@@ -398,6 +399,14 @@ puestos-dir(ng-if="show_result_table")
 	.panel-body
 
 		chat-container-dir
+
+
+.panel.panel-default.panel-hovered.panel-stacked.mb20.mr--15-sm.ml--15-sm
+
+	.panel-body
+
+		pregunta-en-pantalla(ng-show="SocketData.config.pregunta.id")
+
 
 
 

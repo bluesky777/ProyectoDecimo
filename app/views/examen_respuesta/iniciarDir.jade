@@ -25,8 +25,19 @@
 					| Iniciar proyección 
 
 
+.row(ng-if="hasRoleOrPerm('Presentador')")
+	.col-md-6.pl0-sm.pr0-sm
+		.panel.panel-default.panel-hovered.panel-stacked.mb20
+			.panel-body
+				
+				#pregunta-en-pantalla
+					// Pregunta que se está mostrando en pantalla
+					pregunta-en-pantalla(ng-show="SocketData.config.pregunta.id")
 
-.row(ng-if="!hasRoleOrPerm('Pantalla')")
+
+
+
+.row(ng-if="!hasRoleOrPerm('Pantalla') && !hasRoleOrPerm('Presentador')")
 	.col-md-6.pl0-sm.pr0-sm
 		.panel.panel-default.panel-hovered.panel-stacked.mb20
 			.panel-heading 

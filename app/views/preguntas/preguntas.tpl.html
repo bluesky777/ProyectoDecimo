@@ -38,7 +38,7 @@
         <div class="row">
           <div class="col-lg-12">
             <div style="margin-bottom: 20px;" class="btn-group">
-              <label ng-model="showSelectables" uib-btn-checkbox class="btn btn-primary"> <span class="fa fa-check-square-o"></span></label>
+              <label ng-model="showSelectables" uib-btn-checkbox style="height: 33px;" class="btn btn-primary"> <span class="fa fa-check-square-o"></span></label>
               <label ng-model="showOptions" uib-btn-checkbox class="btn btn-primary">Ver opciones</label>
               <label ng-model="showCorrects" uib-btn-checkbox class="btn btn-primary">Revelar correctas</label>
             </div>
@@ -60,6 +60,10 @@
           <edit-pregunta ng-if="editando"></edit-pregunta>
           <!-- Editar un grupo-->
           <edit-contenido ng-if="editandoContenido"></edit-contenido>
+        </div>
+        <div id="pregunta-en-pantalla">
+          <!-- Pregunta que se está mostrando en pantalla-->
+          <pregunta-en-pantalla ng-show="SocketData.config.pregunta.id"></pregunta-en-pantalla>
         </div>
         <div ng-repeat="pg_pregunta in pg_preguntas | filter:preg_buscar " ng-class-odd="'fondo-gris-odd'" style="position: relative;">
           <view-pregunta ng-if="pg_pregunta.is_preg"></view-pregunta>

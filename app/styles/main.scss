@@ -130,19 +130,23 @@ a:hover, a:focus {
 @keyframes color_opcion_acertada_change
   {
     0%   {background: #ccc;}
-    20%  {background: #3f51b5;}
-    40%  {background: #ccc;}
-    60%  {background: #3f51b5;}
-    80%  {background: #ccc;}
+    15%  {background: #3f51b5;}
+    30%  {background: #ccc;}
+    45%  {background: #3f51b5;}
+    60%  {background: #ccc;}
+    75% {background: #3f51b5;}
+    88%  {background: #ccc;}
     100% {background: #3f51b5;}
   }
 @keyframes color_opcion_no_acertada_change
   {
     0%   {background: #ccc;}
-    20%  {background: #E91E63;}
-    40%  {background: #ccc;}
-    60%  {background: #E91E63;}
-    80%  {background: #ccc;}
+    15%  {background: #E91E63;}
+    30%  {background: #ccc;}
+    45%  {background: #E91E63;}
+    60%  {background: #ccc;}
+    75% {background: #E91E63;}
+    88%  {background: #ccc;}
     100% {background: #E91E63;}
   }
 .opciones {
@@ -157,15 +161,15 @@ a:hover, a:focus {
     background: #3f51b5;
     color: #fff;
     padding-left: 10px;
-    animation: color_opcion_acertada_change 1s;
+    animation: color_opcion_acertada_change 1.5s;
     //background: #ca2a71;
 
   }
   .revelada_no_acertada {
-    background: #E91E63;
+    background: #ca2a71;
     color: #fff;
     padding-left: 10px;
-    animation: color_opcion_no_acertada_change 1s;
+    animation: color_opcion_no_acertada_change 1.5s;
 
   }
 }

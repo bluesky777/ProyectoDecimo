@@ -259,11 +259,19 @@ angular.module('WissenSystem')
 	);
 
 	socket.on('sc_show_question', (data)->
-		SocketData.config.pregunta 			= data.pregunta
-		SocketData.config.no_question 		= data.no_question
-		SocketData.config.reveal_answer 	= false 
-		$state.go('proyectando.question')
-		$rootScope.$apply()
+		role = Perfil.User().roles[0].name
+
+		if (role == 'Pantalla' or role == 'Presentador' or role == 'Admin')
+
+			SocketData.config.pregunta 			= data.pregunta
+			SocketData.config.no_question 		= data.no_question
+			SocketData.config.reveal_answer 	= false 
+
+			if (Perfil.User().roles[0].name == 'Pantalla')
+				$state.go('proyectando.question')
+
+			$rootScope.$apply()
+
 	);
 
 	#socket.on('selec_opc_in_question' ... 		En SCQuestionCtrl

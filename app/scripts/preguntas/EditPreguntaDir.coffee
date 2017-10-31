@@ -9,3 +9,12 @@ angular.module('WissenSystem')
 
 
 ])
+
+.directive('preguntaEnPantalla',['App', (App)-> 
+
+	restrict: 'E'
+	templateUrl: "#{App.views}preguntas/preguntaEnPantallaDir.tpl.html"
+	controller: 'PreguntaEnPantallaCtrl'
+
+
+])

@@ -2,19 +2,20 @@
 
 angular.module('WissenSystem')
 
-.controller('PreguntasCtrl', ['$scope', 'App', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 'preguntasServ', '$filter', '$timeout', '$uibModal', 
-	($scope, App, $http, Restangular, $state, $cookies, $rootScope, toastr, preguntasServ, $filter, $timeout, $modal) ->
+.controller('PreguntasCtrl', ['$scope', 'App', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 'preguntasServ', '$filter', '$timeout', '$uibModal', 'SocketData', 
+	($scope, App, $http, Restangular, $state, $cookies, $rootScope, toastr, preguntasServ, $filter, $timeout, $modal, SocketData) ->
 
-		$scope.pg_preguntas = []
-		$scope.evalu_seleccionada = {id: -1}
+		$scope.pg_preguntas 		= []
+		$scope.evalu_seleccionada 	= {id: -1}
+		$scope.SocketData 			= SocketData
 
 
-		$scope.creando 		= false
-		$scope.editando 	= false
+		$scope.creando 			= false
+		$scope.editando 		= false
 		$scope.editandoContenido = false
-		$scope.inicializado = false # Se inicializa cuando haya respuesta por preguntas
-		$scope.preguntaEdit = {}
-		$scope.contenidoEdit = {}
+		$scope.inicializado 	= false # Se inicializa cuando haya respuesta por preguntas
+		$scope.preguntaEdit 	= {}
+		$scope.contenidoEdit 	= {}
 
 		$scope.showDetail 		= false
 		$scope.showSelectables 	= false

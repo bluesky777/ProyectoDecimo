@@ -247,7 +247,7 @@ angular.module('WissenSystem')
 		else
 			return {}
 
-
+	### Borrar este pedazo
 	$scope.opcion_seleccionada = -1
 
 	$scope.selec_opc_in_question = (opcion)->
@@ -271,7 +271,7 @@ angular.module('WissenSystem')
 					else
 						audio = new Audio('/sounds/Revalada_incorrecta.wav');
 						audio.play();		
-		
+	###
 
 	$scope.cambiarCategSel = (cliente, categoria)->
 		found = false
