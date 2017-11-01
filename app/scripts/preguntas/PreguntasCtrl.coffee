@@ -180,6 +180,55 @@ angular.module('WissenSystem')
 			)
 
 
+		
+		$scope.eliminarPreguntas = ()->
+			seleccionadas = []
+			
+			for pregunta in $scope.pg_preguntas
+				if pregunta.seleccionada
+					seleccionadas.push pregunta
+			
+			modalInstance = $modal.open({
+				templateUrl: App.views + 'preguntas/removePreguntas.tpl.html'
+				controller: 'RemovePreguntasCtrl'
+				resolve: 
+					preguntas: ()->
+						seleccionadas
+			})
+			modalInstance.result.then( (elem)->
+				for preg, indice in $scope.pg_preguntas
+					for selec in seleccionadas
+						$scope.pg_preguntas = $filter('filter')($scope.pg_preguntas, { pg_id: '!' + selec.pg_id })
+
+				$scope.filtrarPreguntas()
+			)
+
+
+
+		$scope.asignarPreguntasAEvaluacion = ()->
+			seleccionadas = []
+			
+			for pregunta in $scope.pg_preguntas
+				if pregunta.seleccionada
+					seleccionadas.push pregunta
+			
+			modalInstance = $modal.open({
+				templateUrl: App.views + 'preguntas/asignarPreguntas.tpl.html'
+				controller: 'AsignarPreguntasAEvaluacionCtrl'
+				resolve: 
+					preguntas: ()->
+						seleccionadas
+					evaluaciones: ()->
+						$scope.evaluaciones
+			})
+			modalInstance.result.then( (elem)->
+				$scope.traerEvaluaciones()
+				console.log 'Resultado del modal: ', elem
+			)
+
+
+
+
 
 
 
@@ -323,6 +372,101 @@ angular.module('WissenSystem')
 
 		return resultado
 ])
+
+
+
+.controller('RemovePreguntasCtrl', ['$scope', '$uibModalInstance', 'preguntas', 'Restangular', 'toastr', ($scope, $modalInstance, preguntas, Restangular, toastr)->
+	$scope.preguntas = preguntas
+
+	$scope.ok = ()->
+		Restangular.all('preguntas/destroy-varias').customPUT({preguntas: preguntas}).then((r)->
+			toastr.success 'Preguntas eliminadas con éxito.', 'Eliminadas'
+		, (r2)->
+			toastr.warning 'No se pudo eliminar preguntas.', 'Problema'
+			console.log 'Error eliminando preguntas: ', r2
+		)
+		$modalInstance.close(preguntas)
+
+	$scope.cancel = ()->
+		$modalInstance.dismiss('cancel')
+
+])
+
+.controller('AsignarPreguntasAEvaluacionCtrl', ['$scope', '$uibModalInstance', 'preguntas', 'evaluaciones', 'Restangular', 'toastr', '$filter', ($scope, $modalInstance, preguntas, evaluaciones, Restangular, toastr, $filter)->
+	$scope.preguntas 		= preguntas
+	$scope.evaluaciones 	= evaluaciones
+	$scope.asignando 		= false
+	$scope.selected 		= false
+
+	$scope.selected = evaluaciones[evaluaciones.length - 1].id
+
+	$scope.ok = ()->
+
+		$scope.asignando = true
+
+		datos = 
+			preguntas: 		preguntas
+			evaluacion_id: 	$scope.selected
+
+		Restangular.all('pregunta_evaluacion/asignar-preguntas').customPUT(datos).then((r)->
+			toastr.success 'Preguntas asignadas con éxito.'
+			$scope.asignando = false
+
+			evalua = $filter('filter')(evaluaciones, {id: $scope.selected})[0]
+			
+			for preg in $scope.preguntas
+				evalua.preguntas_evaluacion.push preg
+			
+			$modalInstance.close(r)
+		, (r2)->
+			toastr.warning 'No se pudo asignar las preguntas.', 'Problema'
+			console.log 'Error asignando preguntas: ', r2
+			$scope.asignando = false
+		)
+		
+
+	$scope.cancel = ()->
+		$modalInstance.dismiss('cancel')
+
+])
+
+
+
+.controller('CambiarCategoriaAPreguntasCtrl', ['$scope', '$uibModalInstance', 'pregunta', 'categorias', 'idiomaPreg', 'Restangular', 'toastr', '$filter', ($scope, $modalInstance, pregunta, categorias, idiomaPreg, Restangular, toastr, $filter)->
+	$scope.categorias = categorias
+	$scope.pregunta = pregunta
+	$scope.idiomaPreg = idiomaPreg
+	$scope.cambiando = false
+	$scope.categoria = false
+
+	$scope.categoria = categorias[categorias.length - 1].id
+
+
+	$scope.ok = ()->
+
+		$scope.cambiando = true
+
+		datos = 
+			pregunta_id: pregunta.pg_id
+			categoria_id: $scope.categoria
+
+		Restangular.all('preguntas/cambiar-categoria').customPUT(datos).then((r)->
+			toastr.success 'Pregunta cambiada de categoría.'
+			$scope.cambiando = false
+
+			$modalInstance.close(datos.categoria_id)
+		, (r2)->
+			toastr.warning 'No se pudo asignar la pregunta.', 'Problema'
+			console.log 'Error asignando pregunta: ', r2
+			$scope.cambiando = false
+		)
+		
+
+	$scope.cancel = ()->
+		$modalInstance.dismiss('cancel')
+
+])
+
 
 
 

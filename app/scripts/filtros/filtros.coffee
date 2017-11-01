@@ -214,29 +214,34 @@ angular.module('WissenSystem')
 
 
 .filter('orderParticipantes', [ ->
-	(items) ->
+	(items, puestos_ordenados) ->
 
-		filtered = [];
-		angular.forEach(items, (item)->
-			filtered.push(item);
-		)
+		if puestos_ordenados
 
-		sortTiempo = (a, b)->
-			if a.tiempo > b.tiempo
-				return 1
-			else if a.tiempo == b.tiempo
-				return 0
-			else
-				return -1
+			filtered = [];
+			angular.forEach(items, (item)->
+				filtered.push(item);
+			)
 
-		filtered.sort( (a, b)->
-			if a.correctas > b.correctas
-				return -1
-			else if a.correctas == b.correctas
-				return sortTiempo(a, b)
-			else
-				return 1
-		)
+			sortTiempo = (a, b)->
+				if a.tiempo > b.tiempo
+					return 1
+				else if a.tiempo == b.tiempo
+					return 0
+				else
+					return -1
+
+			filtered.sort( (a, b)->
+				if a.correctas > b.correctas
+					return -1
+				else if a.correctas == b.correctas
+					return sortTiempo(a, b)
+				else
+					return 1
+			)
+		
+		else
+			return items
 
 		return filtered;
 ])

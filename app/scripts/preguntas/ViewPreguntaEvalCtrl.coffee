@@ -7,7 +7,18 @@ angular.module('WissenSystem')
 		$scope.indexChar = (index)->
 			return String.fromCharCode(65 + index)
 
-			
+
+		$scope.actualizarOrdenPregEval = (preguntaking)->
+
+			Restangular.all('pregunta_evaluacion/actualizar-orden-pregunta').customPUT({ pg_id: preguntaking.pg_id, orden: preguntaking.orden_nuevo, pregunta_eval_id: preguntaking.pregunta_eval_id }).then((r)->
+				toastr.success 'Ordenado con éxito.'
+			, (r2)->
+				toastr.warning 'No se pudo ordenar.', 'Problema'
+				console.log 'Error ordenando pregunta: ', r2
+				$scope.quitando = false
+			)
+
+
 
 		$scope.quitarPregunta = (pregunta_king)->
 			console.log 'Aqui quito la preg', pregunta_king.pregunta_eval_id, $scope.preguntasevaluacion2

@@ -14,7 +14,9 @@ angular.module('WissenSystem')
 	AuthService.verificar_acceso()
 
 
-
+	$interval(()->
+		MySocket.emit('hasta_que_pregunta_esta_free')
+	, 5000)
 
 
 	$scope.incializar = ()->
@@ -62,7 +64,7 @@ angular.module('WissenSystem')
 				else
 					$scope.waiting_question = true
 
-			$timeout(()->
+			llamado_preventivo = $timeout(()->
 				$scope.pregunta_actual = $filter('noPregActual')($scope.examen_actual.preguntas)
 				$scope.pregunta_actual_porc = $scope.pregunta_actual / $scope.total_preguntas * 100
 
@@ -152,6 +154,10 @@ angular.module('WissenSystem')
 			destroy_next_question() # remove listener.
 			destroy_goto_question_on()
 			destroy_set_free_till_question_on()
+			
+			if angular.isDefined(llamado_preventivo)
+				$interval.cancel(llamado_preventivo)
+				llamado_preventivo = undefined
 		);
 
 

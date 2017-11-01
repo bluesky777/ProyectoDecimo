@@ -309,20 +309,26 @@ angular.module('WissenSystem')
 							audio.play();
 	);
 
-	socket.on('next_question', (data)-> # Me avisan que alguien respondió algo
+	socket.on('next_question', (data)-> 
 		SocketData.set_waiting()
 		$rootScope.$apply()
 		$rootScope.$emit 'next_question'
 	);
 
-	socket.on('goto_question_no', (data)-> # Me avisan que alguien respondió algo
+	socket.on('goto_question_no', (data)-> 
 		SocketData.set_waiting()
 		$rootScope.$emit 'goto_question_no', data.numero
 	);
 
-	socket.on('set_free_till_question', (data)-> # Me avisan que alguien respondió algo
+	socket.on('set_free_till_question', (data)-> 
 		SocketData.config.info_evento.free_till_question = data.free_till_question
 		$rootScope.$emit 'set_free_till_question', data.free_till_question # En ExamenRespuestaCtrl y ParticipantesCtrl, Si estaba esperando pregunta, con esto arranca
+	);
+
+
+	socket.on('set_puestos_ordenados', (data)-> 
+		SocketData.config.info_evento.puestos_ordenados = data.puestos_ordenados
+		#$rootScope.$emit 'set_puestos_ordenados', data.puestos_ordenados # En ExamenRespuestaCtrl y ParticipantesCtrl, Si estaba esperando pregunta, con esto arranca
 	);
 
 

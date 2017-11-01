@@ -10,7 +10,7 @@ angular.module('WissenSystem')
 		pregunta: {}, 
 		reveal_answer: false, 
 		show_logo_entidad_partici: false 
-		info_evento: { examen_iniciado: false, preg_actual: 0, free_till_question: -1, img_name: '' }
+		info_evento: { examen_iniciado: false, preg_actual: 0, free_till_question: -1, img_name: '', puestos_ordenados: true }
 
 
 	desconectar = (resourceId)=>

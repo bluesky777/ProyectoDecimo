@@ -1,5 +1,5 @@
-
 angular.module('WissenSystem')
+
 
 .controller('ParticipantesCtrl', ['$scope', '$rootScope', 'App', 'SocketData', 'SocketClientes', '$filter', 'MySocket', '$timeout' 
 	($scope, $rootScope, App, SocketData, SocketClientes, $filter, MySocket, $timeout) ->
@@ -15,6 +15,8 @@ angular.module('WissenSystem')
 		return
 	]
 )
+
+
 .controller('PuntajesActualesCtrl', ['$scope', '$rootScope', 'App', 'SocketData', 'SocketClientes', '$filter', 'MySocket', '$timeout' 
 	($scope, $rootScope, App, SocketData, SocketClientes, $filter, MySocket, $timeout) ->
 		$scope.examenes_cargados = ()->
@@ -26,6 +28,8 @@ angular.module('WissenSystem')
 		return
 	]
 )
+
+
 .controller('GraficoBarrasCtrl', ['$scope', '$rootScope', 'App', 'SocketData', 'SocketClientes', '$filter', 'MySocket' 
 	($scope, $rootScope, App, SocketData, SocketClientes, $filter, MySocket) ->
 
