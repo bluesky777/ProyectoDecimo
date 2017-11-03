@@ -160,8 +160,8 @@ angular.module('WissenSystem')
 	socket.on('sesion_closed', (data)->
 		if data.clt.resourceId == Perfil.getResourceId()
 			unregister()
-			$rootScope.lastState 		= null
-			$rootScope.lastStateParam 	= null
+			localStorage.lastState 		= null
+			localStorage.lastStateParam 	= null
 			$rootScope.permiso_de_salir = true
 			Perfil.deleteUser()
 			$state.transitionTo 'login'

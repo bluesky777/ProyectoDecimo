@@ -206,28 +206,7 @@
       <div class="col-xs-12 col-md-7"><span style="font-weight: bold;">{{ 'PREG_TL' | translate }}: </span>{{ SocketData.config.info_evento.preg_actual }}
         <input ng-model="SocketData.config.info_evento.preg_actual" type="number" style="width: 60px;">
         <div uib-dropdown class="btn-group">
-          <button ng-click="showQuestion()" class="btn btn-default"> <i class="fa fa-question-circle"></i>{{ 'MOSTRAR_PREGUNTA_TL' | translate }} </button><span ng-if="false">// Esto es para borrar
-            <button ng-click="sc_reveal_answer()" class="btn btn-default"> <i class="fa fa-rss"></i>Revelar
-              <md-tooltip>Revelar correcta</md-tooltip>
-            </button>
-            <button ng-click="selec_opc_in_question(0)" class="btn btn-default"> <i class="fa fa-hand-o-up"></i>A
-              <md-tooltip>Seleccionar opción A</md-tooltip>
-            </button>
-            <button ng-click="selec_opc_in_question(1)" class="btn btn-default"> <i class="fa fa-hand-o-up"></i>B
-              <md-tooltip>Seleccionar B</md-tooltip>
-            </button>
-            <button ng-click="selec_opc_in_question(2)" class="btn btn-default"> <i class="fa fa-hand-o-up"></i>C
-              <md-tooltip>Seleccionar C</md-tooltip>
-            </button>
-            <button ng-click="selec_opc_in_question(3)" class="btn btn-default"> <i class="fa fa-hand-o-up"></i>D
-              <md-tooltip>Seleccionar D</md-tooltip>
-            </button>
-            <button ng-click="selec_opc_in_question(4)" class="btn btn-default"> <i class="fa fa-hand-o-up"></i>E
-              <md-tooltip>Seleccionar E</md-tooltip>
-            </button>
-            <button ng-click="selec_opc_in_question(5)" class="btn btn-default"> <i class="fa fa-hand-o-up"></i>F
-              <md-tooltip>Seleccionar F</md-tooltip>
-            </button></span>
+          <button ng-click="showQuestion()" class="btn btn-default"> <i class="fa fa-question-circle"></i>{{ 'MOSTRAR_PREGUNTA_TL' | translate }} </button>
         </div><br>
         <hr>
         <md-checkbox ng-click="toggleShowLogoEntidadParticipantes()" ng-true-value="1" ng-false-value="0" ng-model="cmdShowLogoEntidadPartici" aria-label="Mostrar logos">{{ 'MOSTRAR_LOGO_ENTIDADES_TL' | translate }} </md-checkbox>

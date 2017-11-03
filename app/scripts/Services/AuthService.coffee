@@ -62,7 +62,7 @@ angular.module('WissenSystem')
 				#event.preventDefault()
 				console.log 'No tiene permisos, y... '
 				
-				$rootScope.lastState = next.name
+				localStorage.lastState = next.name
 				if (authService.isAuthenticated())
 					# user is not allowed
 					$rootScope.$broadcast(AUTH_EVENTS.notAuthorized)
@@ -155,8 +155,8 @@ angular.module('WissenSystem')
 
 	authService.logout = (credentials)->
 		#Restangular.one('logout').get();
-		$rootScope.lastState = null
-		$rootScope.lastStateParam = null
+		localStorage.lastState = null
+		localStorage.lastStateParam = null
 		authService.borrarToken()
 		Perfil.deleteUser()
 		$state.transitionTo 'login'

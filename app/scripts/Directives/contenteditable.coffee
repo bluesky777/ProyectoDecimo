@@ -24,7 +24,7 @@ angular.module('WissenSystem')
 						e.preventDefault()
 					else	
 						scope.$apply(()->
-							ctrl.$setViewValue(elm.html())
+							ctrl.$viewValue = elm.html()
 						)
 				, 0)
 			)

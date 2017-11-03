@@ -38,10 +38,10 @@ angular.module('WissenSystem')
 				'report_content':
 					templateUrl: "#{App.views}informes/verTodosLosExamenes.tpl.html"
 					controller: 'VerTodosLosExamenesCtrl'
-					resolve:
-						examenes: ['Restangular', '$stateParams', (Restangular, $stateParams)->
-							Restangular.all('informes/todos-los-examenes').getList({gran_final: $stateParams.gran_final, evento_id: $stateParams.evento_id });
-						],
+			resolve:
+				examenes: ['Restangular', '$stateParams', (Restangular, $stateParams)->
+					Restangular.all('informes/todos-los-examenes').getList({gran_final: $stateParams.gran_final, evento_id: $stateParams.evento_id });
+				],
 			data: 
 				pageTitle: 'Todos los Examenes - Wissen'
 
@@ -57,18 +57,18 @@ angular.module('WissenSystem')
 				'report_content':
 					templateUrl: "#{App.views}informes/verTodosLosExamenesPorEnt.tpl.html"
 					controller: 'VerTodosLosExamenesPorEntCtrl'
-					resolve:
-						entidades: ['Restangular', '$stateParams', (Restangular, $stateParams)->
-							parametros = {gran_final: $stateParams.gran_final, evento_id: $stateParams.evento_id }
+			resolve:
+				entidades: ['Restangular', '$stateParams', (Restangular, $stateParams)->
+					parametros = {gran_final: $stateParams.gran_final, evento_id: $stateParams.evento_id }
 
-							if localStorage.requested_entidades
-								requested_entidades = JSON.parse(localStorage.requested_entidades)
-								
-								if requested_entidades.length > 0
-									parametros.requested_entidades = requested_entidades
+					if localStorage.requested_entidades
+						requested_entidades = JSON.parse(localStorage.requested_entidades)
+						
+						if requested_entidades.length > 0
+							parametros.requested_entidades = requested_entidades
 
-							Restangular.one('puestos/todos-examenes-ent').customPUT(parametros);
-						],
+					Restangular.one('puestos/todos-examenes-ent').customPUT(parametros);
+				],
 			data: 
 				pageTitle: 'Todos los exámenes por entidades - Wissen'
 
@@ -85,24 +85,24 @@ angular.module('WissenSystem')
 				'report_content':
 					templateUrl: "#{App.views}informes/verExamenesPorEntCateg.tpl.html"
 					controller: 'VerExamenesPorEntidadesCtrl'
-					resolve:
-						entidades: ['Restangular', '$stateParams', (Restangular, $stateParams)->
-							parametros = {gran_final: $stateParams.gran_final, evento_id: $stateParams.evento_id }
+			resolve:
+				entidades: ['Restangular', '$stateParams', (Restangular, $stateParams)->
+					parametros = {gran_final: $stateParams.gran_final, evento_id: $stateParams.evento_id }
 
-							if localStorage.requested_entidades
-								requested_entidades = JSON.parse(localStorage.requested_entidades)
-								
-								if requested_entidades.length > 0
-									parametros.requested_entidades = requested_entidades
+					if localStorage.requested_entidades
+						requested_entidades = JSON.parse(localStorage.requested_entidades)
+						
+						if requested_entidades.length > 0
+							parametros.requested_entidades = requested_entidades
 
-							if localStorage.requested_categorias
-								requested_categorias = JSON.parse(localStorage.requested_categorias)
+					if localStorage.requested_categorias
+						requested_categorias = JSON.parse(localStorage.requested_categorias)
 
-								if requested_categorias.length > 0
-									parametros.requested_categorias = requested_categorias
+						if requested_categorias.length > 0
+							parametros.requested_categorias = requested_categorias
 
-							Restangular.one('puestos/examenes-ent-categ').customPUT(parametros);
-						],
+					Restangular.one('puestos/examenes-ent-categ').customPUT(parametros);
+				],
 			data: 
 				pageTitle: 'Exámenes por entidades - Wissen'
 
@@ -120,24 +120,24 @@ angular.module('WissenSystem')
 				'report_content':
 					templateUrl: "#{App.views}informes/verExamenesPorCategorias.tpl.html"
 					controller: 'VerExamenesPorCategoriasCtrl'
-					resolve:
-						categorias: ['Restangular', '$stateParams', (Restangular, $stateParams)->
-							parametros = {gran_final: $stateParams.gran_final, evento_id: $stateParams.evento_id }
+			resolve:
+				categorias: ['Restangular', '$stateParams', (Restangular, $stateParams)->
+					parametros = {gran_final: $stateParams.gran_final, evento_id: $stateParams.evento_id }
 
-							if localStorage.requested_entidades
-								requested_entidades = JSON.parse(localStorage.requested_entidades)
-								
-								if requested_entidades.length > 0
-									parametros.requested_entidades = requested_entidades
+					if localStorage.requested_entidades
+						requested_entidades = JSON.parse(localStorage.requested_entidades)
+						
+						if requested_entidades.length > 0
+							parametros.requested_entidades = requested_entidades
 
-							if localStorage.requested_categorias
-								requested_categorias = JSON.parse(localStorage.requested_categorias)
+					if localStorage.requested_categorias
+						requested_categorias = JSON.parse(localStorage.requested_categorias)
 
-								if requested_categorias.length > 0
-									parametros.requested_categorias = requested_categorias
+						if requested_categorias.length > 0
+							parametros.requested_categorias = requested_categorias
 
-							Restangular.one('puestos/examenes-categorias').customPUT(parametros);
-						],
+					Restangular.one('puestos/examenes-categorias').customPUT(parametros);
+				],
 			data: 
 				pageTitle: 'Exámenes por categorías - Wissen'
 
