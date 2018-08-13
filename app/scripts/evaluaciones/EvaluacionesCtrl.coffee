@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 .controller('EvaluacionesCtrl', ['$scope', 'Restangular', 'App', 'toastr', ($scope, Restangular, App, toastr)->
-	
+
 
 	$scope.comprobar_evento_actual = ()->
 		if $scope.evento_actual
@@ -54,17 +54,25 @@ angular.module('WissenSystem')
 		$scope.guardando = true
 		Restangular.one('evaluaciones/store').customPOST($scope.newEvaluacion).then((r)->
 			$scope.evaluaciones.push r
-			console.log $scope.evaluaciones
-			$scope.guardando = false
 			$scope.creando = false
 			toastr.success 'Evaluación guardada con éxito'
-			console.log 'Evaluación guardada con éxito', r
 		(r2)->
 			toastr.warning 'Evaluación guardada con éxito'
-			$scope.guardando = false
-			console.log 'No se pudo guardar la evaluación', r2
+			$scope.creando = false
 		)
-		
+
+
+	$scope.guardarEdicion = ()->
+		$scope.guardando = true
+		Restangular.one('evaluaciones/update').customPUT($scope.currentEvalua).then((r)->
+			$scope.guardando  = false
+			$scope.editando   = false
+			toastr.success 'Evaluación actualizada'
+		(r2)->
+			toastr.warning 'Evaluación actualizada'
+			$scope.guardando = false
+		)
+
 
 	return
 

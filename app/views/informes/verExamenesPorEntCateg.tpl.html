@@ -12,38 +12,30 @@
       <hr style="margin: 0;">
       <md-whiteframe layout style="padding: 10px; margin: 15px; display: block; page-break-after: always; padding-top: 0px;" class="md-whiteframe-z2 definicion-frame">
         <h4 style="margin-bottom: 0px" class="center"><img ng-src="{{ imagesPath + entidad.logo_nombre }}" style="width: 35px"> {{ entidad.nombre_entidad }} - {{ entidad.alias_entidad }}
-          <md-tooltip>{{ entidad.lider_nombre }}</md-tooltip>
+          <md-tooltip>{{ entidad.lider_nombre || 'Sin lider' }}</md-tooltip>
         </h4>
         <div ng-repeat="categoria in entidad.categorias" ng-init="sortType = 'promedio'; sortReverse = true">
-          <h5 style="margin-top: 0px;" class="center">
-             
-            {{ categoria.nombre_categ }} - {{ categoria.abrev_categ }}
-            <md-tooltip>{{ categoria.descripcion_categ }}</md-tooltip>
+          <h5 style="margin-top: 0px;" class="center">{{ categoria.nombre_categ }} - {{ categoria.abrev_categ }}
+            <md-tooltip>{{ categoria.descripcion_categ || 'Sin descripción' }}</md-tooltip>
           </h5>
           <table style="width: 100%; margin-bottom: 10px;" class="table-bordered table-bordered2 table-striped table-striped2">
             <thead>
-              <th style="padding-right: 15px;"> <a href="" ng-click="sortType = 'examen_id'; sortReverse = !sortReverse">Id<span ng-show="sortType == 'examen_id' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'examen_id' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a>
+              <th style="padding-right: 15px;"><a href="" ng-click="sortType = 'examen_id'; sortReverse = !sortReverse">Id<span ng-show="sortType == 'examen_id' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'examen_id' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a>
                 <md-tooltip>Código de examen</md-tooltip>
               </th>
-              <th style="padding-right: 15px;">
-                 
-                No
-              </th>
-              <th> <a href="" ng-click="sortType = 'nombres'; sortReverse = !sortReverse">Participante<span ng-show="sortType == 'nombres' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'nombres' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a></th>
-              <th> <a href="" ng-click="sortType = 'examen_at'; sortReverse = !sortReverse">Fecha<span ng-show="sortType == 'examen_at' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'examen_at' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a>
+              <th style="padding-right: 15px;">No</th>
+              <th><a href="" ng-click="sortType = 'nombres'; sortReverse = !sortReverse">Participante<span ng-show="sortType == 'nombres' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'nombres' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a></th>
+              <th><a href="" ng-click="sortType = 'examen_at'; sortReverse = !sortReverse">Fecha<span ng-show="sortType == 'examen_at' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'examen_at' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a>
                 <md-tooltip>Fecha realizado</md-tooltip>
               </th>
-              <th> <a href="" ng-click="sortType = 'tiempo'; sortReverse = !sortReverse">Tiempo<span ng-show="sortType == 'tiempo' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'tiempo' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a>
+              <th><a href="" ng-click="sortType = 'tiempo'; sortReverse = !sortReverse">Tiempo<span ng-show="sortType == 'tiempo' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'tiempo' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a>
                 <md-tooltip>Duración del examen</md-tooltip>
               </th>
-              <th>
-                 
-                Pregs
-              </th>
+              <th>Pregs</th>
               <th>Buenas
                 <md-tooltip>Correctas</md-tooltip>
               </th>
-              <th> <a href="" ng-click="sortType = 'promedio'; sortReverse = !sortReverse">Puntaje<span ng-show="sortType == 'promedio' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'promedio' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a></th>
+              <th><a href="" ng-click="sortType = 'promedio'; sortReverse = !sortReverse">Puntaje<span ng-show="sortType == 'promedio' &amp;&amp; !sortReverse" class="fa fa-caret-down"></span><span ng-show="sortType == 'promedio' &amp;&amp; sortReverse" class="fa fa-caret-up"></span></a></th>
             </thead>
             <tbody>
               <tr ng-repeat="examen in categoria.examenes | filter:searchExam | orderObjectBy:sortType:sortReverse">
@@ -51,11 +43,8 @@
                 <td style="font-size: 7pt;">{{ $index +1 }}
                   <md-tooltip>Orden</md-tooltip>
                 </td>
-                <td> 
-                  <div uib-popover-template="views+'usuarios/popoverUsuarioInfo.tpl.html'" popover-title="{{examen.nombres + ' ' + examen.apellidos}}" popover-trigger="'mouseenter'" popover-popup-delay="500" class="ellipsis200 usuario-listado">
-                     
-                    {{ examen.nombres + ' ' + examen.apellidos }}
-                  </div>
+                <td>
+                  <div uib-popover-template="views+'usuarios/popoverUsuarioInfo.tpl.html'" popover-title="{{examen.nombres + ' ' + examen.apellidos}}" popover-trigger="'mouseenter'" popover-popup-delay="500" class="ellipsis200 usuario-listado">{{ examen.nombres + ' ' + examen.apellidos }}</div>
                 </td>
                 <td style="font-size: 7pt;">{{ examen.examen_at }}</td>
                 <td style="font-size: 7pt;">{{ examen.res_tiempo_format }}</td>
@@ -63,8 +52,8 @@
                 <td>{{ examen.res_correctas }}
                   <md-tooltip>Correctas</md-tooltip>
                 </td>
-                <td class="td-contenedora"> <span ng-show="examen.res_by_promedio">{{ examen.res_promedio | decimales_if:1 }}%</span><span ng-hide="examen.res_by_promedio">{{ examen.res_puntos }}</span>
-                  <div class="menu-puesto-exam hidden-print"> 
+                <td class="td-contenedora"><span ng-show="examen.res_by_promedio">{{ examen.res_promedio | decimales_if:1 }}%</span><span ng-hide="examen.res_by_promedio">{{ examen.res_puntos }}</span>
+                  <div class="menu-puesto-exam hidden-print">
                     <div class="btn-group"><a href="" ng-click="mostrarPuesto(examen, $index +1, entidad)" class="btn btn-default btn-xs"><i class="fa fa-child"></i>
                         <md-tooltip>Mostrar en pantalla</md-tooltip></a><a href="" ng-click="eliminarExamen(examen)" class="btn btn-danger btn-xs"><i class="fa fa-times"></i>
                         <md-tooltip>Eliminar examen</md-tooltip></a></div>
@@ -74,41 +63,30 @@
             </tbody>
           </table>
         </div>
-        <h5 style="margin-top: 0px;" class="center">
-           
-          FINALISTAS
+        <h5 style="margin-top: 0px;" class="center">FINALISTAS
           <table style="width: 100%;" class="table-bordered table-bordered2 table-striped table-striped2">
             <thead>
-              <th style="padding-right: 15px;" class="center">
-                 
-                No
-              </th>
-              <th style="padding-right: 15px;" class="center"> <a href="">Categ</a></th>
-              <th class="center"> <a href="">Participante</a></th>
-              <th class="center"> <a href="">Fecha</a>
+              <th style="padding-right: 15px;" class="center">No</th>
+              <th style="padding-right: 15px;" class="center"><a href="">Categ</a></th>
+              <th class="center"><a href="">Participante</a></th>
+              <th class="center"><a href="">Fecha</a>
                 <md-tooltip>Fecha realizado</md-tooltip>
               </th>
-              <th class="center"> <a href="">Tiempo</a>
+              <th class="center"><a href="">Tiempo</a>
                 <md-tooltip>Duración del examen</md-tooltip>
               </th>
-              <th class="center">
-                 
-                Pregs
-              </th>
+              <th class="center">Pregs</th>
               <th class="center">Buenas
                 <md-tooltip>Correctas</md-tooltip>
               </th>
-              <th class="center"> <a href="">Puntaje</a></th>
+              <th class="center"><a href="">Puntaje</a></th>
             </thead>
             <tbody>
               <tr ng-repeat="examen in entidad.finalistas">
                 <td style="font-size: 7pt;" class="center">{{ $index +1 }}</td>
                 <td style="font-size: 7pt;" class="center">{{ examen.abrev_categ }}</td>
-                <td class="center"> 
-                  <div class="ellipsis200 usuario-listado">
-                     
-                    {{ examen.nombres + ' ' + examen.apellidos }}
-                  </div>
+                <td class="center">
+                  <div class="ellipsis200 usuario-listado">{{ examen.nombres + ' ' + examen.apellidos }}</div>
                 </td>
                 <td style="font-size: 7pt;" class="center">{{ examen.examen_at }}</td>
                 <td style="font-size: 7pt;" class="center">{{ examen.res_tiempo_format }}</td>
@@ -116,8 +94,8 @@
                 <td class="center">{{ examen.res_correctas }}
                   <md-tooltip>Correctas</md-tooltip>
                 </td>
-                <td class="center td-contenedora"> <span ng-show="examen.res_by_promedio">{{ examen.res_promedio | decimales_if:1 }}%</span><span ng-hide="examen.res_by_promedio">{{ examen.res_puntos }}</span>
-                  <div class="menu-puesto-exam hidden-print"> 
+                <td class="center td-contenedora"><span ng-show="examen.res_by_promedio">{{ examen.res_promedio | decimales_if:1 }}%</span><span ng-hide="examen.res_by_promedio">{{ examen.res_puntos }}</span>
+                  <div class="menu-puesto-exam hidden-print">
                     <div class="btn-group"><a href="" ng-click="mostrarPuesto(examen, $index +1, entidad)" class="btn btn-default btn-xs"><i class="fa fa-child"></i>
                         <md-tooltip>Mostrar en pantalla</md-tooltip></a><a href="" ng-click="eliminarExamen(examen)" class="btn btn-danger btn-xs"><i class="fa fa-times"></i>
                         <md-tooltip>Eliminar examen</md-tooltip></a></div>

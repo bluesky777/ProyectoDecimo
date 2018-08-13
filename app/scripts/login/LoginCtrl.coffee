@@ -2,10 +2,10 @@
 
 angular.module('WissenSystem')
 .controller('LoginCtrl', ['$scope', '$state', '$mdDialog', 'AUTH_EVENTS', 'AuthService', '$stateParams', 'Restangular', '$cookies', 'Perfil', 'App', 'cfpLoadingBar', 'toastr', 'MySocket', 'SocketData', 'SocketClientes', '$rootScope', '$http', ($scope, $state, $mdDialog, AUTH_EVENTS, AuthService, $stateParams, Restangular, $cookies, Perfil, App, cfpLoadingBar, toastr, MySocket, SocketData, SocketClientes, $rootScope, $http)->
-	
-	
+
+
 	$scope.logoPath 			= 'images/MyVc-1.gif'
-	$scope.imagesPath 			= App.images 
+	$scope.imagesPath 			= App.images
 	$scope.modificando_servidor = false
 	$scope.editando_nombre_punto = false
 	$scope.dominio 				= localStorage.getItem('dominio')
@@ -15,7 +15,7 @@ angular.module('WissenSystem')
 	$scope.usuarios_all 		= []
 	$scope.selectedUser 		= {}
 
-	
+
 	$scope.bring_registered_boolean = ()->
 		$scope.registered_boolean 	= if localStorage.getItem('registered_boolean') then localStorage.getItem('registered_boolean') else false
 		$scope.registered_boolean 	= if $scope.registered_boolean == 'true' then true else false
@@ -37,7 +37,7 @@ angular.module('WissenSystem')
 
 
 
-	$scope.credentials = 
+	$scope.credentials =
 		username: ''
 		password: ''
 
@@ -47,7 +47,8 @@ angular.module('WissenSystem')
 
 	MySocket.on('enter', (data)->
 		if data.usuario
-			Restangular.one('qr/validar-usuario').customPUT({user_id: data.usuario.id, token_auth: data.from_token }).then((r)->
+			user_id = if data.usuario.rowid then data.usuario.rowid else data.usuario.id
+			Restangular.one('qr/validar-usuario').customPUT({user_id: user_id, token_auth: data.from_token }).then((r)->
 				if r.token
 					SocketClientes.usuarios_all = []
 					$cookies.put('xtoken', r.token)
@@ -66,7 +67,7 @@ angular.module('WissenSystem')
 	$scope.login = ()->
 
 		user = AuthService.login_credentials($scope.credentials)
-		
+
 		user.then((r)->
 			#console.log 'Promise ganada', r
 			return
@@ -89,7 +90,7 @@ angular.module('WissenSystem')
 		$scope.credentials.password = '123'
 
 		user = AuthService.login_credentials($scope.credentials)
-		
+
 		user.then((r)->
 			#console.log 'Promise ganada', r
 			return
@@ -104,6 +105,11 @@ angular.module('WissenSystem')
 
 	$scope.guardar_servidor = ()->
 		localStorage.setItem('dominio', $scope.dominio)
+		array_dominio = $scope.dominio.split(':');
+
+		if(array_dominio[1])
+			localStorage.setItem('servidor_por_puerto', parseInt(array_dominio[1]))
+
 		#toastr.success 'Servidor cambiado'
 		location.reload();
 
@@ -115,7 +121,7 @@ angular.module('WissenSystem')
 	$scope.editarNombrePunto = (ev)->
 		elementWrapper = {}
 		elementWrapper.target = document.getElementById('nombre_punto');
-		
+
 		confirm = $mdDialog.show({
 			controller: 'PasswordNombrePuntoCtrl',
 			templateUrl: App.views + 'login/passwordNombrePunto.tpl.html',
@@ -133,28 +139,35 @@ angular.module('WissenSystem')
 		, ()->
 			$scope.status = 'You didn\'t name your dog.';
 		)
-		
+
 
 	$scope.seleccionarUsu = (usuario)->
 		usuario.seleccionado = !usuario.seleccionado
-		if usuario.seleccionado 
+		user_id = if usuario.rowid then usuario.rowid else usuario.id
+
+		if usuario.seleccionado
 			$scope.selectedUser = usuario
 
 			for user in $scope.usuarios_all
-				if user.id != usuario.id
+				user_id2 = if user.rowid then user.rowid else user.id
+				if user_id2 != user_id
 					user.seleccionado = false
 
 	$scope.seleccionarCkUsu = (usuario)->
-		if usuario.seleccionado 
+		user_id = if usuario.rowid then usuario.rowid else usuario.id
+		if usuario.seleccionado
 			$scope.selectedUser = usuario
 
 			for user in $scope.usuarios_all
-				if user.id != usuario.id
+				user_id2 = if user.rowid then user.rowid else user.id
+				if user_id2 != user_id
 					user.seleccionado = false
 
 	$scope.ingresar_seleccionado = ()->
-		if $scope.selectedUser.id
-			Restangular.one('qr/validar-usuario').customPUT({user_id: $scope.selectedUser.id, token_auth: SocketData.token_auth }).then((r)->
+		if $scope.selectedUser.id or $scope.selectedUser.rowid
+			user_id = if $scope.selectedUser.rowid then $scope.selectedUser.rowid else $scope.selectedUser.id
+
+			Restangular.one('qr/validar-usuario').customPUT({user_id: user_id, token_auth: SocketData.token_auth }).then((r)->
 				if r.token
 					$scope.usuarios_all = []
 					$cookies.put('xtoken', r.token)
@@ -164,9 +177,9 @@ angular.module('WissenSystem')
 				toastr.warning 'No se pudo ingresar'
 				console.log 'No se pudo ingresar ', r2
 			)
-		else 
+		else
 			toastr.warning 'Selecciona el usuario correspondiente'
-	
+
 	$scope.guardarNombrePunto = ()->
 		localStorage.setItem('nombre_punto', $scope.in_evento_actual.ip)
 		$scope.editando_nombre_punto = false
@@ -191,7 +204,7 @@ angular.module('WissenSystem')
 ])
 
 .controller('PasswordNombrePuntoCtrl', ['$scope', '$mdDialog', 'toastr', ($scope, $mdDialog, toastr)->
-	
+
 	$scope.validar = (pass)->
 		$mdDialog.hide(pass)
 

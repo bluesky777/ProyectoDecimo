@@ -3,11 +3,8 @@
 <sidenav-select-pc-dir id="sidenavSelectPC"></sidenav-select-pc-dir>
 <div ng-show="creando" class="row">
   <div class="col-sm-12 col-md-12">
-    <div class="panel panel-default panel-hovered panel-stacked mb20 mr--15-sm ml--15-sm"> 
-      <div class="panel-heading">
-          
-        Nuevo
-      </div>
+    <div class="panel panel-default panel-hovered panel-stacked mb20 mr--15-sm ml--15-sm">
+      <div class="panel-heading">Nuevo</div>
       <div style="padding-top: 30px;" class="panel-body">
         <form ng-submit="guardarNuevo()" name="frm" role="form" class="form-horizontal">
           <div class="row">
@@ -69,7 +66,7 @@
                     <label>Imagen</label>
                     <button type="button" ng-click="misImagenes()" style="float: right;margin-right: 20px;" class="btn btn-primary fa fa-image btn-xs"> Imágenes...</button>
                     <ui-select ng-model="newUsu.imgUsuario" on-select="imagenSelect($item, $model)" theme="select2" style="width: 95%;">
-                      <ui-select-match placeholder="Imagen usuario"> <img ng-src="{{imagesPath + $select.selected.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
+                      <ui-select-match placeholder="Imagen usuario"><img ng-src="{{imagesPath + $select.selected.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
                       <ui-select-choices repeat="imagen in imagenes | filter: {nombre: $select.search}"><img ng-src="{{imagesPath + imagen.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + imagen.nombre | highlight: $select.search"></small></ui-select-choices>
                       <ui-select-no-choice><img ng-src="{{imagesPath + 'perfil/system/avatars/no-photo.jpg'}}" style="width:25px; height:25px;"><small ng-bind-html="' Sin foto '"></small></ui-select-no-choice>
                     </ui-select>
@@ -81,8 +78,8 @@
               <div style="padding-left: 15px;" class="form-group">
                 <label>Entidad</label>
                 <ui-select ng-model="newUsu.entidad" theme="select2" style="width: 95%;">
-                  <ui-select-match placeholder="Entidad"> <img ng-src="{{perfilPath + $select.selected.logo_nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
-                  <ui-select-choices repeat="entidad in entidades"><img ng-src="{{perfilPath + entidad.logo_nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + entidad.nombre | highlight: $select.search"></small></ui-select-choices>
+                  <ui-select-match placeholder="Entidad"><img ng-src="{{perfilPath + $select.selected.logo_nombre}}" style="width:25px; height:25px;"><small ng-bind-html="$select.selected.nombre"></small></ui-select-match>
+                  <ui-select-choices repeat="entidad in entidades | filter: $select.search"><img ng-src="{{perfilPath + entidad.logo_nombre}}" style="width:25px; height:25px;"><small ng-bind-html="entidad.nombre | highlight: $select.search"></small></ui-select-choices>
                 </ui-select>
               </div>
               <md-select ng-model="newUsu.nivel_id" placeholder="Niveles" ng-change="cambiaNivelNewUsu()">
@@ -113,10 +110,7 @@
 <div ng-show="editando" class="row">
   <div class="col-sm-12 col-md-12">
     <div class="panel panel-default panel-hovered panel-stacked mb20 mr--15-sm ml--15-sm">
-      <div class="panel-heading">
-          
-        Editar a {{currentUser.nombres}}
-      </div>
+      <div class="panel-heading">Editar a {{currentUser.nombres}}</div>
       <div style="padding-top: 30px;" class="panel-body">
         <form ng-submit="guardarEdicion()" name="frmEdit" role="form" class="form-horizontal">
           <div class="row">
@@ -178,7 +172,7 @@
                     <label>Imagen</label>
                     <button type="button" ng-click="misImagenes()" style="float: right;margin-right: 20px;" class="btn btn-primary fa fa-image btn-xs"> Imágenes...</button>
                     <ui-select ng-model="currentUser.imgUsuario" on-select="imagenSelect($item, $model)" theme="select2" style="width: 95%;">
-                      <ui-select-match placeholder="Imagen usuario"> <img ng-src="{{imagesPath + $select.selected.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
+                      <ui-select-match placeholder="Imagen usuario"><img ng-src="{{imagesPath + $select.selected.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
                       <ui-select-choices repeat="imagen in imagenes | filter: {nombre: $select.search}"><img ng-src="{{imagesPath + imagen.nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + imagen.nombre | highlight: $select.search"></small></ui-select-choices>
                       <ui-select-no-choice><img ng-src="{{imagesPath + 'perfil/system/avatars/no-photo.jpg'}}" style="width:25px; height:25px;"><small ng-bind-html="' Sin foto '"></small></ui-select-no-choice>
                     </ui-select>
@@ -190,7 +184,7 @@
               <div style="padding-left: 15px;" class="form-group">
                 <label>Entidad</label>
                 <ui-select ng-model="currentUser.entidad" theme="select2" style="width: 95%;">
-                  <ui-select-match placeholder="Entidad"> <img ng-src="{{perfilPath + $select.selected.logo_nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
+                  <ui-select-match placeholder="Entidad"><img ng-src="{{perfilPath + $select.selected.logo_nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + $select.selected.nombre"></small></ui-select-match>
                   <ui-select-choices repeat="entidad in entidades"><img ng-src="{{perfilPath + entidad.logo_nombre}}" style="width:25px; height:25px;"><small ng-bind-html="' ' + entidad.nombre | highlight: $select.search"></small></ui-select-choices>
                 </ui-select>
               </div>
@@ -204,7 +198,9 @@
                   <md-list-item ng-repeat="categoria in categorias_inscripcion | listaCategsDelUsuarioSegunNivel:currentUser.nivel_id ">
                     <md-checkbox ng-model="categoria.selected" ng-change="cambiaInscripcion(categoria, currentUsers)" aria-label="Categoria" ng-disabled="categoria.cambiando"></md-checkbox>
                     <p>{{categoria.nombre}}</p>
-                    <div aria-label="Comentario inútil" ng-click="" class="fa fa-comments-o md-secondary"></div>
+                    <!--.fa.fa-comments-o.md-secondary(aria-label="Comentario inútil" ng-click="")-->
+                    
+                    
                   </md-list-item>
                 </md-list>
               </md-content>

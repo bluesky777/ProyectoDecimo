@@ -3,7 +3,7 @@ ul.list-unstyled.left-elems
 	li
 		a.nav-trigger.fa.fa-bars(href="" ng-click="toggleNav()")
 
-	//  Search box 
+	//  Search box
 	// li
 		.form-search.hidden-xs
 			form#site-search(action="na")
@@ -30,7 +30,7 @@ ul.list-unstyled.left-elems
 				i.fa.fa-laptop
 				span(ng-bind=" evento_actual.alias")
 			md-menu-content(style="margin-top: 40px;" width="3")
-			
+
 				md-menu-item(ng-repeat="evento in USER.eventos")
 
 					md-button(ng-click="set_user_event(evento)")
@@ -38,11 +38,11 @@ ul.list-unstyled.left-elems
 						.desc
 							strong {{ evento.nombre }}
 							p.small.text-muted(ng-show="evento.actual" style="color: #3f51b5; font-weight: bold;") Actual
-						
+
 					a.right.btn.btn-xs.btn-purple(href="" ng-click="set_system_event(evento)" style="color: #fff; width: 60px; margin-top: 10px; height: 30px;line-height: 25px;" ng-hide="evento.actual")
 						| Actual
 						md-tooltip Establecer como evento actual
-					
+
 
 
 
@@ -51,7 +51,7 @@ ul.list-unstyled.left-elems
 		md-menu
 			a(href="" ng-click="openMenu($mdOpenMenu, $event)")
 				i.fa.fa-flag-checkered
-			
+
 			md-menu-content(style="margin-top: 40px;" width="3")
 				md-menu-item(ng-repeat="idioma in idiomas_usados")
 					md-button(ng-click="cambiarIdioma(idioma)")
@@ -64,10 +64,10 @@ ul.list-unstyled.left-elems
 ul.list-unstyled.right-elems.ng-scope
 	li.profile-drop.hidden-xs.dropdown(dropdown='' style="padding-right: 8px")
 
-		md-menu 
+		md-menu
 			a(href='' ng-click="openMenu($mdOpenMenu, $event)" )
 				img.imagen-perfil(ng-src="{{imagesPath + USER.imagen_nombre}}" alt="{{USER.username}}")
-				
+
 
 			md-menu-content(style="margin-top: 40px;" width="3")
 				md-menu-item
@@ -76,9 +76,9 @@ ul.list-unstyled.right-elems.ng-scope
 							i.fa.fa-user(style="font-size: 16px; margin-right: 8px;" )
 							| Perfil
 				md-menu-item
-					md-button
+					md-button(ui-sref="panel.filemanager()")
 						//md-icon.fa(md-font-icon="fa-image" )
-						a(ui-sref="panel.filemanager()" style="color: currentColor;")
+						a( style="color: currentColor;")
 							i.fa.fa-image(style="font-size: 16px; margin-right: 8px;" )
 							| Imágenes
 
@@ -91,8 +91,8 @@ ul.list-unstyled.right-elems.ng-scope
 
 	li.profile-drop.hidden-xs.dropdown()
 		a(href='' ng-click="logout()" style="color: #fff")
-			i.fa.fa-sign-out(ng-bind-html="('SALIR' | translate)") 
-			
+			i.fa.fa-sign-out(ng-bind-html="('SALIR' | translate)")
+
 
 	li.floating-sidebar(ng-class="{'open': floatingSidebar}" ng-if="hasRoleOrPerm('admin')")
 		a(href="" ng-click='toggleFloatingSidebar()')
@@ -105,7 +105,7 @@ ul.list-unstyled.right-elems.ng-scope
 
 					md-tab
 						md-tab-label Exportar
-			
+
 						md-tab-body
 							.chat-tab.clearfix
 								h5.title.mt0(style="padding-left: 10px;") Elija rango de fechas
@@ -114,20 +114,20 @@ ul.list-unstyled.right-elems.ng-scope
 										p.xsmall Fecha inicial
 									.col-xs-7(style="padding: 0px")
 										input(type="datetime-local" ng-model="dataExport.fecha_ini" style="max-width: 210px")
-									
+
 								.row
 									.col-xs-4(style="padding-right: 0px; margin-left: 5px")
 										p.xsmall Fecha final
 									.col-xs-7(style="padding: 0px")
 										input(type="datetime-local" ng-model="dataExport.fecha_fin" style="max-width: 210px")
 								.row(style="margin-top: 5px")
-									button.btn.btn-primary(ng-click="cargarExamenesExport()" style="float: right; margin-right: 30px") 
+									button.btn.btn-primary(ng-click="cargarExamenesExport()" style="float: right; margin-right: 30px")
 										| Ver exámenes
 
 							.info-tab.clearfix
 								h5.title.mt0.mb30(style="padding-left: 10px;") Participantes
-								
-								.clearfix.mb15(ng-repeat="participante in export_participantes" style="margin-left: 10px;")
+
+								.clearfix.mb15(ng-repeat="participante in export_participantes" style="margin-left: 10px; border-bottom: 1px solid #ccc; margin-bottom: 2px; font-size: 9pt;")
 									.left
 										div {{ ($index+1) + '. ' + participante.nombres + ' ' + participante.apellidos }} ({{ participante.alias_entidad }})
 									.right
@@ -136,8 +136,8 @@ ul.list-unstyled.right-elems.ng-scope
 												input(type='checkbox' ng-model="participante.exportar" ng-true-value="1" ng-false-value="0")
 												span
 									br
-									span(ng-repeat="examen in participante.examenes" style="margin-left: 15px")
-										{{examen.abrev_categ}}
+									span(ng-repeat="examen in participante.examenes" style="margin-left: 15px; font-weight: 600;")
+										| {{examen.abrev_categ}}
 
 										//.progress-xs.progress.ng-isolate-scope(value='80', type='primary')
 											.progress-bar.progress-bar-primary(ng-class="type && 'progress-bar-' + type", role='progressbar', aria-valuenow='80', aria-valuemin='0', aria-valuemax='100', ng-style="{width: percent + '%'}" aria-valuetext='80%' style='width: 80%;')
@@ -145,32 +145,32 @@ ul.list-unstyled.right-elems.ng-scope
 							.info-tab.clearfix
 								h5.title.mt0.mb30(style="padding-left: 10px;") Exportar
 
-								
+
 
 								.row(style="margin-top: 5px")
-									button.btn.btn-primary(ng-click="exportarArchivo()" style="float: right; margin-right: 30px") 
+									button.btn.btn-primary(ng-click="exportarArchivo()" style="float: right; margin-right: 30px")
 										| Exportar a archivo
 
-						
+
 					md-tab
 						md-tab-label Importar
 						md-tab-body
-							
+
 							hr
-							
+
 							div
 								| Copie aquí el texto del archivo exportado:
 							textarea.form-control(ng-model="datos_json" style="min-height: 450px; overflow: auto; font-size: 8pt")
 
 							.clearfix
-								input.btn.btn-primary(type='button' ng-click="cargar_datos_json(datos_json)" style="float: right; margin-right: 30px" value="Verificar...") 
-							
+								input.btn.btn-primary(type='button' ng-click="cargar_datos_json(datos_json)" style="float: right; margin-right: 30px" value="Verificar...")
+
 							hr
 
 
 							.info-tab.clearfix(ng-show="array_usuarios.length > 0")
 								h5.title.mt0.mb30(style="padding-left: 10px;") Hay nombres de usuario repetidos:
-								
+
 								.clearfix.mb15(style="text-align: center;")
 									div.left(style="width: 49%; font-weight: bold")
 										| Ya en base de datos:
@@ -180,34 +180,34 @@ ul.list-unstyled.right-elems.ng-scope
 								.clearfix.mb15(ng-repeat="comparativa in array_usuarios" style="margin-left: 10px;")
 									div.left(style="width: 49%")
 										.left
-											div {{ ($index+1) + '. ' + comparativa.en_db.nombres + ' ' + comparativa.en_db.apellidos }} ({{ comparativa.en_db.alias_entidad }}) - 
+											div {{ ($index+1) + '. ' + comparativa.en_db.nombres + ' ' + comparativa.en_db.apellidos }} ({{ comparativa.en_db.alias_entidad }}) -
 												b  {{comparativa.en_db.username}}
-										
+
 										br
 										span(ng-repeat="examen in comparativa.en_db.examenes" style="margin-left: 15px")
-											{{examen.abrev_categ}}
+											| {{examen.abrev_categ}}
 
 									div.left(style="width: 49%; margin-left: 5px; border-left: 1px solid #ccc")
 										.left
-											div {{ ($index+1) + '. ' + comparativa.a_importar.nombres + ' ' + comparativa.a_importar.apellidos }} ({{ comparativa.a_importar.alias_entidad }}) - 
+											div {{ ($index+1) + '. ' + comparativa.a_importar.nombres + ' ' + comparativa.a_importar.apellidos }} ({{ comparativa.a_importar.alias_entidad }}) -
 												b  {{comparativa.a_importar.username}}
-										
+
 										br
 										span(ng-repeat="examen in comparativa.a_importar.examenes" style="margin-left: 15px")
-											{{examen.abrev_categ}}
+											| {{examen.abrev_categ}}
 
 
 							.info-tab.clearfix
 								h5.title.mt0.mb30(style="padding-left: 10px;") Importar
 
-								
+
 								.row(style="margin-top: 5px")
 									div(style="margin-left: 25px")
 										| {{ array_usuarios_import.length }} usuarios a importar
-									button.btn.btn-primary(ng-click="importarDatos()" style="float: right; margin-right: 30px") 
+									button.btn.btn-primary(ng-click="importarDatos()" style="float: right; margin-right: 30px")
 										| Importar datos creando usuarios y modificando repetidos
 
 								.clearfix(style="margin-bottom: 20px")
-							
+
 
 

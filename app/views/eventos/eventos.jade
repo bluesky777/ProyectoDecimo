@@ -1,8 +1,8 @@
 .panel.panel-default.panel-hovered.panel-stacked.mb20
-	.panel-heading 
+	.panel-heading
 
 		| {{ 'EVENTS_TITLE' | translate }}
-	
+
 	.panel-body
 
 		md-button.md-default(ng-show="!creando" ng-click="crear_evento()") Crear evento
@@ -11,9 +11,9 @@
 
 		.row(ng-show="creando")
 			.col-sm-12.col-md-12
-				
+
 				.panel.panel-default.panel-hovered.panel-stacked.mb20
-					.panel-heading   
+					.panel-heading
 						| Nuevo
 
 					.panel-body
@@ -47,7 +47,7 @@
 									.form-group
 										label.control-label.col-md-3 Con pago
 										md-checkbox(ng-model="newEvent.with_pay" ng-value="newEvent.with_pay" aria-label="Con pago")
-									
+
 									.form-group(ng-show="newEvent.with_pay")
 										label.control-label.col-md-3 Precio 1
 										.col-md-9
@@ -73,11 +73,11 @@
 										.col-md-9
 											input.form-control(ng-model="newEvent.precio6" type="number" placeholder="Precio6")
 								.col-md-4
-									
+
 									.form-group
 										md-checkbox(ng-model="newEvent.actual" ng-value="newEvent.actual")
 											| Evento actual
-		
+
 									.form-group
 										md-checkbox(ng-model="newEvent.enable_public_chat" ng-value="newEvent.enable_public_chat")
 											| Habilitar chat público
@@ -85,7 +85,7 @@
 									.form-group
 										md-checkbox(ng-model="newEvent.enable_private_chat" ng-value="newEvent.enable_private_chat")
 											| Habilitar chat privado
-									
+
 									md-divider
 
 									.form-group
@@ -95,15 +95,15 @@
 										label.control-label Idioma principal:
 										md-select(placeholder="Seleccione idioma principal" ng-model="newEvent.idioma_principal_id")
 											md-option(ng-repeat="idioma in idiomas" value="{{idioma.id}}") {{idioma.original}} ({{idioma.abrev}}) - {{idioma.nombre}}
-									
+
 										div(ng-show="!newEvent.es_idioma_unico")
 											label.control-label Idiomas extras:
 											ui-select(multiple="true" style="width: 100%" ng-model="newEvent.idiomas_extras" theme="select2")
-												ui-select-match(allow-clear="true" placeholder="Idiomas a usar") 
+												ui-select-match(allow-clear="true" placeholder="Idiomas a usar")
 													small(ng-bind-html=" $item.original + ' (' + $item.abrev+ ')' ")
 												ui-select-choices(repeat=" idioma in idiomas | filter: {nombre: $select.search}")
 													small(ng-bind-html=" idioma.original + ' ('+idioma.abrev+') - ' + idioma.nombre | highlight: $select.search")
-									
+
 
 
 							.clearfix.right
@@ -115,13 +115,20 @@
 
 		md-whiteframe.md-whiteframe-z2.definicion-frame(layout ng-repeat="evento in USER.eventos"  style="padding: 10px; position: relative;")
 			span(flex="10") {{$index+1}}.
-			span(flex="90") {{evento.nombre}}
+			span(flex="90")
+				button.btn.btn-xs.btn-primary.disabled(ng-show="evento.actual")
+					i.fa.fa-hand-point-right
+					md-tooltip Es actual
+				button.btn.btn-xs.btn-default(ng-hide="evento.actual" ng-click="setActual(evento)")
+					i.fa.fa-hand-pointer
+					md-tooltip Establecer como actual
+				| {{evento.nombre}}
 
 
 			div.btn-container-edit(layout="row")
-				
+
 				md-button.md-fab.md-primary.md-mini(aria-label="Editar" ng-click="editarEvento(evento)")
-					md-icon.fa.fa-pencil
+					md-icon.fa.fa-edit
 					md-tooltip Editar evento
 
 				md-button.md-fab.md-warn.md-mini(aria-label="Eliminar" ng-click="eliminarEvento(evento)")
@@ -133,9 +140,9 @@
 		br
 		.row(ng-show="editando")
 			.col-sm-12.col-md-12
-				
+
 				.panel.panel-default.panel-hovered.panel-stacked.mb20
-					.panel-heading   
+					.panel-heading
 						| Editar
 
 					.panel-body
@@ -158,7 +165,7 @@
 											input.form-control(ng-model="currentEvent.descripcion" type="text" placeholder="Descripción")
 
 									.form-group
-										md-checkbox.ck-margin(ng-model="currentEvent.gran_final" ng-false-value="0" ng-true-value="1")
+										md-checkbox.ck-margin(ng-model="currentEvent.gran_final" ng-false-value="0" ng-true-value="1" ng-click="cambiarGranFinal(currentEvent)")
 											| Gran final
 
 									.form-group
@@ -166,7 +173,7 @@
 										md-select(ng-model="currentEvent.examen_actual_id" placeholder="Selecciona...")
 											md-option(value="1") Para pruebas
 											md-option(value="2") Para la final
-									
+
 									.form-group
 										md-checkbox.ck-margin(ng-model="currentEvent.with_pay" ng-value="currentEvent.with_pay")
 											| Con pago
@@ -205,7 +212,7 @@
 									.form-group
 										md-checkbox.ck-margin(ng-model="currentEvent.enable_private_chat" ng-value="currentEvent.enable_private_chat")
 											| Habilitar chat privado
-									
+
 									md-divider
 									.form-group
 										md-checkbox.ck-margin(ng-model="currentEvent.es_idioma_unico" ng-value="currentEvent.es_idioma_unico")
@@ -213,15 +220,15 @@
 
 										md-select(placeholder="Seleccione idioma principal" ng-model="currentEvent.idioma_principal_id")
 											md-option(ng-repeat="idioma in idiomas" value="{{idioma.id}}") {{idioma.original}} - {{idioma.nombre}}
-									
+
 										div(ng-show="!currentEvent.es_idioma_unico")
 											label.control-label Idiomas extras:
 											ui-select(multiple="true" style="width: 100%" on-remove="quitandoIdiomas($item, $model)" ng-model="currentEvent.idiomas_extras" theme="select2" on-select="idiomasSelect($item, $model)" )
-												ui-select-match(allow-clear="true" placeholder="Idiomas a usar") 
+												ui-select-match(allow-clear="true" placeholder="Idiomas a usar")
 													small(ng-bind-html=" $item.nombre")
 												ui-select-choices(repeat=" idioma in idiomas | filter: {nombre: $select.search}")
 													small(ng-bind-html=" idioma.original + ' - ' + idioma.nombre | highlight: $select.search")
-									
+
 
 
 

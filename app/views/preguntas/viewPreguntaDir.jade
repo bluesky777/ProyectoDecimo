@@ -15,7 +15,7 @@ md-whiteframe.md-whiteframe-z2.definicion-frame(layout style="padding: 10px")
 
 		.btn-group(aria-label="...")
 			button.btn.btn-default(type="button" ng-click="editarPregunta(pg_pregunta)") 
-				i.fa.fa-pencil
+				i.fa.fa-edit
 				md-tooltip Editar pregunta
 			button.btn.btn-default(type="button" ng-click="previewPregunta(pg_pregunta)")
 				i.fa.fa-eye
@@ -41,6 +41,22 @@ md-whiteframe.md-whiteframe-z2.definicion-frame(layout style="padding: 10px")
 						a(href="" ng-click="cambiarCategoria(pg_pregunta)")
 							i.fa.fa-eye
 							|  Cambiar categoría
+					li.divider(role="separator")
+					li
+							a(ng-click="selec_opc_in_question(0)") Seleccionar A
+						li
+							a(ng-click="selec_opc_in_question(1)") Seleccionar B
+						li
+							a(ng-click="selec_opc_in_question(2)") Seleccionar C
+						li
+							a(ng-click="selec_opc_in_question(3)") Seleccionar D
+						li
+							a(ng-click="selec_opc_in_question(4)") Seleccionar E
+						li
+							a(ng-click="selec_opc_in_question(5)") Seleccionar F
+						li.divider
+						li
+							a(ng-click="sc_reveal_answer()") Revelar correcta
 
 
 span(ng-show="pg_pregunta.showDetail || showOptions")

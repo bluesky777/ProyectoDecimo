@@ -6,15 +6,15 @@ angular.module('WissenSystem')
 		idioma_id = parseInt(idioma_id)
 
 		if currentUsers and categorias_king
-			
+
 			resultado = []
-			
+
 			if currentUsers[0] == undefined or currentUsers.length == 0 or currentUsers.length == undefined or (!currentUsers[0].inscripciones)
 				return []
 
 			# CUANDO SOLO SE MANDA UN USUARIO
 			else if currentUsers.length == 1
-				
+
 				usuario = currentUsers[0]
 				#categorias_king_copy = []
 				#angular.copy categorias_king, categorias_king_copy
@@ -31,7 +31,7 @@ angular.module('WissenSystem')
 					categ_traducida.nivel_id 	= categoriaking.nivel_id
 
 
-					for inscripcion in usuario.inscripciones 
+					for inscripcion in usuario.inscripciones
 						if inscripcion.categoria_id == categoriaking.id
 
 							categ_traducida.allowed_to_answer 	= inscripcion.allowed_to_answer
@@ -39,7 +39,7 @@ angular.module('WissenSystem')
 							categ_traducida.inscripcion_id 		= inscripcion.id
 							categ_traducida.categ_traducida_id 	= categ_traducida.id
 							categ_traducida.selected 			= true
-							
+
 					if !categ_traducida.selected
 						categ_traducida.inscripcion_id 		= undefined
 						categ_traducida.selected 			= false
@@ -55,20 +55,20 @@ angular.module('WissenSystem')
 				for categoriaking in categorias_king
 
 					categ_traducida = $filter('porIdioma')(categoriaking.categorias_traducidas, idioma_id)
-					
+
 					if categ_traducida.length > 0
 						categ_traducida = categ_traducida[0]
 
 					categ_traducida.nivel_id = categoriaking.nivel_id
 					categ_traducida.incripcion_id = undefined # por ser varios, no habrá un código de inscripción
-					
+
 					cant = 0
 
 					for usuario in currentUsers
 
 						res = $filter('filter')(usuario.inscripciones, { categoria_id: categoriaking.id })
 
-						if res.length > 0 
+						if res.length > 0
 							cant++
 
 					if cant == 0
@@ -99,26 +99,27 @@ angular.module('WissenSystem')
 	(inscripciones, categorias_king, idioma_id, cmdCategSelected) ->
 
 		if inscripciones and categorias_king
-			
+
 			resultado = []
 
 
 			for categoriaking in categorias_king
-				
+
 				categ_traducida = $filter('porIdioma')(categoriaking.categorias_traducidas, parseFloat(idioma_id))
 				if categ_traducida.length > 0
 					categ_traducida = categ_traducida[0]
-							
-				for inscripcion in inscripciones 
-					if inscripcion.categoria_id == categoriaking.id
 
-							categ_traducida.nivel_id 			= categoriaking.nivel_id
-							categ_traducida.allowed_to_answer 	= inscripcion.allowed_to_answer
-							categ_traducida.examenes 			= inscripcion.examenes
-							categ_traducida.inscripcion_id 		= inscripcion.id
-							categ_traducida.categ_traducida_id 	= categ_traducida.id
+				for inscripcion in inscripciones
+					categoriaking_id = if categoriaking.rowid then categoriaking.rowid else categoriaking.id
+					if inscripcion.categoria_id == categoriaking_id
 
-							resultado.push categ_traducida
+						categ_traducida.nivel_id            = categoriaking.nivel_id
+						categ_traducida.allowed_to_answer   = inscripcion.allowed_to_answer
+						categ_traducida.examenes            = inscripcion.examenes
+						categ_traducida.inscripcion_id      = if inscripcion.rowid then inscripcion.rowid else inscripcion.id
+						categ_traducida.categ_traducida_id 	= if categ_traducida.rowid then categ_traducida.rowid else categ_traducida.id
+
+						resultado.push categ_traducida
 
 			if cmdCategSelected
 				for categ in resultado
@@ -141,7 +142,7 @@ angular.module('WissenSystem')
 	(categorias_inscripcion, nivel_usuario_id) ->
 
 		if categorias_inscripcion and nivel_usuario_id
-			
+
 			resultado 			= []
 			nivel_usuario_id 	= parseInt(nivel_usuario_id)
 
@@ -152,7 +153,7 @@ angular.module('WissenSystem')
 					resultado.push categoria
 
 
-			
+
 			return resultado
 
 		else
@@ -165,31 +166,32 @@ angular.module('WissenSystem')
 	(inscripciones, categorias_king, idioma_id, categsel) ->
 
 		if inscripciones and categorias_king
-			
+
 			resultado = []
 
 
 			for categoriaking in categorias_king
-				if categoriaking.id == parseInt(categsel)
-					#console.log(categoriaking.id, parseInt(categsel), categoriaking)
+				cateking_id = if categoriaking.rowid then categoriaking.rowid else categoriaking.id
+				if cateking_id == parseInt(categsel)
 
 					categ_traducida = $filter('porIdioma')(categoriaking.categorias_traducidas, parseFloat(idioma_id))
-					
+
 					if categ_traducida.length > 0
 						categ_traducida = categ_traducida[0]
-						
-						res = $filter('filter')(inscripciones, { categoria_id: categoriaking.id })
+
+						res = $filter('filter')(inscripciones, { categoria_id: cateking_id })
 						if res
-							if res.length > 0 
+							if res.length > 0
 								res = res[0]
 								categ_traducida.allowed_to_answer = res.allowed_to_answer
 								categ_traducida.examenes = res.examenes
-								categ_traducida.inscripcion_id = res.id
+								res_id = if res.rowid then res.rowid else res.id
+								categ_traducida.inscripcion_id = res_id
 
 								resultado.push categ_traducida
 
 
-			
+
 			return resultado
 
 		else

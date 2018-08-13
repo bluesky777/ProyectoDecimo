@@ -4,7 +4,7 @@ angular.module('WissenSystem')
 	(input, idioma) ->
 
 		if input
-			
+
 			resultado = []
 
 			idioma = parseFloat(idioma)
@@ -12,7 +12,7 @@ angular.module('WissenSystem')
 			for elemento in input
 
 				idioma_id = parseFloat(elemento.idioma_id)
-				
+
 				if idioma == idioma_id
 					resultado.push elemento
 
@@ -29,7 +29,7 @@ angular.module('WissenSystem')
 		# Si no_usuados es false, mostramos solo los usados por el sistema
 
 		if input
-			
+
 			resultado = []
 
 			for elemento in input
@@ -54,19 +54,19 @@ angular.module('WissenSystem')
 			if input.length > 0
 				if input[0].uncodigo_id
 					console.log input, idiomas
-		
+
 		resultado = []
-		
+
 		if idiomas and input
 
 			for idioma in idiomas
 
 				idioma = parseFloat(idioma)
-		
+
 				for elemento in input
 
 					idioma_id = parseFloat(elemento.idioma_id)
-					
+
 					if idioma == idioma_id
 						resultado.push elemento
 
@@ -76,7 +76,7 @@ angular.module('WissenSystem')
 
 .filter('catsByIdioma', [ ->
 	(input, idioma) ->
-		
+
 		resultado = []
 
 		for cat in input
@@ -95,7 +95,7 @@ angular.module('WissenSystem')
 
 		if (input % 1) == 0
 			input = input.toFixed(0)
-		else 
+		else
 			input = input.toFixed(cant)
 
 		return input.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -107,7 +107,7 @@ angular.module('WissenSystem')
 
 		if (input % 1) == 0
 			input = input.toFixed(0)
-		else 
+		else
 			input = input.toFixed(cant)
 
 		numero = input.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -136,7 +136,7 @@ angular.module('WissenSystem')
 	(input, horas) ->
 		if not input
 			return ''
-			
+
 		z = (n)->
 			if n < 10
 				return '0' + n
@@ -171,7 +171,7 @@ angular.module('WissenSystem')
 				return if reverse then -1 else 1
 
 		filtered.sort( (a, b)->
-			switch tipo 
+			switch tipo
 				when 'promedio'
 					if a.res_by_promedio
 						if a.res_promedio > b.res_promedio
@@ -187,7 +187,7 @@ angular.module('WissenSystem')
 							return sortTiempo(a, b)
 						else
 							return if reverse then 1 else -1
-						
+
 				when 'cantidad_pregs'
 					if a.res_cant_pregs > b.res_cant_pregs
 						return if reverse then -1 else 1
@@ -239,7 +239,7 @@ angular.module('WissenSystem')
 				else
 					return 1
 			)
-		
+
 		else
 			return items
 
@@ -268,8 +268,7 @@ angular.module('WissenSystem')
 				return 0
 			else
 				return -1
-				
-		console.log items[0]
+
 		if items[0].res_by_promedio
 			filtered.sort( (a, b)->
 				if a.res_promedio > b.res_promedio
@@ -295,10 +294,10 @@ angular.module('WissenSystem')
 
 window.removeAccents = (value)->
 	return value
-		.replace(/á/g, 'a') 
+		.replace(/á/g, 'a')
 		.replace(/â/g, 'a')
 		.replace(/é/g, 'e')
-		.replace(/è/g, 'e') 
+		.replace(/è/g, 'e')
 		.replace(/ê/g, 'e')
 		.replace(/í/g, 'i')
 		.replace(/ï/g, 'i')

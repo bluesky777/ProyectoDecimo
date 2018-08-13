@@ -8,12 +8,24 @@ angular.module("WissenSystem")
 
 	$scope.ok = ()->
 
-		Restangular.one('imagenes/destroy/'+imagen.id).customDELETE().then((r)->
-			toastr.success 'La imagen ha sido removida.'
-		, (r2)->
-			toastr.error 'No se pudo eliminar la imagen.'
-		)
-		$modalInstance.close(imagen)
+		img_id = if imagen.rowid then imagen.rowid else imagen.id
+
+		if imagen.rowid
+
+			Restangular.one('imagenes/destroy').customPUT({img_id: img_id}).then((r)->
+				toastr.success 'La imagen ha sido removida.'
+				$modalInstance.close(imagen)
+			, (r2)->
+				toastr.error 'No se pudo eliminar la imagen.'
+			)
+
+		else
+			Restangular.one('imagenes/destroy/'+imagen.id).customDELETE().then((r)->
+				toastr.success 'La imagen ha sido removida.'
+				$modalInstance.close(imagen)
+			, (r2)->
+				toastr.error 'No se pudo eliminar la imagen.'
+			)
 
 
 

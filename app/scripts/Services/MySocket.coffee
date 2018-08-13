@@ -26,14 +26,14 @@ angular.module('WissenSystem')
 		if !localStorage.getItem('registered_boolean')
 			localStorage.registered_boolean = false
 
-		registered = if localStorage.getItem('registered_boolean') then localStorage.getItem('registered_boolean')  else false 
+		registered = if localStorage.getItem('registered_boolean') then localStorage.getItem('registered_boolean')  else false
 		registered = if registered=='false' then false else registered
 		Perfil.setRegistered(registered)
 
-		if Perfil.User().id
+		if Perfil.User().id or Perfil.User().rowid
 			@emit('loguear', {usuario: Perfil.User(), registered: registered, nombre_punto: localStorage.nombre_punto} )
 		else
-			nombre_p = if localStorage.getItem('nombre_punto') == null then false else localStorage.getItem('nombre_punto') 
+			nombre_p = if localStorage.getItem('nombre_punto') == null then false else localStorage.getItem('nombre_punto')
 			if nombre_p
 				@emit('reconocer:punto:registered', { nombre_punto: nombre_p, registered: registered })
 			else
@@ -129,9 +129,9 @@ angular.module('WissenSystem')
 		webNotification.showNotification(data.mensaje.from.user_data.nombres + ' ' + data.mensaje.from.user_data.apellidos, {
 			body: data.mensaje.texto,
 			icon: 'images/system/favicon-myvc.ico',
-			autoClose: 6000 
+			autoClose: 6000
 		}, (error, hide)->
-			if (error) 
+			if (error)
 				console.log('Unable to show notification: ' + error.message);
 			else
 				setTimeout(()->
@@ -160,8 +160,8 @@ angular.module('WissenSystem')
 	socket.on('sesion_closed', (data)->
 		if data.clt.resourceId == Perfil.getResourceId()
 			unregister()
-			localStorage.lastState 		= null
-			localStorage.lastStateParam 	= null
+			$rootScope.lastState 		= null
+			$rootScope.lastStateParam 	= null
 			$rootScope.permiso_de_salir = true
 			Perfil.deleteUser()
 			$state.transitionTo 'login'
@@ -191,7 +191,7 @@ angular.module('WissenSystem')
 	socket.on('nombre_punto_cambiado', (data)->
 		client 					= SocketData.cliente data.resourceId
 		client.nombre_punto 	= $filter('clearhtml')(data.nombre)
-		$rootScope.$emit 'nombre_punto_cambiado', {nombre: client.nombre_punto, resourceId: data.resourceId }	
+		$rootScope.$emit 'nombre_punto_cambiado', {nombre: client.nombre_punto, resourceId: data.resourceId }
 	);
 	socket.on('take_usuarios', (data)->
 		SocketClientes.usuarios_all = data.usuarios
@@ -249,7 +249,7 @@ angular.module('WissenSystem')
 
 	socket.on('sc_show_barras', (data)->
 		get_clts()
-		
+
 		SocketClientes.participantes = []
 		for client in SocketClientes.clientes
 			if client.categsel > 0
@@ -265,7 +265,7 @@ angular.module('WissenSystem')
 
 			SocketData.config.pregunta 			= data.pregunta
 			SocketData.config.no_question 		= data.no_question
-			SocketData.config.reveal_answer 	= false 
+			SocketData.config.reveal_answer 	= false
 
 			if (Perfil.User().roles[0].name == 'Pantalla')
 				$state.go('proyectando.question')
@@ -297,8 +297,8 @@ angular.module('WissenSystem')
 	socket.on('sc_answered', (data)-> # Me avisan que alguien respondió algo
 		get_clts()
 
-		if not $state.includes('proyectando') 
-			if !$rootScope.silenciar_respuestas 
+		if not $state.includes('proyectando')
+			if !$rootScope.silenciar_respuestas
 				if !$rootScope.silenciar_todo
 					if data.resourceId != Perfil.getResourceId()
 						if data.cliente.answered == 'correct'
@@ -309,24 +309,24 @@ angular.module('WissenSystem')
 							audio.play();
 	);
 
-	socket.on('next_question', (data)-> 
+	socket.on('next_question', (data)->
 		SocketData.set_waiting()
 		$rootScope.$apply()
 		$rootScope.$emit 'next_question'
 	);
 
-	socket.on('goto_question_no', (data)-> 
+	socket.on('goto_question_no', (data)->
 		SocketData.set_waiting()
 		$rootScope.$emit 'goto_question_no', data.numero
 	);
 
-	socket.on('set_free_till_question', (data)-> 
+	socket.on('set_free_till_question', (data)->
 		SocketData.config.info_evento.free_till_question = data.free_till_question
 		$rootScope.$emit 'set_free_till_question', data.free_till_question # En ExamenRespuestaCtrl y ParticipantesCtrl, Si estaba esperando pregunta, con esto arranca
 	);
 
 
-	socket.on('set_puestos_ordenados', (data)-> 
+	socket.on('set_puestos_ordenados', (data)->
 		SocketData.config.info_evento.puestos_ordenados = data.puestos_ordenados
 		#$rootScope.$emit 'set_puestos_ordenados', data.puestos_ordenados # En ExamenRespuestaCtrl y ParticipantesCtrl, Si estaba esperando pregunta, con esto arranca
 	);
@@ -352,7 +352,7 @@ angular.module('WissenSystem')
 			);
 		)
 
-		
+
 	registrar = (registrar_boolean, cliente)->
 		if cliente
 			@emit('registrar', { registrar_boolean: registrar_boolean })
@@ -361,13 +361,13 @@ angular.module('WissenSystem')
 
 
 	desloguear = ()->
-		registered = if localStorage.getItem('registered_boolean') == null then false else localStorage.getItem('registered_boolean') 
+		registered = if localStorage.getItem('registered_boolean') == null then false else localStorage.getItem('registered_boolean')
 		registered = if registered=='false' then false else true
 		@emit('desloguear', {registered: registered, nombre_punto: localStorage.nombre_punto})
 
 
 	conectar = (qr)->
-		nombre_p = if localStorage.getItem('nombre_punto') == null then false else localStorage.getItem('nombre_punto') 
+		nombre_p = if localStorage.getItem('nombre_punto') == null then false else localStorage.getItem('nombre_punto')
 		if qr
 			@emit('conectar',  { qr: qr, nombre_punto: nombre_p })
 		else
@@ -440,7 +440,7 @@ angular.module('WissenSystem')
 		client.categsel = categoria_id
 
 		categsel_n = $filter('categSelectedDeUsuario')(client.user_data.inscripciones, SocketClientes.categorias_king, Perfil.User().idioma_main_id, client.categsel)
-		if categsel_n.length > 0 
+		if categsel_n.length > 0
 			client.categsel_nombre 	= categsel_n[0].nombre
 			client.categsel_abrev 	= categsel_n[0].abrev
 			client.categsel_id 		= categsel_n[0].categoria_id
@@ -523,7 +523,7 @@ angular.module('WissenSystem')
 		client.answered = 'waiting'
 		@emit('goto_question_no_clt', { resourceId: cliente.resourceId, numero: numero })
 
-	
+
 	sc_mostrar_resultados_actuales = (examenes_cargados)->
 		@emit('sc_mostrar_resultados_actuales', { examenes_cargados: examenes_cargados })
 

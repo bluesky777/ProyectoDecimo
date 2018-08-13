@@ -51,15 +51,15 @@ angular.module('WissenSystem')
 		, (r2)->
 			toastr.error 'No se trajeron las imágenes.'
 		)
-		
+
 
 		$scope.misImagenes = ()->
-			
+
 			modalInstance = $modal.open({
 				templateUrl: App.views + 'preguntas/misImagenes.tpl.html'
 				controller: 'MisImagenes'
 				size: 'lg',
-				resolve: 
+				resolve:
 					resolved_user: ()->
 						$scope.USER
 			})
@@ -94,14 +94,14 @@ angular.module('WissenSystem')
 
 	$scope.CerrarServidor = ()->
 		#res = confirm "¿Seguro que desea cerrar servidor?"
-		#if res 
+		#if res
 		Restangular.one('chat/cerrar-servidor').customPUT().then((r)->
 			toastr.success 'Cerrado', r
 		, (r2)->
 			toastr.warning 'No se cerró servidor'
 			console.log 'No se cerró servidor ', r2
 		)
-	
+
 	$scope.openMenu = ($mdOpenMenu, ev)->
 		$mdOpenMenu(ev);
 
@@ -127,7 +127,7 @@ angular.module('WissenSystem')
 	$scope.Conectar = ()->
 		MySocket.conectar()
 
-		
+
 	$scope.qrScanear = ()->
 		url = $state.href('qrscanner')
 		$window.open(url,'_blank')
@@ -184,7 +184,7 @@ angular.module('WissenSystem')
 
 	$scope.cargar_resultados = ()->
 		MySocket.get_clts()
-		
+
 		ids = []
 
 		for partic in SocketClientes.clientes
@@ -222,7 +222,7 @@ angular.module('WissenSystem')
 
 	$scope.cerrar_sesion_a = (cliente)->
 		res = confirm "¿Cerrar sesión a " + cliente.user_data.nombres + "?"
-		if res 
+		if res
 			MySocket.cerrar_sesion_a(cliente.resourceId)
 
 
@@ -253,7 +253,7 @@ angular.module('WissenSystem')
 	$scope.selec_opc_in_question = (opcion)->
 		$scope.opcion_seleccionada = opcion
 		MySocket.selec_opc_in_question(opcion)
-		
+
 
 	$scope.sc_reveal_answer = ()->
 		if $scope.opcion_seleccionada < 0
@@ -261,7 +261,7 @@ angular.module('WissenSystem')
 			return
 
 		MySocket.sc_reveal_answer()
-		
+
 		if !$rootScope.silenciar_todo
 			for opcion, indice in $scope.cmdPreguntaSelected.opciones
 				if indice == $scope.opcion_seleccionada
@@ -270,7 +270,7 @@ angular.module('WissenSystem')
 						audio.play();
 					else
 						audio = new Audio('/sounds/Revalada_incorrecta.wav');
-						audio.play();		
+						audio.play();
 	###
 
 	$scope.cambiarCategSel = (cliente, categoria)->
@@ -301,11 +301,11 @@ angular.module('WissenSystem')
 		for cliente in SocketClientes.clientes
 			if cliente.seleccionado
 				MySocket.empezar_examen_cliente(cliente.resourceId) # El modelo no cambia hasta salir de esta función
-				
+
 
 	$scope.showParticipantes = ()->
 		MySocket.sc_show_participantes()
-	
+
 	$scope.showBarras = ()->
 		MySocket.sc_show_barras()
 
@@ -359,7 +359,7 @@ angular.module('WissenSystem')
 		$rootScope.silenciar_todo 		= newVal
 		localStorage.silenciar_todo 	= newVal
 	)
-	
+
 
 	$scope.nextQuestion = ()->
 		MySocket.sc_next_question() # El modelo no cambia hasta salir de esta función
@@ -372,7 +372,7 @@ angular.module('WissenSystem')
 		else
 			toastr.warning 'No hay categoría seleccionada'
 
-		
+
 
 	$scope.nextQuestionCliente = (cliente)->
 		MySocket.sc_next_question_cliente(cliente) # El modelo no cambia hasta salir de esta función
@@ -402,7 +402,7 @@ angular.module('WissenSystem')
 		$timeout(()->
 			$scope.$apply()
 		, 1000)
-		
+
 	)
 
 
@@ -411,7 +411,7 @@ angular.module('WissenSystem')
 
 
 
-		
+
 
 
 

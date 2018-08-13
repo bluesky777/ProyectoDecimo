@@ -3,7 +3,7 @@
   <md-whiteframe layout ng-repeat="nivel in nivelking.niveles_traducidos | porIdioma:idiomapreg.selected" ng-hide="nivelking.editando" style="padding: 10px; position: relative;" class="md-whiteframe-z2 definicion-frame"><span flex="10">{{$parent.$index+1}}.</span><span flex="90">{{nivel.nombre}}</span>
     <div layout="row" class="btn-container-edit">
       <md-button aria-label="Editar" ng-click="editarNivel(nivelking)" class="md-fab md-primary md-mini">
-        <md-icon class="fa fa-pencil"></md-icon>
+        <md-icon class="fa fa-edit"></md-icon>
         <md-tooltip>Editar nivel</md-tooltip>
       </md-button>
       <md-button aria-label="Eliminar" ng-click="eliminarNivel(nivelking)" class="md-fab md-warn md-mini">

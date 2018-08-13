@@ -16,9 +16,14 @@
           <section>
             <md-subheader class="md-primary">Usuarios:</md-subheader>
             <md-list>
-              <md-list-item ng-click="asignar(usuario)" ng-repeat="usuario in usuarios | orderBy:'nombres' | filter:busqueda track by usuario.id" style="margin: 0px;">
+              <md-list-item ng-click="asignar(usuario)" ng-if="con_rowid" ng-repeat="usuario in usuarios | orderBy:'nombres' | filter:busqueda track by usuario.rowid" style="margin: 0px;">
                 <div class="md-list-item-text">
-                  <p>{{$index+1}}. <img ng-src="{{imagesPath + usuario.imagen_nombre}}" style="width:40px;height:40px"> {{usuario.nombres}} {{usuario.apellidos}}</p>
+                  <p>{{$index+1}}.<img ng-src="{{imagesPath + usuario.imagen_nombre}}" style="width:40px;height:40px"> {{usuario.nombres}} {{usuario.apellidos}}</p>
+                </div>
+              </md-list-item>
+              <md-list-item ng-click="asignar(usuario)" ng-if="!con_rowid" ng-repeat="usuario in usuarios | orderBy:'nombres' | filter:busqueda track by usuario.id" style="margin: 0px;">
+                <div class="md-list-item-text">
+                  <p>{{$index+1}}.<img ng-src="{{imagesPath + usuario.imagen_nombre}}" style="width:40px;height:40px"> {{usuario.nombres}} {{usuario.apellidos}}</p>
                 </div>
               </md-list-item>
             </md-list>

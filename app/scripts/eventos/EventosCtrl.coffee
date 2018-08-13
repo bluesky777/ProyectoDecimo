@@ -3,18 +3,34 @@ angular.module('WissenSystem')
 .controller('EventosCtrl', ['$scope', 'Restangular', '$uibModal', '$filter', 'App', 'toastr',  ($scope, Restangular, $modal, $filter, App, toastr)->
 
 	$scope.newEvent = {
-		with_pay: false
+		with_pay:         false
+		es_idioma_unico:  true
 	}
 	$scope.currentEvent = {
 		idiomas_extras: []
 	}
 
-	
+
 	$scope.creando = false
 	$scope.editando = false
 
 	$scope.guardando_nuevo = false
 	$scope.guardando_edit = false
+
+	$scope.cambiarGranFinal = (currentEvent)->
+		gran_final = 0
+
+		if currentEvent.gran_final == false or currentEvent.gran_final == 'false' or currentEvent.gran_final == 0 or currentEvent.gran_final == '0'
+			gran_final 	= 1
+
+		id = if currentEvent.rowid then currentEvent.rowid else currentEvent.id
+		Restangular.one('eventos/set-gran-final').customPUT({id: id, gran_final}).then((r)->
+			toastr.success 'Cambiado'
+		, (r2)->
+			toastr.warning 'No se pudo cambiar.', 'Problema'
+		)
+
+
 
 
 	$scope.guardar_evento = ()->
@@ -22,7 +38,7 @@ angular.module('WissenSystem')
 		$scope.guardando_nuevo = true
 
 		Restangular.one('eventos/store').customPOST($scope.newEvent).then((r)->
-			console.log('Evento guardado', r)
+
 			r.idiomas_extras = $scope.newEvent.idiomas_extras
 			$scope.USER.eventos.push r
 			$scope.guardando_nuevo = false
@@ -40,6 +56,23 @@ angular.module('WissenSystem')
 		)
 		# Actualizamos los datos por si es el evento actual
 		$scope.el_evento_actual()
+
+
+
+	$scope.setActual = (evento)=>
+		Restangular.one('eventos/set-actual').customPUT(evento).then((r)->
+			toastr.success 'Ahora el Evento es actual.'
+
+			for even in $scope.USER.eventos
+				even.actual = false
+
+			evento.actual = true
+
+		(r2)->
+			toastr.warning 'No se pudo establecer como actual. Actualice', 'Problema'
+		)
+
+
 
 
 	$scope.update_evento = ()->
@@ -68,22 +101,22 @@ angular.module('WissenSystem')
 
 	$scope.cancelar_newevento = ()->
 		$scope.creando = false
-			
+
 	$scope.cancelar_currentEvento = ()->
 		$scope.editando = false
-			
+
 
 	$scope.editarEvento = (evento)->
 		$scope.editando = true
 		$scope.currentEvent = evento
 		console.log 'currentEvent', evento
-	
-	
+
+
 
 	$scope.quitandoIdiomas = (item, model)->
 
 		console.log item
-		datos = 
+		datos =
 			evento_id: $scope.currentEvent.id
 			idioma_id: item.id
 
@@ -96,12 +129,12 @@ angular.module('WissenSystem')
 
 		# Actualizamos los datos por si es el evento actual
 		$scope.el_evento_actual()
-	
+
 
 
 	$scope.idiomasSelect = (item, model)->
 		console.log item, $scope.currentEvent.idiomas_extras
-		datos = 
+		datos =
 			evento_id: $scope.currentEvent.id
 			idioma_id: item.id
 
@@ -113,14 +146,14 @@ angular.module('WissenSystem')
 		)
 		# Actualizamos los datos por si es el evento actual
 		$scope.el_evento_actual()
-	
+
 
 	$scope.eliminarEvento = (evento)->
 
 		modalInstance = $modal.open({
 			templateUrl: App.views + 'eventos/removeEvento.tpl.html'
 			controller: 'RemoveEventoCtrl'
-			resolve: 
+			resolve:
 				elemento: ()->
 					evento
 		})
@@ -140,9 +173,11 @@ angular.module('WissenSystem')
 .controller('RemoveEventoCtrl', ['$scope', '$uibModalInstance', 'elemento', 'Restangular', 'toastr', ($scope, $modalInstance, elemento, Restangular, toastr)->
 	$scope.elemento = elemento
 
+	$scope.elemento_id 	= if elemento.rowid then elemento.rowid else elemento.id
+
 	$scope.ok = ()->
 
-		Restangular.all('eventos/destroy').customDELETE(elemento.id).then((r)->
+		Restangular.all('eventos/destroy').customDELETE($scope.elemento_id).then((r)->
 			toastr.success 'Evento eliminado con éxito.', 'Eliminado'
 			$modalInstance.close(elemento)
 		, (r2)->
@@ -150,7 +185,7 @@ angular.module('WissenSystem')
 			console.log 'Error eliminando elemento: ', r2
 			$modalInstance.dismiss('cancel')
 		)
-		
+
 
 	$scope.cancel = ()->
 		$modalInstance.dismiss('cancel')

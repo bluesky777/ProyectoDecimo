@@ -1,12 +1,12 @@
 angular.module('WissenSystem')
 
-.controller('GridUsuariosCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$interval', 'toastr', 'uiGridConstants', '$uibModal', '$filter', '$location', '$anchorScroll', '$mdSidenav', 'App', 'MySocket', 'SocketData' 
+.controller('GridUsuariosCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$interval', 'toastr', 'uiGridConstants', '$uibModal', '$filter', '$location', '$anchorScroll', '$mdSidenav', 'App', 'MySocket', 'SocketData'
 	($scope, $http, Restangular, $state, $cookies, $interval, toastr, uiGridConstants, $modal, $filter, $location, $anchorScroll, $mdSidenav, App, MySocket, SocketData) ->
 
 		$scope.currentusers = []
 		$scope.currentuser = {}
 
-		
+
 		$scope.seleccionar_fila = (row)->
 			$scope.gridApi.selection.clearSelectedRows()
 			$scope.gridApi.selection.selectRow(row)
@@ -23,7 +23,7 @@ angular.module('WissenSystem')
 			modalInstance = $modal.open({
 				templateUrl: App.views + 'usuarios/cambiarEntidadUsuario.tpl.html'
 				controller: 'SelectEntidadCtrl'
-				resolve: 
+				resolve:
 					usuario: ()->
 						row
 					entidades: ()->
@@ -56,7 +56,7 @@ angular.module('WissenSystem')
 			$scope.$parent.currentUser.nivel_id 	= parseInt($scope.$parent.currentUser.nivel_id)
 			$scope.currentusers 					= [row]
 			$scope.$parent.editando 				= true
-			
+
 			# Me tocó copiarlo pues se acumulaban las inscripciones
 			categoriasking_copy = []
 			angular.copy $scope.categoriasking, categoriasking_copy
@@ -73,20 +73,26 @@ angular.module('WissenSystem')
 			modalInstance = $modal.open({
 				templateUrl: App.views + 'usuarios/removeUsuario.tpl.html'
 				controller: 'RemoveUsuarioCtrl'
-				resolve: 
+				resolve:
 					usuario: ()->
 						row
 					entidades: ()->
 						$scope.$parent.entidades
 			})
 			modalInstance.result.then( (usuario)->
-				$scope.usuarios = $filter('filter')($scope.usuarios, {id: '!'+usuario.id})
+				user_id = if usuario.rowid then usuario.rowid else usuario.id
+				campo   = if usuario.rowid then {rowid: '!'+user_id} else {id: '!'+user_id}
+
+				$scope.usuarios         = $filter('filter')($scope.usuarios, campo)
 				$scope.gridOptions.data = $scope.usuarios
 			)
 
 
 		$scope.$on('usuarioEliminadoEnParentEditar' , (event, usuario)->
-			$scope.usuarios = $filter('filter')($scope.usuarios, {id: '!'+usuario.id})
+			user_id = if usuario.rowid then usuario.rowid else usuario.id
+			campo   = if usuario.rowid then {rowid: '!'+user_id}  else {id: '!'+user_id}
+
+			$scope.usuarios         = $filter('filter')($scope.usuarios, campo)
 			$scope.gridOptions.data = $scope.usuarios
 		)
 
@@ -97,7 +103,7 @@ angular.module('WissenSystem')
 			modalInstance = $modal.open({
 				templateUrl: App.views + 'usuarios/verRoles.tpl.html'
 				controller: 'VerRolesCtrl'
-				resolve: 
+				resolve:
 					usuario: ()->
 						row
 					roles: ()->
@@ -121,10 +127,10 @@ angular.module('WissenSystem')
 		btGrid4 = '<a class="btn btn-xs shiny btn-info" ng-click="grid.appScope.seleccionar_entidad(row.entity)" ng-bind="row.entity.entidad_id | nombreEntidad:grid.appScope.$parent.entidades:true"> <md-tooltip md-direction="left">{{row.entity.entidad_id | nombreEntidad:grid.appScope.$parent.entidades:false}}</md-tooltip> </a>'
 		btGrid5 = '<a class="btn btn-xs btn-info" ng-click="grid.appScope.verRoles(row.entity)"><span ng-repeat="rol in row.entity.roles">{{rol.display_name}}-</span>  <md-tooltip md-direction="left">Modificar roles</md-tooltip> </a>'
 
-		botones = btGrid1 + btGrid2 + btGrid3 + btGridP # ''
+		botones = '<div class="btn-group">' + btGrid1 + btGrid2 + btGrid3 + btGridP + '</div>'
 		###
 		if $scope.$parent.hasRoleOrPerm(['Admin'])
-			botones = 
+			botones =
 		else
 			botones = btGrid1 + btGrid3 + btGridP
 		###
@@ -133,53 +139,54 @@ angular.module('WissenSystem')
 		columnDefs = []
 
 		if ($(window).width() > 800)
-			columnDefs.push( { field: 'id', displayName:'Id', width: 50, enableCellEdit: false } )
+			campo = if $scope.$parent.USER.rowid then 'rowid' else 'id'
+			columnDefs.push( { field: campo, displayName: 'Id', width: 50, enableCellEdit: false } )
 
 		if ($(window).width() > 800)
 			columnDefs.push( { name: 'edicion', displayName:'Edición', width: 130, enableSorting: false, enableFiltering: false, cellTemplate: botones, enableCellEdit: false, enableColumnMenu: false} )
 		else
 			columnDefs.push( { name: 'edicion', displayName:'Edición', width: 100, enableSorting: false, enableFiltering: false, cellTemplate: botones, enableCellEdit: false, enableColumnMenu: false} )
-		
-		columnDefs.push( { 
-			field: 'nombres', filter: {condition: uiGridConstants.filter.CONTAINS}, enableHiding: false 
+
+		columnDefs.push( {
+			field: 'nombres', filter: {condition: uiGridConstants.filter.CONTAINS}, minWidth: 100, enableHiding: false
 			filter: {
 				condition: (searchTerm, cellValue)->
 					termino 	= window.removeAccents(searchTerm).toLowerCase()
 					find 		= window.removeAccents(cellValue).toLowerCase()
 					return (find.indexOf(termino) isnt -1)
-			} 
+			}
 		} )
 
-		columnDefs.push( { 
-			field: 'apellidos', filter: { condition: uiGridConstants.filter.CONTAINS }
+		columnDefs.push( {
+			field: 'apellidos', filter: { condition: uiGridConstants.filter.CONTAINS }, minWidth: 90
 			filter: {
 				condition: (searchTerm, cellValue)->
 					termino 	= window.removeAccents(searchTerm).toLowerCase()
 					find 		= window.removeAccents(cellValue).toLowerCase()
 					return (find.indexOf(termino) isnt -1)
-			} 
+			}
 		} )
-		
+
 		if ($(window).width() > 800)
 			columnDefs.push( { field: 'sexo', displayName:'Sex', width: 50 } )
-		
-		columnDefs.push( { field: 'username', filter: { condition: uiGridConstants.filter.CONTAINS }, displayName: 'Usuario'} )
-		columnDefs.push( { 
-				field: 'entidad_id', displayName:'Entidad', cellTemplate: btGrid4, enableCellEdit: false,
+
+		columnDefs.push( { field: 'username', filter: { condition: uiGridConstants.filter.CONTAINS }, displayName: 'Usuario', minWidth: 70} )
+		columnDefs.push( {
+				field: 'entidad_id', displayName:'Entidad', cellTemplate: btGrid4, enableCellEdit: false, minWidth: 80,
 				sortingAlgorithm: (a, b, rowA, rowB)->
 					# No funcionaaaaaa
 					if (a == b) then return 0
 					if (a < b) then return 1
 					return 1
-				, 
-				filter: { 
-					condition: (searchTerm, cellValue)-> 
+				,
+				filter: {
+					condition: (searchTerm, cellValue)->
 						entidades 	= $scope.$parent.entidades
 						termino 	= window.removeAccents(searchTerm).toLowerCase()
 
 						res = $filter('nombreEntidad')(cellValue, entidades, true)
 						res = window.removeAccents(res).toLowerCase()
-						
+
 						res2 = $filter('nombreEntidad')(cellValue, entidades)
 						res2 = window.removeAccents(res2).toLowerCase()
 
@@ -189,22 +196,22 @@ angular.module('WissenSystem')
 		)
 
 
-		if $scope.$parent.hasRoleOrPerm(['Admin']) and $(window).width() > 800
-			columnDefs.push( { field: 'roles', displayName:'Roles', cellTemplate: btGrid5, enableCellEdit: false } )
+		if $scope.$parent.hasRoleOrPerm(['Admin', 'Ejecutor']) and $(window).width() > 800
+			columnDefs.push( { field: 'roles', displayName:'Roles', cellTemplate: btGrid5, enableCellEdit: false, minWidth: 70 } )
 
 
 
 		if ($(window).width() <= 800)
-			$scope.gridOptions = 
+			$scope.gridOptions =
 				multiSelect: false,
 				enebleGridColumnMenu: false,
 				enableRowHeaderSelection: false
 		else
-			$scope.gridOptions = 
+			$scope.gridOptions =
 				selectedItems: $scope.currentusers,
-				multiSelect: true, 
+				multiSelect: true,
 				enableSelectAll: true,
-				
+
 
 		$scope.gridOptions.showGridFooter 	= true
 		$scope.gridOptions.enableSorting 	= true
@@ -223,7 +230,7 @@ angular.module('WissenSystem')
 			)
 
 			gridApi.edit.on.afterCellEdit($scope, (rowEntity, colDef, newValue, oldValue)->
-				
+
 				if newValue != oldValue
 					if colDef.field == "sexo"
 						if newValue != 'M' and newValue != 'F'
@@ -231,7 +238,7 @@ angular.module('WissenSystem')
 							rowEntity.sexo = oldValue
 							$scope.$apply()
 							return
-					
+
 					Restangular.one('usuarios/update').customPUT(rowEntity).then((r)->
 						toastr.success 'Usuario actualizado con éxito', 'Actualizado'
 					, (r2)->
@@ -250,32 +257,35 @@ angular.module('WissenSystem')
 
 
 		$scope.cambiaInscripcion = (categoria, currentUsers)->
-			
+
 			categoria.cambiando = true
 
-			datos = 
+			datos =
 				usuarios: 		[]
 				categoria_id: 	categoria.categoria_id
 
 			for currentUser in currentUsers
-				datos.usuarios.push {user_id: currentUser.id}
-				
+				user_id = if currentUser.rowid then currentUser.rowid else currentUser.id
+				datos.usuarios.push {user_id: user_id}
+
 
 			if categoria.selected
-			
+
 				Restangular.one('inscripciones/inscribir-varios').customPUT(datos).then((r)->
-					
+
 					for currentUser in currentUsers
 						for inscrip in r
-
-							if inscrip.user_id == currentUser.id
+							user_id = if currentUser.rowid then currentUser.rowid else currentUser.id
+							if inscrip.user_id == user_id
 
 								found = $filter('filter')(currentUser.inscripciones, {categoria_id: inscrip.categoria_id})
 
 								if found.length == 0
 									currentUser.inscripciones.push inscrip
 								else
-									found[0].id = inscrip.id
+									insc_id = if inscrip.rowid then inscrip.rowid else inscrip.id
+									found[0].id         = insc_id
+									found[0].rowid      = insc_id
 									found[0].deleted_at = inscrip.deleted_at
 
 
@@ -283,13 +293,12 @@ angular.module('WissenSystem')
 					categoria.cambiando = false
 				, (r2)->
 					toastr.warning 'No se inscribó el usuario', 'Problema'
-					console.log 'No se inscribó el usuario ', r2
 					categoria.cambiando = false
 					categoria.selected = false
 				)
 
 			else
-				
+
 				Restangular.one('inscripciones/desinscribir-varios').customPUT(datos).then((r)->
 					categoria.cambiando = false
 
@@ -298,14 +307,13 @@ angular.module('WissenSystem')
 
 				, (r2)->
 					toastr.warning 'No se quitó inscripción', 'Problema'
-					console.log 'No se quitó inscripción ', r2
 					categoria.cambiando = false
 					categoria.selected = true
 				)
-				
 
 
-		
+
+
 
 
 
@@ -324,7 +332,10 @@ angular.module('WissenSystem')
 
 	$scope.ok = ()->
 
-		Restangular.all('usuarios/destroy').customDELETE(usuario.id).then((r)->
+		user_id = if usuario.rowid then usuario.rowid else usuario.id
+		promesa = if usuario.rowid then Restangular.all('usuarios/destroy').customPUT({user_id: user_id}) else Restangular.all('usuarios/destroy').customDELETE(user_id)
+
+		promesa.then((r)->
 			toastr.success 'Usuario eliminado con éxito.', 'Eliminado'
 			$modalInstance.close(usuario)
 		, (r2)->
@@ -332,7 +343,7 @@ angular.module('WissenSystem')
 			console.log 'Error eliminando usuario: ', r2
 			$modalInstance.dismiss('Error')
 		)
-		
+
 
 	$scope.cancel = ()->
 		$modalInstance.dismiss('cancel')
@@ -346,14 +357,18 @@ angular.module('WissenSystem')
 	$scope.entidades_extras = $filter('filter')(entidades, {id: '!'+usuario.entidad_id})
 
 	$scope.seleccionar = (entidad)->
+		user_id = if usuario.rowid then usuario.rowid else usuario.id
+
+
+		entidad_id = if entidad.rowid then entidad.rowid else entidad.id
 
 		datos =
-			user_id: $scope.usuario.id
-			entidad_id: entidad.id
+			user_id: user_id
+			entidad_id: entidad_id
 
 		Restangular.all('usuarios/cambiar-entidad').customPUT(datos).then((r)->
 			toastr.success 'Entidad cambiada con éxito.', entidad.alias
-			$modalInstance.close(entidad.id)
+			$modalInstance.close(entidad_id)
 		, (r2)->
 			toastr.warning 'No se pudo cambiar entidad.', 'Problema'
 			$modalInstance.dismiss('Error')
@@ -370,6 +385,7 @@ angular.module('WissenSystem')
 .controller('VerRolesCtrl', ['$scope', '$uibModalInstance', 'usuario', 'roles', 'Restangular', 'toastr', ($scope, $modalInstance, usuario, roles, Restangular, toastr)->
 	$scope.usuario = usuario
 	$scope.roles = roles
+	user_id = if usuario.rowid then usuario.rowid else usuario.id
 
 	$scope.datos = {selecteds: []}
 
@@ -378,8 +394,8 @@ angular.module('WissenSystem')
 
 	$scope.seleccionando = ($item, $model)->
 
-		codigos = 
-			user_id: usuario.id
+		codigos =
+			user_id: user_id
 			role_id: $item.id
 
 		Restangular.one('roles/add-role-to-user').customPUT(codigos).then((r)->
@@ -391,7 +407,7 @@ angular.module('WissenSystem')
 
 	$scope.quitando = ($item, $model)->
 
-		Restangular.one('roles/remove-role-to-user').customPUT({role_id: $item.id, user_id: usuario.id}).then((r)->
+		Restangular.one('roles/remove-role-to-user').customPUT({role_id: $item.id, user_id: user_id}).then((r)->
 			toastr.success 'Rol quitado con éxito.'
 		, (r2)->
 			toastr.warning 'No se pudo quitar el rol al usuario.', 'Problema'

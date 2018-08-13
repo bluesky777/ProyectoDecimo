@@ -2,7 +2,7 @@ angular.module('WissenSystem')
 
 .controller('IniciarCtrl', ['$scope', 'Restangular', 'toastr', '$filter', 'AuthService', '$state', '$uibModal', 'App', 'SocketData', 'MySocket', 'Perfil', '$rootScope', '$interval', ($scope, Restangular, toastr, $filter, AuthService, $state, $modal, App, SocketData, MySocket, Perfil, $rootScope, $interval)->
 
-	
+
 	$scope.$state 				= $state
 	$scope.categorias_king 		= []
 	$scope.examenes_puntajes 	= []
@@ -27,12 +27,18 @@ angular.module('WissenSystem')
 			toastr.warning 'No se trajeron los resultados', 'Problema'
 			console.log 'No se trajo resultados ', r2
 		)
-	
+
 
 	if AuthService.hasRoleOrPerm ['admin', 'profesor', 'tecnico']
 		$scope.$parent.traerEventos()
 	else
 		$scope.traer_categorias_evento()
+
+
+	$scope.contiunar = (examen)->
+		dato = {examen_respuesta_id: examen.examen_id }
+		console.log(dato)
+		$state.go('panel.examen_respuesta', dato )
 
 
 	# Esta función es llamada por el participante cuando él presiona una categoría en la que está inscrito
@@ -44,7 +50,7 @@ angular.module('WissenSystem')
 			modalInstance = $modal.open({
 				templateUrl: App.views + 'examen_respuesta/seguroIniciarCtrl.tpl.html'
 				controller: 'SeguroIniciarCtrl'
-				resolve: 
+				resolve:
 					inscripcion: ()->
 						categoria
 					entidades: ()->
@@ -53,11 +59,37 @@ angular.module('WissenSystem')
 			modalInstance.result.then( (examen)->
 				console.log 'Resultado del modal: ', examen
 			)
-		
+
 
 	$scope.categoriaSelect = ()->
-		return SocketData.cliente(Perfil.getResourceId())
-		
+		cliente = SocketData.cliente(Perfil.getResourceId())
+
+		if cliente.categsel and !cliente.categsel_nombre
+			# Si tiene cat seleccionada pero no ha traido el nombre, lo traemos en las traducciones
+			for categoriaking in $scope.categorias_king
+				categoriaking_id = if categoriaking.rowid then categoriaking.rowid else categoriaking.id
+
+				if categoriaking_id == cliente.categsel
+					categ_traducida = $filter('porIdioma')(categoriaking.categorias_traducidas, parseFloat($scope.USER.idioma_main_id))
+					if categ_traducida.length > 0
+						categ_traducida = categ_traducida[0]
+
+					for inscripcion in $scope.USER.inscripciones
+
+						if inscripcion.categoria_id == categoriaking_id
+
+							categ_traducida.nivel_id            = categoriaking.nivel_id
+							categ_traducida.allowed_to_answer   = inscripcion.allowed_to_answer
+							categ_traducida.examenes            = inscripcion.examenes
+							categ_traducida.inscripcion_id      = if inscripcion.rowid then inscripcion.rowid else inscripcion.id
+							categ_traducida.categ_traducida_id 	= if categ_traducida.rowid then categ_traducida.rowid else categ_traducida.id
+
+							if $scope.evento_actual.gran_final
+								$scope.iniciarExamen categ_traducida
+
+		else
+			return cliente
+
 
 	$scope.iniciarProyeccion = ()->
 		$state.go 'proyectando'
@@ -66,10 +98,10 @@ angular.module('WissenSystem')
 	destroyEmpezar_examen = $rootScope.$on 'empezar_examen', (event)->
 		cliente 		= SocketData.cliente(Perfil.getResourceId())
 		inscripcion 	= {categoria_id: cliente.categsel_id }
-
+		console.log(cliente)
 		for inscrip in $scope.USER.inscripciones
 			if inscrip.categoria_id == cliente.categsel_id
-				inscripcion.inscripcion_id = inscrip.id
+				inscripcion.inscripcion_id = inscrip.id || inscrip.rowid
 
 		Restangular.all('examenes_respuesta/iniciar').customPOST(inscripcion).then((r)->
 			$rootScope.examen_actual = r
@@ -82,12 +114,12 @@ angular.module('WissenSystem')
 
 
 	$scope.$on('$destroy', ()->
-	  destroyEmpezar_examen() # remove listener.
-	);  
+		destroyEmpezar_examen() # remove listener.
+	);
 
 	$rootScope.$on('categ_selected_change', ()->
-	  $scope.$apply();
-	);  
+		$scope.$apply();
+	);
 
 
 

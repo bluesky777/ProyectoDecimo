@@ -4,8 +4,9 @@
 	.row
 		.col-lg-12.col-xs-12
 			h4(ng-bind-html="usuario.nombres + ' ' + usuario.apellidos" flex="90")
-			div(ng-bind-html="'Entidad: ' + (usuario.entidad_id|nombreEntidad:entidades)" flex="90")
-			h5 Id: {{usuario.id}}
+			div(flex="90") Usuario: {{usuario.username}}
+			h5(ng-show="usuario.rowid") Id: {{usuario.rowid}}
+			h5(ng-hide="usuario.rowid") Id: {{usuario.id}}
 
 .modal-footer
 	button.btn.btn-labeled.btn-danger(ng-click="ok()") Eliminar

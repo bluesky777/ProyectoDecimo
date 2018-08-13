@@ -4,11 +4,11 @@ angular.module('WissenSystem')
 	(entidad_id, entidades, alias) ->
 
 		if entidad_id and entidades
-			
+
 			entidad_id = parseFloat(entidad_id)
 
 			entidad = $filter('filter')(entidades, {id: entidad_id})
-			
+
 			if entidad.length > 0
 				if alias
 					return entidad[0].alias
@@ -60,14 +60,15 @@ angular.module('WissenSystem')
 			for categ_king in categoriasking
 
 				if nivel_id
-					
+
 					nivel_id = parseFloat(nivel_id)
-					
+
 					if categ_king.nivel_id == nivel_id or nivel_id == -1 or nivel_id == null
 
 						categ_traducido = $filter('porIdioma')(categ_king.categorias_traducidas, idioma_id)
 						if categ_traducido.length > 0
-							categ_traducido[0].categoria_king_id = categ_king.id
+							categ_king_id = if categ_king.rowid then categ_king.rowid else categ_king.id
+							categ_traducido[0].categoria_king_id = categ_king_id
 							resultado.push categ_traducido[0]
 
 				else

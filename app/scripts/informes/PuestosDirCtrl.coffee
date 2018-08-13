@@ -2,21 +2,21 @@
 
 angular.module('WissenSystem')
 
-.directive('puestosDir',['App', (App)-> 
+.directive('puestosDir',['App', (App)->
 	restrict: 'E'
 	templateUrl: "#{App.views}informes/puestosDir.tpl.html"
 	controller: 'PuestosDirCtrl'
 ])
 
 
-.controller('PuestosDirCtrl', ['$scope', 'Restangular', 'toastr', '$filter', 'MySocket', 'SocketData' , '$uibModal', 'App',  
+.controller('PuestosDirCtrl', ['$scope', 'Restangular', 'toastr', '$filter', 'MySocket', 'SocketData' , '$uibModal', 'App',
 	($scope, Restangular, toastr, $filter, MySocket, SocketData, $uibModal, App) ->
 
 		$scope.SocketData 	= SocketData
 		$scope.mostrando 	= false; # 'todos', 'por_entidades', 'por_entidades_categorias', 'por_categorias'
-		$scope.sortType     = 'promedio'; 
-		$scope.sortReverse  = false;  
-		$scope.searchExam   = ''; 
+		$scope.sortType     = 'promedio';
+		$scope.sortReverse  = false;
+		$scope.searchExam   = '';
 		$scope.gran_final	= true;
 
 
@@ -37,7 +37,7 @@ angular.module('WissenSystem')
 				toastr.warning 'No se trajeron los exámenes por entidad', 'Problema'
 				console.log 'No se trajeron los exámenes por entidad', r2
 			)
-		
+
 		$scope.traerExamenesEntidadesCategorias = ()->
 			Restangular.all('informes/examenes-entidades-categorias').getList({gran_final: $scope.gran_final}).then((r)->
 				$scope.entidades = r
@@ -46,8 +46,8 @@ angular.module('WissenSystem')
 				toastr.warning 'No se trajeron los exámenes por entidad y categorías', 'Problema'
 				console.log 'No se trajeron los exámenes por entidad y categorías ', r2
 			)
-		
-		
+
+
 		$scope.traerExamenesCategorias = ()->
 			Restangular.all('informes/examenes-categorias').getList({gran_final: $scope.gran_final}).then((r)->
 				$scope.categorias = r
@@ -69,7 +69,7 @@ angular.module('WissenSystem')
 				)
 			else
 				toastr.warning 'Selecciona una categoría.'
-				
+
 
 		$scope.mostrarPuesto = (examen, puesto, entidad)->
 			examen_send = {}
@@ -87,36 +87,43 @@ angular.module('WissenSystem')
 			modalInstance = $uibModal.open({
 				templateUrl: App.views + 'informes/seguroEliminExam.tpl.html'
 				controller: 'SeguroEliminExamCtrl'
-				resolve: 
+				resolve:
 					examen: ()->
 						examen
 			})
 			modalInstance.result.then( (r)->
 				toastr.success 'Examen de ' + examen.nombres + ' ' + examen.apellidos + ' eliminado.'
-				$scope.examenes 	= $filter('filter')($scope.examenes, {examen_id: '!'+r.id })
 
-				entidad = $filter('filter')($scope.entidades, {entidad_id: examen.entidad_id })[0]
-				
+				examen_id 				= if r.rowid then r.rowid else r.id
+				$scope.examenes 	= $filter('filter')($scope.examenes, {examen_id: '!'+ examen_id})
+
+
+				entidad = $filter('filter')($scope.entidades, {entidad_id: examen.entidad_id }, true)
+
 				if entidad
-					if entidad.examenes
-						entidad.examenes 	= $filter('filter')(entidad.examenes, {examen_id: '!'+r.id })
-				
-				
-					if entidad.categorias
-						categoria 			= $filter('filter')(entidad.categorias, {categoria_id: examen.categoria_id })[0]
-						categoria.examenes 	= $filter('filter')(categoria.examenes, {examen_id: '!'+r.id })
-				
-				categoria 	= $filter('filter')($scope.categorias, {categoria_id: examen.categoria_id })[0]
+					if entidad.length > 0
+						entidad = entidad[0]
+
+						if entidad.examenes
+							entidad.examenes 	= $filter('filter')(entidad.examenes, {examen_id: '!'+examen_id })
+
+						if entidad.categorias
+							categoria 			= $filter('filter')(entidad.categorias, {categoria_id: examen.categoria_id })[0]
+							categoria.examenes 	= $filter('filter')(categoria.examenes, {examen_id: '!'+examen_id })
+
+				categoria 	= $filter('filter')($scope.categorias, {categoria_id: examen.categoria_id }, true)
 				if categoria
-					if categoria.examenes
-						categoria.examenes = $filter('filter')(categoria.examenes, {examen_id: '!'+r.id })
-				
+					if categoria.length > 0
+						categoria = categoria[0]
+						if categoria.examenes
+							categoria.examenes = $filter('filter')(categoria.examenes, {examen_id: '!'+examen_id })
+
 			)
 
 
 		#$scope.traerExamenesCategorias()
 
-		
+
 
 	]
 )

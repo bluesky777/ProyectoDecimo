@@ -3,7 +3,7 @@
 angular.module("WissenSystem")
 
 .controller('FileManagerCtrl', ['$scope', 'Upload', '$timeout', '$filter', 'App', 'Restangular', 'Perfil', '$uibModal', '$mdDialog', 'resolved_user', 'toastr', 'AuthService', ($scope, $upload, $timeout, $filter, App, Restangular, Perfil, $modal, $mdDialog, resolved_user, toastr, AuthService)->
-	
+
 	$scope.USER = resolved_user
 	$scope.subir_intacta = {intacta: true}
 	$scope.hasRoleOrPerm = AuthService.hasRoleOrPerm
@@ -11,12 +11,12 @@ angular.module("WissenSystem")
 	$scope.vm			= {}
 
 
-	
+
 	fixDato = ()->
-		$scope.dato = 
+		$scope.dato =
 			imgUsuario:
 				id:		$scope.USER.imagen_id
-				nombre:	$scope.USER.imagen_nombre 
+				nombre:	$scope.USER.imagen_nombre
 
 	fixDato()
 
@@ -40,13 +40,14 @@ angular.module("WissenSystem")
 
 	$scope.uploadFoto = ()->
 		file = $scope.vm.picture
-		
-		if (file) 
+
+		if (file)
 
 			file = file.replace(/^data\:image\/\w+\;base64\,/, '')
 
 			Restangular.one('imagenes/store').customPOST({foto: file}).then( (r)->
 				toastr.success 'Foto subida correctamente.'
+				$scope.imagenes.push r
 			, (r2)->
 				toastr.error 'No se pudo subir foto', 'Error'
 			)
@@ -79,7 +80,7 @@ angular.module("WissenSystem")
 						$timeout(()->
 							file.dataUrl = e.target.result
 						)
-	
+
 	uploadUsing$upload = (file)->
 
 		intactaUrl = if $scope.subir_intacta.intacta then '-intacta' else ''
@@ -107,7 +108,11 @@ angular.module("WissenSystem")
 
 
 	$scope.pedirCambioUsuario = (imgUsu)->
-		Restangular.one('imagenes/cambiar-imagen-perfil/' + $scope.USER.id).customPUT({imagen_id: imgUsu.id}).then((r)->
+		img_id = if imgUsu.rowid then imgUsu.rowid else imgUsu.id
+		usu_id = if $scope.USER.rowid then $scope.USER.rowid else $scope.USER.id
+		promesa = if $scope.USER.rowid then Restangular.one('imagenes/cambiar-imagen-perfil').customPUT({usu_id: usu_id, imagen_id: imgUsu.rowid}) else Restangular.one('imagenes/cambiar-imagen-perfil/' + usu_id).customPUT({imagen_id: imgUsu.id})
+
+		promesa.then((r)->
 			Perfil.setImagen(r.imagen_id, imgUsu.nombre)
 			$scope.$emit 'cambianImgs', {image: r}
 			toastr.success 'Imagen principal cambiada'
@@ -117,7 +122,8 @@ angular.module("WissenSystem")
 
 
 	$scope.cambiarLogo = (imgLogo)->
-		Restangular.one('imagenes/cambiar-logo').customPUT({logo_id: imgLogo.id}).then((r)->
+		img_id = if imgLogo.rowid then imgLogo.rowid else imgLogo.id
+		Restangular.one('imagenes/cambiar-logo').customPUT({logo_id: img_id}).then((r)->
 			toastr.success 'Logo del colegio cambiado'
 		, (r2)->
 			toastr.error 'No se pudo cambiar el logo', 'Problema'
@@ -167,13 +173,14 @@ angular.module("WissenSystem")
 			templateUrl: App.views + 'fileManager/removeImage.tpl.html'
 			controller: 'RemoveImageCtrl'
 			size: 'sm',
-			resolve: 
+			resolve:
 				imagen: ()->
 					imagen
 
 		})
 		modalInstance.result.then( (imag)->
 			$scope.imagenes = $filter('filter')($scope.imagenes, {id: '!'+imag.id})
+			$scope.imagenes = $filter('filter')($scope.imagenes, {rowid: '!'+imag.rowid})
 		)
 
 
@@ -188,15 +195,22 @@ angular.module("WissenSystem")
 	$scope.usuarioSelect = (item, model)->
 		$scope.dato.selectUsuarioModel = item
 
-	
+
 
 	$scope.cambiarFotoUnUsuario = (usuarioElegido, imgUsuario)->
+		img_id = if imgUsuario.rowid then imgUsuario.rowid else imgUsuario.id
+		usu_id = if usuarioElegido.rowid then usuarioElegido.rowid else usuarioElegido.id
+
 		aEnviar = {
-			imgUsuario: imgUsuario.id
+			imgUsuario: img_id,
+			usu_id: 		usu_id
 		}
-		Restangular.one('imagenes/cambiar-img-usuario/'+usuarioElegido.id).customPUT(aEnviar).then((r)->
+
+		ruta = if $scope.USER.rowid then 'imagenes/cambiar-img-usuario' else ('imagenes/cambiar-img-usuario/'+usu_id)
+
+		Restangular.one(ruta).customPUT(aEnviar).then((r)->
 			toastr.success 'Imagen asignada con éxito'
-			usuarioElegido.imagen_id = imgUsuario.id
+			usuarioElegido.imagen_id = img_id
 			usuarioElegido.imagen_nombre = imgUsuario.nombre
 		, (r2)->
 			toastr.error 'Error al asignar foto al usuario', 'Problema'

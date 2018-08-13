@@ -2,15 +2,17 @@
 
 angular.module('WissenSystem')
 
-.controller('InformesCtrl', ['$scope', '$http', 'Restangular', '$state', '$rootScope', 'toastr', 'datos', '$filter', '$uibModal', 'App', 
-	($scope, $http, Restangular, $state, $rootScope, toastr, datos, $filter, $uibModal, App) ->
+.controller('InformesCtrl', ['$scope', '$http', 'Restangular', '$state', '$rootScope', 'toastr', 'datos', '$filter', '$uibModal', 'App', 'MySocket',
+	($scope, $http, Restangular, $state, $rootScope, toastr, datos, $filter, $uibModal, App, MySocket) ->
 
 		$scope.eventos_infor 		= datos.eventos
-		$scope.selected 			= { entidades: [], categorias:[] }
+		$scope.selected         = { entidades: [], categorias:[] }
 
-		$scope.sortType     = 'promedio'; 
-		$scope.sortReverse  = false;  
-		$scope.searchExam   = ''; 
+		$scope.sortType         = 'promedio';
+		$scope.sortReverse      = false;
+		$scope.searchExam       = '';
+		$scope.views            = App.views;
+		$scope.imagesPath       = App.images;
 
 
 		$scope.saveConfig = ()->
@@ -18,19 +20,19 @@ angular.module('WissenSystem')
 
 
 		if localStorage.config
-			if localStorage.config.gran_final 
+			if localStorage.config.gran_final
 				$scope.config.gran_final = false
-			if localStorage.config.orientacion 
+			if localStorage.config.orientacion
 				$scope.config.orientacion = 'vertical'
-			if localStorage.config.todas_entidades 
+			if localStorage.config.todas_entidades
 				$scope.config.todas_entidades = false
-			if localStorage.config.todas_categorias 
+			if localStorage.config.todas_categorias
 				$scope.config.todas_categorias = false
 
 			$scope.config = JSON.parse(localStorage.config)
 
 		else
-			$scope.config = 
+			$scope.config =
 				gran_final: 		false
 				orientacion: 		'vertical'
 				todas_entidades:	false
@@ -115,52 +117,51 @@ angular.module('WissenSystem')
 			, (r2)->
 				toastr.error 'No se pudo calcular'
 			)
-				
+
 
 		$scope.traerTodosLosExamenes = ()->
-			console.log 'Entra'
 			$state.go('panel.informes.ver_todos_los_examenes', {gran_final: $scope.config.gran_final, evento_id: $scope.selected.evento_id })
-				
+
 		$scope.traerTodosLosExamenesPorEntidades = ()->
 			if $scope.config.todas_entidades
 				delete localStorage.requested_entidades
 			else
 				localStorage.requested_entidades = JSON.stringify($scope.selected.entidades)
 			$state.go('panel.informes.ver_todos_los_examenes_por_entidades', {gran_final: $scope.config.gran_final, evento_id: $scope.selected.evento_id }, {reload: true})
-				
+
 
 
 
 		$scope.traerExamenesEntidadesCategorias = ()->
-			
+
 			if $scope.config.todas_entidades
 				delete localStorage.requested_entidades
 			else
 				localStorage.requested_entidades = JSON.stringify($scope.selected.entidades)
-			
+
 			if $scope.config.todas_categorias
 				delete localStorage.requested_categorias
 			else
 				localStorage.requested_categorias = JSON.stringify($scope.selected.categorias)
-			
+
 			$state.go('panel.informes.ver_examenes_por_entidades_categorias', {gran_final: $scope.config.gran_final, evento_id: $scope.selected.evento_id }, {reload: true})
-		
-		
-		
+
+
+
 		$scope.traerExamenesCategorias = ()->
-			
+
 			if $scope.config.todas_entidades
 				delete localStorage.requested_entidades
 			else
 				localStorage.requested_entidades = JSON.stringify($scope.selected.entidades)
-			
+
 			if $scope.config.todas_categorias
 				delete localStorage.requested_categorias
 			else
 				localStorage.requested_categorias = JSON.stringify($scope.selected.categorias)
-			
+
 			$state.go('panel.informes.ver_examenes_por_categorias', {gran_final: $scope.config.gran_final, evento_id: $scope.selected.evento_id }, {reload: true})
-		
+
 
 		$scope.traerExamenesCategoria = ()->
 			if $scope.$parent.cmdCategSelected.id
@@ -174,7 +175,7 @@ angular.module('WissenSystem')
 				)
 			else
 				toastr.warning 'Selecciona una categoría.'
-				
+
 
 		$scope.mostrarPuesto = (examen, puesto, entidad)->
 			examen.puesto = puesto
@@ -190,30 +191,38 @@ angular.module('WissenSystem')
 			modalInstance = $uibModal.open({
 				templateUrl: App.views + 'informes/seguroEliminExam.tpl.html'
 				controller: 'SeguroEliminExamCtrl'
-				resolve: 
+				resolve:
 					examen: ()->
 						examen
 			})
 			modalInstance.result.then( (r)->
 				toastr.success 'Examen de ' + examen.nombres + ' ' + examen.apellidos + ' eliminado.'
-				$scope.examenes 	= $filter('filter')($scope.examenes, {examen_id: '!'+r.id })
 
-				entidad = $filter('filter')($scope.entidades, {entidad_id: examen.entidad_id })[0]
-				
+				examen_id 				= if r.rowid then r.rowid else r.id
+				$scope.examenes 	= $filter('filter')($scope.examenes, {examen_id: '!'+ examen_id})
+
+
+				entidad = $filter('filter')($scope.entidades, {entidad_id: examen.entidad_id }, true)
+
 				if entidad
-					if entidad.examenes
-						entidad.examenes 	= $filter('filter')(entidad.examenes, {examen_id: '!'+r.id })
-				
-				
-					if entidad.categorias
-						categoria 			= $filter('filter')(entidad.categorias, {categoria_id: examen.categoria_id })[0]
-						categoria.examenes 	= $filter('filter')(categoria.examenes, {examen_id: '!'+r.id })
-				
-				categoria 	= $filter('filter')($scope.categorias, {categoria_id: examen.categoria_id })[0]
+					if entidad.length > 0
+						entidad = entidad[0]
+
+						if entidad.examenes
+							entidad.examenes 	= $filter('filter')(entidad.examenes, {examen_id: '!'+examen_id })
+
+						if entidad.categorias
+							categoria 			= $filter('filter')(entidad.categorias, {categoria_id: examen.categoria_id })[0]
+							categoria.examenes 	= $filter('filter')(categoria.examenes, {examen_id: '!'+examen_id })
+
+				categoria 	= $filter('filter')($scope.categorias, {categoria_id: examen.categoria_id }, true)
+
 				if categoria
-					if categoria.examenes
-						categoria.examenes = $filter('filter')(categoria.examenes, {examen_id: '!'+r.id })
-				
+					if categoria.length > 0
+						categoria = categoria[0]
+						if categoria.examenes
+							categoria.examenes = $filter('filter')(categoria.examenes, {examen_id: '!'+examen_id })
+
 			)
 
 

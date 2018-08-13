@@ -6,21 +6,16 @@ angular.module('WissenSystem')
 
 	Restangular.setBaseUrl App.Server + 'api/' # Url a la que se harán todas las llamadas.
 
-	###
-	$httpProvider.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
-	$httpProvider.defaults.headers.put['X-CSRFToken'] = $cookies.csrftoken;
+	angular.extend(toastrConfig, {
+		maxOpened: 3
+	});
 
-	$httpProvider.defaults.useXDomain = true
-	$httpProvider.defaults.xsrfCookieName = 'csrftoken';
-	$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
-	delete $httpProvider.defaults.headers.common['X-Requested-With'];
-	###
 	$httpProvider.defaults.useXDomain = true;
 	#$httpProvider.defaults.withCredentials = true;
 	delete $httpProvider.defaults.headers.common["X-Requested-With"];
 	$httpProvider.defaults.headers.common["Accept"] = "application/json";
 	$httpProvider.defaults.headers.common["Content-Type"] = "application/json";
-	
+
 
 
 	uiSelectConfig.theme = 'select2'
@@ -33,45 +28,45 @@ angular.module('WissenSystem')
 	$state
 	.state('main', { #- Estado raiz que no necesita autenticación.
 		url: '/'
-		views: 
+		views:
 			'principal':
 				templateUrl: App.views+'main/main.tpl.html'
 				controller: 'MainCtrl'
-		data: 
+		data:
 			pageTitle: 'En Construcción'
 	})
 
 	.state('landing', { #- Estado raiz que no necesita autenticación.
 		url: '/landing'
-		views: 
+		views:
 			'principal':
 				templateUrl: App.views+'main/landing.tpl.html'
 				controller: 'LandingCtrl' # El controlador está en 'main.coffee'
-		data: 
+		data:
 			pageTitle: 'Liceo Adventista Libertad'
 	})
 
-	.state('login', { 
+	.state('login', {
 		url: '/login'
 		views:
 			'principal':
 				templateUrl: "#{App.views}login/login.tpl.html"
 				controller: 'LoginCtrl'
-		data: 
+		data:
 			pageTitle: 'Ingresar a Wissen'
 
 	})
-	.state('logout', { 
+	.state('logout', {
 		url: '/logout'
 		views:
 			'principal':
 				templateUrl: "#{App.views}login/logout.tpl.html"
 				controller: 'LogoutCtrl'
-		data: 
+		data:
 			icon_fa: 'fa fa-user'
 
 	})
-	
+
 
 	#$locationProvider.html5Mode true
 
@@ -106,8 +101,8 @@ angular.module('WissenSystem')
 			iconclass : 'fa fa-slash',
 			tooltiptext : "Insertar fracción",
 			action: ($deferred,restoreSelection)->
-				this.$editor().wrapSelection('insertHTML','&frasl;',true);                                                                                                                     
-							
+				this.$editor().wrapSelection('insertHTML','&frasl;',true);
+
 		});
 
 		# add the button to the default toolbar definition
@@ -124,7 +119,7 @@ angular.module('WissenSystem')
 
 
 	# Agrego la función findByValues a loDash.
-	_.mixin 
+	_.mixin
 		'findByValues': (collection, property, values)->
 			filtrado = _.filter collection, (item)->
 				_.contains values, item[property]

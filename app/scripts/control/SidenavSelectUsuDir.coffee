@@ -1,12 +1,12 @@
 angular.module('WissenSystem')
 
-.directive('sidenavSelectUsuDir',['App', (App)-> 
+.directive('sidenavSelectUsuDir',['App', (App)->
 
 	restrict: 'E'
 	templateUrl: "#{App.views}control/sidenavSelectUsuDir.tpl.html"
 	scope: false
 	controller: 'SidenavSelectUsuCtrl'
-		
+
 
 ])
 .controller('SidenavSelectUsuCtrl', ['$scope', 'Restangular', 'toastr', 'MySocket', 'SocketData', 'SocketClientes', '$mdSidenav', '$timeout',  ($scope, Restangular, toastr, MySocket, SocketData, SocketClientes, $mdSidenav, $timeout)->
@@ -27,41 +27,49 @@ angular.module('WissenSystem')
 		}
 	}
 
-	
+
 	$scope.seleccionarUsu = (usuario)->
-		usuario.seleccionado = !usuario.seleccionado
-		if usuario.seleccionado 
+		user_id               = if usuario.rowid then usuario.rowid else usuario.id
+		usuario.seleccionado  = !usuario.seleccionado
+
+		if usuario.seleccionado
 			$scope.selectedUser = usuario
 
 			for user in SocketClientes.usuarios_all
-				if user.id != usuario.id
+				user2_id = if user.rowid then user.rowid else user.id
+				if user2_id != user_id
 					user.seleccionado = false
 
 	$scope.seleccionarCkUsu = (usuario)->
-		if usuario.seleccionado 
+		user_id               = if usuario.rowid then usuario.rowid else usuario.id
+		if usuario.seleccionado
 			$scope.selectedUser = usuario
 
 			for user in SocketClientes.usuarios_all
-				if user.id != usuario.id
+				user2_id = if user.rowid then user.rowid else user.id
+				if user2_id != user_id
 					user.seleccionado = false
 
 	$scope.ingresando_seleccionado = false
 	$scope.ingresar_seleccionado = (usuario)->
 		if 	$scope.ingresando_seleccionado == false
 			if usuario
+				user_id = if usuario.rowid then usuario.rowid else usuario.id
 				$scope.ingresando_seleccionado = true
-				MySocket.let_him_enter(usuario.id, $scope.cltdisponible_selected.resourceId)
+
+				MySocket.let_him_enter(user_id, $scope.cltdisponible_selected.resourceId)
 				$scope.cerrar_sidenav()
 			else
-				if $scope.selectedUser.id
+				user_id = if $scope.selectedUser.rowid then $scope.selectedUser.rowid else $scope.selectedUser.id
+				if user_id
 					$scope.ingresando_seleccionado = true
-					MySocket.let_him_enter($scope.selectedUser.id, $scope.cltdisponible_selected.resourceId)
+					MySocket.let_him_enter(user_id, $scope.cltdisponible_selected.resourceId)
 					$scope.cerrar_sidenav()
-				else 
+				else
 					toastr.warning 'Selecciona un usuario'
-	
-	
-		
+
+
+
 	$scope.cerrar_sidenav = ()->
 		$mdSidenav('sidenavSelectusu').close()
 		$timeout(()->

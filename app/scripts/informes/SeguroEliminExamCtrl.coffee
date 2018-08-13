@@ -8,14 +8,19 @@ angular.module('WissenSystem')
 
 		$scope.asignando = true
 
-		
-		Restangular.all('examenes_respuesta/destroy/'+examen.examen_id).customDELETE().then((r)->
-			$modalInstance.close(r)
-		, (r2)->
-			toastr.warning 'No se pudo eliminar examen.', 'Problema'
-			console.log 'Error eliminando el examen: ', r2
-		)
-		
+		if $scope.examen.rowid
+			Restangular.all('examenes_respuesta/destroy').customPUT({examen_id: examen.examen_id}).then((r)->
+				$modalInstance.close(r)
+			, (r2)->
+				toastr.warning 'No se pudo eliminar examen.', 'Problema'
+			)
+		else
+			Restangular.all('examenes_respuesta/destroy/'+examen.examen_id).customDELETE().then((r)->
+				$modalInstance.close(r)
+			, (r2)->
+				toastr.warning 'No se pudo eliminar examen.', 'Problema'
+			)
+
 
 	$scope.cancel = ()->
 		$modalInstance.dismiss('cancel')

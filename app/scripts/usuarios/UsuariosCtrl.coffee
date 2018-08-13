@@ -1,6 +1,6 @@
 angular.module('WissenSystem')
 
-.controller('UsuariosCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 'uiGridConstants', '$uibModal', '$filter', '$location', '$anchorScroll', '$mdSidenav', 'MySocket', 'SocketData', 'App', 'AuthService' 
+.controller('UsuariosCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 'uiGridConstants', '$uibModal', '$filter', '$location', '$anchorScroll', '$mdSidenav', 'MySocket', 'SocketData', 'App', 'AuthService'
 	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr, uiGridConstants, $modal, $filter, $location, $anchorScroll, $mdSidenav, MySocket, SocketData, App, AuthService) ->
 
 		AuthService.verificar_acceso()
@@ -25,21 +25,21 @@ angular.module('WissenSystem')
 		$scope.creando = false
 
 
-		
+
 
 		Restangular.one('imagenes/usuarios').customGET().then((r)->
 			$scope.imagenes = r.imagenes
 		, (r2)->
 			toastr.error 'No se trajeron las imágenes.'
 		)
-		
+
 
 		$scope.eliminarUsuario = ()->
 
 			modalInstance = $modal.open({
 				templateUrl: App.views + 'usuarios/removeUsuario.tpl.html'
 				controller: 'RemoveUsuarioCtrl'
-				resolve: 
+				resolve:
 					usuario: ()->
 						$scope.currentUser
 					entidades: ()->
@@ -51,22 +51,23 @@ angular.module('WissenSystem')
 
 
 		$scope.misImagenes = ()->
-			
+
 			modalInstance = $modal.open({
 				templateUrl: App.views + 'preguntas/misImagenes.tpl.html'
 				controller: 'MisImagenes'
 				size: 'lg',
-				resolve: 
+				resolve:
 					resolved_user: ()->
 						$scope.USER
 			})
 			modalInstance.result.then( (elem)->
+				elem_id = if elem.rowid then elem.rowid else elem.id
 				$scope.imagenes.push elem
-				$scope.newUsu.imagen_id 			= elem.id
+				$scope.newUsu.imagen_id 			= elem_id
 				$scope.newUsu.imagen_nombre 		= elem.imagen_nombre
 				$scope.newUsu.imgUsuario 			= elem
 
-				$scope.currentUser.imagen_id 		= elem.id
+				$scope.currentUser.imagen_id 		= elem_id
 				$scope.currentUser.imagen_nombre 	= elem.imagen_nombre
 				$scope.currentUser.imgUsuario 		= elem
 			)
@@ -95,7 +96,7 @@ angular.module('WissenSystem')
 		$scope.$on 'cambia_evento_actual', ()->
 			$scope.comprobar_evento_actual()
 
-		
+
 
 
 
@@ -103,10 +104,8 @@ angular.module('WissenSystem')
 		$scope.traer_niveles = ()->
 			Restangular.all('niveles/niveles-usuario').getList().then((r)->
 				$scope.niveles_king = r
-				#console.log 'Niveles traídas: ', r
 			, (r2)->
 				toastr.warning 'No se trajeron las niveles', 'Problema'
-				console.log 'No se trajo niveles ', r2
 			)
 		$scope.traer_niveles()
 
@@ -117,11 +116,10 @@ angular.module('WissenSystem')
 				$scope.entidades = r
 			, (r2)->
 				toastr.warning 'No se trajeron las entidades', 'Problema'
-				console.log 'No se trajo entidades ', r2
 			)
 		$scope.traer_entidades()
 
-			
+
 		$scope.categorias_king1 = []
 		$scope.categorias_king2 = []
 		$scope.traer_categorias = ()->
@@ -155,8 +153,8 @@ angular.module('WissenSystem')
 
 		$scope.empezarCrear = ()->
 			$scope.creando 					= !$scope.creando
-		
-		
+
+
 
 		$scope.guardando = false
 		$scope.guardarNuevo = ()->
@@ -166,7 +164,7 @@ angular.module('WissenSystem')
 				toastr.success 'Usuario guardado con éxito.'
 				$scope.usuarios.unshift r
 				$scope.guardando = false
-				console.log 'Usuario creado', r
+
 				$scope.newUsu.nombres = 		''
 				$scope.newUsu.apellidos = 		''
 				$scope.newUsu.username = 		''
@@ -174,10 +172,9 @@ angular.module('WissenSystem')
 				$scope.newUsu.imgUsuario = 		null
 			, (r2)->
 				toastr.warning 'No se creó el usuario, posible login repetido', 'Problema'
-				console.log 'No se creó usuario ', r2
 				$scope.guardando = false
 			)
-		
+
 
 		$scope.guardarNuevoYLogin = ()->
 			$scope.guardando = true
@@ -186,7 +183,6 @@ angular.module('WissenSystem')
 				toastr.success 'Usuario guardado con éxito.'
 				$scope.usuarios.unshift r
 				$scope.guardando = false
-				console.log 'Usuario creado', r
 
 				$scope.newUsu.nombres = 		''
 				$scope.newUsu.apellidos = 		''
@@ -194,7 +190,7 @@ angular.module('WissenSystem')
 				$scope.newUsu.inscripciones = 	[]
 				$scope.newUsu.imgUsuario = 		null
 
-				SocketData.clt_selected = usuario
+				SocketData.clt_selected = r
 				$mdSidenav('sidenavSelectPC').toggle()
 				$location.hash('sidenavSelectPC');
 				$anchorScroll();
@@ -205,9 +201,8 @@ angular.module('WissenSystem')
 			)
 
 		$scope.cambiaNivelNewUsu = ()->
-			console.log $scope.newUsu.nivel_id
 			localStorage.setItem 'nivelSelected', $scope.newUsu.nivel_id
-		
+
 
 		$scope.guardando_edicion = false
 		$scope.guardarEdicion = ()->
@@ -216,13 +211,11 @@ angular.module('WissenSystem')
 			Restangular.one('usuarios/update').customPUT($scope.currentUser).then((r)->
 				toastr.success 'Cambios guardados.'
 				$scope.guardando_edicion = false
-				console.log 'Cambios guardados', r
 			, (r2)->
 				toastr.warning 'No se guardó cambios del usuario', 'Problema'
-				console.log 'No se guardó cambios del usuario ', r2
 				$scope.guardando_edicion = false
 			)
-			
+
 
 
 		$scope.checkeandoCategorias = (item, list)->
@@ -252,33 +245,33 @@ angular.module('WissenSystem')
 
 
 		$scope.cambiaInscripcion = (categoriaking, currentUsers)->
-			
+
 			currentUser = currentUsers[0]
 
 			categoriaking.cambiando = true
 
-			datos = 
-				usuario_id: 	currentUser.id
+			datos =
+				usuario_id: 	  if currentUser.rowid then currentUser.rowid else currentUser.id
 				categoria_id: 	categoriaking.categoria_id
 
 			if categoriaking.selected
 
-			
+
 				Restangular.one('inscripciones/inscribir').customPUT(datos).then((r)->
 					categoriaking.cambiando = false
-					console.log 'Inscripción creada', r
 
 					inscrip = $filter('filter')(currentUser.inscripciones, {categoria_id: datos.categoria_id})
 					if inscrip.length == 0
 						currentUser.inscripciones.push r[0]
 					else
-						inscrip[0].id = r[0].id
+						insc_id           = if inscrip.rowid then inscrip.rowid else inscrip.id
+						inscrip[0].id     = insc_id
+						inscrip[0].rowid  = insc_id
 						inscrip[0].deleted_at = r[0].deleted_at
 
 
 				, (r2)->
 					toastr.warning 'No se inscribó el usuario', 'Problema'
-					console.log 'No se inscribó el usuario ', r2
 					categoriaking.cambiando = false
 					categoriaking.selected = false
 				)
@@ -288,12 +281,11 @@ angular.module('WissenSystem')
 				Restangular.one('inscripciones/desinscribir').customPUT(datos).then((r)->
 					categoriaking.cambiando = false
 					console.log 'Inscripción eliminada', r, currentUser.inscripciones, datos.categoria_id
-					
+
 					currentUser.inscripciones = $filter('filter')(currentUser.inscripciones, {categoria_id: '!'+datos.categoria_id})
 
 				, (r2)->
 					toastr.warning 'No se quitó inscripción', 'Problema'
-					console.log 'No se quitó inscripción ', r2
 					categoriaking.cambiando = false
 					categoriaking.selected = true
 				)

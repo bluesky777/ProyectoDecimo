@@ -3,14 +3,14 @@
 angular.module('WissenSystem')
 
 
-.controller('VerExamenesPorEntidadesCtrl', ['$scope', 'Restangular', 'toastr', '$filter', '$uibModal', 'App', 'entidades',  
+.controller('VerExamenesPorEntidadesCtrl', ['$scope', 'Restangular', 'toastr', '$filter', '$uibModal', 'App', 'entidades',
 	($scope, Restangular, toastr, $filter, $uibModal, App, entidades) ->
 
 		hay = localStorage.texto_informativo_informe
 		if hay
 			$scope.texto_informativo = hay
 		else
-			 $scope.texto_informativo = "<center>Los finalistas deben presentarse en <b>LA GRAN FINAL</b> el día jueves <b>28 de septiembre</b> a las <u>7:00am</u> en el Coliseo Municipal con <b>los pabellones</b>(escudos, heraldos) de su colegio y una <u>representación de compañeros</u> que lo apoyen en las pruebas. ¡Mucho éxito, gracias por participar! </center>"
+			$scope.texto_informativo = "<center>Los finalistas deben presentarse en <b>LA GRAN FINAL</b> el día jueves <b>28 de septiembre</b> a las <u>7:00am</u> en el Coliseo Municipal con <b>los pabellones</b>(escudos, heraldos) de su colegio y una <u>representación de compañeros</u> que lo apoyen en las pruebas. ¡Mucho éxito, gracias por participar! </center>"
 
 		$scope.entidades = []
 
@@ -19,7 +19,7 @@ angular.module('WissenSystem')
 
 
 		for entidad in entidades
-			
+
 			finalistas = []
 
 			for categoria in entidad.categorias
@@ -38,6 +38,7 @@ angular.module('WissenSystem')
 			entidad.finalistas = finalistas
 
 		$scope.entidades = entidades
+		$scope.$parent.entidades = $scope.entidades
 
 
 
@@ -47,14 +48,14 @@ angular.module('WissenSystem')
 
 
 
-.controller('VerExamenesPorCategoriasCtrl', ['$scope', 'Restangular', 'toastr', '$filter', '$uibModal', 'App', 'categorias',  
+.controller('VerExamenesPorCategoriasCtrl', ['$scope', 'Restangular', 'toastr', '$filter', '$uibModal', 'App', 'categorias',
 	($scope, Restangular, toastr, $filter, $uibModal, App, categorias) ->
 
 		hay = localStorage.txt_informativo_por_categorias
 		if hay
 			$scope.texto_informativo = hay
 		else
-			 $scope.texto_informativo = "<center><b>La Unión Colombiana del Norte</b> les agradece grandemente por participar de estas olimpiadas. <b>SIGAMOS MEJORANDO</b>, todo esto es en pro de la educación Adventista. Oremos para que el próximo año sea aún mejor. ¡Dios los bendiga! </center>"
+			$scope.texto_informativo = "<center><b>La Unión Colombiana del Norte</b> les agradece grandemente por participar de estas olimpiadas. <b>SIGAMOS MEJORANDO</b>, todo esto es en pro de la educación Adventista. Oremos para que el próximo año sea aún mejor. ¡Dios los bendiga! </center>"
 
 		$scope.cambia_texto_informativo = ()->
 			localStorage.txt_informativo_por_categorias = $scope.texto_informativo
@@ -78,6 +79,7 @@ angular.module('WissenSystem')
 
 		$scope.finalistas = finalistas
 		$scope.categorias = categorias
+		$scope.$parent.categorias = $scope.categorias
 
 
 

@@ -23,7 +23,7 @@ angular.module('WissenSystem')
 		, 260)
 
 
-	
+
 	$scope.tema = 'theme-zero'
 	$scope.cambiarTema = (actual)->
 		$scope.tema = actual
@@ -38,7 +38,7 @@ angular.module('WissenSystem')
 				idiom.actual = true
 
 
-	
+
 
 
 
@@ -49,21 +49,35 @@ angular.module('WissenSystem')
 		$scope.idiomas = r
 		$scope.idiomas_del_sistema()
 	(r2)->
+
 		if r2.status == 404
-			###
-			answer = confirm("Si es la primera vez, debes actializar la página ¿Actualizar ahora?")
-			if (answer)
+
+			if localStorage.recargado_automaticamente
+				cantidad = parseInt(localStorage.recargado_automaticamente);
+
+
+				if cantidad > 2
+					answer = confirm("No se ha podido establecer conexión. ¿Deseas recargar? (tal vez debas borrar datos de navegación)")
+					if (answer)
+						location.reload()
+
+				else
+					localStorage.recargado_automaticamente = 1 + cantidad;
+					location.reload()
+
+			else
+				localStorage.recargado_automaticamente = 1
 				location.reload()
-			###
-			location.reload()
+
+
 		else
 			console.log 'No se trajeron los idiomas del sistema.', r2
 	)
-	
+
 	# Traemos evento actual.
 	$scope.in_evento_actual = {}
-	
-	
+
+
 
 
 

@@ -23,11 +23,11 @@ angular.module('WissenSystem')
 
 		if !$rootScope.examen_actual
 			console.log 'No hay examen actual'
-			$state.transitionTo 'panel' 
-		else if !$rootScope.examen_actual.id
+			$state.transitionTo 'panel'
+		else if !$rootScope.examen_actual.id and !$rootScope.examen_actual.rowid
 			console.log 'Examen no válido', $rootScope.examen_actual
 			$rootScope.permiso_de_salir = true
-			$state.transitionTo 'panel' 
+			$state.transitionTo 'panel'
 
 
 		MySocket.emit('set_my_examen_id', { examen_actual_id: $rootScope.examen_actual.examen_id })
@@ -72,7 +72,7 @@ angular.module('WissenSystem')
 
 			, 500)
 
-			
+
 
 
 
@@ -90,10 +90,14 @@ angular.module('WissenSystem')
 					else
 						toastr.warning 'No hay opciones para esta pregunta'
 						console.log 'No hay opciones para esta pregunta', pregs_trad[0]
-					datos = 
+
+					preg_check_id = if preg_check[0].rowid then preg_check[0].rowid else preg_check[0].id
+					preg_check_id = if pregs_trad[0].rowid then pregs_trad[0].rowid else pregs_trad[0].id
+
+					datos =
 						examen_actual_id: 		$scope.examen_actual.examen_id
-						pregunta_top_id: 		preg_check[0].id
-						pregunta_sub_id: 		pregs_trad[0].id
+						pregunta_top_id: 		preg_check_id
+						pregunta_sub_id: 		pregs_trad_id
 						idioma_id: 				pregs_trad[0].idioma_id
 						tipo_pregunta: 			preg_check[0].tipo_pregunta
 						tiempo:					$rootScope.tiempo
@@ -116,8 +120,14 @@ angular.module('WissenSystem')
 			$scope.check_por_terminado()
 
 		$scope.$on 'tiempo_exam_terminado', (event)->
-			$rootScope.permiso_de_salir = true
-			$state.go 'panel'
+			# Marcaremos el examen como terminado
+			Restangular.all('examenes_respuesta/set-terminado').customPUT({ exa_id: $scope.examen_actual.examen_id, timeout: 1 }).then((r)->
+				toastr.success 'Se te acabó el tiempo', 'Examen finalizado'
+				$rootScope.permiso_de_salir = true
+				$state.go 'panel'
+			, (r2)->
+				toastr.warning 'No se estableció como terminado.'
+			)
 
 
 
@@ -125,7 +135,7 @@ angular.module('WissenSystem')
 		destroy_next_question = $rootScope.$on 'next_question', (event)-> # Hay otro listening en TimerDir
 			if $scope.waiting_question != false
 				$scope.siguiente_pregunta()
-				
+
 
 
 		destroy_goto_question_on = $rootScope.$on 'goto_question_no', (event, numero)->
@@ -143,7 +153,7 @@ angular.module('WissenSystem')
 			$scope.$apply()
 			if SocketData.config.info_evento.free_till_question
 				if SocketData.config.info_evento.free_till_question >= $scope.pregunta_actual and $scope.waiting_question != false
-				
+
 					$scope.siguiente_pregunta()
 
 
@@ -154,7 +164,7 @@ angular.module('WissenSystem')
 			destroy_next_question() # remove listener.
 			destroy_goto_question_on()
 			destroy_set_free_till_question_on()
-			
+
 			if angular.isDefined(llamado_preventivo)
 				$interval.cancel(llamado_preventivo)
 				llamado_preventivo = undefined
@@ -175,19 +185,19 @@ angular.module('WissenSystem')
 		$scope.pregunta_actual = $filter('noPregActual')($scope.examen_actual.preguntas)
 		$scope.total_preguntas = $filter('cantPregsEvaluacion')($scope.examen_actual.preguntas)
 		$scope.pregunta_actual_porc = $scope.pregunta_actual / $scope.total_preguntas * 100
-		
+
 
 
 
 	$scope.siguiente_pregunta = ()->
 		$scope.pregunta_actual = $filter('noPregActual')($scope.examen_actual.preguntas)
 		$scope.pregunta_actual_porc = $scope.pregunta_actual / $scope.total_preguntas * 100
-		
+
 		pregtemp = $filter('preguntaActual')($scope.examen_actual.preguntas, $scope.pregunta_actual)[0]
 		pregunta = $filter('filter')($scope.examen_actual.preguntas, {pregunta_id: pregtemp.pregunta_id})[0]
 		$scope.waiting_question = false
 		$scope.$broadcast 'next_question'
-		
+
 
 
 
@@ -226,7 +236,7 @@ angular.module('WissenSystem')
 				, (r2)->
 					toastr.warning 'No se estableció como terminado.'
 				)
-				
+
 				return true
 		return false
 
@@ -236,7 +246,7 @@ angular.module('WissenSystem')
 
 		console.log 'Finalizar examen'
 
-	###	
+	###
 	$scope.$on('$locationChangeStart', ( event, param1, param2 )->
 		answer = confirm("No debes salir del examen, ¿Seguro de continuar?")
 		if (!answer)

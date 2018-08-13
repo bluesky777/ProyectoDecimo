@@ -2,14 +2,14 @@ angular.module('WissenSystem')
 
 
 .factory('SocketData', ['SocketClientes', '$rootScope', '$filter', '$q', 'Perfil', (SocketClientes, $rootScope, $filter, $q, Perfil) ->
-	
+
 	@cliente_to_show		= []
 	@clt_selected	= {}
 	token_auth		= ''
-	config			= 
-		pregunta: {}, 
-		reveal_answer: false, 
-		show_logo_entidad_partici: false 
+	config			=
+		pregunta: {},
+		reveal_answer: false,
+		show_logo_entidad_partici: false
 		info_evento: { examen_iniciado: false, preg_actual: 0, free_till_question: -1, img_name: '', puestos_ordenados: true }
 
 
@@ -20,7 +20,7 @@ angular.module('WissenSystem')
 		SocketClientes.registrados_no_logged 	= $filter('filter')(SocketClientes.registrados_no_logged, {resourceId: '!'+resourceId})
 		#console.log 'desconectado  ', SocketClientes.clientes
 
-		
+
 
 
 	cliente = (resourceId)=>
@@ -50,7 +50,7 @@ angular.module('WissenSystem')
 		client.categsel_abrev 		= categsel_abrev
 
 		actualizar_clt(client)
-				
+
 
 
 
@@ -80,7 +80,7 @@ angular.module('WissenSystem')
 	fix_clientes = (clientes)=>
 		for client in clientes
 			categsel_n = $filter('categSelectedDeUsuario')(client.user_data.inscripciones, SocketClientes.categorias_king, Perfil.User().idioma_main_id, client.categsel)
-			if categsel_n.length > 0 
+			if categsel_n.length > 0
 				client.categsel_nombre 	= categsel_n[0].nombre
 				client.categsel_abrev 	= categsel_n[0].abrev
 				client.categsel_id 		= categsel_n[0].categoria_id
@@ -112,7 +112,7 @@ angular.module('WissenSystem')
 			if clt.resourceId == client.resourceId
 				added 	= true
 				index 	= indice
-					
+
 		if not added
 			SocketClientes.clientes.push client
 			if client.registered
@@ -127,7 +127,7 @@ angular.module('WissenSystem')
 	logueado = (client)=>
 
 		categsel_n = $filter('categSelectedDeUsuario')(client.user_data.inscripciones, SocketClientes.categorias_king, Perfil.User().idioma_main_id, client.categsel)
-		if categsel_n.length > 0 
+		if categsel_n.length > 0
 			client.categsel_nombre 		= categsel_n[0].nombre
 			client.categsel_abrev 	= categsel_n[0].abrev
 			client.categsel_id 		= categsel_n[0].categoria_id
@@ -152,7 +152,7 @@ angular.module('WissenSystem')
 					found 	= true
 			if not found
 				SocketClientes.sin_registrar.push(client)
-		
+
 		# Ahora lo buscamos en el array de todos los clientes
 		found 		= false
 		index 		= 0
@@ -163,7 +163,7 @@ angular.module('WissenSystem')
 		if found
 			SocketClientes.clientes.splice index, 1, client
 
-		
+
 
 		return true
 
@@ -175,12 +175,12 @@ angular.module('WissenSystem')
 			if clt.resourceId == client.resourceId and clt.logged == client.logged
 				is_logueado 	= true
 				index 			= indice
-					
+
 		if is_logueado
 			SocketClientes.clientes.splice index, 1, client
-			
+
 			if client.registered
-				if client.logged 
+				if client.logged
 					SocketClientes.registrados_logueados.push client
 					SocketClientes.registrados_no_logged.splice index, 1
 				else
@@ -235,7 +235,7 @@ angular.module('WissenSystem')
 ])
 
 .factory('SocketClientes', ['$rootScope', ($rootScope) ->
-	
+
 	@clientes 					= []
 	@registrados_logueados 		= []
 	@registrados_no_logged 		= []

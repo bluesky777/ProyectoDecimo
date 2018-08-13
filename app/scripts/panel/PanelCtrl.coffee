@@ -2,17 +2,15 @@
 
 angular.module('WissenSystem')
 
-.controller('PanelCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'AuthService', 'Perfil', 'App', 'resolved_user', 'toastr', '$translate', '$filter', '$uibModal', 'MySocket', 'Fullscreen', 'SocketClientes', 'SocketData' 
+.controller('PanelCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'AuthService', 'Perfil', 'App', 'resolved_user', 'toastr', '$translate', '$filter', '$uibModal', 'MySocket', 'Fullscreen', 'SocketClientes', 'SocketData'
 	($scope, $http, Restangular, $state, $cookies, $rootScope, AuthService, Perfil, App, resolved_user, toastr, $translate, $filter, $modal, MySocket, Fullscreen, SocketClientes, SocketData) ->
 
 		$scope.SocketData = SocketData
-
-		$scope.USER = resolved_user
-		#console.log '$scope.USER', $scope.USER
+		$scope.USER       = resolved_user
 		$scope.imagesPath = App.images
 
 		hoy = new Date().toJSON().slice(0,10)
-		
+
 		$scope.dataExport = {
 			#fecha_ini: new Date(hoy + ' 00:00:0000')
 			fecha_ini: new Date(hoy + ' 00:00:0000')
@@ -25,7 +23,7 @@ angular.module('WissenSystem')
 		$scope.data = {}
 
 
-		
+
 
 
 		# Aquí exportaremos datos.
@@ -45,7 +43,7 @@ angular.module('WissenSystem')
 			filename = 'Examenes_exportados-Wissen.txt'
 
 			$scope.export_participantes = $filter('filter')( $scope.export_participantes, { exportar: 1 } )
-			
+
 			data = JSON.stringify($scope.export_participantes, undefined, '\t')
 			blob = new Blob([data], {type: 'text/plain'});
 			if (window.navigator && window.navigator.msSaveOrOpenBlob)
@@ -93,11 +91,11 @@ angular.module('WissenSystem')
 				toastr.warning 'No se pudieron importar datos '
 			)
 
-			
 
 
 
-			
+
+
 
 
 		$rootScope.$on '$stateChangeSuccess', (event, toState, toParams, fromState, fromParams)->
@@ -107,7 +105,7 @@ angular.module('WissenSystem')
 		$rootScope.$on 'categ_selected_change', (event, categsel)->
 			$scope.USER.categsel = categsel
 
-		
+
 		$rootScope.reload = ()->
 			$state.go $state.current, $stateParams, {reload: true}
 
@@ -120,7 +118,7 @@ angular.module('WissenSystem')
 			$mdOpenMenu(ev)
 
 		$scope.cambiarIdioma = (idioma)->
-			
+
 
 			Restangular.one('idiomas/cambiar-idioma').customPUT({idioma_id: idioma.id}).then((r)->
 				$translate.use(idioma.abrev)
@@ -136,10 +134,10 @@ angular.module('WissenSystem')
 			(r2)->
 				console.log 'No se pudo cambiar el idioma.', r2
 			)
-			
 
 
-			
+
+
 		$scope.set_system_event = (evento)->
 			Restangular.one('eventos/set-evento-actual').customPUT({'id': evento.id}).then((r)->
 				console.log 'Evento cambiado: ', r
@@ -148,7 +146,7 @@ angular.module('WissenSystem')
 					eventito.actual = false
 
 				evento.actual = true
-				
+
 				toastr.success 'Evento actual cambiado por ' + evento.alias
 
 			, (r2)->
@@ -180,7 +178,7 @@ angular.module('WissenSystem')
 		$scope.el_evento_actual()
 
 
-			
+
 		$scope.set_user_event = (evento)->
 			Restangular.one('eventos/set-user-event').customPUT({'evento_id': evento.id}).then((r)->
 				console.log 'Evento cambiado: ', r
@@ -229,12 +227,12 @@ angular.module('WissenSystem')
 
 		$rootScope.$on('logueado:yo:agregado_a_arrays', (ev, client)->
 			$scope.USER.categsel = client.categsel
-		);  
+		);
 
 
 		$rootScope.$on('me_desloguearon', (ev, client)->
 			$scope.logout()
-		);  
+		);
 
 
 		MySocket.on('enter', (data)->
@@ -254,7 +252,6 @@ angular.module('WissenSystem')
 
 
 
-				
 		return
 	]
 )

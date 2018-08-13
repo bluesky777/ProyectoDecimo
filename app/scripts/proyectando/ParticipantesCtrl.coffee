@@ -1,7 +1,7 @@
 angular.module('WissenSystem')
 
 
-.controller('ParticipantesCtrl', ['$scope', '$rootScope', 'App', 'SocketData', 'SocketClientes', '$filter', 'MySocket', '$timeout' 
+.controller('ParticipantesCtrl', ['$scope', '$rootScope', 'App', 'SocketData', 'SocketClientes', '$filter', 'MySocket', '$timeout'
 	($scope, $rootScope, App, SocketData, SocketClientes, $filter, MySocket, $timeout) ->
 
 		MySocket.get_clts()
@@ -11,13 +11,13 @@ angular.module('WissenSystem')
 
 		$scope.participantesDeCategoria = (categoria_traduc)->
 			return $filter('filter')(SocketClientes.clientes, {logged :true, 'categsel':categoria_traduc.categoria_id }, true)
-		
+
 		return
 	]
 )
 
 
-.controller('PuntajesActualesCtrl', ['$scope', '$rootScope', 'App', 'SocketData', 'SocketClientes', '$filter', 'MySocket', '$timeout' 
+.controller('PuntajesActualesCtrl', ['$scope', '$rootScope', 'App', 'SocketData', 'SocketClientes', '$filter', 'MySocket', '$timeout'
 	($scope, $rootScope, App, SocketData, SocketClientes, $filter, MySocket, $timeout) ->
 		$scope.examenes_cargados = ()->
 			if $rootScope.examenes_cargados
@@ -30,7 +30,7 @@ angular.module('WissenSystem')
 )
 
 
-.controller('GraficoBarrasCtrl', ['$scope', '$rootScope', 'App', 'SocketData', 'SocketClientes', '$filter', 'MySocket' 
+.controller('GraficoBarrasCtrl', ['$scope', '$rootScope', 'App', 'SocketData', 'SocketClientes', '$filter', 'MySocket'
 	($scope, $rootScope, App, SocketData, SocketClientes, $filter, MySocket) ->
 
 		MySocket.get_clts()
@@ -53,8 +53,8 @@ angular.module('WissenSystem')
 		$scope.participantes_en_categorias = ()->
 			return (item)->
 				return item.categsel > 0;
-			
-		
+
+
 		$scope.calc_indice = (indice)->
 			if indice <= 7
 				return indice
@@ -76,7 +76,7 @@ angular.module('WissenSystem')
 			valor_final = SocketData.config.info_evento.free_till_question
 			if valor_final == -1 or valor_final == 0
 				return 100
-				
+
 			porcentaje = respondidas * 100 / valor_final
 
 			if porcentaje == 0
@@ -101,11 +101,11 @@ angular.module('WissenSystem')
 		return
 	]
 )
-.controller('SCPuntajeParticipCtrl', ['$scope', '$rootScope', 'Perfil', 'App', 'SocketData', 'toastr', '$translate', '$filter', '$uibModal', 'MySocket' 
+.controller('SCPuntajeParticipCtrl', ['$scope', '$rootScope', 'Perfil', 'App', 'SocketData', 'toastr', '$translate', '$filter', '$uibModal', 'MySocket'
 	($scope, $rootScope, Perfil, App, SocketData, toastr, $translate, $filter, $modal, MySocket) ->
 
 		$scope.SocketData = SocketData
-		
+
 		return
 	]
 )

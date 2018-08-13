@@ -19,7 +19,7 @@ angular.module('WissenSystem')
 			d = $q.defer();
 
 			# No necesitaría verificar si ya se ha logueado
-			if Perfil.User().id
+			if Perfil.User().id or Perfil.User().rowid
 				d.resolve Perfil.User()
 			else
 				if $cookies.get('xtoken')
@@ -50,19 +50,18 @@ angular.module('WissenSystem')
 
 
 	authService.verificar_acceso = ()->
-		if !Perfil.User().id
+		if !Perfil.User().id and !Perfil.User().rowid
 			$state.go 'login'
 
 		next = $state.current
 
-		if next.data.needed_permissions
-			needed_permissions = next.data.needed_permissions 
+		if next.data.needed_roles
+			needed_roles = next.data.needed_roles
 
-			if (!authService.isAuthorized(needed_permissions))
-				#event.preventDefault()
-				console.log 'No tiene permisos, y... '
-				
-				localStorage.lastState = next.name
+			if (!authService.isAuthorized(needed_roles))
+				console.log 'No tiene role requerido, y... '
+
+				$rootScope.lastState = next.name
 				if (authService.isAuthenticated())
 					# user is not allowed
 					$rootScope.$broadcast(AUTH_EVENTS.notAuthorized)
@@ -87,17 +86,17 @@ angular.module('WissenSystem')
 			#debugger
 			if user.token
 				$cookies.put('xtoken', user.token)
-				
+
 				$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.get('xtoken')
 
 				Perfil.setUser user
-				registered = if localStorage.getItem('registered_boolean') == null then false else localStorage.getItem('registered_boolean') 
+				registered = if localStorage.getItem('registered_boolean') == null then false else localStorage.getItem('registered_boolean')
 				registered = if registered=='false' then false else true
 				MySocket.emit('loguear', {usuario: user, registered: registered, nombre_punto: localStorage.nombre_punto} )
 
 				#console.log 'Usuario traido: ', user
 
-				
+
 				$rootScope.$broadcast AUTH_EVENTS.loginSuccess
 				d.resolve user
 			else
@@ -115,7 +114,7 @@ angular.module('WissenSystem')
 						toastr.warning 'La sesión ha expirado'
 						if $state.current.name != 'login'
 							$state.go 'login'
-						
+
 					else
 						$rootScope.$broadcast AUTH_EVENTS.loginFailed
 
@@ -128,25 +127,25 @@ angular.module('WissenSystem')
 
 		d = $q.defer();
 		if !Perfil.User().id #or Perfil.User().id == undefined
+			if !Perfil.User().rowid
+				#Perfil.setUser {id: 99999}
 
-			#Perfil.setUser {id: 99999}
+				$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.get('xtoken')
 
-			$http.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.get('xtoken')
+				login = Restangular.one('login/verificar').post().then((usuario)->
+					registered = if localStorage.getItem('registered_boolean') == null then false else localStorage.getItem('registered_boolean')
+					registered = if registered=='false' then false else true
+					MySocket.emit('loguear', {usuario: usuario, registered: registered, nombre_punto: localStorage.nombre_punto} )
+					#$rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+					Perfil.setUser usuario
+					d.resolve usuario
 
-			login = Restangular.one('login/verificar').post().then((usuario)->
-				registered = if localStorage.getItem('registered_boolean') == null then false else localStorage.getItem('registered_boolean') 
-				registered = if registered=='false' then false else true
-				MySocket.emit('loguear', {usuario: usuario, registered: registered, nombre_punto: localStorage.nombre_punto} )
-				$rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-				Perfil.setUser usuario
-				d.resolve usuario
+				, (r2)->
+					console.log 'No se pudo loguear con token. ', r2
+					d.reject 'Error en login con token.'
+					$rootScope.$broadcast AUTH_EVENTS.loginFailed
+				)
 
-			, (r2)->
-				console.log 'No se pudo loguear con token. ', r2
-				d.reject 'Error en login con token.'
-				$rootScope.$broadcast AUTH_EVENTS.loginFailed
-			)
-		
 		else
 			d.resolve Perfil.User()
 
@@ -155,8 +154,8 @@ angular.module('WissenSystem')
 
 	authService.logout = (credentials)->
 		#Restangular.one('logout').get();
-		localStorage.lastState = null
-		localStorage.lastStateParam = null
+		$rootScope.lastState = null
+		$rootScope.lastStateParam = null
 		authService.borrarToken()
 		Perfil.deleteUser()
 		$state.transitionTo 'login'
@@ -167,26 +166,27 @@ angular.module('WissenSystem')
 		delete $http.defaults.headers.common['Authorization']
 
 	authService.isAuthenticated = ()->
-		return !!Perfil.User().id;
+		if Perfil.User().id or Perfil.User().rowid
+			return true;
 
-	authService.isAuthorized = (neededPermissions)->
+	authService.isAuthorized = (neededRoles)->
 
 		user = Perfil.User()
 		if user.is_superuser
 			return true
 
-		if (!angular.isArray(neededPermissions))
-			neededPermissions = [neededPermissions]
+		if (!angular.isArray(neededRoles))
+			neededRoles = [neededRoles]
 
-		if (!angular.isArray(user.perms))
-			if neededPermissions.length > 0
+		if (!angular.isArray(user.roles))
+			if neededRoles.length > 0
 				return false; # Hay permisos requeridos pero el usuario no tiene ninguno
 			else
 				return true; # El usuarios no tiene permisos pero no se requiere ninguno
-		
+
 		newArr = []
-		_.each(neededPermissions, (elem)->
-			if (user.perms.indexOf(elem)) != -1
+		_.each(neededRoles, (elem)->
+			if (user.roles.indexOf(elem)) != -1
 				newArr.push elem
 		)
 		return (authService.isAuthenticated() and (newArr.length > 0))
@@ -200,7 +200,7 @@ angular.module('WissenSystem')
 				return false;
 
 		rolesFound = []
-		
+
 		_.each(ReqRoles, (elem)->
 			rolesFoundTemp = []
 			rolesFoundTemp = $filter('filter')(Perfil.User().roles, {name: elem})

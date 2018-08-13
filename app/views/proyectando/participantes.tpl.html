@@ -4,7 +4,7 @@
     <div class="title-categ-container txt-borde-blanco">{{ categoria_traduc.nombre }}</div>
     <div class="participantes-container">
       <ul style="display: inline-flex;writing-mode: vertical-lr;flex-wrap: wrap;align-content: flex-start;height: 100%;">
-        <li ng-repeat="cliente in SocketClientes.clientes | filter:{'logged':true, 'categsel':categoria_traduc.categoria_id }:true | orderParticipantes: false " ng-class="{'correct': cliente.answered=='correct', 'incorrect': cliente.answered=='incorrect' }" style="writing-mode: horizontal-tb; width: auto; border-radius: 8px; margin-right: 4px; max-height: 60px;" class="md-whiteframe-1dp sc-cliente">
+        <li ng-repeat="cliente in SocketClientes.clientes | filter:{'logged':true, 'categsel':categoria_traduc.categoria_id }:true | orderParticipantes: SocketData.config.info_evento.puestos_ordenados " ng-class="{'correct': cliente.answered=='correct', 'incorrect': cliente.answered=='incorrect' }" style="writing-mode: horizontal-tb; width: auto; border-radius: 8px; margin-right: 4px; max-height: 60px;" class="md-whiteframe-1dp sc-cliente">
           <div style="border-radius: 8px 0 0 8px;" class="sc-cliente-imgs"><img ng-src="{{imagesPath + cliente.user_data.imagen_nombre}}" alt="{{cliente.user_data.username}}" class="img-perfil"><img ng-class="{'showing-logo-ent-part': SocketData.config.show_logo_entidad_partici}" ng-src="{{ imagesPath + cliente.user_data.entidad.logo}}" alt="{{cliente.user_data.username}}" class="img-entidad">
             <md-tooltip>{{ cliente.user_data.entidad.nombre }}</md-tooltip>
           </div>

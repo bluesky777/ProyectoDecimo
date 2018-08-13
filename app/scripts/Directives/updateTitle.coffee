@@ -1,22 +1,23 @@
 angular.module('WissenSystem')
 
-.directive('updateTitle', ['$rootScope', '$timeout',
-	($rootScope, $timeout)->
+.directive('updateTitle', ['$rootScope', '$timeout', '$transitions',
+	($rootScope, $timeout, $transitions)->
 			link: (scope, element)->
 
-				listener = (event, toState, toParams)->
+				$transitions.onSuccess({}, (transition)->
 
-					title = 'MyVc'
-					if toState.data and toState.data.pageTitle
-						title = toState.data.pageTitle
+					title = 'Wissen'
+					if transition.to().data and transition.to().data.pageTitle
+						title = transition.to().data.pageTitle
 
-					if toParams
-						if toParams.username
-							title = toParams.username + ' - MyVc'
+					if transition.to().Params
+						if transition.to().Params.username
+							title = transition.to().Params.username + ' - Wissen'
 
 					$timeout(()->
 						element.text(title)
 					, 0, false)
+				);
 
-				$rootScope.$on('$stateChangeSuccess', listener)
+
 ])

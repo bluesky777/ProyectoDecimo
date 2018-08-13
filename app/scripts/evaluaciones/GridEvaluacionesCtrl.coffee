@@ -8,7 +8,7 @@ angular.module('WissenSystem')
 	cellcateg = '<span ng-bind="row.entity.categoria_id | nombreCategoria:grid.appScope.categoriasking:grid.appScope.idioma"></span>'
 	cellactual = '<md-checkbox ng-true-value="1" ng-false-value="0" ng-model="row.entity.actual" ng-change="grid.appScope.setActual(row.entity)" aria-label="Actual" ng-disable="row.entity.actualizando" style="margin-top: 0px;">Actual</md-checkbox>'
 
-	$scope.gridOptions = 
+	$scope.gridOptions =
 		showGridFooter: true,
 		enableSorting: true,
 		enableFiltering: true,
@@ -26,7 +26,7 @@ angular.module('WissenSystem')
 			$scope.gridApi = gridApi
 			gridApi.edit.on.afterCellEdit($scope, (rowEntity, colDef, newValue, oldValue)->
 				console.log 'Fila editada, ', rowEntity, ' Column:', colDef, ' newValue:' + newValue + ' oldValue:' + oldValue ;
-				
+
 				if newValue != oldValue
 					Restangular.one('evaluaciones/update').customPUT(rowEntity).then((r)->
 						toastr.success 'Evaluaciones actualizada con éxito', 'Actualizado'
@@ -46,35 +46,36 @@ angular.module('WissenSystem')
 
 	$scope.setActual = (row)->
 		row.actualizando = true
-		console.log row
 
 		Restangular.one('evaluaciones/set-actual').customPUT(row).then((r)->
 			toastr.success 'Actualizado con éxito', 'Actualizado'
 			row.actualizando = false
-			
-			elseRows = $filter('filter')($scope.evaluaciones, {categoria_id: row.categoria_id})
+
+			elseRows = $filter('filter')($scope.evaluaciones, {categoria_id: row.categoria_id}, true)
+
+			row_id = if row.rowid then row.rowid else row.id
 
 			for elserow in elseRows
-				if elserow.id != row.id
+				elserow_id = if elserow.rowid then elserow.rowid else elserow.id
+				if elserow_id != row_id
 					elserow.actual = 0
 
 		, (r2)->
-			toastr.warning 'No se cambió como actual o no'
-			console.log 'No estableció como actual o no', r2
+			toastr.warning 'No se cambió'
 			row.actualizando = false
 		)
 
 	$scope.editar = (row)->
-		$scope.$parent.creando = false
-		$scope.$parent.editando = true
-		$scope.$parent.currentEvaluacion = row
+		$scope.$parent.creando        = false
+		$scope.$parent.editando       = true
+		$scope.$parent.currentEvalua  = row
 
 	$scope.eliminar = (row)->
 
 		modalInstance = $modal.open({
 			templateUrl: App.views + 'evaluaciones/removeEvaluacion.tpl.html'
 			controller: 'RemoveEvaluacionCtrl'
-			resolve: 
+			resolve:
 				elemento: ()->
 					row
 				categoriasking: ()->
@@ -107,7 +108,7 @@ angular.module('WissenSystem')
 			console.log 'Error eliminando elemento: ', r2
 			$modalInstance.dismiss('Error')
 		)
-		
+
 
 	$scope.cancel = ()->
 		$modalInstance.dismiss('cancel')
