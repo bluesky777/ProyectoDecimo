@@ -1,5 +1,5 @@
 md-whiteframe.md-whiteframe-z2.definicion-frame(layout style="padding: 10px")
-	span(flex="5" ng-show="showSelectables") 
+	span(flex="5" ng-show="showSelectables")
 		input(type="checkbox" ng-model="pg_pregunta.seleccionada")
 
 	span(flex="5") {{$index+1}}.
@@ -11,10 +11,10 @@ md-whiteframe.md-whiteframe-z2.definicion-frame(layout style="padding: 10px")
 		span(ng-show="pg_pregunta.mostrar_ayuda")
 			| {{pg_pregunta.ayuda}}
 
-	div.btn-container-edit(layout="row")
+	div.btn-container-edit.hidden-print(layout="row")
 
 		.btn-group(aria-label="...")
-			button.btn.btn-default(type="button" ng-click="editarPregunta(pg_pregunta)") 
+			button.btn.btn-default(type="button" ng-click="editarPregunta(pg_pregunta)")
 				i.fa.fa-edit
 				md-tooltip Editar pregunta
 			button.btn.btn-default(type="button" ng-click="previewPregunta(pg_pregunta)")
@@ -65,12 +65,15 @@ span(ng-show="pg_pregunta.showDetail || showOptions")
 			md-checkbox(ng-model="topping.wanted")
 			p(ng-bind-html="opcion.definicion")
 			md-icon.md-secondary.fa.fa-comment(ng-click="" aria-label="Chat")
-	
+
 
 	div.opciones(layout="row" layout-wrap layout-fill ng-if="pg_pregunta.tipo_pregunta=='Test'" style="padding-bottom: 32px;")
-		md-whiteframe.pointer.md-whiteframe-z2.btn(ng-class="{'elegida': opcion.elegida, 'correcta-revelada':opcion.is_correct && showCorrects}" ng-if="!opcion.nueva" flex="40" ng-click="elegirOpcion(pg_pregunta, opcion)" ng-repeat="opcion in pg_pregunta.opciones") 
-			span(style="font-weight: bold;") {{ indexChar($index) }}. 
-			span(ng-bind-html="opcion.definicion") 
+		md-whiteframe.pointer.md-whiteframe-z2.btn(ng-class="{'elegida': opcion.elegida, 'correcta-revelada':opcion.is_correct && showCorrects}"
+			ng-if="!opcion.nueva" flex="40" ng-click="elegirOpcion(pg_pregunta, opcion)"
+			ng-repeat="opcion in pg_pregunta.opciones")
+
+			span(style="font-weight: bold;") {{ indexChar($index) }}.
+			span(ng-bind-html="opcion.definicion")
 
 
 

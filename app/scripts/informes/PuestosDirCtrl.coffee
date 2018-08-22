@@ -13,11 +13,11 @@ angular.module('WissenSystem')
 	($scope, Restangular, toastr, $filter, MySocket, SocketData, $uibModal, App) ->
 
 		$scope.SocketData 	= SocketData
-		$scope.mostrando 	= false; # 'todos', 'por_entidades', 'por_entidades_categorias', 'por_categorias'
+		$scope.mostrando 	  = false; # 'todos', 'por_entidades', 'por_entidades_categorias', 'por_categorias'
 		$scope.sortType     = 'promedio';
-		$scope.sortReverse  = false;
+		$scope.sortReverse  = true;
 		$scope.searchExam   = '';
-		$scope.gran_final	= true;
+		$scope.gran_final	  = true;
 
 
 		$scope.traerTodosLosExamenes = ()->

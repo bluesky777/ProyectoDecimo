@@ -82,8 +82,13 @@ angular.module('WissenSystem')
 
 			for usu in $scope.array_usuarios_import
 				for dupli in $scope.array_usuarios
-					if usu.id == dupli.id
-						$scope.array_usuarios_import = $filter('filter')($scope.array_usuarios_import, { id: '!'+usu.id })
+
+					usu_id = if usu.rowid then usu.rowid else usu.id
+					dup_id = if dupli.rowid then dupli.rowid else dupli.id
+
+					if usu_id == dup_id
+						datos = if usu.rowid then { rowid: '!'+usu_id} else { id: '!'+usu_id}
+						$scope.array_usuarios_import = $filter('filter')($scope.array_usuarios_import, datos)
 
 			Restangular.one('exportar-importar/importar-datos').customPUT({ array_usuarios: $scope.array_usuarios_import }).then((r)->
 				toastr.success 'Importados con éxito: ' + r.importados
@@ -119,10 +124,11 @@ angular.module('WissenSystem')
 
 		$scope.cambiarIdioma = (idioma)->
 
+			idi_id = if idioma.rowid then idioma.rowid else idioma.id
 
-			Restangular.one('idiomas/cambiar-idioma').customPUT({idioma_id: idioma.id}).then((r)->
+			Restangular.one('idiomas/cambiar-idioma').customPUT({idioma_id: idi_id}).then((r)->
 				$translate.use(idioma.abrev)
-				$scope.USER.idioma_main_id = idioma.id
+				$scope.USER.idioma_main_id = idi_id
 
 				$scope.idiomas_del_sistema()
 
@@ -139,7 +145,8 @@ angular.module('WissenSystem')
 
 
 		$scope.set_system_event = (evento)->
-			Restangular.one('eventos/set-evento-actual').customPUT({'id': evento.id}).then((r)->
+			evento_id = if evento.rowid then evento.rowid else evento.id
+			Restangular.one('eventos/set-evento-actual').customPUT({'id': evento_id}).then((r)->
 				console.log 'Evento cambiado: ', r
 
 				angular.forEach $scope.USER.eventos, (eventito, key) ->
@@ -163,10 +170,11 @@ angular.module('WissenSystem')
 		$scope.el_evento_actual = ()->
 
 			if $scope.USER
-				if AuthService.isAuthorized('can_work_like_admin') or AuthService.isAuthorized('like_asesor')
-					try
 
-						$scope.evento_actual = $filter('filter')($scope.USER.eventos, {id: $scope.USER.evento_selected_id})[0]
+				if AuthService.hasRoleOrPerm(['admin', 'asesor', 'profesor', 'ejecutor', 'presentador'])
+					try
+						datos = if $scope.USER.rowid then {rowid: $scope.USER.evento_selected_id} else {id: $scope.USER.evento_selected_id}
+						$scope.evento_actual = $filter('filter')($scope.USER.eventos, datos)[0]
 
 					catch
 						$scope.evento_actual = {}
@@ -180,10 +188,10 @@ angular.module('WissenSystem')
 
 
 		$scope.set_user_event = (evento)->
-			Restangular.one('eventos/set-user-event').customPUT({'evento_id': evento.id}).then((r)->
-				console.log 'Evento cambiado: ', r
+			evento_id = if evento.rowid then evento.rowid else evento.id
+			Restangular.one('eventos/set-user-event').customPUT({'evento_id': evento_id}).then((r)->
 
-				$scope.USER.evento_selected_id = evento.id
+				$scope.USER.evento_selected_id = eve_id
 				$scope.el_evento_actual() # Actualizamos el modelo del evento actual
 				toastr.success 'Evento actual cambiado por ' + evento.alias
 
@@ -237,7 +245,8 @@ angular.module('WissenSystem')
 
 		MySocket.on('enter', (data)->
 			if data.usuario
-				Restangular.one('qr/validar-usuario').customPUT({user_id: data.usuario.id, token_auth: data.from_token }).then((r)->
+				usu_id = if data.usuario.rowid then data.usuario.rowid else data.usuario.id
+				Restangular.one('qr/validar-usuario').customPUT({user_id: usu_id, token_auth: data.from_token }).then((r)->
 					if r.token
 						SocketClientes.usuarios_all = []
 						$cookies.put('xtoken', r.token)

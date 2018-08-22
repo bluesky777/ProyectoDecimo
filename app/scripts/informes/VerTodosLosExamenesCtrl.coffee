@@ -6,7 +6,8 @@ angular.module('WissenSystem')
 .controller('VerTodosLosExamenesCtrl', ['$scope', 'Restangular', 'toastr', '$filter', '$uibModal', 'App', 'examenes',
 	($scope, Restangular, toastr, $filter, $uibModal, App, examenes) ->
 
-		$scope.examenes = examenes
+		$scope.examenes     = examenes
+		$scope.sortReverse  = true;
 		#$scope.$parent.examenes = examenes
 
 
@@ -36,6 +37,7 @@ angular.module('WissenSystem')
 
 		$scope.entidades = entidades
 		$scope.$parent.entidades = entidades
+		$scope.sortReverse  = true;
 
 	]
 )

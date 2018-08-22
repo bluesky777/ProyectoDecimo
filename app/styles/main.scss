@@ -584,6 +584,16 @@ md-checkbox.ck-margin{
 			letter-spacing: 0px !important;
 		}
 
+		.opciones .md-whiteframe-z2{
+			padding-top: 0px!important;
+			padding-bottom: 0px!important;
+			margin-top: 0px!important;
+			margin-bottom: 0px!important;
+		}
+		.opciones .correcta-revelada{
+			background-color: #333;
+			border: 1px solid #000;
+		}
 
 }
 
@@ -1196,19 +1206,19 @@ md-select.categoria md-select-value{
 	}
 	md-list-item{
 		height: 30px !important;
-    min-height: 10px;
+		min-height: 10px;
 
-    .md-list-item-inner{
-      min-height: 35px !important;
-    }
-    .md-list-item-inner::before{
-      min-height: 35px !important;
-    }
+		.md-list-item-inner{
+			min-height: 35px !important;
+		}
+		.md-list-item-inner::before{
+			min-height: 35px !important;
+		}
 	}
 }
 
 .alto-inscribir md-list-item::before{
-  min-height: 35px !important;
+	min-height: 35px !important;
 }
 
 

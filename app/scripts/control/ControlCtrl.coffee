@@ -367,10 +367,12 @@ angular.module('WissenSystem')
 		SocketData.config.info_evento.preg_actual 	= SocketData.config.info_evento.preg_actual + 1
 		pregunta = $scope.cmdPreguntasTraduc[ SocketData.config.info_evento.preg_actual - 1 ]
 
+		### No lo quieren por seguridad
 		if pregunta
 			MySocket.sc_show_question(SocketData.config.info_evento.preg_actual, pregunta)
 		else
 			toastr.warning 'No hay categoría seleccionada'
+		###
 
 
 

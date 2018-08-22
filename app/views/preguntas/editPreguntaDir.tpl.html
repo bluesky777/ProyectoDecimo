@@ -1,6 +1,6 @@
 
-<div class="panel panel-default panel-hovered panel-stacked mb20">
-  <div layout style="height: 40px;" class="panel-heading"><span> Editar en idiomas:  </span>
+<div class="panel panel-default panel-hovered panel-stacked mb20 hidden-print">
+  <div layout style="height: 40px;" class="panel-heading"><span> Editar en idiomas:</span>
     <md-input-container layout="row" layout-align="start center" style="margin-left: 5px; margin-top: 0px; margin-right: 5px">
       <md-select multiple="true" placeholder="Idioma" ng-model="idiomaPreg">
         <md-option ng-repeat="idioma in evento_actual.idiomas" value="{{idioma.id}}">{{idioma.original}}</md-option>
@@ -43,7 +43,7 @@
         <edit-preg-traduc-dir></edit-preg-traduc-dir>
       </div><span ng-if="!preguntaEdit.preguntas_traducidas">
         <edit-preg-traduc-dir></edit-preg-traduc-dir><br></span>
-      <md-button type="button" ng-click="finalizarEdicion()" class="md-raised md-primary right"> 
+      <md-button type="button" ng-click="finalizarEdicion()" class="md-raised md-primary right">
         <md-tooltip>Guardar y finalizar edición</md-tooltip>Finalizar
       </md-button>
       <md-button type="button" ng-click="aplicarCambios()" aria-label="Aplicar" class="md-raised md-default right">

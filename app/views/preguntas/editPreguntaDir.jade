@@ -1,7 +1,7 @@
-.panel.panel-default.panel-hovered.panel-stacked.mb20
+.panel.panel-default.panel-hovered.panel-stacked.mb20.hidden-print
 	.panel-heading( layout style="height: 40px;")
 		span
-			|  Editar en idiomas:  
+			|  Editar en idiomas:
 		md-input-container(layout="row" layout-align="start center" style="margin-left: 5px; margin-top: 0px; margin-right: 5px")
 			md-select(multiple="true" placeholder="Idioma" ng-model="idiomaPreg")
 				md-option(ng-repeat="idioma in evento_actual.idiomas" value="{{idioma.id}}") {{idioma.original}}
@@ -11,9 +11,9 @@
 
 	.panel-body
 		form.form-horizontal(name="frm" role="form" ng-submit="finalizarEdicion()")
-			
+
 			.margin0.padding0(ng-show="mostrarConfiguracion" layout layout-margin layout-wrap layout-padding )
-				
+
 				md-input-container.margintb0.paddingtb0(flex="40")
 					label Descripción
 					input(type="text" ng-model="preguntaEdit.descripcion")
@@ -43,9 +43,9 @@
 					md-tooltip No importará el orden en que ordene las opciones. Siempre saldrán aleatoriamente.
 
 
-			
-			div(ng-if="preguntaEdit.preguntas_traducidas.length > 0" 
-				ng-repeat="pregunta_traduc in preguntaEdit.preguntas_traducidas | porIdiomasEdit:idiomaPreg" 
+
+			div(ng-if="preguntaEdit.preguntas_traducidas.length > 0"
+				ng-repeat="pregunta_traduc in preguntaEdit.preguntas_traducidas | porIdiomasEdit:idiomaPreg"
 				ng-class-odd="'fondo-odd'" ng-class-even="'fondo-even'")
 
 				edit-preg-traduc-dir
@@ -57,7 +57,7 @@
 
 				br
 
-			md-button.md-raised.md-primary.right(type="button" ng-click="finalizarEdicion()") 
+			md-button.md-raised.md-primary.right(type="button" ng-click="finalizarEdicion()")
 				md-tooltip Guardar y finalizar edición
 				| Finalizar
 			md-button.md-raised.md-default.right(type="button" ng-click="aplicarCambios()" aria-label="Aplicar")

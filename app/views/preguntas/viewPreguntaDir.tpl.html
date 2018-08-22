@@ -1,10 +1,10 @@
 
-<md-whiteframe layout style="padding: 10px" class="md-whiteframe-z2 definicion-frame"><span flex="5" ng-show="showSelectables"> 
+<md-whiteframe layout style="padding: 10px" class="md-whiteframe-z2 definicion-frame"><span flex="5" ng-show="showSelectables">
     <input type="checkbox" ng-model="pg_pregunta.seleccionada"></span><span flex="5">{{$index+1}}.</span><span ng-bind-html="pg_pregunta.enunciado" flex="95"></span>
   <div ng-show="pg_pregunta.ayuda &amp;&amp; pg_pregunta.showDetail" ng-click="toggleMostrarAyuda(pg_pregunta)" ng-class="{'ayuda-preg-showed': pg_pregunta.mostrar_ayuda, 'ayuda-preg-hidded':!pg_pregunta.mostrar_ayuda}"><a ng-show="!pg_pregunta.mostrar_ayuda"><i class="fa fa-anchor"></i></a><span ng-show="pg_pregunta.mostrar_ayuda">{{pg_pregunta.ayuda}}</span></div>
-  <div layout="row" class="btn-container-edit">
+  <div layout="row" class="btn-container-edit hidden-print">
     <div aria-label="..." class="btn-group">
-      <button type="button" ng-click="editarPregunta(pg_pregunta)" class="btn btn-default"> <i class="fa fa-edit"></i>
+      <button type="button" ng-click="editarPregunta(pg_pregunta)" class="btn btn-default"><i class="fa fa-edit"></i>
         <md-tooltip>Editar pregunta</md-tooltip>
       </button>
       <button type="button" ng-click="previewPregunta(pg_pregunta)" class="btn btn-default"><i class="fa fa-eye"></i>
@@ -43,5 +43,5 @@
     </md-list-item>
   </md-list>
   <div layout="row" layout-wrap layout-fill ng-if="pg_pregunta.tipo_pregunta=='Test'" style="padding-bottom: 32px;" class="opciones">
-    <md-whiteframe ng-class="{'elegida': opcion.elegida, 'correcta-revelada':opcion.is_correct &amp;&amp; showCorrects}" ng-if="!opcion.nueva" flex="40" ng-click="elegirOpcion(pg_pregunta, opcion)" ng-repeat="opcion in pg_pregunta.opciones" class="pointer md-whiteframe-z2 btn"> <span style="font-weight: bold;">{{ indexChar($index) }}. </span><span ng-bind-html="opcion.definicion"> </span></md-whiteframe>
+    <md-whiteframe ng-class="{'elegida': opcion.elegida, 'correcta-revelada':opcion.is_correct &amp;&amp; showCorrects}" ng-if="!opcion.nueva" flex="40" ng-click="elegirOpcion(pg_pregunta, opcion)" ng-repeat="opcion in pg_pregunta.opciones" class="pointer md-whiteframe-z2 btn"><span style="font-weight: bold;">{{ indexChar($index) }}.</span><span ng-bind-html="opcion.definicion"></span></md-whiteframe>
   </div></span>

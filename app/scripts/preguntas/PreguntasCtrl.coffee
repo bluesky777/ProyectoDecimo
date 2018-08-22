@@ -2,7 +2,7 @@
 
 angular.module('WissenSystem')
 
-.controller('PreguntasCtrl', ['$scope', 'App', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 'preguntasServ', '$filter', '$timeout', '$uibModal', 'SocketData', 
+.controller('PreguntasCtrl', ['$scope', 'App', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', 'preguntasServ', '$filter', '$timeout', '$uibModal', 'SocketData',
 	($scope, App, $http, Restangular, $state, $cookies, $rootScope, toastr, preguntasServ, $filter, $timeout, $modal, SocketData) ->
 
 		$scope.pg_preguntas 		= []
@@ -29,6 +29,7 @@ angular.module('WissenSystem')
 
 
 		$scope.comprobar_evento_actual = ()->
+
 			if $scope.evento_actual
 
 				if $scope.evento_actual.idioma_principal_id
@@ -68,7 +69,7 @@ angular.module('WissenSystem')
 				console.log 'No se trajeron las categorías ', r2
 			)
 
-			
+
 
 		$scope.traerDatos()
 
@@ -79,7 +80,7 @@ angular.module('WissenSystem')
 				$scope.evaluaciones = r
 				#if $scope.evaluaciones.length > 0
 				#	$scope.evaluacion = r[0].id # Que se Seleccione la primera opción
-				
+
 				# Si se acaban de asignar preguntas aleatoriamente
 				if evalu_selected
 					for evaluacion in $scope.evaluaciones
@@ -105,7 +106,7 @@ angular.module('WissenSystem')
 
 		$scope.filtrarPreguntas = ()->
 			$scope.pg_preguntas	= $filter('pregsByCatsAndEvaluacion')($scope.pg_preguntas, $scope.categoria, $scope.preguntas_evaluacion, $scope.evaluacion_id)
-			
+
 
 		$scope.cambiarRutaImagenes = ()->
 			modalInstance = $modal.open({
@@ -147,7 +148,7 @@ angular.module('WissenSystem')
 
 
 		$scope.selectEvaluacion = (evalu, $event)->
-			
+
 			$scope.evalu_seleccionada = evalu
 
 			for evaluacion in $scope.evaluaciones
@@ -160,10 +161,10 @@ angular.module('WissenSystem')
 			if found.length > 0
 				$scope.preguntas_evaluacion2 = found[0].preguntas_evaluacion
 
-		
+
 
 		$scope.asignarPreguntasRandom = ()->
-			
+
 			modalInstance = $modal.open({
 				templateUrl: App.views + 'preguntas/asignarPreguntasRandom.tpl.html'
 				controller: 'AsignarPreguntasRandom'
@@ -174,24 +175,24 @@ angular.module('WissenSystem')
 			})
 			modalInstance.result.then( (elem)->
 				$scope.traerEvaluaciones($scope.evalu_seleccionada)
-				console.log 'Asignado' 
-				
+				console.log 'Asignado'
+
 
 			)
 
 
-		
+
 		$scope.eliminarPreguntas = ()->
 			seleccionadas = []
-			
+
 			for pregunta in $scope.pg_preguntas
 				if pregunta.seleccionada
 					seleccionadas.push pregunta
-			
+
 			modalInstance = $modal.open({
 				templateUrl: App.views + 'preguntas/removePreguntas.tpl.html'
 				controller: 'RemovePreguntasCtrl'
-				resolve: 
+				resolve:
 					preguntas: ()->
 						seleccionadas
 			})
@@ -207,15 +208,15 @@ angular.module('WissenSystem')
 
 		$scope.asignarPreguntasAEvaluacion = ()->
 			seleccionadas = []
-			
+
 			for pregunta in $scope.pg_preguntas
 				if pregunta.seleccionada
 					seleccionadas.push pregunta
-			
+
 			modalInstance = $modal.open({
 				templateUrl: App.views + 'preguntas/asignarPreguntas.tpl.html'
 				controller: 'AsignarPreguntasAEvaluacionCtrl'
-				resolve: 
+				resolve:
 					preguntas: ()->
 						seleccionadas
 					evaluaciones: ()->
@@ -239,7 +240,7 @@ angular.module('WissenSystem')
 
 		$scope.$on 'preguntaQuitada', (e, elem)->
 			$scope.preguntas_evaluacion2 = $filter('filter')($scope.preguntas_evaluacion2, {id: "!" + elem})
-			console.log 'Recibido quitada', elem, 
+			console.log 'Recibido quitada', elem,
 
 
 		$scope.$on 'grupoEliminado', (e, elem)->
@@ -259,7 +260,7 @@ angular.module('WissenSystem')
 
 
 .controller('AsignarPreguntasRandom', ['$scope', '$uibModalInstance', 'Restangular', 'toastr', 'evaluacion', ($scope, $modalInstance, Restangular, toastr, evaluacion)->
-	
+
 	$scope.examenes = []
 	$scope.pregNoAsignadas = false
 	$scope.cantPregRandom = 3
@@ -276,7 +277,7 @@ angular.module('WissenSystem')
 
 		$scope.cambiando = true
 
-		datos = 
+		datos =
 			cantPregRandom: 	$scope.cantPregRandom
 			evaluacion_id: 		evaluacion.id
 			categoria_id: 		evaluacion.categoria_id
@@ -290,7 +291,7 @@ angular.module('WissenSystem')
 			console.log 'No se pudo asignar preguntas: ', r2
 			$scope.cambiando = false
 		)
-		
+
 
 	$scope.cancel = ()->
 		$modalInstance.dismiss('cancel')
@@ -300,7 +301,7 @@ angular.module('WissenSystem')
 
 
 .controller('CambiarRutaImagenes', ['$scope', '$uibModalInstance', 'Restangular', 'toastr', ($scope, $modalInstance, Restangular, toastr)->
-	
+
 	$scope.ruta_anterior 	= 'http://192.168.0.10'
 	$scope.ruta_nueva 		= 'http://' + localStorage.getItem('dominio')
 
@@ -315,7 +316,7 @@ angular.module('WissenSystem')
 
 		$scope.cambiando = true
 
-		datos = 
+		datos =
 			ruta_anterior: 	$scope.ruta_anterior
 			ruta_nueva: 	$scope.ruta_nueva
 
@@ -327,7 +328,7 @@ angular.module('WissenSystem')
 			console.log 'Error cambiando rutas: ', r2
 			$scope.cambiando = false
 		)
-		
+
 
 	$scope.cancel = ()->
 		$modalInstance.dismiss('cancel')
@@ -339,17 +340,17 @@ angular.module('WissenSystem')
 
 .filter('pregsByCatsAndEvaluacion', ['$filter', ($filter)->
 	(input, categoria, preguntas_evaluacion, evaluacion_id) ->
-		
+
 		filtered = [];
 		angular.forEach(input, (item)->
 			filtered.push(item);
 		)
 
-		
+
 		resultado = []
 
 		for preg in filtered
-	
+
 			if parseFloat(preg.categoria_id) == parseFloat(categoria)
 
 				if evaluacion_id and parseFloat(evaluacion_id) != 0
@@ -404,7 +405,7 @@ angular.module('WissenSystem')
 
 		$scope.asignando = true
 
-		datos = 
+		datos =
 			preguntas: 		preguntas
 			evaluacion_id: 	$scope.selected
 
@@ -413,17 +414,17 @@ angular.module('WissenSystem')
 			$scope.asignando = false
 
 			evalua = $filter('filter')(evaluaciones, {id: $scope.selected})[0]
-			
+
 			for preg in $scope.preguntas
 				evalua.preguntas_evaluacion.push preg
-			
+
 			$modalInstance.close(r)
 		, (r2)->
 			toastr.warning 'No se pudo asignar las preguntas.', 'Problema'
 			console.log 'Error asignando preguntas: ', r2
 			$scope.asignando = false
 		)
-		
+
 
 	$scope.cancel = ()->
 		$modalInstance.dismiss('cancel')
@@ -446,7 +447,7 @@ angular.module('WissenSystem')
 
 		$scope.cambiando = true
 
-		datos = 
+		datos =
 			pregunta_id: pregunta.pg_id
 			categoria_id: $scope.categoria
 
@@ -460,7 +461,7 @@ angular.module('WissenSystem')
 			console.log 'Error asignando pregunta: ', r2
 			$scope.cambiando = false
 		)
-		
+
 
 	$scope.cancel = ()->
 		$modalInstance.dismiss('cancel')
