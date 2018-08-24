@@ -6,12 +6,16 @@ angular.module('WissenSystem')
 	$scope.creando = false
 
 
-	
+
 
 	$scope.traer_disciplinas = ()->
 		Restangular.all('disciplinas/disciplinas-usuario').getList().then((r)->
+
+			for disc in r
+				disc.idiomasEdit = [$scope.eventoactual.idioma_principal_id]
+
 			$scope.disciplinasking = r
-			#console.log 'Disciplinas traídas: ', r
+
 		, (r2)->
 			toastr.warning 'No se trajeron las disciplinas', 'Problema'
 			console.log 'No se trajo disciplinas ', r2
@@ -27,20 +31,19 @@ angular.module('WissenSystem')
 		$scope.creando = true
 
 		Restangular.one('disciplinas/store').customPOST().then((r)->
-			r.editando = true
+			r.editando    = true
+			r.idiomasEdit = [$scope.eventoactual.idioma_principal_id]
 			$scope.disciplinasking.push r
 			$scope.creando = false
-			console.log 'Disciplina creada', r
 		, (r2)->
 			toastr.warning 'No se creó la disciplina', 'Problema'
-			console.log 'No se creó disciplina ', r2
 			$scope.creando = false
 		)
 
 
 	$scope.cerrar_edicion = (disciplinaking)->
 		disciplinaking.editando = false
-			
+
 
 	$scope.editarDisciplina = (disciplinaking)->
 		disciplinaking.editando = true
@@ -51,13 +54,19 @@ angular.module('WissenSystem')
 		modalInstance = $modal.open({
 			templateUrl: App.views + 'categorias/removeDisciplina.tpl.html'
 			controller: 'RemoveDisciplinaCtrl'
-			resolve: 
+			resolve:
 				elemento: ()->
 					disciplinaking
 		})
 		modalInstance.result.then( (elem)->
-			$scope.disciplinasking = $filter('filter')($scope.disciplinasking, {id: '!'+elem.id})
-			console.log 'Resultado del modal: ', elem
+			dato = {}
+			if elem.rowid
+				dato.rowid = elem.rowid
+			else
+				dato.id = elem.id
+
+			$scope.disciplinasking = $filter('filter')($scope.disciplinasking, dato, (actual, expected)=> return (actual != expected))
+
 		)
 
 
@@ -84,16 +93,22 @@ angular.module('WissenSystem')
 	console.log 'elemento', elemento
 
 	$scope.ok = ()->
+		ele_id  = if elemento.rowid then elemento.rowid else elemento.id
+		prome   = {};
 
-		Restangular.all('disciplinas/destroy').customDELETE(elemento.id).then((r)->
+		if elemento.rowid
+			prome = Restangular.all('disciplinas/destroy').customPUT({rowid: ele_id})
+		else
+			prome = Restangular.all('disciplinas/destroy').customDELETE(ele_id)
+
+		prome.then((r)->
 			toastr.success 'Disciplina eliminada con éxito.', 'Eliminado'
 			$modalInstance.close(elemento)
 		, (r2)->
 			toastr.warning 'No se pudo eliminar al elemento.', 'Problema'
-			console.log 'Error eliminando elemento: ', r2
 			$modalInstance.dismiss('Error')
 		)
-		
+
 
 	$scope.cancel = ()->
 		$modalInstance.dismiss('cancel')

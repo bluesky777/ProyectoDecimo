@@ -3,7 +3,11 @@
 .modal-body
 	.row
 		.col-lg-12.col-xs-12
-			h4 Pregunta: {{pregunta.preguntas_traducidas[0].idioma}} - {{pregunta.preguntas_traducidas[0].definicion}}
+			div(ng-show="pregunta")
+				h4 Pregunta: {{pregunta.preguntas_traducidas[0].idioma}} - {{pregunta.preguntas_traducidas[0].definicion}}
+
+			div(ng-show="preguntas")
+				h4 Preguntas: {{ preguntas.length }}
 
 			md-radio-group(ng-model="categoria")
 				span(ng-repeat="catking in categorias")

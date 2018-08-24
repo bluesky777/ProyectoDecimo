@@ -1,13 +1,10 @@
 
 <div class="panel panel-default panel-hovered panel-stacked mb20 mr--15-sm ml--15-sm">
-  <div class="panel-heading">
-      
-    Usuarios
-  </div>
+  <div class="panel-heading">Usuarios</div>
   <div class="panel-body">
     <div class="row">
       <div class="col-md-9 mr--15-sm ml--15-sm">
-        <div id="grid1" ui-grid="gridOptions" ui-grid-selection ui-grid-edit ui-grid-resize-columns style="height: 600px" class="grid"></div>
+        <div id="grid1" ui-grid="gridOptions" ui-grid-selection ui-grid-edit ui-grid-resize-columns ui-grid-auto-resize style="height: 600px" class="grid"></div>
       </div>
       <div class="col-md-3"><span ng-show="currentusers.length == 1">
           <md-select ng-model="currentusers[0].nivel_id" placeholder="Niveles">

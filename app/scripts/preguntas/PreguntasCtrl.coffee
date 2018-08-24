@@ -28,6 +28,35 @@ angular.module('WissenSystem')
 		$scope.categorias 	= []
 
 
+
+		$scope.cambiarPreguntasACategoria = (pg_pregunta)->
+
+			pg_seleccionadas = []
+
+			for pg in $scope.pg_preguntas
+				if pg.seleccionada
+					pg_seleccionadas.push pg
+
+			modalInstance = $modal.open({
+				templateUrl: App.views + 'preguntas/cambiarCategoria.tpl.html'
+				controller: 'CambiarCategoriaCtrl'
+				resolve:
+					pregunta: ()->
+						pg_seleccionadas
+					categorias: ()->
+						$scope.categorias
+					idiomaPreg: ()->
+						$scope.idiomaPreg
+			})
+			modalInstance.result.then( (elem)->
+
+				pg_seleccionadas.map (pg)->
+					$scope.pg_preguntas = $filter('filter')($scope.pg_preguntas, {pg_id: pg.pg_id}, (actual, expected)-> return (actual != expected))
+
+
+			)
+
+
 		$scope.comprobar_evento_actual = ()->
 
 			if $scope.evento_actual
@@ -432,15 +461,21 @@ angular.module('WissenSystem')
 ])
 
 
-
+###
 .controller('CambiarCategoriaAPreguntasCtrl', ['$scope', '$uibModalInstance', 'pregunta', 'categorias', 'idiomaPreg', 'Restangular', 'toastr', '$filter', ($scope, $modalInstance, pregunta, categorias, idiomaPreg, Restangular, toastr, $filter)->
 	$scope.categorias = categorias
-	$scope.pregunta = pregunta
+
 	$scope.idiomaPreg = idiomaPreg
 	$scope.cambiando = false
 	$scope.categoria = false
 
 	$scope.categoria = categorias[categorias.length - 1].id
+
+
+	if Array.isArray(pregunta)
+		$scope.preguntas = pregunta
+	else
+		$scope.pregunta = pregunta
 
 
 	$scope.ok = ()->
@@ -467,7 +502,7 @@ angular.module('WissenSystem')
 		$modalInstance.dismiss('cancel')
 
 ])
-
+###
 
 
 

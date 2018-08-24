@@ -2,6 +2,14 @@ angular.module('WissenSystem')
 
 .controller('CategoriasCtrl', ['$scope', 'Restangular', 'toastr',  ($scope, Restangular, toastr)->
 
+	$scope.selectedTab = 0
+
+	if localStorage.selectedTabCategoria
+		$scope.selectedTab = localStorage.selectedTabCategoria
+
+	$scope.selectTab = (indice)->
+		localStorage.selectedTabCategoria = indice
+
 
 	$scope.comprobar_evento_actual = ()->
 		if $scope.evento_actual

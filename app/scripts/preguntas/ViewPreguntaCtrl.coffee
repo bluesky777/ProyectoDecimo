@@ -2,19 +2,19 @@ angular.module('WissenSystem')
 
 .controller('ViewPreguntaCtrl', ['$scope', 'App', 'Restangular', '$state', '$cookies', '$rootScope', '$location', '$anchorScroll', '$uibModal', '$filter', 'MySocket',
 	($scope, App, Restangular, $state, $cookies, $rootScope, $location, $anchorScroll, $modal, $filter, MySocket) ->
-		
+
 
 		$scope.enviar_pregunta_pantalla = (pg_pregunta)->
-			
+
 			categ_found = {}
 			for categ in $scope.$parent.categorias
 				if categ.id == parseInt($scope.$parent.categoria)
 					categ_found = categ
 					categ_found = $filter('catsByIdioma')(categ.categorias_traducidas, $scope.$parent.idiomaPreg.selected)
 					if categ_found.length > 0
-						categ_found = categ_found[0]				
+						categ_found = categ_found[0]
 
-			pregunta = 
+			pregunta =
 				descrip_categ: 		categ_found.descripcion
 				enunciado: 			pg_pregunta.enunciado
 				id: 				pg_pregunta.pg_id
@@ -34,7 +34,7 @@ angular.module('WissenSystem')
 		$scope.selec_opc_in_question = (opcion)->
 			$scope.opcion_seleccionada = opcion
 			MySocket.selec_opc_in_question(opcion)
-			
+
 		$scope.sc_reveal_answer = ()->
 			if $scope.opcion_seleccionada < 0
 				alert('Primero debes elegir opción.')
@@ -49,8 +49,8 @@ angular.module('WissenSystem')
 						audio.play();
 					else
 						audio = new Audio('/sounds/Revalada_incorrecta.wav');
-						audio.play();		
-			
+						audio.play();
+
 
 
 		$scope.elegirOpcion = (pregunta, opcion)->
@@ -67,7 +67,7 @@ angular.module('WissenSystem')
 			modalInstance = $modal.open({
 				templateUrl: App.views + 'preguntas/asignarPregunta.tpl.html'
 				controller: 'AsignarPreguntaCtrl'
-				resolve: 
+				resolve:
 					pregunta: ()->
 						pg_pregunta
 					evaluaciones: ()->
@@ -82,7 +82,7 @@ angular.module('WissenSystem')
 			modalInstance = $modal.open({
 				templateUrl: App.views + 'preguntas/cambiarCategoria.tpl.html'
 				controller: 'CambiarCategoriaCtrl'
-				resolve: 
+				resolve:
 					pregunta: ()->
 						pg_pregunta
 					categorias: ()->
@@ -100,7 +100,7 @@ angular.module('WissenSystem')
 		$scope.indexChar = (index)->
 			return String.fromCharCode(65 + index)
 
-			
+
 
 		$scope.editarPregunta = (pg_pregunta)->
 			$scope.$parent.$parent.preguntaEdit = pg_pregunta
@@ -113,7 +113,7 @@ angular.module('WissenSystem')
 			modalInstance = $modal.open({
 				templateUrl: App.views + 'preguntas/removePregunta.tpl.html'
 				controller: 'RemovePreguntaCtrl'
-				resolve: 
+				resolve:
 					pregunta: ()->
 						pregunta
 			})
@@ -166,7 +166,7 @@ angular.module('WissenSystem')
 
 		$scope.asignando = true
 
-		datos = 
+		datos =
 			pregunta_id: pregunta.pg_id
 			evaluacion_id: $scope.selected
 
@@ -176,14 +176,14 @@ angular.module('WissenSystem')
 
 			evalua = $filter('filter')(evaluaciones, {id: $scope.selected})[0]
 			evalua.preguntas_evaluacion.push r
-			
+
 			$modalInstance.close(r)
 		, (r2)->
 			toastr.warning 'No se pudo asignar la pregunta.', 'Problema'
 			console.log 'Error asignando pregunta: ', r2
 			$scope.asignando = false
 		)
-		
+
 
 	$scope.cancel = ()->
 		$modalInstance.dismiss('cancel')
@@ -194,7 +194,6 @@ angular.module('WissenSystem')
 
 .controller('CambiarCategoriaCtrl', ['$scope', '$uibModalInstance', 'pregunta', 'categorias', 'idiomaPreg', 'Restangular', 'toastr', '$filter', ($scope, $modalInstance, pregunta, categorias, idiomaPreg, Restangular, toastr, $filter)->
 	$scope.categorias = categorias
-	$scope.pregunta = pregunta
 	$scope.idiomaPreg = idiomaPreg
 	$scope.cambiando = false
 	$scope.categoria = false
@@ -202,25 +201,58 @@ angular.module('WissenSystem')
 	$scope.categoria = categorias[categorias.length - 1].id
 
 
+	if Array.isArray(pregunta)
+		$scope.preguntas = pregunta
+	else
+		$scope.pregunta = pregunta
+
+
+
 	$scope.ok = ()->
 
 		$scope.cambiando = true
 
-		datos = 
-			pregunta_id: pregunta.pg_id
-			categoria_id: $scope.categoria
+		if $scope.preguntas
 
-		Restangular.all('preguntas/cambiar-categoria').customPUT(datos).then((r)->
-			toastr.success 'Pregunta cambiada de categoría.'
-			$scope.cambiando = false
+			promesas = $scope.preguntas.map (preg) ->
 
-			$modalInstance.close(datos.categoria_id)
-		, (r2)->
-			toastr.warning 'No se pudo asignar la pregunta.', 'Problema'
-			console.log 'Error asignando pregunta: ', r2
-			$scope.cambiando = false
-		)
-		
+				datos =
+					pregunta_id: preg.pg_id
+					categoria_id: $scope.categoria
+
+				restan = Restangular.all('preguntas/cambiar-categoria')
+				promes = restan.customPUT(datos)
+				return promes
+
+			Promise.all(promesas).then((r)->
+				toastr.success 'Preguntas cambiadas de categoría.'
+				$scope.cambiando = false
+
+				$modalInstance.close($scope.categoria)
+			, (r2)->
+				toastr.warning 'No se pudo asignar las preguntas.', 'Problema'
+				console.log 'Error asignando preguntas: ', r2
+				$scope.cambiando = false
+			)
+
+
+		else
+
+			datos =
+				pregunta_id: pregunta.pg_id
+				categoria_id: $scope.categoria
+
+			Restangular.all('preguntas/cambiar-categoria').customPUT(datos).then((r)->
+				toastr.success 'Pregunta cambiada de categoría.'
+				$scope.cambiando = false
+
+				$modalInstance.close(datos.categoria_id)
+			, (r2)->
+				toastr.warning 'No se pudo asignar la pregunta.', 'Problema'
+				console.log 'Error asignando pregunta: ', r2
+				$scope.cambiando = false
+			)
+
 
 	$scope.cancel = ()->
 		$modalInstance.dismiss('cancel')

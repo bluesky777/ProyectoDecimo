@@ -7,12 +7,16 @@ angular.module('WissenSystem')
 	$scope.creando = false
 
 
-	
+
 
 	$scope.traer_categorias = ()->
 		Restangular.all('categorias/categorias-usuario').getList().then((r)->
+
+			for categ in r
+				categ.idiomasEdit = [$scope.eventoactual.idioma_principal_id]
+
 			$scope.categoriasking = r
-			#console.log 'Categorias traídas: ', r
+
 		, (r2)->
 			toastr.warning 'No se trajeron las categorias', 'Problema'
 			console.log 'No se trajo categorias ', r2
@@ -28,20 +32,19 @@ angular.module('WissenSystem')
 		$scope.creando = true
 
 		Restangular.one('categorias/store').customPOST().then((r)->
-			r.editando = true
+			r.editando    = true
+			r.idiomasEdit = [$scope.eventoactual.idioma_principal_id]
 			$scope.categoriasking.push r
 			$scope.creando = false
-			console.log 'Categorias creada', r
 		, (r2)->
 			toastr.warning 'No se creó la categoria', 'Problema'
-			console.log 'No se creó categoria ', r2
 			$scope.creando = false
 		)
 
 
 	$scope.cerrar_edicion = (categoriaking)->
 		categoriaking.editando = false
-			
+
 
 	$scope.editarCategoria = (categoriaking)->
 		categoriaking.editando = true
@@ -52,7 +55,7 @@ angular.module('WissenSystem')
 		modalInstance = $modal.open({
 			templateUrl: App.views + 'categorias/removeCategoria.tpl.html'
 			controller: 'RemoveCategoriaCtrl'
-			resolve: 
+			resolve:
 				elemento: ()->
 					categoriaking
 		})
@@ -84,8 +87,15 @@ angular.module('WissenSystem')
 	console.log 'elemento', elemento
 
 	$scope.ok = ()->
+		ele_id  = if elemento.rowid then elemento.rowid else elemento.id
+		prome   = {};
 
-		Restangular.all('categorias/destroy').customDELETE(elemento.id).then((r)->
+		if elemento.rowid
+			prome = Restangular.all('categorias/destroy').customPUT({rowid: ele_id})
+		else
+			prome = Restangular.all('categorias/destroy').customDELETE(ele_id)
+
+		prome.then((r)->
 			toastr.success 'Categoria eliminada con éxito.', 'Eliminado'
 			$modalInstance.close(elemento)
 		, (r2)->
@@ -93,7 +103,7 @@ angular.module('WissenSystem')
 			console.log 'Error eliminando elemento: ', r2
 			$modalInstance.dismiss('Error')
 		)
-		
+
 
 	$scope.cancel = ()->
 		$modalInstance.dismiss('cancel')

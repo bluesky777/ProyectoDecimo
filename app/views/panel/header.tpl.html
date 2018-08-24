@@ -16,7 +16,7 @@
     <div class="site-logo visible-xs"><a ui-sref="panel" class="text-uppercase h3"><span class="text">Wissen</span></a></div>
   </li>
   <!-- fullscreen-->
-  <li ng-click="goFullScreen()" class="fullscreen hidden-xs"><a href="" ng-click="reload(setFullScreen())"><i class="fa fa-arrows-alt"></i>
+  <li ng-click="setFullScreen()" class="fullscreen hidden-xs"><a href=""><i class="fa fa-arrows-alt"></i>
       <md-tooltip>Ver en pantalla completa</md-tooltip></a></li>
   <!-- notification drop-->
   <li dropdown="" ng-if="hasRoleOrPerm('admin', 'tecnico', 'profesor')" class="notify-drop hidden-xs dropdown">
@@ -35,7 +35,8 @@
   </li>
   <!-- Idiomas-->
   <li dropdown="" class="notify-drop hidden-xs dropdown">
-    <md-menu><a href="" ng-click="openMenu($mdOpenMenu, $event)"><i class="fa fa-flag-checkered"></i></a>
+    <md-menu><a href="" ng-click="openMenu($mdOpenMenu, $event)"><i class="fa fa-flag-checkered"></i><span ng-repeat="idioma in idiomas_usados" ng-show="idioma.actual"> {{idioma.nombre}}</span>
+        <md-tooltip>Elige tu idioma</md-tooltip></a>
       <md-menu-content style="margin-top: 40px;" width="3">
         <md-menu-item ng-repeat="idioma in idiomas_usados">
           <md-button ng-click="cambiarIdioma(idioma)"><span ng-class="(idioma.actual) ? 'bg-primary': 'bg-success' " class="fa fa-flag left icono-submenu"></span>

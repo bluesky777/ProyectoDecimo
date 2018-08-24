@@ -2,8 +2,8 @@
 
 angular.module('WissenSystem')
 
-.controller('PanelCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'AuthService', 'Perfil', 'App', 'resolved_user', 'toastr', '$translate', '$filter', '$uibModal', 'MySocket', 'Fullscreen', 'SocketClientes', 'SocketData'
-	($scope, $http, Restangular, $state, $cookies, $rootScope, AuthService, Perfil, App, resolved_user, toastr, $translate, $filter, $modal, MySocket, Fullscreen, SocketClientes, SocketData) ->
+.controller('PanelCtrl', ['$scope', '$http', 'Restangular', '$state', '$stateParams', '$cookies', '$rootScope', 'AuthService', 'Perfil', 'App', 'resolved_user', 'toastr', '$translate', '$filter', '$uibModal', 'MySocket', 'Fullscreen', 'SocketClientes', 'SocketData'
+	($scope, $http, Restangular, $state, $stateParams, $cookies, $rootScope, AuthService, Perfil, App, resolved_user, toastr, $translate, $filter, $modal, MySocket, Fullscreen, SocketClientes, SocketData) ->
 
 		$scope.SocketData = SocketData
 		$scope.USER       = resolved_user
@@ -16,6 +16,8 @@ angular.module('WissenSystem')
 			fecha_ini: new Date(hoy + ' 00:00:0000')
 			fecha_fin: new Date(hoy + ' 23:59:0000')
 		}
+
+		$scope.idiomas_del_sistema($scope.USER.idioma_main_id)
 
 		AuthService.verificar_acceso()
 
@@ -127,10 +129,10 @@ angular.module('WissenSystem')
 			idi_id = if idioma.rowid then idioma.rowid else idioma.id
 
 			Restangular.one('idiomas/cambiar-idioma').customPUT({idioma_id: idi_id}).then((r)->
-				$translate.use(idioma.abrev)
+
 				$scope.USER.idioma_main_id = idi_id
 
-				$scope.idiomas_del_sistema()
+				$scope.idiomas_del_sistema($scope.USER.idioma_main_id)
 
 				for idiom in $scope.idiomas_usados
 					idiom.actual = if idiom.abrev == idioma.abrev then true else false

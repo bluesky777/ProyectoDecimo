@@ -2,7 +2,7 @@
 
 angular.module('WissenSystem')
 
-.controller('ApplicationController', ['$scope', 'USER_ROLES', 'AuthService', 'toastr', '$state', '$rootScope', 'Restangular', '$filter', '$timeout', 'MySocket', ($scope, USER_ROLES, AuthService, toastr, $state, $rs, Restangular, $filter, $timeout, MySocket)->
+.controller('ApplicationController', ['$scope', 'USER_ROLES', 'AuthService', 'toastr', '$state', '$rootScope', 'Restangular', '$filter', '$timeout', 'MySocket', '$translate', ($scope, USER_ROLES, AuthService, toastr, $state, $rs, Restangular, $filter, $timeout, MySocket, $translate)->
 
 
 	$scope.isAuthorized = AuthService.isAuthorized
@@ -35,12 +35,21 @@ angular.module('WissenSystem')
 
 
 	# Función para idiomas del sistema
-	$scope.idiomas_del_sistema = ()->
+	$scope.idiomas_del_sistema = (idioma_user_id)->
 		$scope.idiomas_usados = $filter('idiomas_del_sistema')($scope.idiomas)
 
 		for idiom in $scope.idiomas_usados
-			if idiom.abrev == 'ES'
-				idiom.actual = true
+			idiom.actual = false
+
+		if idioma_user_id
+			for idiom in $scope.idiomas_usados
+				if idiom.rowid == idioma_user_id or idiom.id == idioma_user_id
+					idiom.actual = true
+					$translate.use(idiom.abrev)
+		else
+			for idiom in $scope.idiomas_usados
+				if idiom.abrev == 'ES'
+					idiom.actual = true
 
 
 

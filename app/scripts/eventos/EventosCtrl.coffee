@@ -3,8 +3,14 @@ angular.module('WissenSystem')
 .controller('EventosCtrl', ['$scope', 'Restangular', '$uibModal', '$filter', 'App', 'toastr',  ($scope, Restangular, $modal, $filter, App, toastr)->
 
 	$scope.newEvent = {
-		with_pay:         false
-		es_idioma_unico:  true
+		with_pay:         0
+		es_idioma_unico:  1
+		precio1: 					2000
+		precio2: 					3000
+		precio3: 					4000
+		precio4: 					5000
+		precio5: 					5000
+		precio6: 					5000
 	}
 	$scope.currentEvent = {
 		idiomas_extras: []
@@ -60,7 +66,7 @@ angular.module('WissenSystem')
 
 
 	$scope.setActual = (evento)=>
-		Restangular.one('eventos/set-actual').customPUT(evento).then((r)->
+		Restangular.one('eventos/set-evento-actual').customPUT(evento).then((r)->
 			toastr.success 'Ahora el Evento es actual.'
 
 			for even in $scope.USER.eventos

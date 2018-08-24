@@ -6,7 +6,7 @@ div(ng-repeat="categoriaking in categoriasking" )
 
 
 		div.btn-container-edit(layout="row")
-			
+
 			md-button.md-fab.md-primary.md-mini(aria-label="Editar" ng-click="editarCategoria(categoriaking)")
 				md-icon.fa.fa-edit
 				md-tooltip Editar categoria
@@ -21,10 +21,10 @@ div(ng-repeat="categoriaking in categoriasking" )
 		.panel.panel-default.panel-hovered.panel-stacked.mb20
 			.panel-heading(ng-if="!evento_actual.es_idioma_unico" layout style="height: 40px;")
 				span
-					|  Editar categoria en idiomas:  
+					|  Editar categoria en idiomas:
 
 				md-input-container(layout="row" layout-align="start center" style="padding-bottom: 4px; margin-top: 2px; margin-bottom: 0;")
-					md-select(multiple="true" placeholder="Idioma" ng-model="categoriaking.idiomasEdit" ng-init="categoriaking.idiomasEdit=[eventoactual.idioma_principal_id]")
+					md-select(multiple="true" placeholder="Idioma" ng-model="categoriaking.idiomasEdit")
 						md-option(ng-repeat="idioma in eventoactual.idiomas" value="{{idioma.id}}") {{idioma.original}}
 
 			.panel-body
@@ -43,7 +43,7 @@ div(ng-repeat="categoriaking in categoriasking" )
 
 
 					div(ng-repeat="categoria in categoriaking.categorias_traducidas | porIdiomasEdit:categoriaking.idiomasEdit")
-									
+
 						a.btn-tag.btn-tag-info.margintb0(ng-if="!evento_actual.es_idioma_unico" md-ink-ripple)
 							| Categoria en {{categoria.idioma}}
 
@@ -51,22 +51,22 @@ div(ng-repeat="categoriaking in categoriasking" )
 							div.margintb0(flex="40" flex-lg="20" flex-sm="30")
 								label.margintb0 Nombre:
 								input.form-control.margintb0(type="text" ng-model="categoria.nombre")
-							
+
 							div.margintb0(flex="40" flex-lg="20" flex-sm="30")
 								label.margintb0 Abreviatura:
 								input.form-control.margintb0(type="text" ng-model="categoria.abrev")
-							
+
 							div.margintb0(ng-if="!evento_actual.es_idioma_unico" flex="40" flex-lg="20" flex-sm="30")
 								md-checkbox(ng-model="categoria.traducido" ng-false-value="0" ng-true-value="1" aria-label="¿Traducido?")
 									| ¿Traducido?
-							
+
 					.clearfix.right
 						md-button.md-default(ng-click="cerrar_edicion(categoriaking)") Cerrar
 						md-button.md-primary(ng-click="guardando(categoriaking)") Aplicar
 						md-button.md-default(type="submit" ng-click="finalizar_edicion(categoriaking)") Finalizar
 
-	
+
 md-button.md-primary(type="button" ng-disabled="creando" ng-click="crear_categoria()") Crear categoria
-	
+
 
 

@@ -14,9 +14,9 @@
   </md-whiteframe>
   <div ng-show="disciplinaking.editando" style="margin-top: 20px">
     <div class="panel panel-default panel-hovered panel-stacked mb20">
-      <div ng-show="!eventoactual.es_idioma_unico" layout style="height: 40px;" class="panel-heading"> <span>Editar disciplina en idiomas: </span>
+      <div ng-show="!eventoactual.es_idioma_unico" layout style="height: 40px;" class="panel-heading"><span> Editar disciplina en idiomas:</span>
         <md-input-container layout="row" layout-align="start center" style="padding-bottom: 4px; margin-top: 2px; margin-bottom: 0;">
-          <md-select multiple="true" placeholder="Idioma" ng-model="disciplinaking.idiomasEdit" ng-init="disciplinaking.idiomasEdit=[eventoactual.idioma_principal_id]">
+          <md-select multiple="true" placeholder="Idioma" ng-model="disciplinaking.idiomasEdit">
             <md-option ng-repeat="idioma in eventoactual.idiomas" value="{{idioma.id}}">{{idioma.original}}</md-option>
           </md-select>
         </md-input-container>

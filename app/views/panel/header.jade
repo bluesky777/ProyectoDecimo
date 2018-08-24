@@ -18,8 +18,8 @@ ul.list-unstyled.left-elems
 				span.text Wissen
 
 	// fullscreen
-	li.fullscreen.hidden-xs(ng-click="goFullScreen()")
-		a(href="" ng-click="reload(setFullScreen())" )
+	li.fullscreen.hidden-xs(ng-click="setFullScreen()")
+		a(href="")
 			i.fa.fa-arrows-alt
 			md-tooltip Ver en pantalla completa
 
@@ -51,6 +51,8 @@ ul.list-unstyled.left-elems
 		md-menu
 			a(href="" ng-click="openMenu($mdOpenMenu, $event)")
 				i.fa.fa-flag-checkered
+				span(ng-repeat="idioma in idiomas_usados" ng-show="idioma.actual")  {{idioma.nombre}}
+				md-tooltip Elige tu idioma
 
 			md-menu-content(style="margin-top: 40px;" width="3")
 				md-menu-item(ng-repeat="idioma in idiomas_usados")
