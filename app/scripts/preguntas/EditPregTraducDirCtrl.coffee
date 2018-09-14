@@ -1,11 +1,11 @@
 angular.module('WissenSystem')
 
-.controller('EditPregTraducDirCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', '$filter', '$uibModal', 'App', 
+.controller('EditPregTraducDirCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', '$filter', '$uibModal', 'App',
 	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr, $filter, $modal, App) ->
 
 
 		txtNewOpcion = 'Agregar nueva opción'
-		
+
 		if !$scope.pregunta_traduc
 			$scope.pregunta_traduc = $scope.preguntaEdit
 
@@ -15,17 +15,17 @@ angular.module('WissenSystem')
 				if opci.nueva
 					return
 
-			newOpcion = 
+			newOpcion =
 				id: -1
 				definicion: txtNewOpcion
 				nueva: true
 				is_correct: false
-			
+
 			$scope.pregunta_traduc.opciones.push newOpcion
 
 		$scope.inicializar()
 
-		
+
 		# Configuración para el sortable
 		$scope.sortableOptions =
 			'ui-floating': true
@@ -40,11 +40,11 @@ angular.module('WissenSystem')
 						hashEntry = {}
 						hashEntry["" + opcion.id] = index
 						sortHash.push(hashEntry)
-				
-				datos = 
+
+				datos =
 					pregunta_traduc_id: $scope.pregunta_traduc.id
 					sortHash: sortHash
-				
+
 				Restangular.one('opciones/update-orden').customPUT(datos).then((r)->
 					console.log('Orden guardado')
 				, (r2)->
@@ -54,11 +54,11 @@ angular.module('WissenSystem')
 
 
 
-		
+
 		$scope.addButtonNewOpcion = (preg, opt)->
 
 			opt.creando = true
-			
+
 			if opt.nueva
 
 				opt.definicion = 'Opción ' + preg.opciones.length
@@ -67,18 +67,19 @@ angular.module('WissenSystem')
 
 				if preg.opciones.length == 1
 					opt.is_correct = true
-			
-				
+
+
 				Restangular.one('opciones/store').customPOST(opt).then((r)->
 					console.log('Opción guardada')
-					
-					opt.id = r.id
-					opt.nueva = false
-					opt.creando = false
-					
+
+					opt.id        = r.id
+					opt.rowid     = r.rowid
+					opt.nueva     = false
+					opt.creando   = false
+
 
 					# Agregamos la nueva opción para que sea el botón NUEVA OPCIÓN
-					tempOpcion = 
+					tempOpcion =
 						id: -1
 						definicion: txtNewOpcion
 						nueva: true # Inicialmente es true para que sea una especie de botón, NUEVA OPCIÓN
@@ -92,9 +93,9 @@ angular.module('WissenSystem')
 					toastr.warning('No se pudo crear nueva opción')
 				)
 
-				
 
-		
+
+
 		$scope.setAsCorrect = (preg, opt)->
 			if $scope.preguntaEdit.tipo_pregunta == 'Test'
 				angular.forEach preg.opciones, (opcion)->  # Solo puede haber una correcta, así que quitamos las otras.
@@ -108,25 +109,38 @@ angular.module('WissenSystem')
 
 
 		$scope.deleteOption = (preg, opt, indice)->
-			
-			
-			Restangular.one('opciones/destroy', opt.id).customDELETE().then((r)->
-				console.log('Opción eliminada', r)
-				preg.opciones = $filter('filter')(preg.opciones, {id: "!" + opt.id})
+			ele_id  = if opt.rowid then opt.rowid else opt.id
+			prome   = {};
+
+			if opt.rowid
+				prome = Restangular.all('opciones/destroy').customPUT({rowid: ele_id})
+			else
+				prome = Restangular.all('opciones/destroy').customDELETE(ele_id)
+
+			prome.then((r)->
+				elem_id = if opt.rowid then opt.rowid else opt.id
+				dato = {}
+
+				if opt.rowid
+					dato.rowid = '!'+elem_id
+				else
+					dato.id = '!'+elem_id
+
+				preg.opciones = $filter('filter')(preg.opciones, dato)
 			, (r2)->
 				console.log('No se pudo eliminar la opción', r2)
 				toastr.warning 'No se pudo eliminar la opción'
 			)
-			
+
 
 		$scope.$on 'cambiaTipoPregunta', ()->
 
 			if $scope.preguntaEdit.tipo_pregunta == 'Test'
 
-				for preg_trad in $scope.preguntaEdit.preguntas_traducidas  
+				for preg_trad in $scope.preguntaEdit.preguntas_traducidas
 					correctas = 0
 					for opcion in preg_trad.opciones  # Solo puede haber una correcta, así que quitamos todas menos una.
-						
+
 						if opcion.is_correct
 							if correctas > 0
 								opcion.is_correct = 0
@@ -135,12 +149,12 @@ angular.module('WissenSystem')
 
 
 		$scope.misImagenes = ()->
-			
+
 			modalInstance = $modal.open({
 				templateUrl: App.views + 'preguntas/misImagenes.tpl.html'
 				controller: 'MisImagenes'
 				size: 'lg',
-				resolve: 
+				resolve:
 					resolved_user: ()->
 						$scope.USER
 			})

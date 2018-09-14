@@ -1,11 +1,11 @@
 angular.module('WissenSystem')
 
-.controller('EditPreguntaCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', '$filter', 
+.controller('EditPreguntaCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', '$filter',
 	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr, $filter) ->
 
 		$scope.idiomaPreg = [$scope.$parent.preguntaEdit.idioma_id]
 
-		$scope.editorOptions = 
+		$scope.editorOptions =
 			inlineMode: true
 			placeholder: ''
 
@@ -14,7 +14,7 @@ angular.module('WissenSystem')
 		$scope.mostrarConfiguracion = true
 		$scope.mostrarConfig = ()->
 			$scope.mostrarConfiguracion = !$scope.mostrarConfiguracion
-			
+
 
 		$scope.cerrarEdicion = ()->
 			$scope.$parent.editando = false
@@ -24,7 +24,7 @@ angular.module('WissenSystem')
 
 			Restangular.one('preguntas/update').customPUT($scope.preguntaEdit).then((r)->
 				$scope.$parent.editando = false # Creo que ya no sirve para nada
-				
+
 				# Actualizamos para que el cambio se vea reflejado sin recargar la página
 				for preg, indice in $scope.pg_preguntas
 					if preg.pg_id == r.pg_id
@@ -58,8 +58,8 @@ angular.module('WissenSystem')
 		$scope.cambiaTipoPregunta = ()->
 			console.log 'Cambia el tipo: ', $scope.preguntaEdit.tipo_pregunta
 			$scope.$broadcast 'cambiaTipoPregunta'
-			
-		
+
+
 		Restangular.all('preguntas/traducidas').getList({ pregunta_id: $scope.preguntaEdit.pg_id }).then((r)->
 			for trad in r
 				if r.pg_traduc_id = $scope.preguntaEdit.pg_traduc_id
@@ -73,7 +73,7 @@ angular.module('WissenSystem')
 			toastr.warning 'No se trajeron las traducciones de la pregunta', 'Problema'
 
 		)
-		
+
 
 		return
 	]

@@ -287,11 +287,13 @@ angular.module('WissenSystem')
 		toastr.info "Examen empezado"
 		SocketData.config.info_evento.preg_actual 	= 1
 
+		###
 		pregunta = $scope.cmdPreguntasTraduc[0]
 		if pregunta
 			MySocket.sc_show_question(SocketData.config.info_evento.preg_actual, pregunta)
 		else
 			toastr.warning 'No hay categoría seleccionada'
+		###
 
 
 	$scope.empezarExamenCliente = (cliente)->

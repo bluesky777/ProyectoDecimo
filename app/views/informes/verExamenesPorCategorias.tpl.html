@@ -42,7 +42,7 @@
               <td style="font-size: 7pt;">{{ $index +1 }}
                 <md-tooltip>Orden</md-tooltip>
               </td>
-              <td>
+              <td ng-click="verDetalleExamen(examen)">
                 <div uib-popover-template="views+'usuarios/popoverUsuarioInfo.tpl.html'" popover-title="{{examen.nombres + ' ' + examen.apellidos}}" popover-trigger="'mouseenter'" popover-popup-delay="500" class="ellipsis200 usuario-listado">{{ examen.nombres + ' ' + examen.apellidos }}</div>
               </td>
               <td>
@@ -88,7 +88,7 @@
             <tr ng-repeat="examen in finalistas">
               <td style="font-size: 7pt;" class="center">{{ $index +1 }}</td>
               <td style="font-size: 7pt;" class="center">{{ examen.abrev_categ }}</td>
-              <td class="center">
+              <td ng-click="verDetalleExamen(examen)" class="center">
                 <div class="ellipsis200 usuario-listado">{{ examen.nombres + ' ' + examen.apellidos }}</div>
               </td>
               <td style="font-size: 7pt;" class="center">{{ examen.alias_entidad }}</td>

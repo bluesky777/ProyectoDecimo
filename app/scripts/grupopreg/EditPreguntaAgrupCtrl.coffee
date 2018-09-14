@@ -1,30 +1,30 @@
 angular.module('WissenSystem')
 
-.controller('EditPreguntaAgrupCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', '$filter', 
+.controller('EditPreguntaAgrupCtrl', ['$scope', '$http', 'Restangular', '$state', '$cookies', '$rootScope', 'toastr', '$filter',
 	($scope, $http, Restangular, $state, $cookies, $rootScope, toastr, $filter) ->
 
 
-		$scope.editorOptions = 
+		$scope.editorOptions =
 			inlineMode: true
 			placeholder: ''
 
 
 
 		txtNewOpcion = 'Agregar nueva opción'
-			
-		
+
+
 		$scope.inicializar = ()->
 
 			for opci in $scope.pregagrup.opciones
 				if opci.nueva
 					return
 
-			newOpcion = 
+			newOpcion =
 				id: -1
 				definicion: txtNewOpcion
 				nueva: true
 				is_correct: false
-			
+
 			$scope.pregagrup.opciones.push newOpcion
 
 		$scope.inicializar()
@@ -45,11 +45,11 @@ angular.module('WissenSystem')
 						hashEntry = {}
 						hashEntry["" + opcion.id] = index
 						sortHash.push(hashEntry)
-				
-				datos = 
+
+				datos =
 					pregunta_agrupada_id: $scope.pregagrup.id
 					sortHash: sortHash
-				
+
 				Restangular.one('opciones_agrupadas/update-orden').customPUT(datos).then((r)->
 					console.log('Orden guardado')
 				, (r2)->
@@ -61,7 +61,7 @@ angular.module('WissenSystem')
 		$scope.addButtonNewOpcion = (preg, opt)->
 
 			opt.creando = true
-			
+
 			if opt.nueva
 
 				opt.definicion = 'Opción ' + preg.opciones.length
@@ -70,18 +70,18 @@ angular.module('WissenSystem')
 
 				if preg.opciones.length == 1
 					opt.is_correct = true
-			
-				
+
+
 				Restangular.one('opciones_agrupadas/store').customPOST(opt).then((r)->
 					console.log('Opción guardada')
-					
+
 					opt.id = r.id
 					opt.nueva = false
 					opt.creando = false
-					
+
 
 					# Agregamos la nueva opción para que sea el botón NUEVA OPCIÓN
-					tempOpcion = 
+					tempOpcion =
 						id: -1
 						definicion: txtNewOpcion
 						nueva: true # Inicialmente es true para que sea una especie de botón, NUEVA OPCIÓN
@@ -95,9 +95,9 @@ angular.module('WissenSystem')
 					toastr.warning('No se pudo crear nueva opción')
 				)
 
-				
 
-		
+
+
 		$scope.setAsCorrect = (preg, opt)->
 			if $scope.pregagrup.tipo_pregunta == 'Test'
 				angular.forEach preg.opciones, (opcion)->  # Solo puede haber una correcta, así que quitamos las otras.
@@ -111,7 +111,7 @@ angular.module('WissenSystem')
 
 
 		$scope.deleteOption = (preg, opt, indice)->
-			
+
 			Restangular.one('opciones_agrupadas/destroy', opt.id).customDELETE().then((r)->
 				console.log('Opción eliminada', r)
 				preg.opciones = $filter('filter')(preg.opciones, {id: "!" + opt.id})
@@ -119,7 +119,7 @@ angular.module('WissenSystem')
 				console.log('No se pudo eliminar la opción', r2)
 				toastr.warning 'No se pudo eliminar la opción'
 			)
-			
+
 
 
 
@@ -165,13 +165,13 @@ angular.module('WissenSystem')
 			if $scope.pregagrup.tipo_pregunta == 'Test'
 				correctas = 0
 				for opcion in $scope.pregagrup.opciones  # Solo puede haber una correcta, así que quitamos todas menos una.
-					
+
 					if opcion.is_correct
 						if correctas > 0
 							opcion.is_correct = 0
 						else
 							correctas = correctas + 1
-			
+
 
 
 		return

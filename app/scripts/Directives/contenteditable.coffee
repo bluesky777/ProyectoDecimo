@@ -7,7 +7,7 @@ angular.module('WissenSystem')
 			guardarNombrePunto: "="
 		link: (scope, elm, attrs, ctrl)->
 			# view -> model
-			
+
 			elm.bind('blur keyup change', (e)->
 				$timeout(()->
 					if e.keyCode is 13
@@ -15,20 +15,20 @@ angular.module('WissenSystem')
 						e.returnValue = false;
 
 						element = $window.document.getElementById('msg-especifico')
-						
+
 						if(element)
 							element.focus()
-						
-						
-						scope.guardarNombrePunto(scope.$parent.cliente)
-						e.preventDefault()
-					else	
+
+						if scope.guardarNombrePunto
+							scope.guardarNombrePunto(scope.$parent.cliente)
+							e.preventDefault()
+					else
 						scope.$apply(()->
 							ctrl.$setViewValue(elm.html())
 						)
 				, 0)
 			)
-			
+
 			# model -> view
 			ctrl.$render = ()->
 				elm.html(ctrl.$viewValue)

@@ -148,6 +148,26 @@ angular.module('WissenSystem')
 
 
 
+		.state 'panel.informes.examen-detalle',
+			url: 'examen-detalle?examen_id'
+			params: {
+				examen_id: null
+			}
+			views:
+				'report_content':
+					templateUrl: "#{App.views}informes/examenDetalle.tpl.html"
+					controller: 'ExamenDetalleCtrl'
+			resolve:
+				examen: ['Restangular', '$stateParams', (Restangular, $stateParams)->
+					parametros = {examen_id: $stateParams.examen_id }
+
+					Restangular.one('informes/examen-detalle').customPUT(parametros);
+				],
+			data:
+				pageTitle: 'Examen detallado - Wissen'
+
+
+
 		$translateProvider.translations('EN',
 			INICIO_MENU: 'Home'
 		)

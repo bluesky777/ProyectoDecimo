@@ -60,8 +60,16 @@ angular.module('WissenSystem')
 					categoriaking
 		})
 		modalInstance.result.then( (elem)->
-			$scope.categoriasking = $filter('filter')($scope.categoriasking, {id: '!'+elem.id})
-			console.log 'Resultado del modal: ', elem
+			elem_id = if elem.rowid then elem.rowid else elem.id
+			dato = {}
+
+			if elem.rowid
+				dato.rowid = '!'+elem_id
+			else
+				dato.id = '!'+elem_id
+
+			$scope.categoriasking = $filter('filter')($scope.categoriasking, dato)
+
 		)
 
 
@@ -100,7 +108,6 @@ angular.module('WissenSystem')
 			$modalInstance.close(elemento)
 		, (r2)->
 			toastr.warning 'No se pudo eliminar al elemento.', 'Problema'
-			console.log 'Error eliminando elemento: ', r2
 			$modalInstance.dismiss('Error')
 		)
 

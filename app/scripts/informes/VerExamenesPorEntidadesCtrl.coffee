@@ -14,6 +14,7 @@ angular.module('WissenSystem')
 
 		$scope.entidades = []
 
+
 		$scope.cambia_texto_informativo = ()->
 			localStorage.texto_informativo_informe = $scope.texto_informativo
 
@@ -48,8 +49,8 @@ angular.module('WissenSystem')
 
 
 
-.controller('VerExamenesPorCategoriasCtrl', ['$scope', 'Restangular', 'toastr', '$filter', '$uibModal', 'App', 'categorias',
-	($scope, Restangular, toastr, $filter, $uibModal, App, categorias) ->
+.controller('VerExamenesPorCategoriasCtrl', ['$scope', 'Restangular', 'toastr', '$filter', '$uibModal', 'App', 'categorias', '$state',
+	($scope, Restangular, toastr, $filter, $uibModal, App, categorias, $state) ->
 
 		hay = localStorage.txt_informativo_por_categorias
 		if hay
@@ -59,6 +60,13 @@ angular.module('WissenSystem')
 
 		$scope.cambia_texto_informativo = ()->
 			localStorage.txt_informativo_por_categorias = $scope.texto_informativo
+
+
+
+
+		$scope.verDetalleExamen = (examen)->
+			$state.go 'panel.informes.examen-detalle', {examen_id: examen.examen_id}
+
 
 
 		finalistas = []

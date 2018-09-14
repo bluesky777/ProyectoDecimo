@@ -3,17 +3,17 @@
   "version": "0.0.0",
   "dependencies": {
     "jquery": "~2.1.4",
-    "angular": "^1.4.0",
+    "angular": "^1.6.0",
     "json3": "^3.3.0",
     "es5-shim": "^4.0.0",
     "bootstrap-sass-official": "^3.3.7",
-    "angular-animate": "^1.4.0",
-    "angular-aria": "^1.4.0",
-    "angular-cookies": "^1.4.0",
-    "angular-resource": "^1.4.0",
-    "angular-route": "^1.4.0",
-    "angular-sanitize": "^1.4.0",
-    "angular-touch": "^1.4.0",
+    "angular-animate": "^1.6.0",
+    "angular-aria": "^1.6.0",
+    "angular-cookies": "^1.6.0",
+    "angular-resource": "^1.6.0",
+    "angular-route": "^1.6.0",
+    "angular-sanitize": "^1.6.0",
+    "angular-touch": "^1.6.0",
     "angular-ui-router": "~1.0.18",
     "angular-ui-grid": "~4.6.1",
     "angular-ui-select": "^0.19.8",
@@ -37,7 +37,8 @@
     "textAngular": "^1.5.16",
     "ngclipboard": "^1.1.1",
     "socket.io-client": "^2.1.1",
-    "angular-web-notification": "^1.2.24"
+    "angular-web-notification": "^1.2.24",
+    "angular-hotkeys": "chieffancypants/angular-hotkeys#^1.7.0"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.0"

@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
     <link rel="stylesheet" href="bower_components/components-font-awesome/css/fontawesome-all.css" />
     <link rel="stylesheet" href="bower_components/textAngular/dist/textAngular.css" />
+    <link rel="stylesheet" href="bower_components/angular-hotkeys/build/hotkeys.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -101,11 +102,13 @@
     <script src="bower_components/ngclipboard/dist/ngclipboard.js"></script>
     <script src="bower_components/simple-web-notification/web-notification.js"></script>
     <script src="bower_components/angular-web-notification/angular-web-notification.js"></script>
+    <script src="bower_components/angular-hotkeys/build/hotkeys.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/socket.io.js"></script>
+        <script src="scripts/textAngular-rangy.min.js"></script>
         <script src="scripts/app.js"></script>
         <script src="scripts/main/ApplicationController.js"></script>
         <script src="scripts/main/WSConfiguracion.js"></script>
@@ -193,6 +196,7 @@
         <script src="scripts/informes/SeguroEliminExamCtrl.js"></script>
         <script src="scripts/informes/verTodosLosExamenesCtrl.js"></script>
         <script src="scripts/informes/VerExamenesPorEntidadesCtrl.js"></script>
+        <script src="scripts/informes/ExamenDetalleCtrl.js"></script>
 
         <script src="scripts/filtros/filtros.js"></script>
         <script src="scripts/filtros/clearhtml.js"></script>
@@ -205,6 +209,7 @@
         <script src="scripts/Directives/contenteditable.js"></script>
         <script src="scripts/Services/Perfil.js"></script>
         <script src="scripts/Services/preguntasServ.js"></script>
+        <script src="scripts/Services/MySocket.js"></script>
         <script src="scripts/Services/MySocket.js"></script>
         <script src="scripts/Services/SocketData.js"></script>
 

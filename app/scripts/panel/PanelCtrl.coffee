@@ -2,8 +2,8 @@
 
 angular.module('WissenSystem')
 
-.controller('PanelCtrl', ['$scope', '$http', 'Restangular', '$state', '$stateParams', '$cookies', '$rootScope', 'AuthService', 'Perfil', 'App', 'resolved_user', 'toastr', '$translate', '$filter', '$uibModal', 'MySocket', 'Fullscreen', 'SocketClientes', 'SocketData'
-	($scope, $http, Restangular, $state, $stateParams, $cookies, $rootScope, AuthService, Perfil, App, resolved_user, toastr, $translate, $filter, $modal, MySocket, Fullscreen, SocketClientes, SocketData) ->
+.controller('PanelCtrl', ['$scope', '$http', 'Restangular', '$state', '$stateParams', '$cookies', '$rootScope', 'AuthService', 'Perfil', 'App', 'resolved_user', 'toastr', '$translate', '$filter', '$uibModal', 'MySocket', 'Fullscreen', 'SocketClientes', 'SocketData', '$sce'
+	($scope, $http, Restangular, $state, $stateParams, $cookies, $rootScope, AuthService, Perfil, App, resolved_user, toastr, $translate, $filter, $modal, MySocket, Fullscreen, SocketClientes, SocketData, $sce) ->
 
 		$scope.SocketData = SocketData
 		$scope.USER       = resolved_user
@@ -25,6 +25,9 @@ angular.module('WissenSystem')
 		$scope.data = {}
 
 
+
+		$scope.trustedHtml = (plainText)->
+			return $sce.trustAsHtml(plainText);
 
 
 

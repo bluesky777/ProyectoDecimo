@@ -92,7 +92,7 @@ angular.module('WissenSystem')
 						console.log 'No hay opciones para esta pregunta', pregs_trad[0]
 
 					preg_check_id = if preg_check[0].rowid then preg_check[0].rowid else preg_check[0].id
-					preg_check_id = if pregs_trad[0].rowid then pregs_trad[0].rowid else pregs_trad[0].id
+					pregs_trad_id = if pregs_trad[0].rowid then pregs_trad[0].rowid else pregs_trad[0].id
 
 					datos =
 						examen_actual_id: 		$scope.examen_actual.examen_id

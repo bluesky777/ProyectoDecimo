@@ -1,0 +1,114 @@
+.row.body(ng-class="{'page-carta-horizontal': config.orientacion=='carta_horizontal', 'page-oficio-horizontal': config.orientacion=='oficio_horizontal','page-vertical': config.orientacion=='vertical', 'salto-pagina': $parent.$last==false }")
+
+
+	.col-lg-12.col-sm-12.col-xs-12.marg-pad-0.text-center
+		h3(style="margin-top: 5px; margin-bottom: 0px") Examen detallado
+		h3.text-center(style="margin-top: 0px; margin-bottom: 0px") {{examen.nombre_entidad}}
+		h3.text-center(style="margin-top: 0px; margin-bottom: 0px") {{examen.nombre_categ}}
+		h2(style="margin-top: 5px; margin-bottom: 0px")
+			img(ng-src="{{imagesPath + examen.imagen_nombre}}" alt="Imagen de usuario" style="height: 80px;")
+			span {{examen.nombres}} {{ examen.apellidos }}
+
+
+	.col-lg-12.col-sm-12.col-xs-12.marg-pad-0
+
+		hr(style="margin: 0;")
+
+
+		md-whiteframe.md-whiteframe-z2.definicion-frame(layout style="padding: 10px; margin: 15px; display: block; page-break-after: always; padding-top: 0px;")
+
+			.row
+				.col-sm-12(style="font-style: italic;") Por ahora NO se muestran las preguntas que no se respondieron por tiempo.
+			br
+			.row
+				.col-sm-6 Duración:
+					span.negrita  {{ examen.res_tiempo_format }}
+			.row
+				.col-sm-6 Puntaje por promedio:
+					span.negrita  {{ examen.res_promedio | number:1 }}%
+				.col-sm-6 Puntaje por sumatoria de puntos:
+					span.negrita  {{ examen.res_puntos }}
+			.row
+				.col-sm-6 Terminado:
+					span(ng-show="examen.terminado")
+						span.negrita  Si
+					span(ng-hide="examen.terminado")
+						span.negrita  No
+
+				.col-sm-6 Calculado por:
+					span.negrita(ng-show="examen.res_by_promedio")  Promedio
+					span.negrita(ng-hide="examen.res_by_promedio")  Suma de Puntos
+
+			br
+
+			table.table-bordered.table-bordered2.table-striped.table-striped2.table-hover(style="width: 100%; margin-bottom: 10px;")
+				thead
+					th(style="padding-right: 15px;")
+						| Id
+						md-tooltip Código de examen
+					th
+						| Ord
+						md-tooltip Orden de la pregunta en la evaluación
+					th(style="padding-right: 15px;")
+						| Pregunta
+						md-tooltip Pregunta
+					th Respondida
+					th Correcta
+					th A las
+						md-tooltip Fecha hora en que se guardó la respuesta
+					th Tiempo
+						md-tooltip Tiempo en responder
+					th
+						| Puntos
+
+
+
+				tbody
+					tr(ng-repeat="respuesta in examen.respuestas | orderBy:'orden' " )
+						td(style="font-size: 7pt;") {{ respuesta.rowid }}
+						td(style="font-size: 7pt;") {{ respuesta.orden }}
+
+						td(ng-click="verDetalleExamen(examen)" ng-class="{'fondo-rojo': respuesta.pregunta.opc_elegida.rowid != respuesta.pregunta.opc_correcta.rowid}")
+							.ellipsis200.usuario-listado( uib-popover-template="views+'informes/popoverDefinicionPreg.tpl.html'"
+								popover-title="Definición pregunta"
+								popover-trigger="'mouseenter'" popover-popup-delay="500" )
+
+								span(ng-bind-html="respuesta.pregunta.enunciado")
+						td
+							.ellipsis200.usuario-listado( uib-popover-template="views+'informes/popoverResElegida.tpl.html'"
+								popover-title="Respuesta elegida"
+								popover-trigger="'mouseenter'" popover-popup-delay="500" style="width: 80px"
+								ng-bind-html="respuesta.pregunta.opc_elegida.definicion")
+
+						td
+							.ellipsis200.usuario-listado( uib-popover-template="views+'informes/popoverResCorrecta.tpl.html'"
+								popover-title="Respuesta correcta"
+								popover-trigger="'mouseenter'" popover-popup-delay="500" style="width: 80px"
+								ng-bind-html="respuesta.pregunta.opc_correcta.definicion")
+
+						td(style="font-size: 7pt;") {{ respuesta.created_at | date:'hh:mm:ssa' }}
+						td {{ respuesta.tiempo_format }}
+							md-tooltip {{ respuesta.tiempo}}ms
+
+						td.td-contenedora(style="text-align: right;")
+							span(ng-show="respuesta.pregunta.opc_elegida.rowid == respuesta.pregunta.opc_correcta.rowid") {{ respuesta.pregunta.puntos }}
+							span(ng-hide="respuesta.pregunta.opc_elegida.rowid == respuesta.pregunta.opc_correcta.rowid")
+								i.fa.fa-times(style="color: red;")
+
+							//.menu-puesto-exam.hidden-print
+								.btn-group
+									a.btn.btn-default.btn-xs(href="" ng-click="mostrarPuesto(respuesta, $index +1, entidad)")
+										i.fa.fa-child
+										md-tooltip Mostrar en pantalla
+									a.btn.btn-danger.btn-xs(href="" ng-click="eliminarExamen(examen)")
+										i.fa.fa-times
+										md-tooltip Eliminar examen
+
+
+
+
+
+
+
+
+

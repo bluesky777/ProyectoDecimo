@@ -69,7 +69,7 @@
 							td(style="font-size: 7pt;") {{ examen.examen_id }}
 							td(style="font-size: 7pt;") {{ $index +1 }}
 								md-tooltip Orden
-							td
+							td(ng-click="verDetalleExamen(examen)")
 								.ellipsis200.usuario-listado( uib-popover-template="views+'usuarios/popoverUsuarioInfo.tpl.html'"
 									popover-title="{{examen.nombres + ' ' + examen.apellidos}}"
 									popover-trigger="'mouseenter'" popover-popup-delay="500" )
@@ -132,11 +132,12 @@
 							a(href="")
 								| Puntaje
 
+
 					tbody
 						tr(ng-repeat="examen in finalistas" )
 							td.center(style="font-size: 7pt;") {{ $index +1 }}
 							td.center(style="font-size: 7pt;") {{ examen.abrev_categ }}
-							td.center
+							td.center(ng-click="verDetalleExamen(examen)")
 								.ellipsis200.usuario-listado
 									| {{ examen.nombres + ' ' + examen.apellidos }}
 

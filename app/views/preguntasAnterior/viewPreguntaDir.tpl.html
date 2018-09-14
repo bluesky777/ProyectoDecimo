@@ -1,7 +1,7 @@
 
 <div ng-repeat="pregunta in preguntaking.preguntas_traducidas | porIdioma:idiomapreg.selected" ng-class-odd="'fondo-gris-odd'">
   <div ng-show="!preguntaking.editando">
-    <md-whiteframe layout style="padding: 10px" class="md-whiteframe-z2 definicion-frame"><span flex="5">{{indice+1}}.</span><span ng-bind-html="pregunta.enunciado" flex="95"></span>
+    <md-whiteframe layout style="padding: 10px" class="md-whiteframe-z2 definicion-frame"><span flex="5">{{indice+1}}.</span><span ng-bind-html="trustedHtml(pregunta.enunciado)" flex="95"></span>
       <div ng-show="pregunta.ayuda &amp;&amp; preguntaking.showDetail" ng-click="toggleMostrarAyuda(pregunta)" ng-class="{'ayuda-preg-showed': pregunta.mostrar_ayuda, 'ayuda-preg-hidded':!pregunta.mostrar_ayuda}"><a ng-show="!pregunta.mostrar_ayuda"><i class="fa fa-anchor"></i></a><span ng-show="pregunta.mostrar_ayuda">{{pregunta.ayuda}}</span></div>
       <div layout="row" class="btn-container-edit">
         <!--md-button.md-default.md-raised(ng-click="editarPregunta(preguntaking)") Editar-->
@@ -41,12 +41,12 @@
       <md-list ng-if="preguntaking.tipo_pregunta=='Multiple'">
         <md-list-item ng-repeat="opcion in pregunta.opciones | filter:{id: '!-1'} ">
           <md-checkbox ng-model="topping.wanted"></md-checkbox>
-          <p ng-bind-html="opcion.definicion"> </p>
+          <p ng-bind-html="trustedHtml(opcion.definicion)"></p>
           <md-icon ng-click="" aria-label="Chat" class="md-secondary fa fa-comment"></md-icon>
         </md-list-item>
       </md-list>
       <div layout="row" layout-wrap layout-fill ng-if="preguntaking.tipo_pregunta=='Test'" style="padding-bottom: 32px;" class="opciones">
-        <md-whiteframe ng-class="{'elegida':opcion.elegida}" ng-if="!opcion.nueva" flex="40" ng-click="elegirOpcion(pregunta, opcion)" ng-repeat="opcion in pregunta.opciones" class="pointer md-whiteframe-z2 btn"> <span style="font-weight: bold;">{{ indexChar($index) }}. </span><span ng-bind-html="opcion.definicion"> </span></md-whiteframe>
+        <md-whiteframe ng-class="{'elegida':opcion.elegida}" ng-if="!opcion.nueva" flex="40" ng-click="elegirOpcion(pregunta, opcion)" ng-repeat="opcion in pregunta.opciones" class="pointer md-whiteframe-z2 btn"><span style="font-weight: bold;">{{ indexChar($index) }}.</span><span ng-bind-html="trustedHtml(opcion.definicion)"></span></md-whiteframe>
       </div></span>
   </div>
   <edit-pregunta preguntaking="preguntaking" ng-show="preguntaking.editando" eventoactual="eventoactual" eventoactualselec="{{eventoactualselec}}"></edit-pregunta>

@@ -191,7 +191,7 @@
         <div ng-repeat="categoria in categorias_king" ng-click="cmdClickCategSelected(categoria)" ng-class="{seleccionada: categoria.seleccionada }">{{categoria.nombre}}</div>
       </div>
       <div style="height: 150px; font-size: 9pt; overflow: scroll; border: solid 1px #ccc; padding: 0px" class="list-preg-opts col-xs-12 col-sm-8 col-md-9 col-lg-10">
-        <div ng-repeat="pregunta in cmdPreguntasTraduc" ng-click="cmdClickPreguntaSelected(pregunta, $index)" ng-bind-html="($index+1) + '. ' + pregunta.enunciado" ng-class="{seleccionada: pregunta.seleccionada }" style="width: 160%; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;"></div>
+        <div ng-repeat="pregunta in cmdPreguntasTraduc" ng-click="cmdClickPreguntaSelected(pregunta, $index)" ng-bind-html="trustedHtml(($index+1) + '. ' + pregunta.enunciado)" ng-class="{seleccionada: pregunta.seleccionada }" style="width: 160%; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;"></div>
       </div>
     </div>
     <div class="row">

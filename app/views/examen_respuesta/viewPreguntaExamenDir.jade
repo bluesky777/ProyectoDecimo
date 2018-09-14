@@ -16,22 +16,22 @@ div(ng-repeat="pregunta in preguntaking.preguntas_traducidas | porIdioma:idiomap
 	md-list(ng-if="preguntaking.tipo_pregunta=='Multiple'")
 		md-list-item(ng-repeat="opcion in pregunta.opciones")
 			md-checkbox(ng-model="topping.wanted")
-			p(ng-bind-html="opcion.definicion") 
+			p(ng-bind-html="trustedHtml(opcion.definicion)")
 			md-icon.md-secondary.fa.fa-comment(ng-click="" aria-label="Chat")
 
-	
+
 
 	// Opciones de tipo ICFES
-	div.opciones(layout="row" layout-wrap layout-fill ng-if="preguntaking.tipo_pregunta=='Test'" 
+	div.opciones(layout="row" layout-wrap layout-fill ng-if="preguntaking.tipo_pregunta=='Test'"
 		style="padding-bottom: 32px; justify-content: center;")
-		
-		md-whiteframe.pointer.md-whiteframe-z2.btn(ng-class="{'elegida':opcion.elegida}" 
-			ng-if="!opcion.nueva" flex="45" 
-			ng-click="elegirOpcion(pregunta, opcion, $index)" 
-			ng-repeat="opcion in pregunta.opciones") 
-			
-			span(style="font-weight: bold;") {{ indexChar($index) }}. 
-			span(ng-bind-html="opcion.definicion") 
+
+		md-whiteframe.pointer.md-whiteframe-z2.btn(ng-class="{'elegida':opcion.elegida}"
+			ng-if="!opcion.nueva" flex="45"
+			ng-click="elegirOpcion(pregunta, opcion, $index)"
+			ng-repeat="opcion in pregunta.opciones")
+
+			span(style="font-weight: bold;") {{ indexChar($index) }}.
+			span(ng-bind-html="trustedHtml(opcion.definicion)")
 
 
 br

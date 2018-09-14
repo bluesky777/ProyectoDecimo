@@ -38,6 +38,7 @@ angular.module('WissenSystem', [
 	'ui.select'
 	'restangular'
 	'angular-web-notification'
+	'cfp.hotkeys'
 ])
 
 #- Valores que usaremos para nuestro proyecto
