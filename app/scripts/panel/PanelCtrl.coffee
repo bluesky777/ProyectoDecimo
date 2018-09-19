@@ -2,8 +2,8 @@
 
 angular.module('WissenSystem')
 
-.controller('PanelCtrl', ['$scope', '$http', 'Restangular', '$state', '$stateParams', '$cookies', '$rootScope', 'AuthService', 'Perfil', 'App', 'resolved_user', 'toastr', '$translate', '$filter', '$uibModal', 'MySocket', 'Fullscreen', 'SocketClientes', 'SocketData', '$sce'
-	($scope, $http, Restangular, $state, $stateParams, $cookies, $rootScope, AuthService, Perfil, App, resolved_user, toastr, $translate, $filter, $modal, MySocket, Fullscreen, SocketClientes, SocketData, $sce) ->
+.controller('PanelCtrl', ['$scope', '$http', 'Restangular', '$state', '$stateParams', '$cookies', '$rootScope', 'AuthService', 'Perfil', 'App', 'resolved_user', 'toastr', '$translate', '$filter', '$uibModal', 'MySocket', 'Fullscreen', 'SocketClientes', 'SocketData', '$sce', '$window'
+	($scope, $http, Restangular, $state, $stateParams, $cookies, $rootScope, AuthService, Perfil, App, resolved_user, toastr, $translate, $filter, $modal, MySocket, Fullscreen, SocketClientes, SocketData, $sce, $window) ->
 
 		$scope.SocketData = SocketData
 		$scope.USER       = resolved_user
@@ -23,6 +23,10 @@ angular.module('WissenSystem')
 
 		$scope.file = {}
 		$scope.data = {}
+
+
+		if $state.is('panel')
+			$rootScope.examen_actual = []
 
 
 
@@ -195,6 +199,9 @@ angular.module('WissenSystem')
 		$scope.set_user_event = (evento)->
 			evento_id = if evento.rowid then evento.rowid else evento.id
 			Restangular.one('eventos/set-user-event').customPUT({'evento_id': evento_id}).then((r)->
+
+				if $state.is 'panel.usuarios'
+					$window.location.reload();
 
 				$scope.USER.evento_selected_id = eve_id
 				$scope.el_evento_actual() # Actualizamos el modelo del evento actual

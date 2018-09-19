@@ -132,15 +132,16 @@ angular.module('WissenSystem')
 			client.categsel_abrev 	= categsel_n[0].abrev
 			client.categsel_id 		= categsel_n[0].categoria_id
 
-
 		if client.registered
 			for clt, indice in SocketClientes.registrados_no_logged
-				if clt.resourceId == client.resourceId
-					SocketClientes.registrados_no_logged.splice indice, 1
+				if clt
+					if clt.resourceId == client.resourceId
+						SocketClientes.registrados_no_logged.splice indice, 1
 
 			for clt, indice in SocketClientes.registrados_logueados
-				if clt.resourceId == client.resourceId
-					SocketClientes.registrados_logueados.splice(indice, 1, client)
+				if clt
+					if clt.resourceId == client.resourceId
+						SocketClientes.registrados_logueados.splice(indice, 1, client)
 
 
 

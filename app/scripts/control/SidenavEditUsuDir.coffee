@@ -70,7 +70,7 @@ angular.module('WissenSystem')
 	$scope.guardar = ()->
 		$scope.guardando_edicion = true
 
-		Restangular.one('usuarios/update').customPUT($scope.clt_to_edit).then((r)->
+		Restangular.one('usuarios/update').customPUT($scope.clt_to_edit.user_data).then((r)->
 			toastr.success 'Cambios guardados.'
 			$scope.guardando_edicion = false
 		, (r2)->
@@ -93,7 +93,7 @@ angular.module('WissenSystem')
 			.ok('Cambiar')
 			.cancel('Cancelar');
 		$mdDialog.show(confirm).then((result)->
-			usu_id 	= if $scope.clt_to_edit.rowid then $scope.clt_to_edit.rowid else $scope.clt_to_edit.id
+			usu_id 	= if $scope.clt_to_edit.user_data.rowid then $scope.clt_to_edit.user_data.rowid else $scope.clt_to_edit.user_data.id
 			datos 	= {usu_id: usu_id, password: result }
 
 			Restangular.one('usuarios/cambiar-pass').customPUT(datos).then((r)->
@@ -125,10 +125,10 @@ angular.module('WissenSystem')
 
 				inscrip = $filter('filter')(currentUser.inscripciones, {categoria_id: datos.categoria_id})
 				if inscrip.length == 0
-					currentUser.inscripciones.push r[0]
+					currentUser.inscripciones.push r
 				else
-					inscrip[0].id         = if r[0].rowid then r[0].rowid else r[0].id
-					inscrip[0].deleted_at = r[0].deleted_at
+					inscrip[0].id         = if r.rowid then r.rowid else r.id
+					inscrip[0].deleted_at = r.deleted_at
 
 
 			, (r2)->

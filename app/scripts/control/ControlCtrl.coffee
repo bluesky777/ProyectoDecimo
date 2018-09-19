@@ -109,7 +109,8 @@ angular.module('WissenSystem')
 		$mdOpenMenu(ev);
 
 	$scope.showSidenavEditUsu = (cliente)->
-		$scope.clt_to_edit = cliente.user_data
+		console.log cliente
+		$scope.clt_to_edit = cliente
 		$mdSidenav('sidenavEditusu').toggle()
 			.then( ()->
 				console.log("toggle is done");

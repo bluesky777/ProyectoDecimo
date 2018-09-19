@@ -81,21 +81,26 @@ angular.module('WissenSystem')
 						return false
 			})
 			modalInstance.result.then( (option)->
-				$modalStack.dismissAll('Evitar varios modales de seguro respuesta');
 				$scope.modal_abierto = false
 				opcion.respondida = true
 
+				if option == 'Ya respondida'
+					#toastr.warning('No guardada', 'Respondida anteriormente');
+					return
+
 				if opcion.is_correct
 					valor = 'correct'
-					toastr.info('Respuesta CORRECTA');
+					if option != 'Ya respondida'
+						toastr.info('Respuesta CORRECTA');
 				else
 					valor = 'incorrect'
-					toastr.info('Respuesta INCORRECTA', {
-						iconClass: 'toast-pink'
-					});
+					if option != 'Ya respondida'
+						toastr.info('Respuesta INCORRECTA', {
+							iconClass: 'toast-pink'
+						});
 
 				$scope.$emit 'respuesta_elegida', indice, valor
-				MySocket.sc_answered valor, $rootScope.tiempo
+				MySocket.sc_answered valor, $rootScope.tiempo, $scope.preguntaking.puntos
 
 
 			)

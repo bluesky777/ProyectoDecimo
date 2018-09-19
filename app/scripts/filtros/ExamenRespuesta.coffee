@@ -4,7 +4,7 @@ angular.module('WissenSystem')
 	(input) ->
 
 		if input
-			
+
 			indice = 0
 
 			for pregunta in input
@@ -29,13 +29,13 @@ angular.module('WissenSystem')
 	(input) ->
 
 		if input
-			
+
 			indice = 0 # Empezamos desde la primera pregunta
 
 			for pregunta in input
 
 				indice++
-				
+
 				if pregunta.tipo_pregunta
 
 					pregs_trad = $filter('porIdioma')(pregunta.preguntas_traducidas, Perfil.idioma())
@@ -43,12 +43,14 @@ angular.module('WissenSystem')
 					respondida = false
 
 					for preg_trad in pregs_trad
+						if preg_trad.respuesta_id
+							respondida = true
 
-						for opcion in preg_trad.opciones
+						else
+							for opcion in preg_trad.opciones
 
-							if opcion.respondida
-
-								respondida = true
+								if opcion.respondida
+									respondida = true
 
 
 					if not respondida
@@ -75,7 +77,7 @@ angular.module('WissenSystem')
 
 							if not respondida
 								return indice
-				
+
 
 			return indice
 		else
@@ -100,7 +102,7 @@ angular.module('WissenSystem')
 				return [filtered[indice_actual-1]]
 
 
-			
+
 			for pregunta in filtered
 
 				if pregunta.tipo_pregunta
@@ -110,15 +112,17 @@ angular.module('WissenSystem')
 					respondida = false
 
 					for preg_trad in pregs_trad
+						if preg_trad.respuesta_id
+							respondida = true
 
-						for opcion in preg_trad.opciones
+						else
+							for opcion in preg_trad.opciones
 
-							if opcion.respondida
-
-								respondida = true
-
+								if opcion.respondida
+									respondida = true
 
 					if not respondida
+						console.log(pregunta)
 						return [pregunta] # Debe ser un array, no objeto
 
 				else
@@ -132,22 +136,20 @@ angular.module('WissenSystem')
 							respondida = false
 
 							for opcion in preg_trad.opciones
-
 								if opcion.respondida
-
 									respondida = true
 
 
 							if not respondida
 								return [pregunta] # Debe ser un array, no objeto
-				
+
 
 
 			res = filtered[0]
 			if res
 				res.terminado = true
 				res = [res]
-			
+
 			return res
 		else
 			return false

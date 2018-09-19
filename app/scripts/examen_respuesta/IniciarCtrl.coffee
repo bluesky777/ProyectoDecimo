@@ -96,20 +96,21 @@ angular.module('WissenSystem')
 
 
 	destroyEmpezar_examen = $rootScope.$on 'empezar_examen', (event)->
-		cliente 		= SocketData.cliente(Perfil.getResourceId())
-		inscripcion 	= {categoria_id: cliente.categsel_id }
-		console.log(cliente)
-		for inscrip in $scope.USER.inscripciones
-			if inscrip.categoria_id == cliente.categsel_id
-				inscripcion.inscripcion_id = inscrip.id || inscrip.rowid
+		if !AuthService.hasRoleOrPerm('Pantalla') and !AuthService.hasRoleOrPerm('Presentador')
+			cliente 		= SocketData.cliente(Perfil.getResourceId())
+			inscripcion 	= {categoria_id: cliente.categsel_id }
 
-		Restangular.all('examenes_respuesta/iniciar').customPOST(inscripcion).then((r)->
-			$rootScope.examen_actual = r
-			$state.transitionTo 'panel.examen_respuesta' # Solo si va a contiunar con un examen: , {examen_respuesta_id: r.examen_id}
-		, (r2)->
-			toastr.warning 'No se pudo iniciar el examen.', 'Problema'
-			console.log 'Error creando el examen: ', r2
-		)
+			for inscrip in $scope.USER.inscripciones
+				if inscrip.categoria_id == cliente.categsel_id
+					inscripcion.inscripcion_id = inscrip.id || inscrip.rowid
+
+			Restangular.all('examenes_respuesta/iniciar').customPOST(inscripcion).then((r)->
+				$rootScope.examen_actual = r
+				$state.transitionTo 'panel.examen_respuesta' # Solo si va a contiunar con un examen: , {examen_respuesta_id: r.examen_id}
+			, (r2)->
+				toastr.warning 'No se pudo iniciar el examen.', 'Problema'
+				console.log 'Error creando el examen: ', r2
+			)
 
 
 

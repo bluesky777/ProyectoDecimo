@@ -71,7 +71,7 @@
 
 					.info(flex="70" ng-class="{'incorrect': cliente.answered=='incorrect', 'correct': cliente.answered=='correct' }")
 						h5.name.text-center.nombresellipsis(style="margin-top: 2px") {{cliente.user_data.nombres}} {{cliente.user_data.apellidos}}
-							md-tooltip {{cliente.user_data.username}}
+							md-tooltip Respondidas: {{cliente.respondidas}} - Correct: {{cliente.correctas}} - Puntos: {{ cliente.puntos }}
 
 						.alias-enti(ng-show="cliente.user_data.entidad.alias")
 							span(ng-show="cliente.respondidas" style="font-weight: bold") ({{ cliente.respondidas }})

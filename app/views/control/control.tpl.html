@@ -59,7 +59,7 @@
           </header>
           <div flex="70" ng-class="{'incorrect': cliente.answered=='incorrect', 'correct': cliente.answered=='correct' }" class="info">
             <h5 style="margin-top: 2px" class="name text-center nombresellipsis">{{cliente.user_data.nombres}} {{cliente.user_data.apellidos}}
-              <md-tooltip>{{cliente.user_data.username}}</md-tooltip>
+              <md-tooltip>Respondidas: {{cliente.respondidas}} - Correct: {{cliente.correctas}} - Puntos: {{ cliente.puntos }}</md-tooltip>
             </h5>
             <div ng-show="cliente.user_data.entidad.alias" class="alias-enti"><span ng-show="cliente.respondidas" style="font-weight: bold">({{ cliente.respondidas }})</span><span>{{cliente.user_data.entidad.alias}}</span></div>
             <h6 style="margin: 0px;">{{ cliente.nombre_punto }}</h6>

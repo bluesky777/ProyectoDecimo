@@ -31,7 +31,7 @@ angular.module('WissenSystem')
 		Perfil.setRegistered(registered)
 
 		if Perfil.User().id or Perfil.User().rowid
-			@emit('loguear', {usuario: Perfil.User(), registered: registered, nombre_punto: localStorage.nombre_punto} )
+			@emit('loguear', {usuario: Perfil.User(), registered: registered, nombre_punto: localStorage.nombre_punto, examen_actual: $rootScope.examen_actual} )
 		else
 			nombre_p = if localStorage.getItem('nombre_punto') == null then false else localStorage.getItem('nombre_punto')
 			if nombre_p
@@ -54,8 +54,9 @@ angular.module('WissenSystem')
 		if SocketClientes.categorias_king.length == 0
 			if data.categorias_king
 				SocketClientes.categorias_king = data.categorias_king
-		SocketData.logueado data.clt
-		$rootScope.$apply()
+		#SocketData.logueado data.clt
+		#$rootScope.$apply()
+		get_clts()
 	);
 
 	socket.on('user:left', (data)->
@@ -502,9 +503,9 @@ angular.module('WissenSystem')
 		else
 			@emit('sc_show_puntaje_examen', { examen: examen })
 
-	sc_answered = (valor, tiempo)->
+	sc_answered = (valor, tiempo, puntos)->
 		resourceId = Perfil.getResourceId()
-		@emit('sc_answered', { resourceId: resourceId, valor: valor, tiempo: tiempo })
+		@emit('sc_answered', { resourceId: resourceId, valor: valor, tiempo: tiempo, puntos: puntos })
 
 	sc_next_question = ()->
 		SocketData.set_waiting()
@@ -516,7 +517,7 @@ angular.module('WissenSystem')
 	sc_next_question_cliente = (cliente)->
 		client = SocketData.cliente(cliente.resourceId)
 		client.answered = 'waiting'
-		@emit('next_question', { resourceId: cliente.resourceId })
+		@emit('next_question_cliente', { resourceId: cliente.resourceId })
 
 	sc_goto_question_no_clt = (cliente, numero)->
 		client = SocketData.cliente(cliente.resourceId)

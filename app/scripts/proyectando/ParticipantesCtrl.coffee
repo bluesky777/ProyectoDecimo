@@ -9,6 +9,14 @@ angular.module('WissenSystem')
 		$scope.SocketClientes 	= SocketClientes
 
 
+		MySocket.on('a_categ_selected_change', (data)->
+			console.log(data)
+			$timeout(()->
+				$scope.apply()
+			, 500)
+
+		);
+
 		$scope.participantesDeCategoria = (categoria_traduc)->
 			return $filter('filter')(SocketClientes.clientes, {logged :true, 'categsel':categoria_traduc.categoria_id }, true)
 
