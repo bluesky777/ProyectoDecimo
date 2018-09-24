@@ -19,7 +19,7 @@ div(ng-repeat="nivelking in nivelesking" )
 
 	div(ng-show="nivelking.editando" style="margin-top: 20px")
 		.panel.panel-default.panel-hovered.panel-stacked.mb20
-			.panel-heading(ng-if="!eventoactual.es_idioma_unico" layout style="height: 40px;")
+			.panel-heading(ng-show="!eventoactual.es_idioma_unico" layout style="height: 40px;")
 				span
 					|  Editar nivel en idiomas:
 

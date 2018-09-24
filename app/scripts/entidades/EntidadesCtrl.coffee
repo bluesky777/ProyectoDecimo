@@ -30,7 +30,7 @@ angular.module('WissenSystem')
 			{ field: 'nombre', filter: {condition: uiGridConstants.filter.CONTAINS}, enableHiding: false, minWidth: 140 }
 			{ field: 'alias', minWidth: 100, filter: { condition: uiGridConstants.filter.CONTAINS }, displayName: 'Alias'}
 			{ field: 'lider_nombre', displayName:'Lider', filter: { condition: uiGridConstants.filter.CONTAINS }, minWidth: 80}
-			{ field: 'logo', displayName: 'Cambiar logo', minWidth: 130, cellTemplate: btImg, enableCellEdit: false }
+			{ field: 'logo', displayName: 'Cambiar logo', minWidth: 150, cellTemplate: btImg, enableCellEdit: false }
 		],
 		multiSelect: false,
 		#filterOptions: $scope.filterOptions,

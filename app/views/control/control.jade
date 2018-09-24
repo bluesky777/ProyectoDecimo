@@ -280,31 +280,8 @@ sidenav-edit-usu-dir
 				md-checkbox(ng-model="silenciar_respuestas" aria-label="Silenciar respuestas") Silenciar respuestas
 
 				md-checkbox(ng-model="silenciar_todo" aria-label="Silenciar todo") Silenciar todo
+
 				hr
-		.row(style="margin-top: 10px;")
-			.col-xs-12.col-md-7
-				.btn-group(uib-dropdown)
-
-					button.btn.btn-default(ng-click="showBarras()")
-						i.fa.fa-bar-chart
-						| {{ 'MOSTRAR_BARRAS_TL' | translate }}
-					button.btn.btn-default(ng-click="showParticipantes()")
-						i.fa.fa-users
-						| {{ 'MOSTRAR_PARTICIPANTES_TL' | translate }}
-
-					a.btn.btn-default.right(aria-label="Abrir menú" uib-dropdown-toggle)
-						span {{cliente.categsel_abrev}}
-						.fa.fa-chevron-right
-
-					ul.dropdown-menu(uib-dropdown-menu aria-labelledby="simple-dropdown")
-						li
-							a(ng-click="cargar_resultados()") 1. Cargar resultados actuales
-						li
-							a(ng-click="sc_mostrar_resultados_actuales()")
-								.fa.fa-screen
-								span  2. Mostrar resultados
-
-
 				a(href="" ng-click="configurar_imagenes()" style="display: block; margin-top: 12px; margin-bottom: 8px" ng-hide="imagenes") {{ 'CONFIGURAR_FONDO_TL' | translate }}
 
 		.row(style="margin-top: 10px;")
@@ -331,6 +308,7 @@ sidenav-edit-usu-dir
 							i.fa.fa-image
 							| {{ 'MOSTRAR_SOLO_FONDO_TL' | translate }}
 
+
 		.row
 			.col-xs-12.col-md-12
 				md-content
@@ -351,7 +329,24 @@ sidenav-edit-usu-dir
 			button.btn.btn-danger(ng-click="nextQuestion()") {{ 'SIGUIENTE_PREGUNTA_TL' | translate }}
 				i.fa.fa-arrow-right
 
+		hr
+		.row(style="margin-top: 10px;")
+			.col-xs-12.col-md-7
+				.btn-group(uib-dropdown)
 
+					button.btn.btn-default(ng-click="showBarras()")
+						i.fa.fa-chart-bar
+						| {{ 'MOSTRAR_BARRAS_TL' | translate }}
+					button.btn.btn-default(ng-click="showParticipantes()")
+						i.fa.fa-users
+						| {{ 'MOSTRAR_PARTICIPANTES_TL' | translate }}
+					button.btn.btn-default(ng-click="sc_mostrar_resultados_actuales()")
+						i.fa.fa-desktop
+						| Mostrar puntajes
+
+
+
+		hr
 		.row
 			.col-xs-12.col-md-7
 				md-content
@@ -405,7 +400,7 @@ puestos-dir(ng-if="show_result_table")
 
 	.panel-body
 
-		pregunta-en-pantalla(ng-show="SocketData.config.pregunta.id")
+		pregunta-en-pantalla(ng-show="SocketData.config.pregunta.id || SocketData.config.pregunta.rowid")
 
 
 

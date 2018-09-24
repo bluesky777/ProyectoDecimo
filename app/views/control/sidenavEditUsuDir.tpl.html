@@ -79,7 +79,7 @@
           <div class="row">
             <div class="col-sm-6">
               <md-select ng-model="clt_to_edit.user_data.entidad_id" placeholder="Entidad">
-                <md-option ng-repeat="entidad in entidades" value="{{entidad.id}}">{{entidad.nombre}}</md-option>
+                <md-option ng-repeat="entidad in entidades" value="{{entidad.rowid || entidad.id}}">{{entidad.nombre}}</md-option>
               </md-select>
             </div>
             <div class="col-sm-6">

@@ -183,7 +183,7 @@ angular.module('WissenSystem')
 		GARGAR RESULTADOS
 	###
 
-	$scope.cargar_resultados = ()->
+	$scope.sc_mostrar_resultados_actuales = ()->
 		MySocket.get_clts()
 
 		ids = []
@@ -195,14 +195,16 @@ angular.module('WissenSystem')
 
 		Restangular.one('puestos/examenes-ejecutandose').customPUT({ids: ids}).then((r)->
 			$scope.examenes_cargados = r
+			MySocket.sc_mostrar_resultados_actuales($scope.examenes_cargados)
 		, (r2)->
+			if r2.data.pailas
+				toastr.warning r2.data.pailas
+				return
 			toastr.warning 'No se trajeron los exámenes', 'Problema'
 			console.log 'No se trajeron los exámenes ', r2
 		)
 
 
-	$scope.sc_mostrar_resultados_actuales = ()->
-		MySocket.sc_mostrar_resultados_actuales($scope.examenes_cargados)
 
 
 

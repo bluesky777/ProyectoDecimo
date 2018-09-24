@@ -144,8 +144,15 @@ angular.module('WissenSystem')
 		Restangular.all('preguntas/destroy/'+pregunta.pg_id).remove().then((r)->
 			toastr.success 'Pregunta eliminada con éxito.', 'Eliminada'
 		, (r2)->
-			toastr.warning 'No se pudo eliminar la pregunta.', 'Problema'
-			console.log 'Error eliminando pregunta: ', r2
+
+			# Si no es PHP, entonces a Electron
+			Restangular.all('preguntas/destroy').customPUT({rowid: pregunta.pg_id}).then((r)->
+				toastr.success 'Pregunta eliminada con éxito.', 'Eliminada'
+			, (r2)->
+				toastr.warning 'No se pudo eliminar la pregunta.', 'Problema'
+				console.log 'Error eliminando pregunta: ', r2
+			)
+
 		)
 		$modalInstance.close(pregunta)
 

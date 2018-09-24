@@ -74,7 +74,7 @@ md-sidenav.md-sidenav-right.md-whiteframe-4dp(md-component-id="sidenavEditusu" s
 					.row
 						.col-sm-6
 							md-select(ng-model="clt_to_edit.user_data.entidad_id" placeholder="Entidad")
-								md-option(ng-repeat="entidad in entidades" value="{{entidad.id}}") {{entidad.nombre}}
+								md-option(ng-repeat="entidad in entidades" value="{{entidad.rowid || entidad.id}}") {{entidad.nombre}}
 						.col-sm-6
 							md-select(ng-model="clt_to_edit.user_data.nivel_id" placeholder="Niveles")
 								md-option(ng-value="nivel.nivel_king_id" ng-repeat="nivel in $parent.niveles_king | nivelesTraducidos:$parent.evento_actual.idioma_principal_id") {{nivel.nombre}}

@@ -15,8 +15,10 @@ angular.module('WissenSystem')
 			# Me tocó copiarlo pues se acumulaban las inscripciones
 			categoriasking_copy = []
 			angular.copy $scope.categoriasking, categoriasking_copy
-
+			console.log $scope.currentusers, categoriasking_copy, $scope.idioma
 			$scope.categorias_inscripcion = $filter('categsInscritas')($scope.currentusers, categoriasking_copy, $scope.idioma )
+			console.log $scope.categorias_inscripcion
+
 
 		$scope.seleccionar_entidad = (row)->
 

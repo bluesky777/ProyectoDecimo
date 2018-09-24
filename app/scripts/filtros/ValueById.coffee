@@ -7,13 +7,18 @@ angular.module('WissenSystem')
 
 			entidad_id = parseFloat(entidad_id)
 
-			entidad = $filter('filter')(entidades, {id: entidad_id})
+			if entidades.length > 0
+				campo = if entidades[0].rowid then {rowid: entidad_id} else {id: entidad_id}
+				entidad = $filter('filter')(entidades, campo)
 
-			if entidad.length > 0
-				if alias
-					return entidad[0].alias
+				if entidad.length > 0
+					if alias
+						return entidad[0].alias
+					else
+						return entidad[0].nombre
 				else
-					return entidad[0].nombre
+					return entidad_id
+
 			else
 				return entidad_id
 
@@ -95,24 +100,29 @@ angular.module('WissenSystem')
 		categoria_id = parseFloat(categoria_id)
 		idioma_id = parseFloat(idioma_id)
 
-		categ_king = $filter('filter')(categoriasking, {id: categoria_id})
+		if categoriasking.length > 0
+			campo = if categoriasking[0].rowid then {rowid: categoria_id} else {id: categoria_id}
+			categ_king = $filter('filter')(categoriasking, campo)
 
-		if categ_king.length > 0
-			categ_king = categ_king[0]
-		else
-			return ''
+			if categ_king.length > 0
+				categ_king = categ_king[0]
+			else
+				return ''
 
-		categ_traducido = $filter('porIdioma')(categ_king.categorias_traducidas, idioma_id)
-		if categ_traducido.length > 0
-			categ_traducido = categ_traducido[0]
-		else
-			return ''
+			categ_traducido = $filter('porIdioma')(categ_king.categorias_traducidas, idioma_id)
+			if categ_traducido.length > 0
+				categ_traducido = categ_traducido[0]
+			else
+				return ''
 
-		# Si quiere la abreviatura
-		if abrev
-			return categ_traducido.abrev
+			# Si quiere la abreviatura
+			if abrev
+				return categ_traducido.abrev
+			else
+				return categ_traducido.nombre
+
 		else
-			return categ_traducido.nombre
+			return categoria_id
 ])
 
 

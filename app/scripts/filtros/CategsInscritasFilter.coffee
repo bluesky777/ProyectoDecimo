@@ -32,7 +32,8 @@ angular.module('WissenSystem')
 
 
 					for inscripcion in usuario.inscripciones
-						if inscripcion.categoria_id == categoriaking.id
+						categoriaking_id = if categoriaking.rowid then categoriaking.rowid else categoriaking.id
+						if inscripcion.categoria_id == categoriaking_id
 
 							categ_traducida.allowed_to_answer 	= inscripcion.allowed_to_answer
 							categ_traducida.examenes 			= inscripcion.examenes

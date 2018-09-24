@@ -295,8 +295,9 @@ angular.module('WissenSystem')
 	$scope.cantPregRandom = 3
 	$scope.cambiando = false
 
+	evaluacion_id = if evaluacion.rowid then evaluacion.rowid else evaluacion.id
 
-	Restangular.all('pregunta_evaluacion/examenes-de-evaluacion').getList({evaluacion_id: evaluacion.id}).then((r)->
+	Restangular.all('pregunta_evaluacion/examenes-de-evaluacion').getList({evaluacion_id: evaluacion_id}).then((r)->
 		$scope.examenes = r
 	, (r2)->
 		toastr.warning 'No se trajeron las preguntas con imágenes.', 'Problema'
@@ -308,7 +309,7 @@ angular.module('WissenSystem')
 
 		datos =
 			cantPregRandom: 	$scope.cantPregRandom
-			evaluacion_id: 		evaluacion.id
+			evaluacion_id: 		evaluacion_id
 			categoria_id: 		evaluacion.categoria_id
 			pregNoAsignadas:	$scope.pregNoAsignadas
 
@@ -368,7 +369,7 @@ angular.module('WissenSystem')
 
 
 .filter('pregsByCatsAndEvaluacion', ['$filter', ($filter)->
-	(input, categoria, preguntas_evaluacion, evaluacion_id) ->
+	(input, categoria, preguntas_evaluacion, evaluacion) ->
 
 		filtered = [];
 		angular.forEach(input, (item)->
@@ -382,7 +383,8 @@ angular.module('WissenSystem')
 
 			if parseFloat(preg.categoria_id) == parseFloat(categoria)
 
-				if evaluacion_id and parseFloat(evaluacion_id) != 0
+				if evaluacion
+					evaluacion_id = if evaluacion.rowid then parseFloat(evaluacion.rowid) else parseFloat(evaluacion.id)
 
 					found = false
 
@@ -397,6 +399,7 @@ angular.module('WissenSystem')
 							preg.pregunta_eval_id 	= found_id
 							preg.orden 				      = found[0].orden
 							resultado.push preg
+
 
 				else
 					resultado.push preg

@@ -22,7 +22,7 @@
         </md-input-container>
       </div>
       <div class="panel-body">
-        <form name="frm" role="form" class="form-horizontal">
+        <form name="frm" role="form" class="form-horizontal">{{eventoactual}}
           <div ng-repeat="disciplina in disciplinaking.disciplinas_traducidas | porIdiomasEdit:disciplinaking.idiomasEdit"><a ng-if="!eventoactual.es_idioma_unico" md-ink-ripple class="btn-tag btn-tag-info">Disciplina en {{disciplina.idioma}}</a>
             <div style="padding-left: 50px; " class="row">
               <div class="col-lg-4 col-sm-5 col-xs-12">

@@ -84,9 +84,8 @@ angular.module('WissenSystem')
 				$scope.modal_abierto = false
 				opcion.respondida = true
 
-				if option == 'Ya respondida'
+				#if option == 'Ya respondida'
 					#toastr.warning('No guardada', 'Respondida anteriormente');
-					return
 
 				if opcion.is_correct
 					valor = 'correct'
@@ -177,11 +176,11 @@ angular.module('WissenSystem')
 
 		datos =
 			examen_actual_id: 		examen_actual.examen_id
-			pregunta_top_id: 		preguntatop.id
-			pregunta_sub_id: 		pregunta_traduc.id
-			idioma_id: 				pregunta_traduc.idioma_id
+			pregunta_top_id: 		preguntatop.rowid         || preguntatop.id
+			pregunta_sub_id: 		pregunta_traduc.rowid     || pregunta_traduc.id
+			idioma_id: 				  pregunta_traduc.idioma_id
 			tipo_pregunta: 			preguntatop.tipo_pregunta
-			opcion_id: 				opcion.id
+			opcion_id: 				  opcion.rowid              || pregunta_traduc.id
 			tiempo:					Date.now() - $rootScope.dt_start_preg
 
 

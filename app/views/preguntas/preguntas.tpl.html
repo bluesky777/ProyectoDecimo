@@ -68,7 +68,7 @@
       <div layout class="panel-heading">Evaluaciones</div>
       <div class="panel-body">
         <md-list-item ng-repeat="evalu in evaluaciones" ng-click="selectEvaluacion(evalu, $event)" ng-class="{'bg-success': evalu.selected==true}">
-          <p> {{evalu.id}} - {{evalu.descripcion}}</p>
+          <p> {{ evalu.rowid || evalu.id }} - {{evalu.descripcion}}</p>
         </md-list-item>
       </div>
     </div>
@@ -80,7 +80,7 @@
         <div class="row">
           <button ng-click="asignarPreguntasRandom()" style="margin-bottom: 20px; margin-left: 20px;" class="btn btn-default">Asignar preguntas</button>
         </div>
-        <div ng-repeat="pregunta_king in pg_preguntas | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion2:evalu_seleccionada.id | orderBy:'orden' " style="position: relative;">
+        <div ng-repeat="pregunta_king in pg_preguntas | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion2:evalu_seleccionada | orderBy:'orden' " style="position: relative;">
           <view-pregunta-eval ng-if="pregunta_king.tipo_pregunta" preguntaking="pregunta_king"></view-pregunta-eval>
           <view-grupo-eval ng-if="!pregunta_king.tipo_pregunta" grupoking="pregunta_king"></view-grupo-eval>
         </div>

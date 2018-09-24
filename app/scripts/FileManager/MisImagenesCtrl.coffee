@@ -200,9 +200,13 @@ angular.module('WissenSystem')
 		usu_id = if usuarioElegido.rowid then usuarioElegido.rowid else usuarioElegido.id
 
 		aEnviar = {
-			imgUsuario: img_id
+			imgUsuario: img_id,
+			usu_id: 		usu_id
 		}
-		Restangular.one('imagenes/cambiar-img-usuario/'+usu_id).customPUT(aEnviar).then((r)->
+
+		ruta = if $scope.USER.rowid then 'imagenes/cambiar-img-usuario' else ('imagenes/cambiar-img-usuario/'+usu_id)
+
+		Restangular.one(ruta).customPUT(aEnviar).then((r)->
 			toastr.success 'Imagen asignada con éxito'
 			usuarioElegido.imagen_id      = img_id
 			usuarioElegido.imagen_nombre  = imgUsuario.nombre

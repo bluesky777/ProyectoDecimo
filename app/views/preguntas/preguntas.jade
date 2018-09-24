@@ -98,7 +98,7 @@
 
 				md-list-item(ng-repeat="evalu in evaluaciones" ng-click="selectEvaluacion(evalu, $event)" ng-class="{'bg-success': evalu.selected==true}")
 
-					p  {{evalu.id}} - {{evalu.descripcion}}
+					p  {{ evalu.rowid || evalu.id }} - {{evalu.descripcion}}
 
 
 	.col-sm-12.col-md-8
@@ -114,7 +114,7 @@
 					button.btn.btn-default(ng-click="asignarPreguntasRandom()" style="margin-bottom: 20px; margin-left: 20px;") Asignar preguntas
 
 
-				div(ng-repeat="pregunta_king in pg_preguntas | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion2:evalu_seleccionada.id | orderBy:'orden' "
+				div(ng-repeat="pregunta_king in pg_preguntas | pregsByCatsAndEvaluacion:categoria:preguntas_evaluacion2:evalu_seleccionada | orderBy:'orden' "
 					style="position: relative;")
 
 					view-pregunta-eval(ng-if="pregunta_king.tipo_pregunta" preguntaking="pregunta_king")

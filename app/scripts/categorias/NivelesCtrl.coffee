@@ -35,6 +35,7 @@ angular.module('WissenSystem')
 			r.idiomasEdit = [$scope.eventoactual.idioma_principal_id]
 			$scope.nivelesking.push r
 			$scope.creando = false
+			console.log(r)
 		, (r2)->
 			toastr.warning 'No se creó el nivel', 'Problema'
 			$scope.creando = false
